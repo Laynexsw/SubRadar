@@ -4,8 +4,7 @@
 ### Masaüstü Abonelik Zekâsı, Tek Tıkla İptal ve %100 Yerel AES-256 Kasa
 
 [![GitHub Pages](https://img.shields.io/badge/Live-GitHub%20Pages-6366f1?style=for-the-badge&logo=github)](https://laynexsw.github.io/SubRadar/)
-[![Desktop App](https://img.shields.io/badge/Desktop-Electron%2041-47a248?style=for-the-badge&logo=electron)](https://github.com/Laynexsw/SubRadar/tree/main/app)
-[![Node.js](https://img.shields.io/badge/Node.js-v24-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
+[![Desktop App](https://img.shields.io/badge/Desktop-Çok%20Yakında-amber?style=for-the-badge&logo=electron)](https://github.com/Laynexsw/SubRadar/tree/main/app)
 [![Security](https://img.shields.io/badge/Security-AES--256%20CBC-10b981?style=for-the-badge&logo=shield)](https://github.com/Laynexsw/SubRadar)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
@@ -14,7 +13,7 @@
 **SubRadar**, unutulan deneme üyeliklerini, gizli fiyat artışlarını ve aylarca açılmayan yazılım aboneliklerini tespit eden;  
 verilerinizi asla buluta göndermeden **%100 yerel ve çevrimdışı** çalışan masaüstü abonelik asistanıdır.
 
-[🌐 Canlı Web Sitesi](https://laynexsw.github.io/SubRadar/) &bull; [💻 Masaüstü Uygulaması](https://github.com/Laynexsw/SubRadar/tree/main/app) &bull; [📑 Modüler Bileşenler](https://github.com/Laynexsw/SubRadar/tree/main/web)
+[🌐 Canlı Web Sitesi](https://laynexsw.github.io/SubRadar/) &bull; [💻 Masaüstü Uygulaması (Çok Yakında)](https://github.com/Laynexsw/SubRadar/tree/main/app) &bull; [📑 Modüler Bileşenler](https://github.com/Laynexsw/SubRadar/tree/main/web)
 
 ---
 
@@ -29,35 +28,20 @@ SubRadar/
 │
 ├── 📄 index.html                         # Kök Yönlendirici (Canlı GitHub Pages & yerel sunucuyu web/code.html'e aktarır)
 ├── ⚙️ .nojekyll                          # GitHub Pages statik yayın yapılandırması (Jekyll motorunu devre dışı bırakır)
-├── 🛡️ .gitignore                         # Sürüm kontrolünden hariç tutulan dosyalar (node_modules, app/data vb.)
+├── 🛡️ .gitignore                         # Sürüm kontrolünden hariç tutulan dosyalar
 ├── 📜 LICENSE                            # MIT Açık Kaynak Lisansı
 ├── 📖 README.md                          # Kapsamlı proje mimarisi ve kullanım rehberi
 │
-├── 💻 app/                               # MASAÜSTÜ UYGULAMASI (Electron + Node.js)
-│   ├── package.json                      # Bağımlılıklar, ürün meta verileri ve başlatma scriptleri (npm start)
-│   ├── package-lock.json                 # Kilitli paket bağımlılık ağacı
-│   ├── README.md                         # Masaüstü uygulaması geliştirici dokümantasyonu
-│   │
-│   └── src/                              # Masaüstü Uygulama Kaynak Kodları
-│       ├── main.js                       # Electron Main Process (Çerçevesiz pencere, IPC olayları, bildirimler)
-│       ├── preload.js                    # Güvenli contextBridge API köprüsü (Main ile Renderer arası izolasyon)
-│       ├── vault.js                      # AES-256-CBC Şifrelenmiş Yerel Kasa Motoru (%100 çevrimdışı depolama)
-│       │
-│       └── renderer/                     # Kullanıcı Arayüzü (Renderer Process)
-│           ├── index.html                # Çerçevesiz (frameless) Apple Glass masaüstü ana penceresi
-│           │
-│           ├── styles/
-│           │   └── app.css               # macOS/Windows cam estetiği, trafik ışıkları, KPI kartları, modal stilleri
-│           │
-│           └── scripts/
-│               ├── store.js              # Reaktif durum yöneticisi, harcama analizleri ve döviz dönüşümleri
-│               ├── ui.js                 # DOM render motoru, dinamik kartlar, filtreler ve toast bildirimleri
-│               ├── cancel-modal.js       # Tek Tıkla İptal sihirbazı ve resmi fesih dilekçesi oluşturucu
-│               ├── add-modal.js          # Yeni abonelik ekleme penceresi ve hazır servis şablonları
-│               └── app.js                # Uygulama başlatıcı, klavye kısayolları (Ctrl+K, Esc) ve pencere kontrolleri
+├── 💻 app/                               # MASAÜSTÜ UYGULAMASI (🚀 Çok Yakında / Coming Soon)
+│   ├── README.md                         # Masaüstü uygulaması yol haritası ve mimari rehberi
+│   └── src/                              # Gelecek masaüstü kaynak kodları dizini
+│       └── renderer/
+│           ├── scripts/
+│           └── styles/
 │
 └── 🌐 web/                               # WEB TANITIM VİTRİNİ & MODÜLER BİLEŞENLER
     ├── code.html                         # Entegre canlı vitrin uygulaması ve interaktif masaüstü simülatörü
+
     ├── index.html                        # web/ içi hızlı yönlendirici
     │
     ├── components/                       # Modüler HTML Bileşenleri
@@ -111,34 +95,27 @@ SubRadar/
 
 ## 🌟 Katmanların Görev Dağılımı
 
-| Katman | Konum | Teknoloji | Görevi ve Sorumluluğu |
+| Katman | Konum | Teknoloji | Görevi ve Durumu |
 | :--- | :--- | :--- | :--- |
 | **Kök (Root)** | `/` | Git, Markdown, HTML | Canlı GitHub Pages dağıtımını yönlendirir, lisans ve depo belgelerini barındırır. |
-| **Masaüstü (App)** | `/app` | Electron v41, Node.js, AES-256 | Kullanıcının bilgisayarında çalışan, verileri yerel olarak şifreleyen gerçek masaüstü uygulamasıdır. |
-| **Web Vitrini** | `/web` | Vanilla JS, Modern CSS, HTML5 | Ürünü internette tanıtan, GitHub Pages üzerinde yayında olan interaktif simülasyon vitrinidir. |
+| **Masaüstü (App)** | `/app` | Electron & Native *(Yol Haritası)* | 🚀 **Çok Yakında** — Verileri cihazda AES-256 ile şifreleyen yerel masaüstü istemcisi. |
+| **Web Vitrini** | `/web` | Vanilla JS, Modern CSS, HTML5 | 🟢 **Yayında** — GitHub Pages üzerinde canlı olan interaktif simülasyon ve vitrin. |
 
 ---
 
 ## 🚀 Hızlı Başlangıç
 
-### 💻 Masaüstü Uygulamasını Çalıştırma (`app/`)
-```bash
-# app klasörüne gidin
-cd app
+### 🌐 Canlı Web Vitrinini Ziyaret Edin
+* **Resmi Sayfa:** [https://laynexsw.github.io/SubRadar/](https://laynexsw.github.io/SubRadar/)
+* **Yerel Sunucuda Çalıştırma:**
+  ```bash
+  python -m http.server 8765
+  ```
+  Tarayıcınızda `http://localhost:8765/` veya `http://localhost:8765/web/code.html` adresini ziyaret edin.
 
-# Bağımlılıkları kontrol edin / yükleyin
-npm install
+### 💻 Masaüstü Uygulaması (`app/`)
+Masaüstü uygulaması şu anda geliştirilme aşamasındadır (Çok Yakında). Gelişmeleri [`app/README.md`](app/README.md) dosyasından takip edebilirsiniz.
 
-# Masaüstü uygulamasını başlatın
-npm start
-```
-
-### 🌐 Web Vitrinini Yerel Olarak Çalıştırma (`web/`)
-```bash
-# Kök dizinde yerel HTTP sunucusu açın
-python -m http.server 8765
-```
-Tarayıcınızda `http://localhost:8765/` veya `http://localhost:8765/web/code.html` adresini ziyaret edin.
 
 ---
 

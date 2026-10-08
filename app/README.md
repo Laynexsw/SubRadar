@@ -1,60 +1,20 @@
-# SubRadar Desktop — Masaüstü Abonelik Zekâsı ve Tek Tıkla İptal
+# ⚡ SubRadar Desktop App
 
-SubRadar, web tanıtım sayfasında sunulan tüm vaatlerin yerel olarak çalışan, %100 çevrimdışı ve AES-256 şifreli masaüstü uygulamasıdır.
+> **Durum:** 🚀 **Çok Yakında / Coming Soon**
 
----
-
-## 🏗️ Mimari Yapı
-
-```text
-app/
-├── package.json               # Electron ve proje konfigürasyonu
-├── README.md                  # Bu dökümantasyon
-│
-└── src/
-    ├── main.js                # Electron Main Process (Pencere yönetimi, IPC, sistem entegrasyonu)
-    ├── preload.js             # Güvenli contextBridge API köprüsü
-    ├── vault.js               # AES-256 şifreli yerel kasa veri motoru (%100 yerel ve çevrimdışı)
-    │
-    └── renderer/              # Kullanıcı Arayüzü (Renderer Process)
-        ├── index.html         # Apple Glass & macOS frameless masaüstü ana penceresi
-        ├── styles/
-        │   └── app.css        # Koyu tema, cam efektleri, trafik ışıkları, kartlar
-        └── scripts/
-            ├── store.js       # Reaktif veri ve hesaplama motoru (Aylık/Yıllık harcama, israf analizi)
-            ├── ui.js          # DOM kartları ve KPI gösterge renderlayıcısı
-            ├── cancel-modal.js# "Tek Tıkla İptal" sihirbazı ve resmi iptal mektubu oluşturucu
-            ├── add-modal.js   # "Yeni Abonelik Ekle" sihirbazı ve hazır servis şablonları
-            └── app.js         # Ana orkestrasyon ve klavye kısayolları (Ctrl+K, Esc)
-```
+SubRadar masaüstü istemci uygulaması şu anda geliştirilme aşamasındadır.
 
 ---
 
-## ✨ Masaüstü Yetenekleri
+## 🎯 Planlanan Masaüstü Yetenekleri
 
-1. **Frameless macOS & Windows Tasarımı:**
-   - Çalışan interaktif trafik ışıkları (Kapat, Küçült, Büyüt)
-   - Apple Glass arka plan bulanıklığı ve modern koyu arayüz
-2. **AES-256 Yerel Şifreli Kasa:**
-   - Tüm abonelik verileri yalnızca kullanıcının bilgisayarında şifrelenerek saklanır.
-   - Buluta hiçbir veri aktarılmaz, %100 çevrimdışı çalışır.
-3. **Akıllı İsraf Tespit Algoritması:**
-   - 30+ gündür kullanılmayan servisleri "İsraf Riski" olarak etiketler.
-   - Deneme sürelerini izler (örn: 3 gün veya 1 gün kala sarı/kırmızı uyarı).
-4. **Tek Tıkla İptal Sihirbazı:**
-   - Resmi hesap iptal sayfasına tek tıkla yönlendirir.
-   - Tüketici haklarına uygun resmi iptal başvuru dilekçesini otomatik üretip panoya kopyalar.
-   - İptal edilen servisleri tasarruf hanesine ekler.
-5. **Klavye Kısayolları:**
-   - `Ctrl+K` / `⌘K`: Hızlı arama çubuğuna odaklanır.
-   - `Esc`: Açık modalları kapatır.
+* **🛡️ %100 Yerel & Çevrimdışı Kasa (AES-256):** Abonelikleriniz ve harcama verileriniz asla cihazınızdan dışarı çıkmaz.
+* **⚡ Tek Tıkla İptal Portalları:** Doğrudan hesap kapatma bağlantıları ve yasal fesih dilekçesi motoru.
+* **🔍 Akıllı İsraf & Deneme Tespiti:** Kullanılmayan servisler ve deneme süresi bitmeden önceki hatırlatıcılar.
+* **🪟 Apple Glass & macOS Tasarımı:** Çerçevesiz modern pencere, sistem tepsisi ve kısayol tuşları.
 
 ---
 
-## 🚀 Çalıştırma
-
-Geliştirici modunda çalıştırmak için:
-```bash
-cd app
-npm start
-```
+## 🌐 Canlı Web Sürümü
+Tanıtım ve simülasyon vitrinini web üzerinden hemen deneyebilirsiniz:  
+👉 **[https://laynexsw.github.io/SubRadar/](https://laynexsw.github.io/SubRadar/)**
