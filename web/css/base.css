@@ -87,3 +87,14 @@ html.light .border-white\/10, html.light .border-white\/15, html.light .border-w
 html.light .border-white\/\[0\.08\], html.light .border-white\/\[0\.07\], html.light .border-white\/\[0\.04\] { 
   border-color: rgba(0, 0, 0, 0.08) !important; 
 }
+
+html.light #legal-notice-body {
+  background-color: #f4f4f6 !important;
+  color: #1d1d1f !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+html.light #legal-modal {
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+}

@@ -224,6 +224,29 @@
     background-color: #000 !important;
     color: #fff !important;
   }
+  /* ── Açık temada yasal fesih kutusu ve butonları ── */
+  html.light #legal-notice-body {
+    background-color: #f4f4f6 !important;
+    color: #1d1d1f !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+  }
+  html.light #legal-modal {
+    background-color: #ffffff !important;
+    color: #1d1d1f !important;
+  }
+  html.light #legal-modal header {
+    border-color: rgba(0, 0, 0, 0.08) !important;
+  }
+  html.light #legal-modal footer {
+    border-color: rgba(0, 0, 0, 0.08) !important;
+  }
+  html.light #legal-copy-btn {
+    border-color: rgba(0, 0, 0, 0.18) !important;
+    color: #1d1d1f !important;
+  }
+  html.light #legal-copy-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+  }
   /* ── Scroll motion katmanı (yapı korunur: yalnızca görünürlük) ── */
   #sr-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: #fff; z-index: 90; }
   html.light #sr-progress { background: #1d1d1f; }
@@ -1536,7 +1559,7 @@
 <!-- 4. OFFICIAL LEGAL NOTICE MODAL (GDPR / KVKK / CONSUMER LAW)               -->
 <!-- ========================================================================= -->
 <div class="fixed inset-0 z-[120] bg-black/80 backdrop-blur-md hidden items-center justify-center px-4" id="legal-modal-backdrop">
-<dialog class="animate-modal w-full max-w-2xl bg-[#0e0e12] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)] text-white block m-0" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title" id="legal-modal">
+<div class="animate-modal relative w-full max-w-2xl bg-[#0e0e12] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)] text-white my-auto" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title" id="legal-modal">
 <header class="flex items-center justify-between pb-4 border-b border-white/10">
 <div class="flex items-center gap-2.5">
 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
@@ -1580,7 +1603,7 @@ SubRadar, sözleşme fesih bildirimini yerel olarak hazırlar. Metni kopyalayara
 <span>E-Posta Taslağı Aç</span>
 </button>
 </footer>
-</dialog>
+</div>
 </div>
 <!-- ========================================================================= -->
 <!-- JAVASCRIPT: ENTIRE PROTOTYPE INTERACTIVITY & LOGIC                        -->
