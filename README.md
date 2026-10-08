@@ -135,6 +135,23 @@ Masaüstü uygulaması şu anda geliştirilme aşamasındadır (Çok Yakında). 
 
 ---
 
-## 📄 Lisans
+## 📄 Lisans & Lisans Seçenekleri
 
-Bu proje [MIT Lisansı](LICENSE) kapsamında lisanslanmıştır.
+Bu proje varsayılan olarak [MIT Lisansı](LICENSE) kapsamında lisanslanmıştır.
+
+Geliştiriciler ve kurumlar için farklı kullanım senaryolarına uygun tüm alternatif lisans şablonları [`licenses/`](licenses/) dizininde eksiksiz olarak sunulmaktadır:
+
+| Lisans | Şablon Dosyası | Lisans Türü | Temel Kural & Kullanım Amacı |
+| :--- | :--- | :--- | :--- |
+| **MIT (Varsayılan)** | [`LICENSE`](LICENSE) &bull; [`MIT.txt`](licenses/MIT.txt) | İzin Verici (Permissive) | En popüler açık kaynak lisansı. Ticari kullanım serbesttir, kod kapatılabilir. |
+| **Apache 2.0** | [`APACHE-2.0.txt`](licenses/APACHE-2.0.txt) | İzin Verici + Patent | MIT serbestliği sağlar; ek olarak patent davalarına karşı kurumsal koruma sunar. |
+| **GNU GPL v3** | [`GPL-3.0.txt`](licenses/GPL-3.0.txt) | Güçlü Copyleft | Kodu kullanan veya değiştiren projelerin de açık kaynak kalmasını şart koşar. |
+| **GNU AGPL v3** | [`AGPL-3.0.txt`](licenses/AGPL-3.0.txt) | Ağ / SaaS Copyleft | Yazılım bulutta web servisi (SaaS) olarak sunulsa bile kaynak kodun açılmasını zorunlu kılar. |
+| **BSD 3-Clause** | [`BSD-3-CLAUSE.txt`](licenses/BSD-3-CLAUSE.txt) | İzin Verici | Yazarın ve projenin adının izinsiz ticari reklam ve tanıtımlarda kullanımını yasaklar. |
+| **BSD 2-Clause** | [`BSD-2-CLAUSE.txt`](licenses/BSD-2-CLAUSE.txt) | İzin Verici | FreeBSD lisansı olarak da bilinir; MIT ile benzer esneklikte sade lisans. |
+| **Mozilla (MPL 2.0)** | [`MPL-2.0.txt`](licenses/MPL-2.0.txt) | Zayıf Copyleft | Yalnızca değiştirilen dosyaların açık kalmasını ister; ana projeyi kapatmaya izin verir. |
+| **The Unlicense** | [`UNLICENSE.txt`](licenses/UNLICENSE.txt) | Kamu Malı (Public Domain) | Tüm telif haklarından feragat edilir. Sıfır kısıtlama ile serbestçe kullanılabilir. |
+| **Tescilli (Proprietary)** | [`PROPRIETARY.txt`](licenses/PROPRIETARY.txt) | Ticari / Kapalı Kod | Tüm hakları saklıdır. İzinsiz kopyalama, dağıtım ve ticari kullanım kesinlikle yasaktır. |
+
+> 💡 Detaylı lisans karşılaştırma matrisi, yasal yükümlülükler ve seçim kılavuzu için [**`licenses/README.md`**](licenses/README.md) dosyasını inceleyebilirsiniz.
+
