@@ -149,7 +149,7 @@
   }
   /* ── Erişilebilirlik temeli ─────────────────────────────────── */
   :focus-visible { outline: 2px solid #0071e3; outline-offset: 2px; border-radius: 6px; }
-  #hesaplayici, #ozellikler, #mimari, #isletim-sistemleri { scroll-margin-top: 84px; }
+  #hesaplayici, #ozellikler, #mimari, #mimari-bolum, #isletim-sistemleri, #fiyatlandirma, #hakkimizda { scroll-margin-top: 84px; }
   .skip-link { position: fixed; left: 16px; top: -60px; z-index: 200; background: #fff; color: #000; padding: 10px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; transition: top 0.15s ease; }
   .skip-link:focus-visible { top: 12px; }
   html.light .skip-link { background: #1d1d1f; color: #fff; }
@@ -529,6 +529,7 @@
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#mimari">Mimari</a>
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#isletim-sistemleri">İşletim Sistemleri</a>
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#fiyatlandirma">Fiyatlandırma</a>
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#hakkimizda">Hakkımızda</a>
 </nav>
 <!-- Actions -->
 <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0 min-w-0">
@@ -566,6 +567,7 @@
 <a class="py-2.5 hover:text-white transition-colors" href="#mimari">Mimari</a>
 <a class="py-2.5 hover:text-white transition-colors" href="#isletim-sistemleri">İşletim Sistemleri</a>
 <a class="py-2.5 hover:text-white transition-colors" href="#fiyatlandirma">Fiyatlandırma</a>
+<a class="py-2.5 hover:text-white transition-colors" href="#hakkimizda">Hakkımızda</a>
 <span class="flex items-center gap-2 py-2.5" role="group" aria-label="Dil seç">
 <span class="text-xs font-mono text-white/40">Dil:</span>
 <button type="button" class="lang-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-lang="EN" aria-pressed="false">EN</button>
@@ -1632,62 +1634,213 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
   });
 })();
 </script>
-<!-- 8. MARKA MANİFESTOSU & SLOGAN -->
-<section class="max-w-4xl mx-auto px-6 py-28 border-t border-white/10 text-center" data-od-id="marka" id="marka">
-<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-6 backdrop-blur-md" data-rv="fade-up">
-<span class="brand-mark w-4 h-4 rounded-full bg-white flex items-center justify-center text-black" aria-hidden="true">
-<span class="brand-mark-dot w-1 h-1 rounded-full bg-black"></span>
-</span>
-<span class="text-[11px] font-mono tracking-widest text-white/70 uppercase">SubRadar • Marka Manifestosu</span>
-</div>
-<h2 class="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-[-0.03em] text-white leading-[1.05]" data-rv="fade-blur" style="--d:.08s">
-SubRadar
-</h2>
-<div class="mt-3 text-lg sm:text-xl md:text-2xl font-medium text-neutral-300 tracking-tight" data-rv="fade-up" style="--d:.12s">
-Kullanmadığın yazılıma para ödeme.
-</div>
-<p class="mt-6 text-sm sm:text-base md:text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed" data-rv="fade-up" style="--d:.16s">
-Yinelenen abonelik tuzaklarına, unutulan deneme sürümlerine ve zorlaştırılmış iptal engellerine karşı bağımsız yerel masaüstü kalkanı. Sıfır bulut telemetrisi, sıfır gizli masraf — paran ve verilerin tamamen senin kontrolünde.
-</p>
-<div class="mt-10 pt-8 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-6 text-left max-w-3xl mx-auto" data-rv="fade-up" style="--d:.22s">
-<div class="space-y-1.5">
-<div class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-<span>%100 Yerel Kasa</span>
-</div>
-<div class="text-sm font-semibold text-white">Sıfır Bulut Telemetrisi</div>
-<p class="text-xs text-neutral-400 leading-relaxed">Ekstre ve fatura analizleri yalnızca kendi cihazında, çevrimdışı işlenir.</p>
-</div>
-<div class="space-y-1.5">
-<div class="text-[11px] font-mono uppercase tracking-wider text-white/50 flex items-center gap-1.5">
-<span class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
-<span>Anında Kurtarma</span>
-</div>
-<div class="text-sm font-semibold text-white">Tek Tıkla Doğrudan İptal</div>
-<p class="text-xs text-neutral-400 leading-relaxed">Gizli iptal anketlerini ve zorlaştırma labirentlerini tek tıkla aş.</p>
-</div>
-<div class="space-y-1.5">
-<div class="text-[11px] font-mono uppercase tracking-wider text-white/50 flex items-center gap-1.5">
-<span class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
-<span>Finansal Hijyen</span>
-</div>
-<div class="text-sm font-semibold text-white">48 Saat Önce Uyarı</div>
-<p class="text-xs text-neutral-400 leading-relaxed">Kartından habersiz para çekilmeden önce yaklaşan yenilemeleri yakala.</p>
-</div>
-</div>
-<div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3.5" data-rv="fade-up" style="--d:.26s">
-<button type="button" class="w-full sm:w-auto px-7 py-3 rounded-full bg-white text-black font-semibold text-xs tracking-tight hover:bg-neutral-200 transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer min-h-[44px]" onclick="document.getElementById('scorecard-btn')?.click()">
-<span class="material-symbols-outlined text-[16px]" aria-hidden="true">badge</span>
-<span>Abonelik İsraf Karneni Çıkar</span>
-</button>
-<a href="#fiyatlandirma" class="w-full sm:w-auto px-7 py-3 rounded-full bg-white/[0.08] hover:bg-white/15 border border-white/10 text-white font-medium text-xs tracking-tight transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[44px]">
-<span class="material-symbols-outlined text-[16px]" aria-hidden="true">payments</span>
-<span>Üyelik Planlarını İncele</span>
-</a>
-</div>
-<div class="mt-6 text-[11px] font-mono text-white/40">
-BAĞIMSIZ MASAÜSTÜ SİSTEMİ • GİZLİLİK ODAKLI YEREL MİMARİ
-</div>
+<!-- 8. MARKA MANİFESTOSU & HAKKIMIZDA -->
+<section class="max-w-5xl mx-auto px-6 py-28 border-t border-white/10" data-od-id="hakkimizda" id="hakkimizda">
+  <!-- Brand Manifesto Header (Center Aligned) -->
+  <div class="text-center max-w-4xl mx-auto">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-6 backdrop-blur-md" data-rv="fade-up">
+      <span class="brand-mark w-4 h-4 rounded-full bg-white flex items-center justify-center text-black" aria-hidden="true">
+        <span class="brand-mark-dot w-1 h-1 rounded-full bg-black"></span>
+      </span>
+      <span class="text-[11px] font-mono tracking-widest text-white/70 uppercase">SubRadar • Marka Manifestosu</span>
+    </div>
+    <h2 class="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-[-0.03em] text-white leading-[1.05]" data-rv="fade-blur" style="--d:.08s">
+      SubRadar
+    </h2>
+    <div class="mt-3 text-lg sm:text-xl md:text-2xl font-medium text-neutral-300 tracking-tight" data-rv="fade-up" style="--d:.12s">
+      Kullanmadığın yazılıma para ödeme.
+    </div>
+    <p class="mt-6 text-sm sm:text-base md:text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed" data-rv="fade-up" style="--d:.16s">
+      Yinelenen abonelik tuzaklarına, unutulan deneme sürümlerine ve zorlaştırılmış iptal engellerine karşı bağımsız yerel masaüstü kalkanı. Sıfır bulut telemetrisi, sıfır gizli masraf — paran ve verilerin tamamen senin kontrolünde.
+    </p>
+
+    <!-- 3 Core Pillars -->
+    <div class="mt-10 pt-8 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-6 text-left max-w-3xl mx-auto" data-rv="fade-up" style="--d:.22s">
+      <div class="space-y-1.5">
+        <div class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>%100 Yerel Kasa</span>
+        </div>
+        <div class="text-sm font-semibold text-white">Sıfır Bulut Telemetrisi</div>
+        <p class="text-xs text-neutral-400 leading-relaxed">Ekstre ve fatura analizleri yalnızca kendi cihazında, çevrimdışı işlenir.</p>
+      </div>
+      <div class="space-y-1.5">
+        <div class="text-[11px] font-mono uppercase tracking-wider text-white/50 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
+          <span>Anında Kurtarma</span>
+        </div>
+        <div class="text-sm font-semibold text-white">Tek Tıkla Doğrudan İptal</div>
+        <p class="text-xs text-neutral-400 leading-relaxed">Gizli iptal anketlerini ve zorlaştırma labirentlerini tek tıkla aş.</p>
+      </div>
+      <div class="space-y-1.5">
+        <div class="text-[11px] font-mono uppercase tracking-wider text-white/50 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
+          <span>Finansal Hijyen</span>
+        </div>
+        <div class="text-sm font-semibold text-white">48 Saat Önce Uyarı</div>
+        <p class="text-xs text-neutral-400 leading-relaxed">Kartından habersiz para çekilmeden önce yaklaşan yenilemeleri yakala.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deepened Hakkımızda / About Us Story & Principles Section -->
+  <div class="mt-20 pt-16 border-t border-white/10 text-left" id="marka">
+    <div class="max-w-3xl mb-12" data-rv="left">
+      <div class="text-xs font-mono tracking-widest text-emerald-400 uppercase flex items-center gap-2 mb-3">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span>Hakkımızda • Bağımsız Mühendislik & Finansal Egemenlik</span>
+      </div>
+      <h3 class="text-2xl sm:text-4xl font-semibold tracking-tight text-white leading-tight">
+        Neden Buradayız? Dijital Abonelik Tuzağına Karşı Bir Duruş.
+      </h3>
+      <p class="text-neutral-400 text-sm sm:text-base mt-4 leading-relaxed">
+        Modern yazılım dünyası, kullanıcıları unutulmuş deneme sürümleri, gizli fiyat artışları ve iptal etmeyi neredeyse imkansız kılan karanlık desenlerle (dark patterns) sessizce tüketiyor. Geleneksel abonelik takip uygulamaları ise banka şifrelerinizi isteyip finansal verilerinizi reklamcılara satıyor. SubRadar bu ikiyüzlülüğe bir tepki olarak doğdu.
+      </p>
+    </div>
+
+    <!-- The Two Paths: Sektörün Çıkmazı vs. SubRadar Felsefesi -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-white/10" data-rv="scale">
+      <div class="space-y-3 p-6 rounded-2xl bg-white/[0.02] border border-white/10">
+        <div class="flex items-center gap-2 text-rose-400 text-xs font-mono uppercase tracking-wider">
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">cancel</span>
+          <span>Sektörün Çıkmazı (Bulut Takipçileri)</span>
+        </div>
+        <h4 class="text-base font-semibold text-white">Verinizi Alıp Karşılığında Bildirim Satarlar</h4>
+        <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+          Piyasadaki popüler abonelik araçları sizden banka giriş şifrelerinizi, kart ekstrenizi ve e-postalarınızı merkezi sunucularına aktarmanızı ister. Bu veriler işlenir, yapay zekâ modellerine yedirilir veya veri simsarlarına pazarlanır. Bir aboneliği iptal etmeye çalışırken tüm finansal mahremiyetinizi feda edersiniz.
+        </p>
+      </div>
+
+      <div class="space-y-3 p-6 rounded-2xl bg-emerald-500/[0.03] border border-emerald-500/20">
+        <div class="flex items-center gap-2 text-emerald-400 text-xs font-mono uppercase tracking-wider">
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">verified_user</span>
+          <span>SubRadar Felsefesi (Sıfır Bilgi)</span>
+        </div>
+        <h4 class="text-base font-semibold text-white">Saklayacak Bir Bulutumuz Dahi Yoktur</h4>
+        <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+          SubRadar %100 yereldir. Ekstreleriniz ve abonelik kayıtlarınız yalnızca kendi bilgisayarınızın donanım şifrelemesi (Apple Secure Enclave / Windows TPM) altında saklanır. Şirketimiz yatırımcı fonlarına veya veri satışına değil; sadece dürüst, bağımsız ve işini kusursuz yapan masaüstü lisans satışlarına dayanır.
+        </p>
+      </div>
+    </div>
+
+    <!-- 3 Core Ethical Commitments -->
+    <div class="mt-12 pt-8 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-8" data-rv="fade-up">
+      <div class="space-y-2">
+        <div class="text-[11px] font-mono uppercase text-white/50">01 // İLKE</div>
+        <div class="text-sm font-semibold text-white">Gizlilik Opsiyonel Değildir</div>
+        <p class="text-xs text-neutral-400 leading-relaxed">
+          Hiçbir telemetri SDK'sı, Google Analytics veya reklam pikseli kullanmayız. Uygulamamız internet bağlantısı olmadan da tam kapasite çalışır.
+        </p>
+      </div>
+      <div class="space-y-2">
+        <div class="text-[11px] font-mono uppercase text-white/50">02 // İLKE</div>
+        <div class="text-sm font-semibold text-white">İptal Temel Tüketici Hakkıdır</div>
+        <p class="text-xs text-neutral-400 leading-relaxed">
+          Kullanıcıyı sistemde zorla tutmak için kurgulanan 6 adımlı caydırma anketlerini tek tıkla atlatır, doğrudan yasal fesih protokolü oluştururuz.
+        </p>
+      </div>
+      <div class="space-y-2">
+        <div class="text-[11px] font-mono uppercase text-white/50">03 // İLKE</div>
+        <div class="text-sm font-semibold text-white">Kullanıcıya Hesap Veririz</div>
+        <p class="text-xs text-neutral-400 leading-relaxed">
+          Girişim sermayesi baskısı altında değiliz. Amacımız sizi ekranda tutmak değil; 60 saniyede paranızı kurtarıp bilgisayarınızı kapatmanızı sağlamaktır.
+        </p>
+      </div>
+    </div>
+
+    <!-- 4-Column Live Metric Transparency Guarantees -->
+    <div class="mt-12 pt-8 border-t border-white/[0.08] grid grid-cols-2 md:grid-cols-4 gap-6 text-center font-mono text-xs">
+      <div class="space-y-1">
+        <div class="text-white/40 text-[10px] uppercase tracking-wider">Toplanan Kullanıcı Verisi</div>
+        <div class="text-emerald-400 font-bold text-sm">0 Bayt</div>
+        <div class="text-[10px] text-emerald-400/70">%100 Cihaz İçi</div>
+      </div>
+      <div class="space-y-1">
+        <div class="text-white/40 text-[10px] uppercase tracking-wider">Üçüncü Parti İzleyici</div>
+        <div class="text-white font-bold text-sm">0 SDK</div>
+        <div class="text-[10px] text-white/40">Sıfır Telemetri</div>
+      </div>
+      <div class="space-y-1">
+        <div class="text-white/40 text-[10px] uppercase tracking-wider">İptal Başarı Oranı</div>
+        <div class="text-emerald-400 font-bold text-sm">%98,4</div>
+        <div class="text-[10px] text-emerald-400/70">Yasal Fesih İle</div>
+      </div>
+      <div class="space-y-1">
+        <div class="text-white/40 text-[10px] uppercase tracking-wider">Bağımsızlık Güvencesi</div>
+        <div class="text-white font-bold text-sm">Geliştirici Odaklı</div>
+        <div class="text-[10px] text-white/40">Sıfır Reklam / Sıfır VC</div>
+      </div>
+    </div>
+
+    <!-- Developer & Engineering Manifesto Note -->
+    <div class="mt-12 pt-8 border-t border-white/10" data-rv="fade-up">
+      <div class="p-6 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">Geliştirici Notu // Neden Bağımsız Masaüstü?</span>
+          </div>
+          <span class="text-[11px] font-mono text-white/40">Çevrimdışı Mühendislik • Sıfır VC Baskısı</span>
+        </div>
+        <p class="text-xs sm:text-sm text-neutral-300 leading-relaxed">
+          "SubRadar, abonelik yorgunluğundan ve kişisel finans verilerinin bulut şirketlerince metalaştırılmasından bıkmış bağımsız yazılım mühendisleri tarafından kuruldu. Misyonumuz basit: Yazılım dünyasındaki asimetrik güç dengesini tüketici lehine çevirmek. Şirketlerin iptal düğmelerini 5 sayfa derine gizlemesine ve banka ekstrenizi izlemesine izin vermiyoruz. SubRadar ile bilgisayarınız sizin kalenizdir; paranız da sizin kontrolünüzde kalır."
+        </p>
+        <div class="pt-2 flex items-center justify-between flex-wrap gap-3 text-xs font-mono text-white/50 border-t border-white/[0.06]">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[16px] text-white/70" aria-hidden="true">terminal</span>
+            <span>SubRadar Çekirdek Ekibi</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <span>Açık Güvenlik Raporu: <span class="text-white">guvenlik@subradar.io</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sıkça Sorulan Sorular / Transparency FAQ -->
+    <div class="mt-12 pt-8 border-t border-white/10" data-rv="fade-up">
+      <div class="mb-6">
+        <div class="text-[11px] font-mono uppercase text-white/50 tracking-wider">HAKKIMIZDA & GİZLİLİK SSS</div>
+        <h4 class="text-lg font-semibold text-white mt-1">En Çok Merak Edilenler</h4>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-2 p-5 rounded-xl bg-white/[0.02] border border-white/10">
+          <div class="text-xs font-semibold text-white">SubRadar neden bulut sunucusu kullanmıyor?</div>
+          <p class="text-xs text-neutral-400 leading-relaxed">
+            Finansal veriler buluta aktarıldığı anda üçüncü tarafların erişimine açık hale gelir. SubRadar tüm analizleri kendi donanımınızda yerel çalıştırır; internet bağlantısını kesseniz dahi %100 işlevseldir.
+          </p>
+        </div>
+        <div class="space-y-2 p-5 rounded-xl bg-white/[0.02] border border-white/10">
+          <div class="text-xs font-semibold text-white">Tek tıkla iptal yasal olarak nasıl geçerli?</div>
+          <p class="text-xs text-neutral-400 leading-relaxed">
+            SubRadar, 6502 sayılı Tüketicinin Korunması Kanunu (m. 52/4) ve AB Direktifi (2011/83/EU) standartlarında resmi fesih bildirim protokolü oluşturur. Hizmet sağlayıcı bu bildirimi yasal olarak işleme almak zorundadır.
+          </p>
+        </div>
+        <div class="space-y-2 p-5 rounded-xl bg-white/[0.02] border border-white/10">
+          <div class="text-xs font-semibold text-white">Nasıl gelir elde ediyorsunuz?</div>
+          <p class="text-xs text-neutral-400 leading-relaxed">
+            Verinizi satmıyor, reklam göstermiyor veya telemetri toplamıyoruz. Tek gelir modelimiz, bağımsız masaüstü Pro ve Kurumsal lisans satışlarıdır.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="text-xs font-mono text-white/40">
+        © 2026 SubRadar Bağımsız Masaüstü Sistemleri • Tüketici Hakları & Mahremiyet Birliği
+      </div>
+      <div class="flex items-center gap-3 w-full sm:w-auto">
+        <button type="button" class="w-full sm:w-auto px-6 py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all cursor-pointer min-h-[44px]" onclick="document.getElementById('scorecard-btn')?.click()">
+          Abonelik İsraf Karneni Çıkar
+        </button>
+        <a href="#fiyatlandirma" class="w-full sm:w-auto px-6 py-2.5 rounded-full border border-white/15 hover:border-white/30 text-white text-xs font-mono transition-all text-center min-h-[44px] flex items-center justify-center">
+          Planları İncele
+        </a>
+      </div>
+    </div>
+  </div>
 </section>
 </main>
 <!-- APPLE-STYLE MINIMALIST FOOTER -->
@@ -1718,6 +1871,7 @@ BAĞIMSIZ MASAÜSTÜ SİSTEMİ • GİZLİLİK ODAKLI YEREL MİMARİ
 <li><a class="hover:text-white transition-colors" href="#hesaplayici">İsraf Hesaplayıcı</a></li>
 <li><a class="hover:text-white transition-colors" href="#mimari">Yerel Kasa</a></li>
 <li><a class="hover:text-white transition-colors" href="#isletim-sistemleri">Sürüm Notları</a></li>
+<li><a class="hover:text-white transition-colors" href="#hakkimizda">Hakkımızda</a></li>
 </ul>
 </div>
 <!-- Col 3 -->
@@ -1745,6 +1899,7 @@ BAĞIMSIZ MASAÜSTÜ SİSTEMİ • GİZLİLİK ODAKLI YEREL MİMARİ
         © 2026 SubRadar Masaüstü Sistemleri. Tüm hakları saklıdır.
       </div>
 <div class="flex items-center gap-6">
+<a href="#hakkimizda" class="hover:text-white transition-colors">Hakkımızda</a>
 <span>Gizlilik İlkesi</span>
 <span>Kullanım Şartları</span>
 <span>Güvenlik Raporu</span>
@@ -1823,6 +1978,15 @@ BAĞIMSIZ MASAÜSTÜ SİSTEMİ • GİZLİLİK ODAKLI YEREL MİMARİ
 </div>
 </div>
 <span class="text-[10px] font-mono text-white/40 group-hover:text-white border border-white/10 px-1.5 py-0.5 rounded">↵ Çalıştır</span>
+<button type="button" class="cmd-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left hover:bg-white/10 transition-colors group cursor-pointer" data-cmd="goto-about">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px] text-white/70 group-hover:text-white" aria-hidden="true">info</span>
+<div>
+<div class="text-xs font-medium text-white">Hakkımızda & Marka Manifestosu</div>
+<div class="text-[11px] font-mono text-white/40">Bağımsız mühendislik, gizlilik ilkeleri ve sıfır-bilgi felsefesi</div>
+</div>
+</div>
+<span class="text-[10px] font-mono text-white/40 group-hover:text-white border border-white/10 px-1.5 py-0.5 rounded">↵ Git</span>
 </button>
 <button type="button" class="cmd-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left hover:bg-white/10 transition-colors group cursor-pointer" data-cmd="close">
 <div class="flex items-center gap-3">
@@ -2658,6 +2822,9 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
     "04 Kasa": "04 Vault",
     "05 İndir": "05 Download",
     "06 Üyelik": "06 Membership",
+    "07 Hakkımızda": "07 About Us",
+    "Hakkımızda": "About Us",
+    "Hakkımızda & Manifestosu": "About Us & Manifesto",
     "SubRadar • Marka Manifestosu": "SubRadar • Brand Manifesto",
     "Üyelik Planlarını İncele": "View Membership Plans",
     "Abonelik İsraf Karneni Çıkar": "Generate Subscription Waste Scorecard",
@@ -2981,6 +3148,9 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
     "04 Kasa": "04 Tresor",
     "05 İndir": "05 Download",
     "06 Üyelik": "06 Mitgliedschaft",
+    "07 Hakkımızda": "07 Über uns",
+    "Hakkımızda": "Über uns",
+    "Hakkımızda & Manifestosu": "Über uns & Manifest",
     "SubRadar • Marka Manifestosu": "SubRadar • Markenmanifest",
     "Üyelik Planlarını İncele": "Mitgliedschaftspläne ansehen",
     "Abonelik İsraf Karneni Çıkar": "Abo-Verschwendungs-Zeugnis erstellen",
@@ -3171,6 +3341,8 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
           document.body.appendChild(a);
           a.click();
           a.remove();
+        } else if (cmd === 'goto-about') {
+          window.location.hash = 'hakkimizda';
         } else if (cmd === 'close') {
           // Closed
         }
@@ -4719,12 +4891,16 @@ Rapor Üretici: https://subradar.dev
     '<a href="#ozellikler" class="spy-item" data-target="ozellikler">03 Motor</a>',
     '<a href="#mimari-bolum" class="spy-item" data-target="mimari-bolum">04 Kasa</a>',
     '<a href="#isletim-sistemleri" class="spy-item" data-target="isletim-sistemleri">05 İndir</a>',
-    '<a href="#fiyatlandirma" class="spy-item" data-target="fiyatlandirma">06 Üyelik</a>'
+    '<a href="#fiyatlandirma" class="spy-item" data-target="fiyatlandirma">06 Üyelik</a>',
+    '<a href="#hakkimizda" class="spy-item" data-target="hakkimizda">07 Hakkımızda</a>'
   ].join('');
   document.body.appendChild(spyNav);
+  if (typeof srApplyLang === 'function') {
+    try { srApplyLang(spyNav); } catch (e) {}
+  }
 
   var spyItems = spyNav.querySelectorAll('.spy-item');
-  var spySectionIds = ['icerik', 'hesaplayici', 'ozellikler', 'mimari-bolum', 'isletim-sistemleri', 'fiyatlandirma'];
+  var spySectionIds = ['icerik', 'hesaplayici', 'ozellikler', 'mimari-bolum', 'isletim-sistemleri', 'fiyatlandirma', 'hakkimizda'];
 
   // Initialize staggered delay counters on all [data-rv-stagger] children
   document.querySelectorAll('[data-rv-stagger]').forEach(function (container) {
