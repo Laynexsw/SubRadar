@@ -25,10 +25,19 @@ class SubStore {
     } else {
       // Browser fallback (yerel test için)
       const saved = localStorage.getItem('subradar_vault');
-      if (saved) {
+      if (saved && JSON.parse(saved).length > 0) {
         this.subscriptions = JSON.parse(saved);
       } else {
-        this.subscriptions = [];
+        this.subscriptions = [
+          { id: 'sub-1', name: 'Netflix', category: 'Eğlence', plan: 'Özel Plan (4K HDR)', price: 299.99, currency: 'TRY', cycle: 'monthly', nextBillingDate: '2026-10-14', status: 'active', riskLevel: 'none', trial: false, cancelUrl: 'https://www.netflix.com/youraccount', color: '#E50914', icon: 'movie' },
+          { id: 'sub-2', name: 'Adobe Creative Cloud', category: 'Tasarım & Yazılım', plan: 'Tüm Uygulamalar Paketi', price: 1150.00, currency: 'TRY', cycle: 'monthly', nextBillingDate: '2026-10-11', status: 'active', riskLevel: 'danger', riskReason: '42 gündür hiçbir Adobe uygulaması açılmadı. Otomatik yenileme öncesi tasarruf fırsatı!', trial: false, cancelUrl: 'https://account.adobe.com/plans', color: '#FF0000', icon: 'palette' },
+          { id: 'sub-3', name: 'Spotify', category: 'Müzik & Ses', plan: 'Premium Aile', price: 99.90, currency: 'TRY', cycle: 'monthly', nextBillingDate: '2026-10-28', status: 'active', riskLevel: 'none', trial: false, cancelUrl: 'https://www.spotify.com/account/subscription/', color: '#1DB954', icon: 'headphones' },
+          { id: 'sub-4', name: 'GitHub Copilot', category: 'Yazılım & AI', plan: 'Individual Plan', price: 10.00, currency: 'USD', cycle: 'monthly', nextBillingDate: '2026-10-19', status: 'active', riskLevel: 'none', trial: false, cancelUrl: 'https://github.com/settings/copilot', color: '#2ea44f', icon: 'terminal' },
+          { id: 'sub-5', name: 'ChatGPT Plus', category: 'Yapay Zekâ', plan: 'OpenAI GPT-4o & o1', price: 20.00, currency: 'USD', cycle: 'monthly', nextBillingDate: '2026-10-12', status: 'active', riskLevel: 'none', trial: false, cancelUrl: 'https://chatgpt.com/#settings/Subscription', color: '#10A37F', icon: 'psychology' },
+          { id: 'sub-6', name: 'Canva Pro', category: 'Tasarım & Grafik', plan: '30 Günlük Ücretsiz Deneme', price: 129.99, currency: 'TRY', cycle: 'monthly', nextBillingDate: '2026-10-09', status: 'active', riskLevel: 'danger', riskReason: 'Deneme süresi yarın doluyor! İptal edilmezse karttan 129.99 ₺ çekilecek.', trial: true, cancelUrl: 'https://www.canva.com/settings/billing-and-teams', color: '#7D2AE8', icon: 'auto_fix_high' },
+          { id: 'sub-7', name: 'Figma', category: 'Tasarım', plan: 'Professional Editor', price: 15.00, currency: 'USD', cycle: 'monthly', nextBillingDate: '2026-10-24', status: 'active', riskLevel: 'none', trial: false, cancelUrl: 'https://www.figma.com/settings', color: '#F24E1E', icon: 'draw' }
+        ];
+        localStorage.setItem('subradar_vault', JSON.stringify(this.subscriptions));
       }
     }
     this.notify();

@@ -27,6 +27,12 @@ function createWindow() {
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
+    mainWindow.focus();
+    console.log('[Main Process]: SubRadar penceresi ekranda gosterildi.');
+  });
+
+  mainWindow.webContents.on('console-message', (event, level, message, line) => {
+    console.log(`[Renderer]: ${message}`);
   });
 
   mainWindow.on('maximize', () => {
