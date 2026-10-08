@@ -259,21 +259,39 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 2.5px;
+    height: 3px;
     width: 0;
-    background: #0071e3;
+    background: #ffffff;
     z-index: 150;
     pointer-events: none;
     transition: width 0.08s ease-out;
   }
   html.light #sr-progress {
-    background: #0071e3;
+    background: #000000 !important;
   }
-  [data-rv] { opacity: 0; transform: translateY(30px); filter: blur(8px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1), filter .85s cubic-bezier(.16,1,.3,1); transition-delay: var(--d, 0s); will-change: opacity, transform, filter; }
-  [data-rv="left"] { transform: translateX(-40px); }
-  [data-rv="right"] { transform: translateX(40px); }
-  [data-rv="scale"] { transform: scale(.94) translateY(16px); }
+  /* ── Zenginleştirilmiş Scroll Reveal Çeşitleri ───────────────── */
+  [data-rv] { opacity: 0; transform: translateY(32px); filter: blur(8px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1), filter .8s cubic-bezier(.16,1,.3,1); transition-delay: var(--d, 0s); will-change: opacity, transform, filter; }
+  [data-rv="left"] { transform: translateX(-48px); }
+  [data-rv="right"] { transform: translateX(48px); }
+  [data-rv="scale"] { transform: scale(.92) translateY(24px); }
+  [data-rv="fade-blur"] { transform: translateY(12px); filter: blur(14px); }
+  [data-rv="fade-up"] { transform: translateY(42px); filter: none; }
+  [data-rv="pop"] { transform: scale(.88); filter: blur(4px); }
   [data-rv].in { opacity: 1; transform: none; filter: none; }
+
+  /* Kademeli (staggered) alt eleman açılışı */
+  [data-rv-stagger] > * {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(6px);
+    transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1), filter .7s cubic-bezier(.16,1,.3,1);
+    transition-delay: calc(var(--stagger, 0) * 0.08s);
+  }
+  [data-rv-stagger].in > * {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
   
   /* ── Radar Scanner & Blip Motion Graphics ───────────────────── */
   @keyframes srRadarSweep {
@@ -301,7 +319,60 @@
     animation: srAmbientBreath 12s ease-in-out infinite;
   }
 
-  /* ── Açık Tema Uyarlamaları (Scorecard & Radar & Back to top) ── */
+  /* ── Kasa Mimarisi & Şifreli Veri Akışı Motion Animasyonları ─── */
+  @keyframes srVaultStream {
+    0% { stroke-dashoffset: 48; }
+    100% { stroke-dashoffset: 0; }
+  }
+  .vault-stream-line {
+    stroke-dasharray: 6 6;
+    animation: srVaultStream 1.6s linear infinite;
+  }
+  @keyframes srVaultShieldPulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.08); opacity: 1; }
+  }
+  .vault-shield-pulse {
+    animation: srVaultShieldPulse 3s ease-in-out infinite;
+    transform-origin: center center;
+  }
+  @keyframes srCloudBlockFlash {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 0.95; }
+  }
+  .cloud-block-flash {
+    animation: srCloudBlockFlash 2s ease-in-out infinite;
+  }
+  @keyframes srPulseWave {
+    0% { stroke-dashoffset: 240; }
+    100% { stroke-dashoffset: 0; }
+  }
+  .calc-leak-wave {
+    stroke-dasharray: 8 4;
+    animation: srPulseWave 2.8s linear infinite;
+  }
+
+  /* ── Floating Scrollspy Pill ────────────────────────────────── */
+  #sr-scrollspy .spy-item {
+    padding: 4px 10px;
+    border-radius: 9999px;
+    color: rgba(255, 255, 255, 0.55);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  #sr-scrollspy .spy-item:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  #sr-scrollspy .spy-item.active {
+    color: #000000 !important;
+    background: #ffffff !important;
+    font-weight: 600;
+  }
+
+  /* ── Açık Tema Uyarlamaları (Scorecard, Radar, Kasa, Scrollspy) ── */
   html.light #scorecard-modal {
     background-color: #ffffff !important;
     color: #1d1d1f !important;
@@ -325,7 +396,8 @@
   html.light #scorecard-download-btn:hover {
     background-color: #333336 !important;
   }
-  html.light #radar-scanner-figure {
+  html.light #radar-scanner-figure,
+  html.light #vault-pipeline-figure {
     background-color: #ffffff !important;
     border-color: rgba(0, 0, 0, 0.1) !important;
   }
@@ -341,11 +413,29 @@
     border-color: rgba(0, 0, 0, 0.12) !important;
     color: #1d1d1f !important;
   }
+  html.light #sr-scrollspy {
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+  }
+  html.light #sr-scrollspy .spy-item {
+    color: rgba(29, 29, 31, 0.6) !important;
+  }
+  html.light #sr-scrollspy .spy-item:hover {
+    color: #000000 !important;
+    background: rgba(0, 0, 0, 0.06) !important;
+  }
+  html.light #sr-scrollspy .spy-item.active {
+    background-color: #1d1d1f !important;
+    color: #ffffff !important;
+  }
+  html.light .calc-leak-wave {
+    color: #16a34a !important;
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    [data-rv] { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
+    [data-rv], [data-rv-stagger] > * { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
     #sr-progress { display: none; }
-    .radar-beam, .radar-blip-ping, .sr-ambient-glow { animation: none !important; }
+    .radar-beam, .radar-blip-ping, .sr-ambient-glow, .vault-stream-line, .vault-shield-pulse, .cloud-block-flash, .calc-leak-wave { animation: none !important; }
   }
   /* ── Kart kalkışı + 3D mikro-hareket ── */
   main .apple-card { transition: border-color .25s ease, background .25s ease, transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s cubic-bezier(.16,1,.3,1); }
@@ -788,7 +878,16 @@
 <div>
 <div class="text-[10px] font-mono uppercase tracking-widest text-white/40">1 Yıllık Öngörülen Tasarruf</div>
 <div class="text-4xl sm:text-5xl font-bold font-mono tracking-tight text-white mt-1" id="out-1yr" role="status" aria-live="polite">$7.416</div>
-<footer class="mt-6 pt-5 border-t border-white/[0.08]">
+<div class="my-4 py-1" aria-hidden="true">
+<div class="flex items-center justify-between text-[10px] font-mono text-white/30 mb-1">
+<span>GERÇEK ZAMANLI SIZINTI DEBİSİ</span>
+<span class="text-emerald-400 font-semibold" id="calc-leak-rate-display">DİNAMİK AKIŞ</span>
+</div>
+<svg class="w-full h-7 text-emerald-400" viewBox="0 0 300 28" fill="none">
+<path class="calc-leak-wave" d="M0 14 Q25 2 50 14 T100 14 T130 3 T145 25 T160 14 T210 14 T255 14 T300 14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+</svg>
+</div>
+<footer class="mt-4 pt-4 border-t border-white/[0.08]">
 <div class="text-[10px] font-mono uppercase tracking-widest text-white/40">5 Yıllık Birikmiş Kayıp</div>
 <div class="text-2xl sm:text-3xl font-bold font-mono text-white/80 mt-1" id="out-5yr">$37.080</div>
 </footer>
@@ -941,46 +1040,141 @@
 </footer>
 </section>
 <!-- 4 Features Grid with 1px borders -->
-<dl class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x border-y border-white/10">
+<dl class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x border-y border-white/10" data-rv-stagger>
 <!-- Feature 1 -->
-<div class="py-10 md:pr-12 md:pb-12 space-y-3" data-rv="left">
+<div class="py-10 md:pr-12 md:pb-12 space-y-3" data-rv="fade-up">
 <div class="text-xs font-mono text-white/40">01 // DENETİM MOTORU</div>
 <h3 class="text-xl font-semibold text-white tracking-tight">Derin Abonelik Denetimi</h3>
 <p class="text-sm text-neutral-400 leading-relaxed">
-          Her yinelenen ödemeyi listelemek için gerçek zamanlı yerel işlem ve ekstre zekâsı. SubRadar, yerel arka plan servislerini ve banka ekstrelerini inceler. Verilerin makineden dışarı çıkmaz.
-        </p>
+Her yinelenen ödemeyi listelemek için gerçek zamanlı yerel işlem ve ekstre zekâsı. SubRadar, yerel arka plan servislerini ve banka ekstrelerini inceler. Verilerin makineden dışarı çıkmaz.
+</p>
 <div class="pt-4 font-mono text-[11px] text-white/30">Yerel indeksleme • Sıfır telemetri</div>
 </div>
 <!-- Feature 2 -->
-<div class="py-10 md:pl-12 md:pb-12 space-y-3" data-rv="right">
+<div class="py-10 md:pl-12 md:pb-12 space-y-3" data-rv="fade-blur">
 <div class="text-xs font-mono text-white/40">02 // OTOMATİK YAKALAMA</div>
 <h3 class="text-xl font-semibold text-white tracking-tight">Deneme Tehlikesi Uyarıları</h3>
 <p class="text-sm text-neutral-400 leading-relaxed">
-          Otomatik yenileme bitmeden tam 48 saat önce macOS Bildirim Merkezi ve Windows bildirimleri üzerinden uyarı. Bir daha yanlışlıkla ücret ödemezsin.
-        </p>
+Otomatik yenileme bitmeden tam 48 saat önce macOS Bildirim Merkezi ve Windows bildirimleri üzerinden uyarı. Bir daha yanlışlıkla ücret ödemezsin.
+</p>
 <div class="pt-4 font-mono text-[11px] text-white/30">Yerel işletim sistemi servisi • 48 saat önceden uyarı</div>
 </div>
 </dl>
-<dl class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x border-b border-white/10">
+<dl class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x border-b border-white/10" data-rv-stagger>
 <!-- Feature 3 -->
-<div class="py-10 md:pr-12 space-y-3" data-rv="left" style="--d:.1s">
+<div class="py-10 md:pr-12 space-y-3" data-rv="left">
 <div class="text-xs font-mono text-white/40">03 // ATLAMA MOTORU</div>
 <h3 class="text-xl font-semibold text-white tracking-tight">Tek Tıkla İptal Yönlendirme</h3>
 <p class="text-sm text-neutral-400 leading-relaxed">
-          Karanlık desenli tutma tünellerini atlayıp doğrudan gerçek iptal sayfalarına giden derin bağlantılar. Suçluluk anketleri, destek kuyrukları ve zorunlu telefon aramaları yok.
-        </p>
+Karanlık desenli tutma tünellerini atlayıp doğrudan gerçek iptal sayfalarına giden derin bağlantılar. Suçluluk anketleri, destek kuyrukları ve zorunlu telefon aramaları yok.
+</p>
 <div class="pt-4 font-mono text-[11px] text-white/30">Doğrudan protokol yönlendirme • Karanlık desene bağışıklık</div>
 </div>
 <!-- Feature 4 -->
-<div class="py-10 md:pl-12 space-y-3" id="mimari" data-rv="right" style="--d:.1s">
+<div class="py-10 md:pl-12 space-y-3" id="mimari" data-rv="right">
 <div class="text-xs font-mono text-white/40">04 // KASA MİMARİSİ</div>
 <h3 class="text-xl font-semibold text-white tracking-tight">Yerel ve Gizli Mimari</h3>
 <p class="text-sm text-neutral-400 leading-relaxed">
-          Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tüm ekstreler ve abonelik eşleşmeleri yalnızca bilgisayarının SSD’sinde şifreli durur.
-        </p>
+Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tüm ekstreler ve abonelik eşleşmeleri yalnızca bilgisayarının SSD’sinde şifreli durur.
+</p>
 <div class="pt-4 font-mono text-[11px] text-white/30">AES-256 GCM • ~/Library veya AppData içinde saklanır</div>
 </div>
 </dl>
+</section>
+<!-- 5b. YEREL KASA MİMARİSİ & ŞİFRELİ VERİ AKIŞI MOTION GRAFİĞİ -->
+<section class="max-w-6xl mx-auto px-6 py-24 border-t border-white/10" id="mimari-bolum" data-od-id="mimari-bolum">
+<div class="max-w-2xl mb-14" data-rv="left">
+<div class="text-xs font-mono tracking-widest text-white/40 uppercase">Kriptografik Güvenlik Tüneli</div>
+<h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-white mt-2">
+  Sıfır dış telemetri. %100 yerel kasa.
+</h2>
+<p class="text-neutral-400 text-sm mt-3 leading-relaxed">
+  Ekstrelerin ve banka kayıtların yalnızca cihazındaki yerel güvenli alanda çözülür; dış sunuculara veya yapay zeka bulutlarına tek bir veri paketi bile iletilmez.
+</p>
+</div>
+<!-- Vault Pipeline Interactive Motion Graphic Display -->
+<figure class="border-y border-white/10 py-10 relative overflow-hidden" id="vault-pipeline-figure" data-rv="scale">
+<header class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-white/10 gap-3">
+<div class="flex items-center gap-3">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+<div>
+<h3 class="text-sm font-mono font-semibold tracking-wider text-white">SUBRADAR // YEREL KASA AKIŞ ŞEMASI</h3>
+<p class="text-[11px] font-mono text-white/40">AES-256 GCM Şifreli SQLite • Donanım Seviyesi İzolasyon</p>
+</div>
+</div>
+<div class="flex items-center gap-2 font-mono text-xs text-emerald-400">
+<span class="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"></span>
+<span>BULUT ÇIKIŞI: 0 BAYT (ENGELLENDİ)</span>
+</div>
+</header>
+<!-- Visual Pipeline Grid -->
+<div class="py-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center">
+<!-- Step 1: Yerel Disk Kaynağı -->
+<div class="space-y-3" data-rv="left">
+<div class="w-16 h-16 mx-auto rounded-full border border-white/20 bg-white/[0.04] flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-2xl" aria-hidden="true">hard_drive</span>
+</div>
+<div class="font-mono text-xs font-semibold text-white">01 // YEREL BELGELER</div>
+<p class="text-[11px] font-mono text-neutral-400 max-w-xs mx-auto leading-relaxed">
+PDF ekstreler, banka CSV'leri ve yerel SQLite dökümleri diskte okunur.
+</p>
+<div class="text-[10px] font-mono text-emerald-400">~/Library/Application Support</div>
+</div>
+<!-- Step 2: AES-256 Kasa Çekirdeği (Merkez) -->
+<div class="space-y-3 relative" data-rv="scale">
+<div class="w-20 h-20 mx-auto rounded-full border-2 border-emerald-400/40 bg-emerald-500/[0.08] flex items-center justify-center relative vault-shield-pulse">
+<span class="material-symbols-outlined text-emerald-400 text-3xl" aria-hidden="true">enhanced_encryption</span>
+</div>
+<div class="font-mono text-xs font-semibold text-white">02 // SUBRADAR KASA</div>
+<p class="text-[11px] font-mono text-neutral-400 max-w-xs mx-auto leading-relaxed">
+Donanım şifreleme anahtarı ile yerel indeksleme ve OCR analizi.
+</p>
+<div class="text-[10px] font-mono text-white/40">AES-256-GCM • PBKDF2</div>
+</div>
+<!-- Step 3: Dış Ağ Bariyeri (Engellendi) -->
+<div class="space-y-3" data-rv="right">
+<div class="w-16 h-16 mx-auto rounded-full border border-rose-500/30 bg-rose-500/[0.05] flex items-center justify-center cloud-block-flash">
+<span class="material-symbols-outlined text-rose-400 text-2xl" aria-hidden="true">cloud_off</span>
+</div>
+<div class="font-mono text-xs font-semibold text-white">03 // DIŞ BULUT AĞI</div>
+<p class="text-[11px] font-mono text-neutral-400 max-w-xs mx-auto leading-relaxed">
+Giden tüm telemetri soketleri kapatılır. Harici istekler reddedilir.
+</p>
+<div class="text-[10px] font-mono text-rose-400">BLOKE EDİLDİ (0 Bayt)</div>
+</div>
+</div>
+<!-- Flow SVG Pipeline Connectors -->
+<div class="hidden md:block py-2" aria-hidden="true">
+<svg class="w-full h-8 text-emerald-400/40" viewBox="0 0 600 24" fill="none">
+<line class="vault-stream-line" x1="120" y1="12" x2="270" y2="12" stroke="currentColor" stroke-width="2" />
+<polygon points="275,12 265,8 265,16" fill="currentColor" />
+<line x1="330" y1="12" x2="480" y2="12" stroke="rgba(244,63,94,0.4)" stroke-width="2" stroke-dasharray="4 4" />
+<line x1="470" y1="6" x2="482" y2="18" stroke="#f43f5e" stroke-width="2.5" />
+<line x1="482" y1="6" x2="470" y2="18" stroke="#f43f5e" stroke-width="2.5" />
+</svg>
+</div>
+<footer class="pt-4 border-t border-white/[0.06] grid grid-cols-2 sm:grid-cols-4 gap-4 text-center font-mono text-[11px]">
+<div>
+<div class="text-white/40 text-[10px] uppercase">Şifreleme</div>
+<div class="text-white font-bold mt-0.5">AES-256-GCM</div>
+</div>
+<div>
+<div class="text-white/40 text-[10px] uppercase">Giden Paket</div>
+<div class="text-emerald-400 font-bold mt-0.5">0 Bayt</div>
+</div>
+<div>
+<div class="text-white/40 text-[10px] uppercase">Veritabanı</div>
+<div class="text-white font-bold mt-0.5">Yerel SQLite</div>
+</div>
+<div>
+<div class="text-white/40 text-[10px] uppercase">Denetim İzi</div>
+<div class="text-emerald-400 font-bold mt-0.5">Yalnızca SSD</div>
+</div>
+</footer>
+<figcaption class="mt-4 text-[10px] font-mono text-white/30 text-center">
+Tüm abonelik eşleştirme algoritmaları makinenin yerel RAM ve SSD kaynaklarında bağımsız olarak çalışır.
+</figcaption>
+</figure>
 </section>
 <!-- 6. MASAÜSTÜ VİTRİNİ VE KOMUT PALETİ ÖNİZLEMESİ -->
 <section class="max-w-6xl mx-auto px-6 py-24 border-t border-white/10" data-od-id="komut-paleti">
@@ -1086,9 +1280,9 @@
 <button type="button" class="arch-btn py-2 px-3 rounded-lg border border-white/10 bg-transparent text-white/60 font-medium text-center hover:border-white/30 transition-all cursor-pointer min-h-[44px]" id="bill-yearly" aria-pressed="false">Yıllık • −20%</button>
 </div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch" data-rv-stagger>
 <!-- Free -->
-<div class="apple-card rounded-2xl p-7 flex flex-col justify-between" data-od-id="pricing-free" data-rv="left">
+<div class="apple-card rounded-2xl p-7 flex flex-col justify-between" data-od-id="pricing-free" data-rv="fade-up">
 <div>
 <div class="text-[11px] font-mono uppercase tracking-widest text-white/50">Free</div>
 <h3 class="text-base font-semibold text-white mt-1">Keşif</h3>
@@ -1108,7 +1302,7 @@
 <button type="button" class="download-trigger-btn mt-8 w-full py-2.5 rounded-full bg-white/[0.08] hover:bg-white/15 border border-white/10 text-white font-semibold text-xs text-center transition-all cursor-pointer min-h-[44px]" data-os="auto">Ücretsiz İndir</button>
 </div>
 <!-- Pro -->
-<div class="apple-card rounded-2xl p-7 flex flex-col justify-between relative" data-od-id="pricing-pro" data-rv style="--d:.08s">
+<div class="apple-card rounded-2xl p-7 flex flex-col justify-between relative" data-od-id="pricing-pro" data-rv="scale">
 <span class="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-mono uppercase tracking-widest bg-white text-black px-3 py-1 rounded-full font-semibold whitespace-nowrap">En popüler</span>
 <div>
 <div class="text-[11px] font-mono uppercase tracking-widest text-white/50">Pro</div>
@@ -1132,7 +1326,7 @@
 <button type="button" class="download-trigger-btn mt-8 w-full py-2.5 rounded-full bg-white text-black font-semibold text-xs text-center hover:bg-neutral-200 transition-all cursor-pointer min-h-[44px]" data-os="auto">Pro'yu Başlat</button>
 </div>
 <!-- Max -->
-<div class="apple-card rounded-2xl p-7 flex flex-col justify-between" data-od-id="pricing-max" data-rv style="--d:.16s">
+<div class="apple-card rounded-2xl p-7 flex flex-col justify-between" data-od-id="pricing-max" data-rv="pop">
 <div>
 <div class="text-[11px] font-mono uppercase tracking-widest text-white/50">Max</div>
 <h3 class="text-base font-semibold text-white mt-1">Ekip</h3>
@@ -1157,7 +1351,7 @@
 <button type="button" class="download-trigger-btn mt-8 w-full py-2.5 rounded-full bg-white/[0.08] hover:bg-white/15 border border-white/10 text-white font-semibold text-xs text-center transition-all cursor-pointer min-h-[44px]" data-os="auto">Max'i Başlat</button>
 </div>
 <!-- Enterprise -->
-<div class="apple-card rounded-2xl p-7 flex flex-col justify-between relative" data-od-id="pricing-enterprise" data-rv="right" style="--d:.24s">
+<div class="apple-card rounded-2xl p-7 flex flex-col justify-between relative" data-od-id="pricing-enterprise" data-rv="fade-blur">
 <span class="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-mono uppercase tracking-widest bg-white/10 border border-white/15 text-white/70 px-3 py-1 rounded-full font-semibold whitespace-nowrap">Şirketler için</span>
 <div>
 <div class="text-[11px] font-mono uppercase tracking-widest text-white/50">Enterprise</div>
@@ -2845,6 +3039,16 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
       out1yr.textContent = srFormat(annualWaste, 0);
       out5yr.textContent = srFormat(fiveYearWaste, 0);
       if (reclaimTarget) reclaimTarget.textContent = srFormat(annualWaste, 2);
+
+      const leakRateDisplay = document.getElementById('calc-leak-rate-display');
+      if (leakRateDisplay) {
+        leakRateDisplay.textContent = `${srFormat(monthlyWaste, 0)}${srPer()}`;
+      }
+      const wave = document.querySelector('.calc-leak-wave');
+      if (wave) {
+        const speed = Math.max(0.8, 3.2 - (monthlyWaste / 800));
+        wave.style.animationDuration = `${speed.toFixed(1)}s`;
+      }
     }
 
     if (calcSubs && calcTrials) {
@@ -4258,6 +4462,30 @@ Rapor Üretici: https://subradar.dev
     });
   }
 
+  // Floating Minimalist Scrollspy Pill
+  var spyNav = document.createElement('nav');
+  spyNav.id = 'sr-scrollspy';
+  spyNav.setAttribute('aria-label', 'Bölüm Gezintisi');
+  spyNav.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-40 hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full apple-glass border border-white/15 text-xs font-mono shadow-2xl transition-all duration-300 opacity-0 pointer-events-none translate-y-3';
+  spyNav.innerHTML = [
+    '<a href="#icerik" class="spy-item active" data-target="icerik">01 Başlangıç</a>',
+    '<a href="#hesaplayici" class="spy-item" data-target="hesaplayici">02 Hesaplayıcı</a>',
+    '<a href="#ozellikler" class="spy-item" data-target="ozellikler">03 Motor</a>',
+    '<a href="#mimari-bolum" class="spy-item" data-target="mimari-bolum">04 Kasa</a>',
+    '<a href="#isletim-sistemleri" class="spy-item" data-target="isletim-sistemleri">05 İndir</a>'
+  ].join('');
+  document.body.appendChild(spyNav);
+
+  var spyItems = spyNav.querySelectorAll('.spy-item');
+  var spySectionIds = ['icerik', 'hesaplayici', 'ozellikler', 'mimari-bolum', 'isletim-sistemleri'];
+
+  // Initialize staggered delay counters on all [data-rv-stagger] children
+  document.querySelectorAll('[data-rv-stagger]').forEach(function (container) {
+    Array.from(container.children).forEach(function (child, idx) {
+      child.style.setProperty('--stagger', idx);
+    });
+  });
+
   var tick = false;
   function onScroll() {
     if (tick) return;
@@ -4272,6 +4500,27 @@ Rapor Üretici: https://subradar.dev
       } else {
         topBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
       }
+      if (y > 350) {
+        spyNav.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+      } else {
+        spyNav.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+      }
+
+      // Active Section Scrollspy Tracking
+      var currentId = 'icerik';
+      for (var i = 0; i < spySectionIds.length; i++) {
+        var secEl = document.getElementById(spySectionIds[i]);
+        if (secEl) {
+          var rect = secEl.getBoundingClientRect();
+          if (rect.top <= 240) {
+            currentId = spySectionIds[i];
+          }
+        }
+      }
+      spyItems.forEach(function (item) {
+        item.classList.toggle('active', item.dataset.target === currentId);
+      });
+
       if (!reduce) {
         var hero = document.querySelector('[data-od-id="hero"]');
         if (hero && y < 1000) {
