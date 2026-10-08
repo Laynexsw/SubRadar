@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html class="dark" lang="tr"><head><script type="application/json" data-od-external-dependencies>["https://cdn.tailwindcss.com?plugins=forms,container-queries","https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@200..600,0..1&display=swap"]</script>
+<html class="light" lang="tr"><head><script type="application/json" data-od-external-dependencies>["https://cdn.tailwindcss.com?plugins=forms,container-queries","https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@200..600,0..1&display=swap"]</script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta name="description" content="SubRadar: masaüstünde abonelik zekâsı. Gizli yenilemeleri yakala, deneme tuzaklarını durdur, tek tıkla iptal et. %100 yerel ve çevrimdışı."/>
@@ -247,6 +247,12 @@
   html.light #legal-copy-btn:hover {
     background-color: rgba(0, 0, 0, 0.05) !important;
   }
+  /* ── Açık temada WCAG AA uyumlu yer tutucu kontrastı ── */
+  html.light input::placeholder,
+  html.light textarea::placeholder {
+    color: #52525b !important;
+    opacity: 1 !important;
+  }
   /* ── Scroll motion katmanı (yapı korunur: yalnızca görünürlük) ── */
   #sr-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: #fff; z-index: 90; }
   html.light #sr-progress { background: #1d1d1f; }
@@ -267,11 +273,17 @@
 </style>
 <noscript><style>[data-rv]{opacity:1 !important;transform:none !important}</style></noscript>
 <script>
-  /* Tema: kayıpsız açılış (yanıp sönmeyi önler) */
+  /* Tema: kayıpsız açılış (varsayılan: açık tema, kullanıcı seçimi varsa saygı duy) */
   (function () {
     try {
       var t = localStorage.getItem('sr-theme');
-      if (t === 'light') { document.documentElement.classList.remove('dark'); document.documentElement.classList.add('light'); }
+      if (t === 'dark') {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+      }
     } catch (e) {}
   })();
 </script>
@@ -309,9 +321,9 @@
 <span class="material-symbols-outlined text-[13px]" aria-hidden="true">search</span>
 <span>⌘K</span>
 </button>
-<button type="button" class="flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs text-white/70 hover:text-white hover:border-white/20 transition-all cursor-pointer min-h-[36px] whitespace-nowrap flex-shrink-0" id="theme-toggle" aria-pressed="false" aria-label="Açık temaya geç">
-<span class="material-symbols-outlined text-[15px]" id="theme-toggle-icon" aria-hidden="true">light_mode</span>
-<span class="hidden min-[1440px]:inline" id="theme-toggle-label">Açık tema</span>
+<button type="button" class="flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs text-white/70 hover:text-white hover:border-white/20 transition-all cursor-pointer min-h-[36px] whitespace-nowrap flex-shrink-0" id="theme-toggle" aria-pressed="true" aria-label="Koyu temaya geç">
+<span class="material-symbols-outlined text-[15px]" id="theme-toggle-icon" aria-hidden="true">dark_mode</span>
+<span class="hidden min-[1440px]:inline" id="theme-toggle-label">Koyu tema</span>
 </button>
 <span class="hidden lg:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0" role="group" aria-label="Dil seç">
 <button type="button" class="lang-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-lang="EN" aria-pressed="false">EN</button>

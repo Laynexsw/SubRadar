@@ -98,3 +98,9 @@ html.light #legal-modal {
   background-color: #ffffff !important;
   color: #1d1d1f !important;
 }
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #52525b !important;
+  opacity: 1 !important;
+}
