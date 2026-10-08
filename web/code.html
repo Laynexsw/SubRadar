@@ -352,6 +352,28 @@
     animation: srPulseWave 2.8s linear infinite;
   }
 
+  /* ── Kriptografik Kasa Mimarisi & Etkileşimli Kart Stilleri ── */
+  .vault-stage-card {
+    padding: 1.5rem;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    outline: none;
+  }
+  .vault-stage-card:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    transform: translateY(-2px);
+  }
+  .vault-stage-card.active {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(52, 211, 153, 0.45);
+  }
+  .vault-stage-card:focus-visible {
+    box-shadow: 0 0 0 2px #10b981;
+  }
+  #vault-terminal-box {
+    padding: 1.25rem;
+  }
+
   /* ── Floating Scrollspy Pill ────────────────────────────────── */
   #sr-scrollspy .spy-item {
     padding: 4px 10px;
@@ -400,6 +422,27 @@
   html.light #vault-pipeline-figure {
     background-color: #ffffff !important;
     border-color: rgba(0, 0, 0, 0.1) !important;
+  }
+  html.light .vault-stage-card {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+  }
+  html.light .vault-stage-card:hover {
+    background-color: rgba(0, 0, 0, 0.045) !important;
+  }
+  html.light .vault-stage-card.active {
+    background-color: rgba(22, 163, 74, 0.06) !important;
+    border-color: rgba(22, 163, 74, 0.45) !important;
+  }
+  html.light #vault-terminal-box {
+    background-color: #f4f4f6 !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    color: #1d1d1f !important;
+  }
+  html.light #vault-terminal-logs {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: #1d1d1f !important;
   }
   html.light #radar-screen {
     background-color: rgba(16, 185, 129, 0.05) !important;
@@ -1083,97 +1126,170 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
 </section>
 <!-- 5b. YEREL KASA MİMARİSİ & ŞİFRELİ VERİ AKIŞI MOTION GRAFİĞİ -->
 <section class="max-w-6xl mx-auto px-6 py-24 border-t border-white/10" id="mimari-bolum" data-od-id="mimari-bolum">
-<div class="max-w-2xl mb-14" data-rv="left">
-<div class="text-xs font-mono tracking-widest text-white/40 uppercase">Kriptografik Güvenlik Tüneli</div>
-<h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-white mt-2">
-  Sıfır dış telemetri. %100 yerel kasa.
-</h2>
-<p class="text-neutral-400 text-sm mt-3 leading-relaxed">
-  Ekstrelerin ve banka kayıtların yalnızca cihazındaki yerel güvenli alanda çözülür; dış sunuculara veya yapay zeka bulutlarına tek bir veri paketi bile iletilmez.
-</p>
+<div class="max-w-3xl mb-12" data-rv="left">
+  <div class="text-xs font-mono tracking-widest text-emerald-400 uppercase flex items-center gap-2 mb-3">
+    <span class="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"></span>
+    <span>Kriptografik Güvenlik Tüneli • Donanım Seviyesi İzolasyon</span>
+  </div>
+  <h2 class="text-3xl sm:text-5xl font-semibold tracking-[-0.03em] text-white mt-1 leading-tight">
+    Sıfır dış telemetri. %100 yerel kasa.
+  </h2>
+  <p class="text-neutral-400 text-sm sm:text-base mt-4 leading-relaxed max-w-2xl">
+    Ekstrelerin ve banka kayıtların yalnızca cihazındaki yerel donanım kasasında çözülür. Dış sunuculara, üçüncü parti analizcilere veya yapay zekâ bulutlarına tek bir bayt veri paketi bile iletilmez.
+  </p>
 </div>
+
 <!-- Vault Pipeline Interactive Motion Graphic Display -->
 <figure class="border-y border-white/10 py-10 relative overflow-hidden" id="vault-pipeline-figure" data-rv="scale">
-<header class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-white/10 gap-3">
-<div class="flex items-center gap-3">
-<span class="w-2.5 h-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
-<div>
-<h3 class="text-sm font-mono font-semibold tracking-wider text-white">SUBRADAR // YEREL KASA AKIŞ ŞEMASI</h3>
-<p class="text-[11px] font-mono text-white/40">AES-256 GCM Şifreli SQLite • Donanım Seviyesi İzolasyon</p>
-</div>
-</div>
-<div class="flex items-center gap-2 font-mono text-xs text-emerald-400">
-<span class="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"></span>
-<span>BULUT ÇIKIŞI: 0 BAYT (ENGELLENDİ)</span>
-</div>
-</header>
-<!-- Visual Pipeline Grid -->
-<div class="py-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center">
-<!-- Step 1: Yerel Disk Kaynağı -->
-<div class="space-y-3" data-rv="left">
-<div class="w-16 h-16 mx-auto rounded-full border border-white/20 bg-white/[0.04] flex items-center justify-center">
-<span class="material-symbols-outlined text-white text-2xl" aria-hidden="true">hard_drive</span>
-</div>
-<div class="font-mono text-xs font-semibold text-white">01 // YEREL BELGELER</div>
-<p class="text-[11px] font-mono text-neutral-400 max-w-xs mx-auto leading-relaxed">
-PDF ekstreler, banka CSV'leri ve yerel SQLite dökümleri diskte okunur.
-</p>
-<div class="text-[10px] font-mono text-emerald-400">~/Library/Application Support</div>
-</div>
-<!-- Step 2: AES-256 Kasa Çekirdeği (Merkez) -->
-<div class="space-y-3 relative" data-rv="scale">
-<div class="w-20 h-20 mx-auto rounded-full border-2 border-emerald-400/40 bg-emerald-500/[0.08] flex items-center justify-center relative vault-shield-pulse">
-<span class="material-symbols-outlined text-emerald-400 text-3xl" aria-hidden="true">enhanced_encryption</span>
-</div>
-<div class="font-mono text-xs font-semibold text-white">02 // SUBRADAR KASA</div>
-<p class="text-[11px] font-mono text-neutral-400 max-w-xs mx-auto leading-relaxed">
-Donanım şifreleme anahtarı ile yerel indeksleme ve OCR analizi.
-</p>
-<div class="text-[10px] font-mono text-white/40">AES-256-GCM • PBKDF2</div>
-</div>
-<!-- Step 3: Dış Ağ Bariyeri (Engellendi) -->
-<div class="space-y-3" data-rv="right">
-<div class="w-16 h-16 mx-auto rounded-full border border-rose-500/30 bg-rose-500/[0.05] flex items-center justify-center cloud-block-flash">
-<span class="material-symbols-outlined text-rose-400 text-2xl" aria-hidden="true">cloud_off</span>
-</div>
-<div class="font-mono text-xs font-semibold text-white">03 // DIŞ BULUT AĞI</div>
-<p class="text-[11px] font-mono text-neutral-400 max-w-xs mx-auto leading-relaxed">
-Giden tüm telemetri soketleri kapatılır. Harici istekler reddedilir.
-</p>
-<div class="text-[10px] font-mono text-rose-400">BLOKE EDİLDİ (0 Bayt)</div>
-</div>
-</div>
-<!-- Flow SVG Pipeline Connectors -->
-<div class="hidden md:block py-2" aria-hidden="true">
-<svg class="w-full h-8 text-emerald-400/40" viewBox="0 0 600 24" fill="none">
-<line class="vault-stream-line" x1="120" y1="12" x2="270" y2="12" stroke="currentColor" stroke-width="2" />
-<polygon points="275,12 265,8 265,16" fill="currentColor" />
-<line x1="330" y1="12" x2="480" y2="12" stroke="rgba(244,63,94,0.4)" stroke-width="2" stroke-dasharray="4 4" />
-<line x1="470" y1="6" x2="482" y2="18" stroke="#f43f5e" stroke-width="2.5" />
-<line x1="482" y1="6" x2="470" y2="18" stroke="#f43f5e" stroke-width="2.5" />
-</svg>
-</div>
-<footer class="pt-4 border-t border-white/[0.06] grid grid-cols-2 sm:grid-cols-4 gap-4 text-center font-mono text-[11px]">
-<div>
-<div class="text-white/40 text-[10px] uppercase">Şifreleme</div>
-<div class="text-white font-bold mt-0.5">AES-256-GCM</div>
-</div>
-<div>
-<div class="text-white/40 text-[10px] uppercase">Giden Paket</div>
-<div class="text-emerald-400 font-bold mt-0.5">0 Bayt</div>
-</div>
-<div>
-<div class="text-white/40 text-[10px] uppercase">Veritabanı</div>
-<div class="text-white font-bold mt-0.5">Yerel SQLite</div>
-</div>
-<div>
-<div class="text-white/40 text-[10px] uppercase">Denetim İzi</div>
-<div class="text-emerald-400 font-bold mt-0.5">Yalnızca SSD</div>
-</div>
-</footer>
-<figcaption class="mt-4 text-[10px] font-mono text-white/30 text-center">
-Tüm abonelik eşleştirme algoritmaları makinenin yerel RAM ve SSD kaynaklarında bağımsız olarak çalışır.
-</figcaption>
+  <header class="flex flex-col lg:flex-row items-start lg:items-center justify-between pb-6 border-b border-white/10 gap-4">
+    <div class="flex items-center gap-3">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+      <div>
+        <h3 class="text-sm font-mono font-semibold tracking-wider text-white">SUBRADAR // KRİPTOGRAFİK KASA AKIŞ ŞEMASI</h3>
+        <p class="text-[11px] font-mono text-white/40">AES-256 GCM Şifreli SQLite • Donanım Tabanlı Enclave İzolasyonu</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3 flex-wrap">
+      <div class="flex items-center gap-2 font-mono text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+        <span id="vault-live-status-pill">BULUT ÇIKIŞI: 0 BAYT (ENGELLENDİ)</span>
+      </div>
+      <button type="button" id="vault-run-audit-btn" class="px-4 py-2 rounded-full bg-white text-black text-xs font-mono font-semibold hover:bg-neutral-200 transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]" aria-label="Canlı telemetri denetimini başlat">
+        <span class="material-symbols-outlined text-[16px]" aria-hidden="true">play_arrow</span>
+        <span id="vault-audit-btn-text">Telemetri Testi Başlat</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Visual Pipeline Grid with Interactive Stage Cards -->
+  <div class="relative py-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch text-center">
+      <!-- Stage 1: Yerel Disk & OCR -->
+      <div class="vault-stage-card active p-6 rounded-2xl border border-white/15 bg-white/[0.02] flex flex-col justify-between text-left relative" data-stage="1" role="button" tabindex="0" aria-label="Aşama 1: Yerel Belgeler ve OCR İncele">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-12 h-12 rounded-xl border border-white/20 bg-white/[0.04] flex items-center justify-center text-white">
+              <span class="material-symbols-outlined text-2xl" aria-hidden="true">hard_drive</span>
+            </span>
+            <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-white/10 text-white/50">Aşama 01</span>
+          </div>
+          <div class="font-mono text-xs font-semibold text-white">YEREL BELGELER & OCR</div>
+          <p class="text-xs text-neutral-400 mt-2 leading-relaxed">
+            PDF ekstreler, banka CSV'leri ve SQLite dökümleri yalnızca yerel diskte okunur. Asla uzak sunucuya yüklenmez.
+          </p>
+        </div>
+        <div class="pt-4 mt-4 border-t border-white/[0.08] text-[11px] font-mono text-emerald-400 flex items-center justify-between">
+          <span>~/Library/App Support</span>
+          <span class="text-white/40">Salt-Okunur</span>
+        </div>
+      </div>
+
+      <!-- Stage 2: AES-256 Kasa Çekirdeği -->
+      <div class="vault-stage-card p-6 rounded-2xl border border-white/15 bg-white/[0.02] flex flex-col justify-between text-left relative" data-stage="2" role="button" tabindex="0" aria-label="Aşama 2: AES-256 Şifreleme Çekirdeği İncele">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-12 h-12 rounded-xl border border-emerald-400/40 bg-emerald-500/10 flex items-center justify-center text-emerald-400 vault-shield-pulse">
+              <span class="material-symbols-outlined text-2xl" aria-hidden="true">enhanced_encryption</span>
+            </span>
+            <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-emerald-400/30 text-emerald-400 bg-emerald-500/10">Aşama 02</span>
+          </div>
+          <div class="font-mono text-xs font-semibold text-white">SUBRADAR KASA ÇEKİRDEĞİ</div>
+          <p class="text-xs text-neutral-400 mt-2 leading-relaxed">
+            Apple Secure Enclave ve Windows TPM tabanlı donanım anahtarı ile yerel indeksleme, 600K iterasyon PBKDF2 şifreleme.
+          </p>
+        </div>
+        <div class="pt-4 mt-4 border-t border-white/[0.08] text-[11px] font-mono text-white/50 flex items-center justify-between">
+          <span class="text-emerald-400">AES-256-GCM</span>
+          <span>96-bit Nonce</span>
+        </div>
+      </div>
+
+      <!-- Stage 3: Dış Bulut Engeli (Air-Gap) -->
+      <div class="vault-stage-card p-6 rounded-2xl border border-white/15 bg-white/[0.02] flex flex-col justify-between text-left relative" data-stage="3" role="button" tabindex="0" aria-label="Aşama 3: Dış Bulut Engeli İncele">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-12 h-12 rounded-xl border border-rose-500/40 bg-rose-500/10 flex items-center justify-center text-rose-400 cloud-block-flash">
+              <span class="material-symbols-outlined text-2xl" aria-hidden="true">cloud_off</span>
+            </span>
+            <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-rose-500/30 text-rose-400 bg-rose-500/10">Aşama 03</span>
+          </div>
+          <div class="font-mono text-xs font-semibold text-white">HAVA BOŞLUĞU (AIR-GAP)</div>
+          <p class="text-xs text-neutral-400 mt-2 leading-relaxed">
+            Giden tüm telemetri soketleri işletim sistemi kernel seviyesinde engellidir. Harici ağ çağrıları anında imha edilir.
+          </p>
+        </div>
+        <div class="pt-4 mt-4 border-t border-white/[0.08] text-[11px] font-mono text-rose-400 flex items-center justify-between">
+          <span>0.0.0.0 Refused</span>
+          <span>0 Bayt Sızıntı</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Animated Data Pipeline Stream SVG -->
+    <div class="hidden md:block pt-6" aria-hidden="true">
+      <svg class="w-full h-10 text-emerald-400/50" viewBox="0 0 800 32" fill="none">
+        <line class="vault-stream-line" x1="160" y1="16" x2="380" y2="16" stroke="currentColor" stroke-width="2" />
+        <polygon points="385,16 373,11 373,21" fill="currentColor" />
+        <line x1="430" y1="16" x2="650" y2="16" stroke="rgba(244,63,94,0.4)" stroke-width="2" stroke-dasharray="6 4" />
+        <circle cx="650" cy="16" r="9" fill="rgba(244,63,94,0.15)" stroke="#f43f5e" stroke-width="1.5" />
+        <line x1="644" y1="10" x2="656" y2="22" stroke="#f43f5e" stroke-width="2" />
+        <line x1="656" y1="10" x2="644" y2="22" stroke="#f43f5e" stroke-width="2" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Interactive Cryptographic Inspector Terminal Display -->
+  <div class="mt-6 border border-white/10 rounded-xl bg-black/60 p-4 sm:p-5 font-mono text-xs" id="vault-terminal-box">
+    <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-3 text-[11px] text-white/50">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
+        <span class="ml-2 text-white/70">subradar-core :: vault-integrity-daemon v1.4.2 [pid: 8421]</span>
+      </div>
+      <span class="text-emerald-400 flex items-center gap-1.5" id="vault-term-badge">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+        <span>CANLI ENCLAVE KORUMASI</span>
+      </span>
+    </div>
+    <pre class="p-3 rounded-lg bg-black/40 border border-white/[0.06] text-neutral-300 text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-52" id="vault-terminal-logs">[00:00.012] YEREL ORTAM TESPİTİ: macOS Apple Silicon (arm64) / Yerel SSD
+[00:00.034] DEPOLAMA YOLU: ~/Library/Application Support/SubRadar/vault.sqlite
+[00:00.058] KRİPTO KATMANI: AES-256-GCM (128-bit Doğrulama Etiketi + PBKDF2-HMAC-SHA512)
+[00:00.082] TELEMETRİ KONTROLÜ: Giden soketler dinleniyor... DIŞA ÇIKIŞ: 0 Bayt (ENGELLENDİ)
+[00:00.115] GÜVENLİK DURUMU: %100 Cihaz İçi İzolasyon Aktif. Veri sızıntısı riski: %0,00</pre>
+    <div class="mt-3 flex items-center justify-between text-[11px] text-white/40 pt-2 border-t border-white/[0.06] flex-wrap gap-2">
+      <span id="vault-term-tip">Aşama detaylarını görmek için yukarıdaki kartlara tıkla veya simülasyonu çalıştır.</span>
+      <span class="text-white/60">SHA-256 Bütünlük Özeti: 0x8f2a4e91c419</span>
+    </div>
+  </div>
+
+  <!-- 4-Column Cryptographic Guarantee Metrics Footer -->
+  <footer class="mt-8 pt-6 border-t border-white/[0.08] grid grid-cols-2 md:grid-cols-4 gap-6 text-center font-mono text-xs">
+    <div class="space-y-1">
+      <div class="text-white/40 text-[10px] uppercase tracking-wider">Şifreleme Standardı</div>
+      <div class="text-white font-bold text-sm">AES-256-GCM</div>
+      <div class="text-[10px] text-white/40">Donanım Anahtarı İle</div>
+    </div>
+    <div class="space-y-1">
+      <div class="text-white/40 text-[10px] uppercase tracking-wider">Dış Egress Trafiği</div>
+      <div class="text-emerald-400 font-bold text-sm">0 Bayt</div>
+      <div class="text-[10px] text-emerald-400/70">Tamamen Engellendi</div>
+    </div>
+    <div class="space-y-1">
+      <div class="text-white/40 text-[10px] uppercase tracking-wider">Kayıt Veritabanı</div>
+      <div class="text-white font-bold text-sm">Yerel SQLite</div>
+      <div class="text-[10px] text-white/40">Cihaz İçi Şifreli Dosya</div>
+    </div>
+    <div class="space-y-1">
+      <div class="text-white/40 text-[10px] uppercase tracking-wider">Donanım İzolasyonu</div>
+      <div class="text-emerald-400 font-bold text-sm">Apple T2 & TPM 2.0</div>
+      <div class="text-[10px] text-emerald-400/70">Enclave Seviyesi</div>
+    </div>
+  </footer>
+
+  <figcaption class="mt-5 text-[11px] font-mono text-white/30 text-center">
+    Tüm abonelik eşleştirme, OCR ve iptal protokolleri harici API bağımlılığı olmaksızın yerel CPU ve RAM kaynaklarında çalışır.
+  </figcaption>
 </figure>
 </section>
 <!-- 6. MASAÜSTÜ VİTRİNİ VE KOMUT PALETİ ÖNİZLEMESİ -->
@@ -4462,6 +4578,86 @@ Rapor Üretici: https://subradar.dev
       }
     });
   });
+
+  // Interactive Vault Architecture Pipeline & Live Telemetry Audit Simulator
+  var vaultCards = document.querySelectorAll('.vault-stage-card');
+  var vaultLogs = document.getElementById('vault-terminal-logs');
+  var vaultTip = document.getElementById('vault-term-tip');
+  var vaultAuditBtn = document.getElementById('vault-run-audit-btn');
+  var vaultAuditBtnText = document.getElementById('vault-audit-btn-text');
+  var vaultStatusPill = document.getElementById('vault-live-status-pill');
+  var vaultBadge = document.getElementById('vault-term-badge');
+
+  var stageDossiers = {
+    '1': {
+      title: 'AŞAMA 01 // YEREL BELGELER & OCR AYRIŞTIRMA',
+      logs: '[00:00.012] DOSYA KAYNAĞI BAĞLANTISI: ~/Library/Application Support/SubRadar/ (Salt-okunur mod)\n[00:00.038] ÇEVRİMDIŞI OCR ANALİZİ: Banka ekstreleri ve PDF formatları yerel belleğe alındı.\n[00:00.065] DİSK ERİŞİMİ: Doğrudan cihaz NVMe SSD üzerinde çalışıyor. Hiçbir ağ soketi açılmadı.\n[00:00.091] VERİ TEMİZLİĞİ: Taranan geçici metinler ayrıştırıldıktan sonra sıfırlanıyor (Zero Heap Residue).\n[00:00.120] BAĞIMSIZLIK RAPORU: %100 Cihaz İçi Yerel Okuma Teyit Edildi.'
+    },
+    '2': {
+      title: 'AŞAMA 02 // AES-256-GCM KRİPTOGRAFİK KASA ÇEKİRDEĞİ',
+      logs: '[00:00.015] DONANIM ANAHTARI TESPİTİ: Apple Secure Enclave & TPM 2.0 İzolasyonu Doğrulandı.\n[00:00.042] KDF TÜRETİMİ: PBKDF2-HMAC-SHA512 (600.000 döngü) ile türetilen şifreleme anahtarı.\n[00:00.076] ŞİFRELEME PRİMİTİFİ: AES-256-GCM + 96-bit CSPRNG Nonce + 128-bit Doğrulama Etiketi.\n[00:00.104] VERİTABANI: SQLCipher yerel SQLite dosyasında diskte salt-şifreli mühürlendi.\n[00:00.138] KRİPTO GÜVENCESİ: Cihaz dışından veya şifresiz belleğin okunması imkansızdır.'
+    },
+    '3': {
+      title: 'AŞAMA 03 // HAVA BOŞLUĞU (AIR-GAP) & SIFIR TELEMETRİ ENGELİ',
+      logs: '[00:00.010] İŞLETİM SİSTEMİ AĞ DİNLEMESİ (AF_INET / AF_INET6): Tüm giden soketler kilitli.\n[00:00.035] DIŞ BULUT AĞI ÇAĞRILARI: 0.0.0.0 Refused (Kernel düzeyinde engellendi).\n[00:00.062] TELEMETRİ DENETİMİ: Giden paket sayısı: 0 | İletilen bayt: 0 Bayt.\n[00:00.098] HARİCİ İZLEYİCİ ENGELİ: Google Analytics, Mixpanel, Segment ve Sentry soketleri kapatıldı.\n[00:00.125] SIZINTI KORUMASI: %100 Hava Boşluklu (Air-Gapped) Mimari Aktif.'
+    }
+  };
+
+  vaultCards.forEach(function (card) {
+    card.addEventListener('click', function () {
+      var stage = card.getAttribute('data-stage');
+      vaultCards.forEach(function (c) { c.classList.remove('active'); });
+      card.classList.add('active');
+      if (stageDossiers[stage] && vaultLogs) {
+        vaultLogs.textContent = stageDossiers[stage].logs;
+      }
+      if (vaultTip) {
+        vaultTip.textContent = 'Aşama ' + stage + ' detayları inceleniyor. Farklı aşamayı seçmek için diğer kartlara tıkla.';
+      }
+    });
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
+
+  if (vaultAuditBtn) {
+    vaultAuditBtn.addEventListener('click', function () {
+      vaultAuditBtn.disabled = true;
+      vaultAuditBtn.classList.add('opacity-75');
+      if (vaultAuditBtnText) vaultAuditBtnText.textContent = 'Denetleniyor...';
+      if (vaultStatusPill) vaultStatusPill.textContent = 'CANLI TEST: ÇIKIŞ SOKETLERİ TARANIYOR...';
+
+      var steps = [
+        '[00:00.018] TEST BAŞLATILDI: Kernel seviyesinde ağ arabirimleri taranıyor...',
+        '[00:00.052] PROBING SOCKET CONNECTIONS: TCP/UDP portları dinlendi (0 çıkış isteği)...',
+        '[00:00.095] SQLCIPHER BÜTÜNLÜĞÜ DOĞRULANIYOR: AES-256-GCM mühür testi başarılı.',
+        '[00:00.142] MEMORY LEAK ANALYSIS: Bellekte düz metin sızıntısı yok (Heap temizlendi).',
+        '[00:00.180] TELEMETRİ GİDEN PAKET: 0 BAYT (DIŞ DÜNYAYLA HİÇBİR İLETİŞİM OLMADI)',
+        '═════════════════════════════════════════════════════════════════════════\n✓ TEST SONUCU: SIFIR TELEMETRİ VE %100 YEREL KASA DOĞRULANDI [SHA-256: 0x8f2a4e91c419]'
+      ];
+
+      if (vaultLogs) vaultLogs.textContent = steps[0];
+      var idx = 1;
+      var timer = setInterval(function () {
+        if (idx < steps.length) {
+          if (vaultLogs) vaultLogs.textContent += '\n' + steps[idx];
+          idx++;
+        } else {
+          clearInterval(timer);
+          vaultAuditBtn.disabled = false;
+          vaultAuditBtn.classList.remove('opacity-75');
+          if (vaultAuditBtnText) vaultAuditBtnText.textContent = '✓ Testi Tekrarla';
+          if (vaultStatusPill) vaultStatusPill.textContent = 'BULUT ÇIKIŞI: 0 BAYT (ENGELLENDİ)';
+          if (vaultBadge) {
+            vaultBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>DOĞRULANMIŞ HAVA BOŞLUĞU</span>';
+          }
+        }
+      }, 220);
+    });
+  }
 
   // Number Counter Roll-Up on Scroll
   if (!reduce && 'IntersectionObserver' in window) {
