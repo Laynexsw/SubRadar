@@ -32,6 +32,13 @@ SubRadar/
 ├── 📜 LICENSE                            # MIT Açık Kaynak Lisansı
 ├── 📖 README.md                          # Kapsamlı proje mimarisi ve kullanım rehberi
 │
+├── 📜 licenses/                          # Yazılım Lisansları Şablon Koleksiyonu & Rehberi
+│   ├── README.md                         # Lisanslar karşılaştırma matrisi ve seçim kılavuzu
+│   ├── MIT.txt, APACHE-2.0.txt           # İzin verici açık kaynak lisans şablonları
+│   ├── GPL-3.0.txt, AGPL-3.0.txt         # Güçlü copyleft açık kaynak lisans şablonları
+│   ├── BSD-3-CLAUSE.txt, MPL-2.0.txt     # BSD ve Mozilla kamu lisans şablonları
+│   └── PROPRIETARY.txt, UNLICENSE.txt    # Ticari ve kamu malı lisans şablonları
+│
 ├── 💻 app/                               # MASAÜSTÜ UYGULAMASI (🚀 Çok Yakında / Coming Soon)
 │   ├── README.md                         # Masaüstü uygulaması yol haritası ve mimari rehberi
 │   └── src/                              # Gelecek masaüstü kaynak kodları dizini
@@ -98,6 +105,7 @@ SubRadar/
 | Katman | Konum | Teknoloji | Görevi ve Durumu |
 | :--- | :--- | :--- | :--- |
 | **Kök (Root)** | `/` | Git, Markdown, HTML | Canlı GitHub Pages dağıtımını yönlendirir, lisans ve depo belgelerini barındırır. |
+| **Lisanslar (Licenses)** | `/licenses` | Markdown & Text | 📜 **Rehber & Şablonlar** — MIT, Apache, GPL, BSD vb. lisans karşılaştırma matrisi ve şablonları. |
 | **Masaüstü (App)** | `/app` | Electron & Native *(Yol Haritası)* | 🚀 **Çok Yakında** — Verileri cihazda AES-256 ile şifreleyen yerel masaüstü istemcisi. |
 | **Web Vitrini** | `/web` | Vanilla JS, Modern CSS, HTML5 | 🟢 **Yayında** — GitHub Pages üzerinde canlı olan interaktif simülasyon ve vitrin. |
 
