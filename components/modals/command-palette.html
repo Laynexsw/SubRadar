@@ -1,0 +1,72 @@
+<div class="fixed inset-0 z-[110] bg-black/70 backdrop-blur-md hidden items-start justify-center pt-24 px-4" id="cmd-palette-backdrop">
+<div class="animate-modal w-full max-w-xl bg-[#111114] border border-white/20 rounded-2xl shadow-[0_25px_80px_rgba(0,0,0,0.9)] overflow-hidden" role="dialog" aria-modal="true" aria-label="Komut paleti">
+<!-- Search Bar inside Palette -->
+<div class="p-3.5 border-b border-white/10 flex items-center gap-3 bg-[#16161a]">
+<span class="material-symbols-outlined text-white/50 text-[20px]" aria-hidden="true">search</span>
+<input autocomplete="off" class="w-full bg-transparent border-none p-0 text-sm font-mono text-white placeholder-white/40 focus:ring-0 outline-none" id="cmd-palette-input" placeholder="Komut yaz veya abonelik ara..." type="text" aria-label="Komut veya abonelik ara"/>
+<span class="text-[10px] font-mono text-white/40 border border-white/10 px-1.5 py-0.5 rounded">ESC</span>
+</div>
+<!-- Commands List -->
+<div class="max-h-80 overflow-y-auto p-2 divide-y divide-white/[0.04]" id="cmd-palette-list" role="listbox" aria-label="Komutlar">
+<!-- Command Items -->
+<button type="button" class="cmd-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left hover:bg-white/10 transition-colors group cursor-pointer" data-cmd="kill-adobe">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px] text-white/70 group-hover:text-white" aria-hidden="true">block</span>
+<div>
+<div class="text-xs font-medium text-white">Adobe CC’yi Doğrudan İptal Et</div>
+<div class="text-[11px] font-mono text-white/40">Karanlık deseni atla, hemen iptal et (<span data-usd="59.99" data-suffix="/ay">$59,99/ay</span>)</div>
+</div>
+</div>
+<span class="text-[10px] font-mono text-white/40 group-hover:text-white border border-white/10 px-1.5 py-0.5 rounded">↵ Çalıştır</span>
+</button>
+<button type="button" class="cmd-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left hover:bg-white/10 transition-colors group cursor-pointer" data-cmd="vault-audit">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px] text-white/70 group-hover:text-white" aria-hidden="true">shield</span>
+<div>
+<div class="text-xs font-medium text-white">Yerel Kasa Denetimi</div>
+<div class="text-[11px] font-mono text-white/40">Arka plan SQLite bütünlük ve işlem denetimi başlat</div>
+</div>
+</div>
+<span class="text-[10px] font-mono text-white/40 group-hover:text-white border border-white/10 px-1.5 py-0.5 rounded">↵ Çalıştır</span>
+</button>
+<button type="button" class="cmd-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left hover:bg-white/10 transition-colors group cursor-pointer" data-cmd="simulate-intercept">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px] text-white/70 group-hover:text-white" aria-hidden="true">radar</span>
+<div>
+<div class="text-xs font-medium text-white">Banka Yakalamayı Dene</div>
+<div class="text-[11px] font-mono text-white/40">48 saat önceden yenileme uyarısını test et</div>
+</div>
+</div>
+<span class="text-[10px] font-mono text-white/40 group-hover:text-white border border-white/10 px-1.5 py-0.5 rounded">↵ Çalıştır</span>
+</button>
+<button type="button" class="cmd-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left hover:bg-white/10 transition-colors group cursor-pointer" data-cmd="export-report">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px] text-white/70 group-hover:text-white" aria-hidden="true">ios_share</span>
+<div>
+<div class="text-xs font-medium text-white">Yerel Denetim Raporu Dışa Aktar</div>
+<div class="text-[11px] font-mono text-white/40">Şifreli JSON ve CSV ekstresi oluştur</div>
+</div>
+</div>
+<span class="text-[10px] font-mono text-white/40 group-hover:text-white border border-white/10 px-1.5 py-0.5 rounded">↵ Çalıştır</span>
+</button>
+<button type="button" class="cmd-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left hover:bg-white/10 transition-colors group cursor-pointer" data-cmd="close">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px] text-white/70 group-hover:text-white" aria-hidden="true">close</span>
+<div>
+<div class="text-xs font-medium text-white">Paleti Kapat</div>
+<div class="text-[11px] font-mono text-white/40">Pencereyi kapat (veya Escape’e bas)</div>
+</div>
+</div>
+<span class="text-[10px] font-mono text-white/40 border border-white/10 px-1.5 py-0.5 rounded">Esc</span>
+</button>
+<div id="cmd-no-results" class="hidden px-3.5 py-6 text-center text-xs font-mono text-white/40">Eşleşen komut yok.</div>
+</div>
+<!-- Palette Footer -->
+<div class="px-4 py-2 bg-[#0c0c0f] border-t border-white/[0.06] flex items-center justify-between text-[10px] font-mono text-white/40">
+<span>Gezinmek için ↑ ↓ kullan</span>
+<span>Seçmek için Enter’a bas</span>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- 2. DESKTOP CLIENT DOWNLOAD SIMULATOR MODAL                                -->

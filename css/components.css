@@ -1,0 +1,147 @@
+/* =========================================================================
+   SubRadar — Apple Glass, Cards, Sliders & Micro-Animations
+   ========================================================================= */
+
+.apple-glass {
+  background: rgba(8, 8, 10, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html.light .apple-glass { 
+  background: rgba(255, 255, 255, 0.82); 
+  border-bottom-color: rgba(0, 0, 0, 0.08); 
+}
+
+.apple-card {
+  background: #09090b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.apple-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+html.light .apple-card { 
+  background: #fff; 
+  border-color: rgba(0, 0, 0, 0.08); 
+}
+
+html.light .apple-card:hover { 
+  border-color: rgba(0, 0, 0, 0.18); 
+}
+
+/* ── Kart kalkışı + basma hissi (yalnızca içerik alanı) ── */
+main .apple-card { 
+  transition: border-color .25s ease, background .25s ease, transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s cubic-bezier(.16,1,.3,1); 
+  transition-delay: var(--d, 0s); 
+}
+
+main .apple-card:hover { 
+  transform: translateY(-5px); 
+  box-shadow: 0 24px 60px rgba(0,0,0,.45); 
+  transition-delay: 0s; 
+}
+
+html.light main .apple-card:hover { 
+  box-shadow: 0 24px 60px rgba(0,0,0,.12); 
+}
+
+main .download-trigger-btn:active { 
+  transform: scale(.97); 
+}
+
+.os-pick { border-color: rgba(255, 255, 255, 0.35) !important; }
+html.light .os-pick { border-color: rgba(0, 0, 0, 0.35) !important; }
+
+/* ── Apple Range Slider ── */
+.apple-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #1c1c20;
+  outline: none;
+  border-radius: 9999px;
+}
+
+.apple-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.3);
+  transition: transform 0.15s ease;
+}
+
+.apple-range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.apple-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* ── Modal & Done Animations ── */
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(-8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-modal {
+  animation: modalIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dlDoneIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+#dl-view-done:not(.hidden) {
+  animation: dlDoneIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Scroll progress bar ── */
+#sr-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: #ffffff;
+  z-index: 100;
+  pointer-events: none;
+  transition: width 0.1s linear;
+}
+
+html.light #sr-progress {
+  background: #0071e3;
+}
+
+/* ── Scroll reveal efektleri ── */
+[data-rv] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .65s cubic-bezier(.16,1,.3,1), transform .65s cubic-bezier(.16,1,.3,1);
+  transition-delay: var(--d, 0s);
+  will-change: opacity, transform;
+}
+[data-rv].in {
+  opacity: 1;
+  transform: none;
+}
+[data-rv="scale"] { transform: scale(.95) translateY(16px); }
+[data-rv="scale"].in { transform: none; }
+[data-rv="left"] { transform: translateX(-24px); }
+[data-rv="left"].in { transform: none; }
+[data-rv="right"] { transform: translateX(24px); }
+[data-rv="right"].in { transform: none; }

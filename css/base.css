@@ -1,0 +1,89 @@
+/* =========================================================================
+   SubRadar — Base Design Tokens & Global Rules
+   ========================================================================= */
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: -0.02em;
+  background-color: #000000;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+/* ── Erişilebilirlik temeli ─────────────────────────────────── */
+:focus-visible { 
+  outline: 2px solid #0071e3; 
+  outline-offset: 2px; 
+  border-radius: 6px; 
+}
+
+#hesaplayici, #ozellikler, #mimari, #isletim-sistemleri, #fiyatlandirma, #sss { 
+  scroll-margin-top: 84px; 
+}
+
+.skip-link { 
+  position: fixed; 
+  left: 16px; 
+  top: -60px; 
+  z-index: 200; 
+  background: #fff; 
+  color: #000; 
+  padding: 10px 18px; 
+  border-radius: 999px; 
+  font-size: 13px; 
+  font-weight: 600; 
+  transition: top 0.15s ease; 
+}
+
+.skip-link:focus-visible { 
+  top: 12px; 
+}
+
+html.light .skip-link { 
+  background: #1d1d1f; 
+  color: #fff; 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { 
+    animation-duration: 0.01ms !important; 
+    transition-duration: 0.01ms !important; 
+  }
+}
+
+/* ── Açık tema (tema düğmesi html.light yazar) ──────────────── */
+html.light { color-scheme: light; }
+html.dark { color-scheme: dark; }
+html.light body { background-color: #f5f5f7 !important; color: #1d1d1f !important; }
+
+/* Metin seçimi */
+html.light ::selection { background: #0071e3; color: #fff; }
+html.light ::-moz-selection { background: #0071e3; color: #fff; }
+html.dark ::selection { background: #fff; color: #000; }
+html.dark ::-moz-selection { background: #fff; color: #000; }
+
+html.light .bg-black { background-color: #fff !important; }
+html.light .bg-\[\#09090b\], 
+html.light .bg-\[\#070709\], 
+html.light .bg-\[\#09090c\],
+html.light .bg-\[\#0d0d11\], 
+html.light .bg-\[\#111114\], 
+html.light .bg-\[\#16161a\],
+html.light .bg-\[\#1c1c20\] { 
+  background-color: #fff !important; 
+}
+
+html.light .text-white { color: #1d1d1f !important; }
+html.light .text-white\/80, html.light .text-white\/70, html.light .text-white\/60 { color: #515154 !important; }
+html.light .text-white\/50, html.light .text-white\/40, html.light .text-white\/30 { color: #86868b !important; }
+html.light .text-neutral-400, html.light .text-neutral-500 { color: #6e6e73 !important; }
+html.light .text-neutral-300 { color: #3a3a3c !important; }
+html.light .text-emerald-400, html.light .text-emerald-300 { color: #00875a !important; }
+
+html.light .border-white\/10, html.light .border-white\/15, html.light .border-white\/20,
+html.light .border-white\/\[0\.08\], html.light .border-white\/\[0\.07\], html.light .border-white\/\[0\.04\] { 
+  border-color: rgba(0, 0, 0, 0.08) !important; 
+}

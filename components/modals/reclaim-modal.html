@@ -1,0 +1,62 @@
+<div class="fixed inset-0 z-[120] bg-black/80 backdrop-blur-md hidden items-center justify-center px-4" id="reclaim-modal-backdrop">
+<div class="animate-modal w-full max-w-lg bg-[#0e0e12] border border-white/20 rounded-2xl p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)]" role="dialog" aria-modal="true" aria-labelledby="reclaim-modal-title">
+<div class="flex items-center justify-between pb-4 border-b border-white/10">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+<h3 class="text-base font-semibold text-white" id="reclaim-modal-title">Geri Kazanım Planı</h3>
+</div>
+<button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center" id="reclaim-modal-close" aria-label="Plan penceresini kapat">
+<span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
+</button>
+</div>
+<div class="py-5 space-y-4">
+<div class="p-4 rounded-xl bg-black border border-white/10 flex items-center justify-between">
+<div>
+<div class="text-[11px] font-mono text-white/40 uppercase">Yıllık Kurtarılabilir Tutar</div>
+<div class="text-3xl font-bold font-mono text-white mt-0.5" id="reclaim-target-amount">$7.416,00</div>
+</div>
+<span class="text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded">Taramaya Hazır</span>
+</div>
+<div class="space-y-2 text-xs font-mono text-white/70">
+<div class="flex items-center justify-between py-1.5 border-b border-white/[0.06]">
+<span>Hayalet Lisans Yakalama</span>
+<span class="text-white font-medium">İptal anketlerini atla</span>
+</div>
+<div class="flex items-center justify-between py-1.5 border-b border-white/[0.06]">
+<span>Deneme Bitiş Sayacı</span>
+<span class="text-white font-medium">48 saat önceden uyarı</span>
+</div>
+<div class="flex items-center justify-between py-1.5 border-b border-white/[0.06]">
+<span>Ekstre Okuma (OCR)</span>
+<span class="text-white font-medium">%100 cihaz içi SQLite</span>
+</div>
+</div>
+<div class="p-3 bg-white/[0.03] border border-white/10 rounded-lg text-xs text-neutral-300">
+        Yerel tarama motoru hazır. İkili dosyayı indirmek mi istersin, terminalden mi çalıştırmak istersin?
+      </div>
+</div>
+<div class="flex flex-col sm:flex-row items-center justify-end gap-3 pt-2">
+<button type="button" class="w-full sm:w-auto px-4 py-2.5 rounded-full border border-white/20 text-xs font-mono text-white hover:bg-white/10 transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[44px]" id="cli-copy-btn">
+<span class="material-symbols-outlined text-[14px]" aria-hidden="true">content_copy</span>
+<span>curl -sSL subradar.dev/cli | sh</span>
+</button>
+<button type="button" class="download-trigger-btn w-full sm:w-auto px-6 py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all cursor-pointer min-h-[44px]" data-os="macOS">
+        SubRadar İndir (.dmg)
+      </button>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- JAVASCRIPT: ENTIRE PROTOTYPE INTERACTIVITY & LOGIC                        -->
+<!-- ========================================================================= -->
+<script>
+  /* ── Para birimi: tüm tutarlar USD tabanlı, güncel gösterge kuruyla çevrilir (Eylül 2026) ── */
+  const SR_RATES = {
+    USD: { rate: 1, symbol: '$' },
+    EUR: { rate: 0.86, symbol: '€' },
+    TRY: { rate: 48.35, symbol: '₺' }
+  };
+  let srCurrency = 'USD';
+  try {
+    const savedCur = localStorage.getItem('sr-currency');
+    if (savedCur && SR_RATES[savedCur]) srCurrency = savedCur;

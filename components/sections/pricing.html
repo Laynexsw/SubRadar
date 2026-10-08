@@ -1,0 +1,107 @@
+<section class="max-w-6xl mx-auto px-6 py-24 border-t border-white/10" id="fiyatlandirma" data-od-id="fiyatlandirma">
+<div class="text-center max-w-2xl mx-auto mb-8" data-rv>
+<div class="text-xs font-mono tracking-widest text-white/40 uppercase">Fiyatlandırma</div>
+<h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-white mt-2">İhtiyacına göre ölçeklen.</h2>
+<p class="text-neutral-400 text-sm mt-3 leading-relaxed">Ücretsiz başla, israfı gördükçe yükselt. İstediğin zaman iptal et.</p>
+</div>
+<div class="flex justify-center mb-10">
+<div class="grid grid-cols-2 gap-2 text-xs font-mono w-full max-w-xs" role="group" aria-label="Faturalandırma dönemi">
+<button type="button" class="arch-btn py-2 px-3 rounded-lg border border-white/20 bg-white/10 text-white font-medium text-center hover:border-white/40 transition-all cursor-pointer min-h-[44px]" id="bill-monthly" aria-pressed="true">Aylık</button>
+<button type="button" class="arch-btn py-2 px-3 rounded-lg border border-white/10 bg-transparent text-white/60 font-medium text-center hover:border-white/30 transition-all cursor-pointer min-h-[44px]" id="bill-yearly" aria-pressed="false">Yıllık • −20%</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
+<!-- Free -->
+<div class="apple-card rounded-2xl p-7 flex flex-col justify-between" data-od-id="pricing-free" data-rv="left">
+<div>
+<div class="text-[11px] font-mono uppercase tracking-widest text-white/50">Free</div>
+<h3 class="text-base font-semibold text-white mt-1">Keşif</h3>
+<p class="text-xs text-neutral-400 mt-2 leading-relaxed">İlk taramanı yap, gizli yenilemeleri gör.</p>
+<div class="mt-5 flex items-end gap-1.5">
+<span class="text-4xl font-bold font-mono tracking-tight text-white" data-usd="0" data-decimals="0">$0</span>
+<span class="text-xs font-mono text-white/40 pb-1.5">/ay</span>
+</div>
+<ul class="mt-6 space-y-2.5 text-[13px] text-white/70">
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>60 saniyelik yerel tarama</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>3 aboneliğe kadar izleme</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Deneme bitiş uyarısı (24 saat)</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Fiyat artışı (zam) uyarısı</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>macOS • Windows</li>
+</ul>
+</div>
+<button type="button" class="download-trigger-btn mt-8 w-full py-2.5 rounded-full bg-white/[0.08] hover:bg-white/15 border border-white/10 text-white font-semibold text-xs text-center transition-all cursor-pointer min-h-[44px]" data-os="auto">Ücretsiz İndir</button>
+</div>
+<!-- Pro -->
+<div class="apple-card rounded-2xl p-7 flex flex-col justify-between relative" data-od-id="pricing-pro" data-rv style="--d:.08s">
+<span class="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-mono uppercase tracking-widest bg-white text-black px-3 py-1 rounded-full font-semibold whitespace-nowrap">En popüler</span>
+<div>
+<div class="text-[11px] font-mono uppercase tracking-widest text-white/50">Pro</div>
+<h3 class="text-base font-semibold text-white mt-1">Kontrol</h3>
+<p class="text-xs text-neutral-400 mt-2 leading-relaxed">Sızıntıları otomatik yakala, tek tıkla kapat. Tek unutulan yenileme, bir yıllık Pro'yu karşılar.</p>
+<div class="mt-5 flex items-end gap-1.5">
+<span class="text-4xl font-bold font-mono tracking-tight text-white" id="price-pro" data-usd="20" data-suffix="/ay" data-suffix-small>$20/ay</span>
+</div>
+<div class="mt-1.5 text-[11px] font-mono text-white/40" id="bill-pro-note">aylık faturalandırılır</div>
+<div class="mt-1 text-[11px] font-mono text-white/40 hidden" id="bill-pro-total-wrap">yıllık <span id="bill-pro-total" data-usd="192">$192</span></div>
+<ul class="mt-6 space-y-2.5 text-[13px] text-white/80">
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-emerald-400 mt-0.5" aria-hidden="true">check</span>Sınırsız abonelik + hayalet lisans izleme</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-emerald-400 mt-0.5" aria-hidden="true">check</span>48 saat önceden yenileme + zam uyarısı</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-emerald-400 mt-0.5" aria-hidden="true">check</span>Tek tıkla iptal yönlendirme (karanlık desen atlama)</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-emerald-400 mt-0.5" aria-hidden="true">check</span>Deneme takvimi: bitiş sayaçları + otomatik hatırlatma</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-emerald-400 mt-0.5" aria-hidden="true">check</span>Ekstre OCR: banka dökümünden abonelik bulma (cihaz içi)</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-emerald-400 mt-0.5" aria-hidden="true">check</span>3 cihaza kadar şifreli eşitleme</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-emerald-400 mt-0.5" aria-hidden="true">check</span>Yıllık israf raporu + geri kazanım planı</li>
+</ul>
+</div>
+<button type="button" class="download-trigger-btn mt-8 w-full py-2.5 rounded-full bg-white text-black font-semibold text-xs text-center hover:bg-neutral-200 transition-all cursor-pointer min-h-[44px]" data-os="auto">Pro'yu Başlat</button>
+</div>
+<!-- Max -->
+<div class="apple-card rounded-2xl p-7 flex flex-col justify-between" data-od-id="pricing-max" data-rv style="--d:.16s">
+<div>
+<div class="text-[11px] font-mono uppercase tracking-widest text-white/50">Max</div>
+<h3 class="text-base font-semibold text-white mt-1">Ekip</h3>
+<p class="text-xs text-neutral-400 mt-2 leading-relaxed">Ekipler, aileler ve otomasyon isteyen güç kullanıcıları için.</p>
+<div class="mt-5 flex items-end gap-1.5">
+<span class="text-4xl font-bold font-mono tracking-tight text-white" id="price-max" data-usd="100" data-suffix="/ay" data-suffix-small>$100/ay</span>
+</div>
+<div class="mt-1.5 text-[11px] font-mono text-white/40" id="bill-max-note">aylık faturalandırılır</div>
+<div class="mt-1 text-[11px] font-mono text-white/40 hidden" id="bill-max-total-wrap">yıllık <span id="bill-max-total" data-usd="960">$960</span></div>
+<ul class="mt-6 space-y-2.5 text-[13px] text-white/70">
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Pro'daki her şey, limitsiz</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>10 cihaz + paylaşımlı ekip kasası</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Sınırsız engelleme kuralı + özel otomasyonlar</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>CLI + API + webhook (kısayollar, betikler)</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Çoklu çalışma alanı (ekip / aile / müşteri)</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Otomatik şifreli yedekleme + 1 yıllık sürüm geçmişi</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Karanlık desen avcısı: yeni tutma taktiklerine anında kural</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Öncelikli motor güncellemeleri + erken erişim</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Öncelikli destek (24 saat içinde yanıt)</li>
+</ul>
+</div>
+<button type="button" class="download-trigger-btn mt-8 w-full py-2.5 rounded-full bg-white/[0.08] hover:bg-white/15 border border-white/10 text-white font-semibold text-xs text-center transition-all cursor-pointer min-h-[44px]" data-os="auto">Max'i Başlat</button>
+</div>
+<!-- Enterprise -->
+<div class="apple-card rounded-2xl p-7 flex flex-col justify-between relative" data-od-id="pricing-enterprise" data-rv="right" style="--d:.24s">
+<span class="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-mono uppercase tracking-widest bg-white/10 border border-white/15 text-white/70 px-3 py-1 rounded-full font-semibold whitespace-nowrap">Şirketler için</span>
+<div>
+<div class="text-[11px] font-mono uppercase tracking-widest text-white/50">Enterprise</div>
+<h3 class="text-base font-semibold text-white mt-1">Kurumsal</h3>
+<p class="text-xs text-neutral-400 mt-2 leading-relaxed">Şirketler ve kalabalık ekipler için. Başvur, 24 saat içinde teklif al.</p>
+<div class="mt-5 flex items-end gap-1.5">
+<span class="text-4xl font-bold font-mono tracking-tight text-white">Özel</span>
+</div>
+<div class="mt-1.5 text-[11px] font-mono text-white/40">yıllık sözleşme • e-fatura</div>
+<ul class="mt-6 space-y-2.5 text-[13px] text-white/70">
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Max'teki her şey, sınırsız koltuk</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>SSO (Google / Microsoft) + rol bazlı erişim</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Yönetici konsolu + denetim kayıtları</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Merkezi faturalandırma + KVKK / DPA paketi</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>SLA %99,9 + kurulum desteği</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] text-white/50 mt-0.5" aria-hidden="true">check</span>Güvenlik incelemesi dokümanları</li>
+</ul>
+</div>
+<button type="button" class="mt-8 w-full py-2.5 rounded-full bg-white/[0.08] hover:bg-white/15 border border-white/10 text-white font-semibold text-xs text-center transition-all cursor-pointer min-h-[44px]" id="ent-apply-btn">Başvuru Yap</button>
+</div>
+</div>
+<p class="mt-8 text-center text-[11px] font-mono text-white/40">Fiyatlar USD tabanlıdır • <span id="fx-updated">gösterge kuru</span> ile otomatik çevrilir • Tüm planlar %100 yerel işlem içerir</p>
+</section>

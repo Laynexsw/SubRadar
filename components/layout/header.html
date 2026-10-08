@@ -1,0 +1,78 @@
+<!-- Atmospheric Background Radiance -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[1100px] h-[650px] bg-white/[0.025] rounded-full blur-[200px]"></div>
+<div class="absolute top-[60%] left-1/2 -translate-x-1/2 w-[800px] h-[550px] bg-white/[0.015] rounded-full blur-[240px]"></div>
+</div>
+<!-- Bildirimler kaldırıldı -->
+<!-- 1. TOP NAV: Fixed Minimalist Frosted Glass Bar -->
+<header class="fixed top-0 inset-x-0 z-50 apple-glass">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-3">
+<!-- Brand Mark -->
+<a class="flex items-center gap-2.5 group flex-shrink-0" href="#">
+<div class="brand-mark w-5 h-5 rounded-full bg-white flex items-center justify-center text-black shadow-sm group-hover:scale-105 transition-transform">
+<div class="brand-mark-dot w-1.5 h-1.5 rounded-full bg-black"></div>
+</div>
+<span class="text-sm font-semibold tracking-tight text-white">SubRadar</span>
+<span class="hidden sm:inline-block text-[10px] font-mono uppercase text-white/40 border border-white/10 px-1.5 py-0.5 rounded tracking-widest">Desktop</span>
+</a>
+<!-- Nav Links -->
+<nav class="hidden xl:flex items-center gap-6 text-[13px] tracking-normal text-white/50 font-medium flex-shrink-0" aria-label="Birincil">
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#ozellikler">Özellikler</a>
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#hesaplayici">İsraf Hesaplayıcı</a>
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#mimari">Mimari</a>
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#isletim-sistemleri">İşletim Sistemleri</a>
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#fiyatlandirma">Fiyatlandırma</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center gap-2 sm:gap-3 flex-shrink-0 min-w-0">
+<button type="button" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-white/10 bg-white/[0.04] text-[11px] font-mono text-white/60 hover:text-white hover:border-white/20 transition-all cursor-pointer min-h-[36px]" id="nav-cmd-trigger" aria-label="Komut paletini aç">
+<span class="material-symbols-outlined text-[13px]" aria-hidden="true">search</span>
+<span>⌘K</span>
+</button>
+<button type="button" class="flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs text-white/70 hover:text-white hover:border-white/20 transition-all cursor-pointer min-h-[36px] whitespace-nowrap flex-shrink-0" id="theme-toggle" aria-pressed="false" aria-label="Açık temaya geç">
+<span class="material-symbols-outlined text-[15px]" id="theme-toggle-icon" aria-hidden="true">light_mode</span>
+<span class="hidden min-[1440px]:inline" id="theme-toggle-label">Açık tema</span>
+</button>
+<div class="hidden lg:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0" role="group" aria-label="Dil seç">
+<button type="button" class="lang-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-lang="EN" aria-pressed="false">EN</button>
+<button type="button" class="lang-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-lang="DE" aria-pressed="false">DE</button>
+<button type="button" class="lang-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-lang="TR" aria-pressed="true">TR</button>
+</div>
+<div class="hidden lg:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0" role="group" aria-label="Para birimi seç">
+<button type="button" class="currency-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-currency="USD" aria-pressed="true">$ USD</button>
+<button type="button" class="currency-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-currency="EUR" aria-pressed="false">€ EUR</button>
+<button type="button" class="currency-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-currency="TRY" aria-pressed="false">₺ TRY</button>
+</div>
+<button type="button" class="download-trigger-btn px-4 py-1.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all duration-200 hidden md:flex items-center gap-2 shadow-sm cursor-pointer min-h-[36px] whitespace-nowrap flex-shrink-0" data-os="auto">
+<span>Bilgisayara İndir</span>
+<span class="material-symbols-outlined text-[14px]" aria-hidden="true">arrow_downward</span>
+</button>
+<button type="button" class="xl:hidden flex items-center justify-center w-9 h-9 rounded-full border border-white/10 text-white/70 flex-shrink-0" id="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menüyü aç">
+<span class="material-symbols-outlined text-[20px]" aria-hidden="true">menu</span>
+</button>
+</div>
+</div>
+<div class="xl:hidden hidden border-t border-white/10 px-6 py-4" id="mobile-menu">
+<nav class="flex flex-col gap-1 text-sm font-medium text-white/70" aria-label="Mobil">
+<a class="py-2.5 hover:text-white transition-colors" href="#ozellikler">Özellikler</a>
+<a class="py-2.5 hover:text-white transition-colors" href="#hesaplayici">İsraf Hesaplayıcı</a>
+<a class="py-2.5 hover:text-white transition-colors" href="#mimari">Mimari</a>
+<a class="py-2.5 hover:text-white transition-colors" href="#isletim-sistemleri">İşletim Sistemleri</a>
+<a class="py-2.5 hover:text-white transition-colors" href="#fiyatlandirma">Fiyatlandırma</a>
+<div class="flex items-center gap-2 py-2.5" role="group" aria-label="Dil seç">
+<span class="text-xs font-mono text-white/40">Dil:</span>
+<button type="button" class="lang-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-lang="EN" aria-pressed="false">EN</button>
+<button type="button" class="lang-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-lang="DE" aria-pressed="false">DE</button>
+<button type="button" class="lang-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-lang="TR" aria-pressed="true">TR</button>
+</div>
+<div class="flex items-center gap-2 py-2.5" role="group" aria-label="Para birimi seç">
+<span class="text-xs font-mono text-white/40">Para birimi:</span>
+<button type="button" class="currency-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-currency="USD" aria-pressed="true">$ USD</button>
+<button type="button" class="currency-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-currency="EUR" aria-pressed="false">€ EUR</button>
+<button type="button" class="currency-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-currency="TRY" aria-pressed="false">₺ TRY</button>
+</div>
+<button type="button" class="download-trigger-btn mt-2 w-full py-3 rounded-full bg-white text-black text-sm font-semibold cursor-pointer" data-os="auto">Bilgisayara İndir</button>
+</nav>
+</div>
+</header>
+<!-- MAIN CONTENT -->

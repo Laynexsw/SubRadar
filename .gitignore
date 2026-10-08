@@ -1,0 +1,14 @@
+# IDE agent runtime directories & tool caches
+.agent/
+.gemini/
+.codex/
+.opencode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & temp
+*.log
+scratch/

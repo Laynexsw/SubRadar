@@ -1,0 +1,47 @@
+<div class="fixed inset-0 z-[130] bg-black/75 backdrop-blur-md hidden items-center justify-center px-4" id="ent-modal-backdrop">
+<div class="animate-modal w-full max-w-md bg-[#101014] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)]" role="dialog" aria-modal="true" aria-labelledby="ent-modal-title">
+<div class="flex items-center justify-between pb-4 border-b border-white/10">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+<h3 class="text-base font-semibold text-white" id="ent-modal-title">Enterprise Başvurusu</h3>
+</div>
+<button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center" id="ent-modal-close" aria-label="Başvuru penceresini kapat">
+<span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
+</button>
+</div>
+<div id="ent-view-form" class="py-5 space-y-4">
+<p class="text-xs text-neutral-400 leading-relaxed">Ekibini anlat, 24 saat içinde özel teklif ve kurulum planıyla dönelim.</p>
+<div>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-name">Ad Soyad</label>
+<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-colors" id="ent-name" type="text" placeholder="Adın Soyadın" autocomplete="name"/>
+</div>
+<div>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-email">Kurumsal e-posta</label>
+<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-colors" id="ent-email" type="email" placeholder="ad@sirket.com" autocomplete="email"/>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-company">Şirket</label>
+<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-colors" id="ent-company" type="text" placeholder="Şirket adı" autocomplete="organization"/>
+</div>
+<div>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-seats">Ekip büyüklüğü</label>
+<select class="w-full bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white outline-none transition-colors cursor-pointer min-h-[44px]" id="ent-seats">
+<option value="10-25">10–25</option>
+<option value="25-100">25–100</option>
+<option value="100+">100+</option>
+</select>
+</div>
+</div>
+<p class="hidden text-xs text-red-400" id="ent-error" role="alert">Lütfen adını, geçerli bir kurumsal e-postanı ve şirketini yaz.</p>
+<button type="button" class="w-full py-3 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer min-h-[48px]" id="ent-submit">Başvuruyu Gönder</button>
+</div>
+<div id="ent-view-done" class="hidden py-8 text-center space-y-4">
+<div class="mx-auto w-12 h-12 rounded-full bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-emerald-400 text-[26px]" aria-hidden="true">check</span>
+</div>
+<h4 class="text-base font-semibold text-white">Başvurun alındı</h4>
+<p class="text-xs text-neutral-400 leading-relaxed max-w-xs mx-auto" id="ent-done-text">24 saat içinde e-postana özel teklifle döneceğiz.</p>
+<button type="button" class="px-6 py-2.5 rounded-full border border-white/15 text-xs text-white/70 hover:text-white transition-colors cursor-pointer min-h-[44px]" id="ent-done-close">Kapat</button>
+</div>
+</div>
