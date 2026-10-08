@@ -1,0 +1,21 @@
+PROPRIETARY AND CONFIDENTIAL LICENSE
+======================================
+
+Copyright (c) 2026 Laynexsw. All Rights Reserved.
+
+This software and its source code, documentation, assets, and design elements
+are the proprietary and confidential property of Laynexsw.
+
+1. NO PERMISSION TO COPY OR DISTRIBUTE
+   Unauthorized copying, reverse engineering, decompilation, redistribution,
+   sublicensing, or public display of this file or any portion thereof, via
+   any medium, is strictly prohibited.
+
+2. COMMERCIAL RIGHTS RESERVED
+   All title, ownership rights, and intellectual property rights in and to the
+   Software remain exclusively with Laynexsw.
+
+3. DISCLAIMER
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.

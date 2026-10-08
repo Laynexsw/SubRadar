@@ -1,0 +1,41 @@
+Mozilla Public License Version 2.0
+==================================
+
+1. Definitions
+--------------
+
+[Abridged for template reference - Full text: https://www.mozilla.org/en-US/MPL/2.0/]
+
+1.1. "Contributor"
+    means each individual or legal entity that creates, contributes to
+    the creation of, or owns Covered Software.
+
+1.4. "Covered Software"
+    means the Larger Work, Source Code Form of any Modifications, or
+    Source Code Form of any portions thereof.
+
+2. License Grants and Conditions
+--------------------------------
+
+2.1. Grants
+    Each Contributor hereby grants You a world-wide, royalty-free,
+    non-exclusive license to use, reproduce, make available, modify,
+    display, perform, distribute, and otherwise exploit its Contributions.
+
+3. Responsibilities
+-------------------
+
+3.1. Distribution of Source Form
+    All distribution of Covered Software in Source Code Form, including
+    any Modifications, must be governed under the terms of this License.
+
+3.3. Larger Works
+    You may create a Larger Work by combining Covered Software with other
+    code not governed by the terms of this License and distribute the
+    Larger Work as a single product. In such a case, You must make sure
+    the requirements of this License are fulfilled for the Covered Software.
+
+--------------------------------------------------------------------------
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at https://mozilla.org/MPL/2.0/.
