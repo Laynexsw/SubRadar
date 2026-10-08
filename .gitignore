@@ -9,6 +9,16 @@
 Thumbs.db
 desktop.ini
 
+# Node & Electron dependencies
+node_modules/
+dist/
+out/
+.env
+app/data/
+*.subradar
+
+
 # Logs & temp
 *.log
 scratch/
+
