@@ -194,5 +194,30 @@ Modüler `web/components/` veya `web/js/` içinde bir değişiklik yaptığını
 1. `python web/scripts/build.py` çalıştırarak 14 modüler bileşenin bütünlüğünü doğrulayın.
 2. `web/code.html` dosyasındaki ilgili bloğu da güncelleyin veya oraya entegre edin.
 
+### 7.3 Git, GitHub ve Canlı Dağıtım (Production) Detayları
+* **Depo Sahibi & Hesabı:** `Laynexsw`
+* **Depo Adı & URL:** [https://github.com/Laynexsw/SubRadar](https://github.com/Laynexsw/SubRadar)
+* **Git Remote:** `origin` -> `https://github.com/Laynexsw/SubRadar.git`
+* **Ana Dal:** `main`
+* **GitHub Pages (Canlı Ortam):**
+  * URL: [https://laynexsw.github.io/SubRadar/](https://laynexsw.github.io/SubRadar/)
+  * Kaynak: `main` dalı kök dizini (`/`).
+  * Yönlendirme Zinciri: `index.html` (kök) -> `web/code.html` (canlı sayfa).
+  * `.nojekyll` dosyası Jekyll motorunu kapatarak statik varlıkların filtrelenmesini engeller.
+* **GitHub CLI (`gh`):**
+  * Yetkili kullanıcı oturumu açık (`Laynexsw`).
+  * Güncel Açıklama: `"⚡ Masaüstü abonelik zekâsı, tek tıkla iptal ve %100 yerel AES-256 kasa. Unutulan deneme tuzaklarını ve gizli yenilemeleri durdurun. Sıfır bulut, sıfır telemetri."`
+  * Güncel Konular (Topics): `apple-design`, `desktop-app`, `electron`, `offline-first`, `privacy-first`, `subscription-tracker`, `license-templates`, `open-source`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`.
+  * Canlı Bilgileri Güncelleme Komutu:
+    ```powershell
+    gh repo edit Laynexsw/SubRadar -d "<açıklama>" -h "https://laynexsw.github.io/SubRadar/" --add-topic "<etiket1,etiket2>"
+    ```
+* **PowerShell Gönderim Kuralı:**
+  * Windows PowerShell üzerinde `&&` yerine `;` kullanılmalıdır:
+    ```powershell
+    git add . ; git commit -m "docs: ..." ; git push origin main
+    ```
+
 ---
 *Bu doküman, Antigravity ve tüm AI modelleri için tek kaynak (single source of truth) olacak şekilde eksiksiz tutulmuştur.*
+

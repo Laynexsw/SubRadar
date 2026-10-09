@@ -50,3 +50,14 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
 2. **Yerellik ve Gizlilik:** Kodlara kullanıcı takip kütüphanesi, telemetri veya harici veri gönderimi eklenemez.
 3. **Erişilebilirlik:** Minimum 44px dokunmatik hedefler, klavye gezintisi (`:focus-visible`, `Esc`, `Enter`, ok tuşları).
 4. **Tasarım:** SF Pro font ailesi, Apple Glass (`backdrop-filter: blur(24px)`), zümrüt yeşili (`#10b981`), neon mor/indigo (`#6366f1`) ve koyu arka planlar (`#000000`, `#09090b`).
+
+## 3. GİT & GİTHUB YAPILANDIRMASI
+
+- **Depo Sahibi:** `Laynexsw` | **Depo:** `SubRadar`
+- **Uzak Sunucu (Remote):** `origin` -> `https://github.com/Laynexsw/SubRadar.git`
+- **Ana Dal:** `main`
+- **Canlı Yayın (Pages):** `https://laynexsw.github.io/SubRadar/` (`main` kök `/` -> `index.html` -> `web/code.html`)
+- **GitHub CLI:** `gh` yetkili kullanıcı `Laynexsw`.
+  - Meta güncelleme: `gh repo edit Laynexsw/SubRadar -d "<açıklama>" -h "https://laynexsw.github.io/SubRadar/" --add-topic "<etiketler>"`
+- **PowerShell Notu:** Komut zincirlerken `&&` yerine `;` kullanın (`git add . ; git commit -m "..." ; git push origin main`).
+

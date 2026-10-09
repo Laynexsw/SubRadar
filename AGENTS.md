@@ -173,3 +173,38 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
    Eğer `web/components/` veya `web/js/` içinde bir geliştirme yapılıyorsa, canlı vitrin olan `web/code.html` dosyasının da senkronize kaldığından emin olunmalıdır.
 4. **Sıfır Dış Bağımlılık & Güvenlik:**
    Kullanıcı verisi toplayacak hiçbir harici analytics/telemetri kütüphanesi eklenemez. Tasarım Tailwind CDN ve Google Material Symbols dışında tamamen saf CSS/JS üzerine kuruludur.
+
+---
+
+## 🐙 7. Git & GitHub Yapılandırması ve Dağıtım Bilgileri
+
+Bu bilgiler her yeni sohbette yapay zekânın doğrudan bilmesi için kaydedilmiştir:
+
+* **GitHub Kullanıcısı / Sahibi:** `Laynexsw`
+* **Depo Adı:** `SubRadar`
+* **Depo URL:** [https://github.com/Laynexsw/SubRadar](https://github.com/Laynexsw/SubRadar)
+* **Git Remote:** `origin` -> `https://github.com/Laynexsw/SubRadar.git`
+* **Varsayılan / Ana Dal (Branch):** `main`
+* **Canlı Dağıtım (GitHub Pages):** [https://laynexsw.github.io/SubRadar/](https://laynexsw.github.io/SubRadar/)
+  * Dağıtım Dalı: `main` (kök dizin `/` üzerinden sunulur)
+  * Giriş Noktası: `index.html` -> anında `web/code.html`'e yönlendirir (`meta refresh` + JS `replace`)
+  * `.nojekyll`: GitHub Pages'ın Jekyll motorunu devre dışı bırakarak tüm klasörleri eksiksiz sunmasını sağlar.
+* **GitHub CLI (`gh`):**
+  * Yetkili Hesap: `Laynexsw` (Aktif oturum açık, `repo`, `gist`, `read:org` izinleri tanımlı)
+  * Canlı Açıklama (Description): `"⚡ Masaüstü abonelik zekâsı, tek tıkla iptal ve %100 yerel AES-256 kasa. Unutulan deneme tuzaklarını ve gizli yenilemeleri durdurun. Sıfır bulut, sıfır telemetri."`
+  * Canlı Ana Sayfa (Homepage): `https://laynexsw.github.io/SubRadar/`
+  * Canlı Konular (Topics): `apple-design`, `desktop-app`, `electron`, `offline-first`, `privacy-first`, `subscription-tracker`, `license-templates`, `open-source`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`
+  * Hızlı Meta Veri Güncelleme Komutu:
+    ```powershell
+    gh repo edit Laynexsw/SubRadar -d "<açıklama>" -h "https://laynexsw.github.io/SubRadar/" --add-topic "<etiketler>"
+    ```
+* **Git İş Akışı & Windows PowerShell Notu:**
+  * Windows PowerShell'de komut birleştirirken `&&` yerine `;` kullanılmalıdır.
+  * Standart Gönderim Rutini:
+    ```powershell
+    git status
+    git add .
+    git commit -m "docs/feat/fix: <açıklayıcı mesaj>"
+    git push origin main
+    ```
+
