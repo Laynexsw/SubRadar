@@ -1,0 +1,308 @@
+/* =========================================================================
+   SubRadar Desktop — Master Application Design System
+   Operating Mode: Precision, Dark Apple Glass, Restrained Aesthetics
+   ========================================================================= */
+
+:root {
+  --bg-app: #07090e;
+  --bg-sidebar: #090b12;
+  --bg-card: #0e111a;
+  --bg-card-hover: #131722;
+  --bg-glass: rgba(14, 17, 26, 0.82);
+  --bg-glass-elevated: rgba(20, 24, 36, 0.92);
+  
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-active: rgba(99, 102, 241, 0.5);
+  
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+  
+  --accent-indigo: #6366f1;
+  --accent-indigo-hover: #4f46e5;
+  --accent-emerald: #10b981;
+  --accent-emerald-bg: rgba(16, 185, 129, 0.12);
+  --accent-rose: #f43f5e;
+  --accent-rose-bg: rgba(244, 63, 94, 0.12);
+  --accent-amber: #f59e0b;
+  --accent-amber-bg: rgba(245, 158, 11, 0.12);
+  
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", -apple-system, sans-serif;
+  --font-mono: "SF Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  user-select: none;
+}
+
+/* Accessibility: Visible Focus Ring */
+:focus-visible {
+  outline: 2px solid var(--accent-indigo);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Tabular Numbers for all financial metrics and dates */
+.num-tabular, [data-amount], .price-tag, .stat-value, .date-cell {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* --------------------------------------------------------------------------
+   App Window Shell & Titlebar
+   -------------------------------------------------------------------------- */
+#app-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-app);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+#window-titlebar {
+  height: 42px;
+  background: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  -webkit-app-region: drag;
+  z-index: 50;
+  flex-shrink: 0;
+}
+
+.traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  -webkit-app-region: no-drag;
+}
+
+.traffic-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: bold;
+  opacity: 0.9;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.traffic-light:hover {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+.traffic-light.close { background: #ff5f56; border-color: #e0443e; }
+.traffic-light.min { background: #ffbd2e; border-color: #dea123; }
+.traffic-light.max { background: #27c93f; border-color: #1aab29; }
+
+.traffic-light span {
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.traffic-lights:hover .traffic-light span {
+  opacity: 1;
+}
+
+.titlebar-center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  -webkit-app-region: drag;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.vault-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.vault-status-badge.unlocked {
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.titlebar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  -webkit-app-region: no-drag;
+}
+
+/* --------------------------------------------------------------------------
+   App Main Layout: Sidebar + Viewport
+   -------------------------------------------------------------------------- */
+#app-body {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 42px);
+  overflow: hidden;
+}
+
+#sidebar {
+  width: 220px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 12px;
+  flex-shrink: 0;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  border: 1px solid transparent;
+  min-height: 36px;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background: rgba(99, 102, 241, 0.12);
+  color: #a5b4fc;
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.nav-item svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.nav-badge {
+  margin-left: auto;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(244, 63, 94, 0.2);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.sidebar-footer {
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.system-stat-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* --------------------------------------------------------------------------
+   Main Content Area
+   -------------------------------------------------------------------------- */
+#main-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent 45%),
+              radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.03), transparent 40%),
+              var(--bg-app);
+  padding: 24px 32px;
+}
+
+/* Custom Minimalist Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}

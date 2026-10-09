@@ -55,11 +55,21 @@ SubRadar/
 │   ├── UNLICENSE.txt            # Kamu malı (Public Domain) lisansı
 │   └── PROPRIETARY.txt          # Kapalı ticari lisans metni
 │
-├── app/                         # MASAÜSTÜ UYGULAMASI (Geliştirilme Aşamasında - Çok Yakında)
-│   ├── README.md                # Masaüstü yol haritası ve mimari hedefleri
-│   └── src/renderer/            # Gelecek Electron/Native arayüz kaynakları
-│       ├── scripts/.gitkeep
-│       └── styles/.gitkeep
+├── app/                         # MASAÜSTÜ UYGULAMASI (Electron + Yerel AES-256 Kasa)
+│   ├── package.json             # Bağımlılıklar, scriptler (start, dev, test:vault)
+│   ├── main.js                  # Electron ana süreci (çerçevesiz Apple Glass pencere, güvenli IPC)
+│   ├── preload.js               # contextIsolation IPC köprüsü
+│   ├── README.md                # Masaüstü mimari ve çalıştırma kılavuzu
+│   └── src/
+│       ├── main/                # Node.js çekirdek & kriptografi
+│       │   ├── vault.js         # AES-256-CBC + scrypt + HMAC-SHA256 şifreleme motoru
+│       │   ├── vault.test.js    # Sıfır-bağımlılık kripto testleri
+│       │   ├── store.js         # Şifreli yerel disk deposu (encrypted_sqlite_aes256.subradar)
+│       │   └── legal-notice.js  # 6502 SK & GDPR Madde 17 yasal fesih metni oluşturucu
+│       └── renderer/            # Apple Glass arayüzü
+│           ├── index.html       # Çerçevesiz ana pencere & kasa şifre kapısı
+│           ├── styles/          # app.css, components.css
+│           └── scripts/         # app.js, presets.js, crypto-fallback.js
 │
 └── web/                         # WEB VİTRİNİ VE İNTERAKTİF SİMÜLATÖR
     ├── code.html                # Canlı çalışan tekil vitrin (GitHub Pages'ın sunduğu ana dosya)

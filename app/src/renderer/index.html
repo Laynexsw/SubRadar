@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SubRadar Desktop — Yerel Kasa</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles/app.css">
+  <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+
+  <!-- Frameless Desktop Window Shell -->
+  <div id="app-shell">
+
+    <!-- 1. Native Titlebar / Drag Region -->
+    <header id="window-titlebar">
+      <div class="traffic-lights">
+        <button type="button" class="traffic-light close" id="btn-win-close" title="Kapat" aria-label="Kapat"><span>✕</span></button>
+        <button type="button" class="traffic-light min" id="btn-win-min" title="Simge Durumuna Küçült" aria-label="Küçült"><span>−</span></button>
+        <button type="button" class="traffic-light max" id="btn-win-max" title="Büyüt / Geri Yükle" aria-label="Büyüt"><span>+</span></button>
+      </div>
+
+      <div class="titlebar-center">
+        <div class="app-brand">
+          <span class="brand-dot"></span>
+          <span>SubRadar Desktop</span>
+        </div>
+        <div class="vault-status-badge" id="vault-status-badge">
+          <span>🔒 AES-256 Kilitli</span>
+        </div>
+      </div>
+
+      <div class="titlebar-actions">
+        <select id="header-currency-select" class="form-select" style="padding: 3px 8px; font-size: 12px; width: auto; background: rgba(255,255,255,0.06); border-radius: 6px;" aria-label="Para Birimi">
+          <option value="USD">$ USD</option>
+          <option value="EUR">€ EUR</option>
+          <option value="TRY">₺ TRY</option>
+        </select>
+        <button type="button" class="btn btn-primary" id="btn-new-sub" style="padding: 4px 10px; min-height: 28px; font-size: 12px;">
+          <span>+ Yeni Abonelik</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Application Body -->
+    <div id="app-body">
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <nav class="sidebar-nav" aria-label="Ana Menü">
+          <button type="button" class="nav-item active" data-tab="dashboard">
+            <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+            <span>Genel Bakış</span>
+          </button>
+          
+          <button type="button" class="nav-item" data-tab="subscriptions">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+            <span>Abonelikler</span>
+            <span class="nav-badge" id="subs-count-badge" style="background: rgba(255,255,255,0.06); color: #94a3b8; border-color: rgba(255,255,255,0.1);">0</span>
+          </button>
+
+          <button type="button" class="nav-item" data-tab="risk-radar">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>Risk & Deneme Radarı</span>
+            <span class="nav-badge" id="nav-risk-badge" style="display: none;">0</span>
+          </button>
+
+          <button type="button" class="nav-item" data-tab="kill-switch">
+            <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+            <span>Tek Tıkla İptal</span>
+          </button>
+
+          <button type="button" class="nav-item" data-tab="vault-settings">
+            <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            <span>Kasa & Güvenlik</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="system-stat-pill">
+            <span>Bellek:</span>
+            <span id="stat-mem-val">16,2 MB</span>
+          </div>
+          <div class="system-stat-pill">
+            <span>Yerel Motor:</span>
+            <span id="stat-ping-val" style="color: var(--accent-emerald);">3,6ms</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Viewport -->
+      <main id="main-view">
+
+        <!-- VIEW 1: DASHBOARD -->
+        <section class="view-panel" id="view-dashboard">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Abonelik Zekâsı Paneli</h1>
+              <p>Cihazınızdaki tüm yinelenen SaaS giderleri, kaçak lisanslar ve yaklaşan denemeler.</p>
+            </div>
+          </div>
+
+          <!-- KPI Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <span>Aylık Gider</span>
+                <span class="kpi-badge" style="background: rgba(99,102,241,0.15); color: #818cf8;">Net</span>
+              </div>
+              <div class="kpi-value num-tabular" id="kpi-burn-val">$0,00</div>
+              <div class="kpi-subtext">Düzenli çekilen harcama</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <span>Kaçak Lisanslar</span>
+                <span class="kpi-badge" style="background: rgba(244,63,94,0.15); color: #fb7185;">Boşta</span>
+              </div>
+              <div class="kpi-value num-tabular" id="kpi-leaks-val" style="color: #fda4af;">0 Lisans</div>
+              <div class="kpi-subtext">30+ gündür açılmayan</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <span>Yıllık İsraf</span>
+                <span class="kpi-badge" style="background: rgba(16,185,129,0.15); color: #34d399;">Kurtarılabilir</span>
+              </div>
+              <div class="kpi-value num-tabular" id="kpi-recover-val" style="color: #6ee7b7;">$0,00</div>
+              <div class="kpi-subtext">İptallerle geri kazanılan</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <span>Denemeler</span>
+                <span class="kpi-badge" style="background: rgba(245,158,11,0.15); color: #f59e0b;">Uyarı</span>
+              </div>
+              <div class="kpi-value num-tabular" id="kpi-trials-val" style="color: #fbbf24;">0 Aktif</div>
+              <div class="kpi-subtext">Yaklaşan otomatik çekimler</div>
+            </div>
+          </div>
+
+          <!-- Overview Card -->
+          <div class="table-container" style="padding: 20px; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+              <h2 style="font-size: 14px; font-weight: 600; color: #fff;">Aktif & Boşta Abonelikler Özeti</h2>
+              <span style="font-size: 12px; font-family: var(--font-mono); color: var(--text-muted);">Yerel AES-256 Korumalı</span>
+            </div>
+            <div id="dashboard-recent-subs"></div>
+          </div>
+        </section>
+
+        <!-- VIEW 2: SUBSCRIPTIONS LIST & TABLE -->
+        <section class="view-panel" id="view-subscriptions" style="display: none;">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Tüm Abonelikler</h1>
+              <p>Yerel şifreli kasanızda tutulan tüm dijital hizmetlerin tam listesi.</p>
+            </div>
+            <div class="view-actions">
+              <button type="button" class="btn btn-primary" onclick="document.getElementById('btn-new-sub').click()">
+                + Yeni Servis
+              </button>
+            </div>
+          </div>
+
+          <!-- Search & Filter Bar -->
+          <div class="filter-toolbar">
+            <div class="search-input-wrapper">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#64748b"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              <input type="text" id="sub-search-input" placeholder="Aboneliklerde ara (Ctrl+K)...">
+            </div>
+
+            <div class="filter-pills">
+              <button type="button" class="filter-pill active" data-filter="all">Tümü</button>
+              <button type="button" class="filter-pill" data-filter="active">Aktif</button>
+              <button type="button" class="filter-pill" data-filter="trial">Denemeler</button>
+              <button type="button" class="filter-pill" data-filter="idle">Boşta</button>
+              <button type="button" class="filter-pill" data-filter="cancelled">İptal Edilenler</button>
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div class="table-container">
+            <table class="sub-table">
+              <thead>
+                <tr>
+                  <th>Hizmet / Servis</th>
+                  <th>Tutar</th>
+                  <th>Durum</th>
+                  <th>Yenileme Tarihi</th>
+                  <th>Kategori</th>
+                  <th style="text-align: right;">Eylemler</th>
+                </tr>
+              </thead>
+              <tbody id="subs-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- VIEW 3: RISK & TRIAL RADAR -->
+        <section class="view-panel" id="view-risk-radar" style="display: none;">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Risk & Deneme Radarı</h1>
+              <p>Karanlık desenlerle unutulmaya terk edilmiş deneme üyelikleri ve kullanılmayan yazılımlar.</p>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 14px;" id="risk-radar-items"></div>
+        </section>
+
+        <!-- VIEW 4: KILL SWITCH CATALOG -->
+        <section class="view-panel" id="view-kill-switch" style="display: none;">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Tek Tıkla İptal Portalları</h1>
+              <p>Labirent gibi hazırlanan iptal adımlarını, tutma anketlerini ve destek hatlarını tek tıkla aşın.</p>
+            </div>
+          </div>
+
+          <div class="table-container" style="padding: 24px;">
+            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+              SubRadar, en popüler 40+ SaaS servisinin doğrudan hesap kapatma URL’lerini içerir. "Hemen İptal" protokolü çalıştırıldığında sistem:
+            </p>
+            <ul style="list-style: disc; padding-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 24px;">
+              <li>Sizi doğrudan gerçek iptal ve fesih sayfasına yönlendirir.</li>
+              <li>6502 sayılı Tüketicinin Korunması Kanunu ve GDPR mevzuatına uygun tek tıkla resmi fesih metni oluşturur.</li>
+              <li>Aboneliğin durumunu yerel diskte "İptal Edildi" olarak mühürler ve yıllık israf sayacınızı düşürür.</li>
+            </ul>
+            <div style="display: flex; gap: 10px;">
+              <button type="button" class="btn btn-primary" onclick="document.querySelector('[data-tab=subscriptions]').click()">
+                Abonelikler Listesine Dön ve İptal Et
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 5: VAULT SECURITY & BACKUP -->
+        <section class="view-panel" id="view-vault-settings" style="display: none;">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Kasa Mimarisi & Yerel Güvenlik</h1>
+              <p>%100 Çevrimdışı, Sıfır Telemetri ve Yerel AES-256 Şifreleme.</p>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="table-container" style="padding: 22px;">
+              <h2 style="font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 12px;">Kriptografik Güvenlik Parametreleri</h2>
+              <ul style="color: var(--text-muted); font-size: 12px; line-height: 1.8; list-style: none;">
+                <li>• <strong>Algoritma:</strong> AES-256-CBC</li>
+                <li>• <strong>Anahtar Türetme:</strong> Scrypt (N=16384, r=8, p=1)</li>
+                <li>• <strong>Bütünlük Koruması:</strong> HMAC-SHA256 (Timing-Safe)</li>
+                <li>• <strong>Saklama Yeri:</strong> encrypted_sqlite_aes256.subradar (Yerel Disk)</li>
+                <li>• <strong>Bulut Aktarımı:</strong> %0 (Sıfır Dış İstek)</li>
+              </ul>
+              <div style="margin-top: 20px;">
+                <button type="button" class="btn btn-danger" id="btn-lock-vault">
+                  🔒 Kasayı Hemen Kilitle
+                </button>
+              </div>
+            </div>
+
+            <div class="table-container" style="padding: 22px;">
+              <h2 style="font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 12px;">Şifreli Yedekleme & Geri Yükleme</h2>
+              <p style="font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+                Tüm abonelik kasanızı tek bir şifreli <code>.subradar</code> dosyasında dışa aktarabilir ve başka bir cihaza aktarabilirsiniz.
+              </p>
+              <div style="display: flex; gap: 10px;">
+                <button type="button" class="btn btn-secondary" id="btn-export-backup">Yedek Dışa Aktar (.subradar)</button>
+                <button type="button" class="btn btn-secondary" id="btn-import-backup">Yedekten Yükle</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- 3. MASTER PASSWORD GATE OVERLAY -->
+    <div id="vault-gate-screen">
+      <div class="gate-box">
+        <div class="gate-header-group">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#a5b4fc" style="flex-shrink: 0;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          <h2 id="gate-title" style="font-size: 17px; font-weight: 600; color: #fff;">SubRadar Yerel Kasa</h2>
+        </div>
+        <p id="gate-subtitle" style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5;">Kasanızı açmak için ana şifrenizi girin.</p>
+        
+        <div class="form-group" style="text-align: left;">
+          <input type="password" id="gate-password-input" class="form-input" placeholder="Ana Şifre (Master Password)..." autocomplete="current-password">
+        </div>
+        <div id="gate-error-msg" style="color: #fb7185; font-size: 12px; margin-bottom: 12px; display: none;"></div>
+
+        <button type="button" class="btn btn-primary" id="gate-submit-btn" style="width: 100%;">Kasayı Aç</button>
+      </div>
+    </div>
+
+    <!-- 4. MODAL: ADD / EDIT SUBSCRIPTION -->
+    <div class="modal-backdrop" id="modal-sub">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modal-sub-title">Yeni Abonelik Ekle</h2>
+          <button type="button" class="modal-close-btn" id="btn-close-sub-modal" aria-label="Kapat">✕</button>
+        </div>
+
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Hızlı Şablonlar:</div>
+        <div class="preset-chips" id="preset-chips-container"></div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-sub-name">Servis / Yazılım Adı *</label>
+          <input type="text" id="form-sub-name" class="form-input" placeholder="Örn: Adobe Creative Cloud, Netflix, Figma...">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="form-sub-plan">Paket / Plan</label>
+            <input type="text" id="form-sub-plan" class="form-input" placeholder="Örn: Pro, All Apps, 4K...">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-sub-category">Kategori</label>
+            <select id="form-sub-category" class="form-select">
+              <option value="Genel">Genel</option>
+              <option value="Development">Geliştirici / Dev</option>
+              <option value="Design">Tasarım / UI</option>
+              <option value="Entertainment">Eğlence & Müzik</option>
+              <option value="AI & Productivity">Yapay Zekâ / AI</option>
+              <option value="Cloud Storage">Bulut & Sunucu</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="form-sub-price">Tutar *</label>
+            <input type="number" step="0.01" id="form-sub-price" class="form-input" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-sub-currency">Para Birimi</label>
+            <select id="form-sub-currency" class="form-select">
+              <option value="USD">USD ($)</option>
+              <option value="TRY">TRY (₺)</option>
+              <option value="EUR">EUR (€)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="form-sub-cycle">Dönem</label>
+            <select id="form-sub-cycle" class="form-select">
+              <option value="monthly">Aylık</option>
+              <option value="yearly">Yıllık</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-sub-status">Durum</label>
+            <select id="form-sub-status" class="form-select">
+              <option value="active">Aktif Kullanılıyor</option>
+              <option value="trial">Deneme Sürümü (Trial)</option>
+              <option value="idle">Boşta / İsraf Lisans</option>
+              <option value="cancelled">İptal Edildi</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-sub-renewal">Bir Sonraki Yenileme Tarihi</label>
+          <input type="date" id="form-sub-renewal" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-sub-cancel-url">Doğrudan İptal Portalı URL'i</label>
+          <input type="url" id="form-sub-cancel-url" class="form-input" placeholder="https://...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-sub-notes">Notlar (Şifreli Kasada Saklanır)</label>
+          <textarea id="form-sub-notes" class="form-textarea" rows="2" placeholder="Örn: 2 gün kala uyar, ekip koltuğu iptal edilecek..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('modal-sub').classList.remove('open')">Vazgeç</button>
+          <button type="button" class="btn btn-primary" id="btn-save-sub">Kaydet</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. MODAL: 1-CLICK KILL & LEGAL NOTICE WIZARD -->
+    <div class="modal-backdrop" id="modal-notice">
+      <div class="modal-box" style="max-width: 620px;">
+        <div class="modal-header">
+          <div>
+            <h2 class="modal-title">⚡ Tek Tıkla İptal Protokolü</h2>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Karanlık desensiz doğrudan iptal ve yasal fesih metni.</p>
+          </div>
+          <button type="button" class="modal-close-btn" id="btn-close-notice-modal" aria-label="Kapat">✕</button>
+        </div>
+
+        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5;">
+          Aşağıdaki resmi fesih dilekçesi, <strong>6502 sayılı Tüketicinin Korunması Hakkında Kanun</strong> ve <strong>GDPR Madde 17</strong> standartlarına uygun olarak otomatik doldurulmuştur.
+        </p>
+
+        <div class="notice-preview-box" id="notice-preview-text"></div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 16px;">
+          <button type="button" class="btn btn-secondary" id="btn-copy-notice">
+            <span>Metni Kopyala</span>
+          </button>
+          
+          <button type="button" class="btn btn-primary" id="btn-open-portal">
+            <span>İptal Portalına Git & Sonlandır</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="scripts/crypto-fallback.js"></script>
+  <script src="scripts/presets.js"></script>
+  <script src="scripts/app.js"></script>
+
+</body>
+</html>

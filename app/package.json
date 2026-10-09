@@ -1,0 +1,26 @@
+{
+  "name": "subradar-desktop",
+  "version": "1.4.2",
+  "description": "SubRadar Desktop — Offline-First Subscription Intelligence & 1-Click Kill Switch with AES-256 Local Vault",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "test:vault": "node src/main/vault.test.js"
+  },
+  "keywords": [
+    "subradar",
+    "desktop",
+    "electron",
+    "privacy-first",
+    "offline-first",
+    "aes-256",
+    "subscription-tracker",
+    "kill-switch"
+  ],
+  "author": "Laynexsw",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.2.0"
+  }
+}
