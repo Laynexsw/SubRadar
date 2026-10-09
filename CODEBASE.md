@@ -24,7 +24,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 2. **Web Vitrini Katmanı (`web/`):**
    * **Modüler Kaynak:** `components/` (14 HTML parçası), `css/` (3 dosya), `js/` (13 modül), `scripts/build.py`.
    * **Üretim / Canlı Yayın:** `code.html` (~297 KB, tüm stil, betik ve HTML'in birleştiği, GitHub Pages'ta yayınlanan monolitik dosya).
-3. **Masaüstü Katmanı (`app/`):** Gelecekte Electron/Native istemcisini barındıracak altyapı klasörü.
+3. **Masaüstü Katmanı (`app/`):** Electron, Node.js yerel AES-256 kasası, çerçevesiz Apple Glass UI ve güvenli IPC köprüsüne sahip tam fonksiyonel masaüstü istemcisi.
 
 ---
 
@@ -82,6 +82,21 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`modals/enterprise-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/enterprise-modal.js): Kurumsal form kontrolü ve başarı ekranı geçişi.
 * [`modals/reclaim-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/reclaim-modal.js): CLI kopyalama ve modal görünürlüğü.
 * [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 14 bileşenin varlığını ve dosya boyutlarını test eden Python otomasyonu.
+
+### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/`)
+* [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 bağımlılığı ve `start`, `dev`, `test:vault` komutları.
+* [`main.js`](file:///c:/Users/arday/Desktop/SubRadar/app/main.js): Electron ana süreci (`frame: false`, `titleBarStyle: 'hidden'`, pencere kontrolleri, güvenli IPC kanalları, harici URL açma).
+* [`preload.js`](file:///c:/Users/arday/Desktop/SubRadar/app/preload.js): `contextIsolation: true` güvenlikli köprü; renderer sürecine `window.subradarAPI` (`vault`, `subscriptions`, `preferences`, `legalNotice`, `system`) nesnesini sunar.
+* [`src/main/vault.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/vault.js): Node.js yerel `crypto` motoru (`aes-256-cbc`, `scryptSync`, timing-safe `HMAC-SHA256`).
+* [`src/main/vault.test.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/vault.test.js): Sıfır-bağımlılık kriptografik kasa testleri (şifreleme, çözme, yanlış parola reddi).
+* [`src/main/store.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/store.js): Yerel diskte `encrypted_sqlite_aes256.subradar` dosyasını saklayan, bellek önbelleği ve yedek dışa/içe aktarma yöneticisi.
+* [`src/main/legal-notice.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/legal-notice.js): 6502 sayılı Tüketicinin Korunması Kanunu ve GDPR Madde 17 resmi fesih metni oluşturucu motor.
+* [`src/renderer/index.html`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/index.html): Çerçevesiz Apple Glass ana pencere, ana şifre kilit ekranı (Gate Screen), KPI kartları ve 5 sekme.
+* [`src/renderer/styles/app.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/app.css): Frameless pencere sürükleme kuralları, sidebar gezinimi, renk tokenları.
+* [`src/renderer/styles/components.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/components.css): Apple Glass kartlar, kilit ekranı modalı, KPI ızgarası, veri tablosu ve form kontrolleri.
+* [`src/renderer/scripts/app.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/app.js): Renderer reaktif kontrolcüsü (sekme geçişleri, kasa kilidi açma, CRUD, anlık arama, risk radarı hesaplama).
+* [`src/renderer/scripts/presets.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/presets.js): 15+ popüler SaaS servisi için tek tıkla doğrudan iptal URL'leri ve varsayılan fiyatlar.
+* [`src/renderer/scripts/crypto-fallback.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/crypto-fallback.js): Tarayıcı geliştirme ortamları için WebCrypto (`SubtleCrypto`) tabanlı yerel kasa motoru.
 
 ---
 
@@ -170,13 +185,15 @@ Depo şu anda **üç ana katmandan** oluşur:
 
 ---
 
-## 6. Masaüstü Uygulaması (Roadmap)
+## 6. Masaüstü Uygulaması Mimarisi & Çalışma Mantığı (`app/`)
 
-`app/` dizini gelecekteki yerel masaüstü istemcisini hedefler:
-* **Güvenlik Çekirdeği (`vault.js`):** Node.js `crypto` ile `AES-256-CBC` algoritması.
-* **Veritabanı:** Yerel şifrelenmiş dosya (`encrypted_sqlite_aes256.db`).
-* **IPC İzolasyonu:** `preload.js` üzerinden `contextIsolation: true` ile çalışan güvenli köprü.
-* **Tepsisi (System Tray):** Arka planda sessiz çalışan, yenileme tarihlerinden 48 saat önce uyarı fırlatan hafif daemon.
+`app/` dizini aktif ve çalışan Electron masaüstü istemcisidir:
+* **Güvenlik Çekirdeği (`src/main/vault.js`):** Node.js `crypto` ile `AES-256-CBC` algoritması, `scryptSync` KDF (N=16384, r=8, p=1, 64 bayt türetilmiş anahtar) ve timing-safe `HMAC-SHA256` bütünlük doğrulaması.
+* **Yerel Şifreli Depo (`src/main/store.js`):** `encrypted_sqlite_aes256.subradar` dosyasını yerel diskte tutar. Parola doğrulanmadan veri asla çözülmez. `.subradar` yedeğini dışa/içe aktarma fonksiyonlarına sahiptir.
+* **İzole IPC Köprüsü (`preload.js`):** `contextIsolation: true` ve `sandbox: false` ile `window.subradarAPI` nesnesini sunar.
+* **Doğrudan İptal & Fesih Sihirbazı (`src/main/legal-notice.js`):** 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve GDPR Madde 17 standartlarına uygun resmi fesih mektuplarını anında oluşturur.
+* **Apple Glass Arayüzü (`src/renderer/`):** Çerçevesiz macOS penceresi, Master Parola Kilit Ekranı (Gate Screen), Dashboard, Tüm Abonelikler, Risk Radarı, Tek Tıkla İptal ve Kasa Ayarları sekmeleri.
+* **Test Motoru (`src/main/vault.test.js`):** `npm run test:vault` ile sıfır dış bağımlılıkla çalışan kripto doğrulama testleri.
 
 ---
 

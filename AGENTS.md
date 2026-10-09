@@ -183,6 +183,8 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
    Eğer `web/components/` veya `web/js/` içinde bir geliştirme yapılıyorsa, canlı vitrin olan `web/code.html` dosyasının da senkronize kaldığından emin olunmalıdır.
 4. **Sıfır Dış Bağımlılık & Güvenlik:**
    Kullanıcı verisi toplayacak hiçbir harici analytics/telemetri kütüphanesi eklenemez. Tasarım Tailwind CDN ve Google Material Symbols dışında tamamen saf CSS/JS üzerine kuruludur.
+5. **KOD YAPISI & DOKÜMANTASYON SENKRONİZASYONU (ZORUNLU KURAL):**
+   Kod tabanında yapılan her ekleme, silme veya mimari değişiklikte; git commit ve push işlemlerinden önce MUTLAKA `README.md`, `CODEBASE.md` ve `AGENTS.md` dosyalarındaki **Kod Yapısı (Dosya Haritası / Ağacı)**, katman durumları ve açıklamaları anında ve eksiksiz güncellenecektir. Kod ile dokümantasyonun uyuşmaması kabul edilemez.
 
 ---
 

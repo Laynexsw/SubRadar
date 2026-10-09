@@ -42,12 +42,22 @@ SubRadar/
 │   ├── BSD-3-CLAUSE.txt, MPL-2.0.txt     # BSD ve Mozilla kamu lisans şablonları
 │   └── PROPRIETARY.txt, UNLICENSE.txt    # Ticari ve kamu malı lisans şablonları
 │
-├── 💻 app/                               # MASAÜSTÜ UYGULAMASI (🚀 Çok Yakında / Coming Soon)
-│   ├── README.md                         # Masaüstü uygulaması yol haritası ve mimari rehberi
-│   └── src/                              # Gelecek masaüstü kaynak kodları dizini
-│       └── renderer/
-│           ├── scripts/
-│           └── styles/
+├── 💻 app/                               # MASAÜSTÜ UYGULAMASI (🟢 Canlı & Aktif - Electron + AES-256)
+│   ├── package.json                      # Bağımlılıklar ve çalıştırma scriptleri (start, dev, test:vault)
+│   ├── main.js                           # Electron ana süreci (çerçevesiz Apple Glass pencere, güvenli IPC)
+│   ├── preload.js                        # contextIsolation IPC güvenli köprüsü (subradarAPI)
+│   ├── README.md                         # Masaüstü uygulaması detaylı mimari ve çalıştırma rehberi
+│   │
+│   ├── src/main/                         # Node.js Çekirdek & Kriptografik Arka Plan
+│   │   ├── vault.js                      # AES-256-CBC + scrypt + HMAC-SHA256 şifreleme motoru
+│   │   ├── vault.test.js                 # Sıfır-bağımlılık kripto doğrulama birim testleri
+│   │   ├── store.js                      # Şifreli yerel disk deposu (encrypted_sqlite_aes256.subradar)
+│   │   └── legal-notice.js               # 6502 SK & GDPR Madde 17 yasal fesih metni oluşturucu
+│   │
+│   └── src/renderer/                     # Apple Glassmorphism Arayüzü
+│       ├── index.html                    # Çerçevesiz ana pencere & master parola kilit ekranı
+│       ├── styles/                       # app.css (pencere & düzen), components.css (kartlar & modallar)
+│       └── scripts/                      # app.js (arayüz), presets.js (SaaS şablonları), crypto-fallback.js
 │
 └── 🌐 web/                               # WEB TANITIM VİTRİNİ & MODÜLER BİLEŞENLER
     ├── code.html                         # Entegre canlı vitrin uygulaması ve interaktif masaüstü simülatörü
@@ -109,7 +119,7 @@ SubRadar/
 | :--- | :--- | :--- | :--- |
 | **Kök (Root)** | `/` | Git, Markdown, HTML | Canlı GitHub Pages dağıtımını yönlendirir, lisans ve depo belgelerini barındırır. |
 | **Lisanslar (Licenses)** | `/licenses` | Markdown & Text | 📜 **Rehber & Şablonlar** — MIT, Apache, GPL, BSD vb. lisans karşılaştırma matrisi ve şablonları. |
-| **Masaüstü (App)** | `/app` | Electron & Native *(Yol Haritası)* | 🚀 **Çok Yakında** — Verileri cihazda AES-256 ile şifreleyen yerel masaüstü istemcisi. |
+| **Masaüstü (App)** | `/app` | Electron, Node.js, AES-256 | 🟢 **Aktif / Çalışır Durumda** — Yerel şifreli kasa, 15+ SaaS şablonu, risk radarı ve çerçevesiz Apple Glass UI. |
 | **Web Vitrini** | `/web` | Vanilla JS, Modern CSS, HTML5 | 🟢 **Yayında** — GitHub Pages üzerinde canlı olan interaktif simülasyon ve vitrin. |
 
 ---
@@ -125,16 +135,21 @@ SubRadar/
   Tarayıcınızda `http://localhost:8765/` veya `http://localhost:8765/web/code.html` adresini ziyaret edin.
 
 ### 💻 Masaüstü Uygulaması (`app/`)
-Masaüstü uygulaması şu anda geliştirilme aşamasındadır (Çok Yakında). Gelişmeleri [`app/README.md`](app/README.md) dosyasından takip edebilirsiniz.
-
+Masaüstü istemcisini yerel bilgisayarınızda çalıştırmak ve test etmek için:
+```powershell
+cd app
+npm install
+npm run test:vault   # Sıfır-bağımlılık AES-256 kripto testleri
+npm start            # Çerçevesiz masaüstü penceresini başlatır
+```
 
 ---
 
 ## 🔒 Güvenlik Mimarisi
 
-* **Yerel Şifreleme:** `app/src/vault.js`, Node.js'in yerel `crypto` modülü ile `AES-256-CBC` algoritması kullanarak aboneliklerinizi cihazınızda şifreler.
-* **İzole IPC:** `preload.js` sayesinde Renderer süreci doğrudan işletim sistemi çekirdeğine erişemez; yalnızca izin verilen güvenli API çağrılarını yapabilir (`contextIsolation: true`).
-* **Sıfır Bulut Bağımlılığı:** Uygulama tamamen çevrimdışı (offline-first) prensibiyle tasarlanmıştır.
+* **Yerel Şifreleme:** `app/src/main/vault.js`, Node.js'in yerel `crypto` modülü ile `AES-256-CBC` + `scrypt` + `HMAC-SHA256` kullanarak aboneliklerinizi cihazınızda şifreler.
+* **İzole IPC:** `app/preload.js` sayesinde Renderer süreci doğrudan işletim sistemi çekirdeğine erişemez; yalnızca izin verilen güvenli API çağrılarını yapabilir (`contextIsolation: true`).
+* **Sıfır Bulut Bağımlılığı:** Uygulama tamamen çevrimdışı (offline-first) prensibiyle tasarlanmıştır. Hiçbir dış telemetri bulunmaz.
 
 ---
 
