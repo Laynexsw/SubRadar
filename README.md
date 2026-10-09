@@ -13,7 +13,7 @@
 **SubRadar**, unutulan deneme üyeliklerini, gizli fiyat artışlarını ve aylarca açılmayan yazılım aboneliklerini tespit eden;  
 verilerinizi asla buluta göndermeden **%100 yerel ve çevrimdışı** çalışan masaüstü abonelik asistanıdır.
 
-[🌐 Canlı Web Sitesi](https://laynexsw.github.io/SubRadar/) &bull; [💻 Masaüstü Uygulaması (Çok Yakında)](https://github.com/Laynexsw/SubRadar/tree/main/app) &bull; [📑 Modüler Bileşenler](https://github.com/Laynexsw/SubRadar/tree/main/web)
+[🌐 Canlı Web Sitesi](https://laynexsw.github.io/SubRadar/) &bull; [💻 Masaüstü Uygulaması (Çok Yakında)](https://github.com/Laynexsw/SubRadar/tree/main/app) &bull; [📑 Modüler Bileşenler](https://github.com/Laynexsw/SubRadar/tree/main/web) &bull; [🧠 Mimari & Kod Kataloğu](CODEBASE.md)
 
 ---
 
@@ -31,6 +31,9 @@ SubRadar/
 ├── 🛡️ .gitignore                         # Sürüm kontrolünden hariç tutulan dosyalar
 ├── 📜 LICENSE                            # MIT Açık Kaynak Lisansı
 ├── 📖 README.md                          # Kapsamlı proje mimarisi ve kullanım rehberi
+├── 🤖 AGENTS.md                          # AI oturumları ve ajanlar için hızlı bağlam rehberi
+├── 📑 CODEBASE.md                        # Eksiksiz kod tabanı, fonksiyon ve DOM ID kataloğu
+├── 🛡️ .agents/rules/                     # IDE ajan kuralları ve otomatik bağlam hafızası
 │
 ├── 📜 licenses/                          # Yazılım Lisansları Şablon Koleksiyonu & Rehberi
 │   ├── README.md                         # Lisanslar karşılaştırma matrisi ve seçim kılavuzu
