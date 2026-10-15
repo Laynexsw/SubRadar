@@ -1,177 +1,218 @@
 /**
- * SubRadar Desktop — Known Subscription Presets & Direct Kill Switch Registry
- * 
- * Hard-coded direct bypass cancellation links avoiding guilt-trip survey funnels.
+ * SubRadar Desktop — SaaS Presets with Direct Cancellation Portals
  */
 
-const SUB_PRESETS = [
+const SAAS_PRESETS = [
   {
+    id: 'adobe-cc',
     name: 'Adobe Creative Cloud',
     category: 'Design',
-    defaultPlan: 'All Apps',
-    defaultPrice: 54.99,
-    currency: 'USD',
-    color: '#FF0000',
-    iconLetter: 'Ad',
+    defaultPrice: 2966.52,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Tüm Uygulamalar',
+    billingCycle: 'monthly',
     directCancelUrl: 'https://account.adobe.com/plans',
-    cancelSteps: 'Adobe Hesap > Planları Yönet > Planı İptal Et (Teklifi Reddet)'
+    brandColor: '#ff0000',
+    iconLetter: 'Ps',
+    notes: 'Kullanılmayan bulut depolama ve atıl Photoshop/Illustrator lisansı.'
   },
   {
-    name: 'JetBrains Toolbox',
-    category: 'Development',
-    defaultPlan: 'All Products Pack',
-    defaultPrice: 28.90,
-    currency: 'USD',
-    color: '#000000',
-    iconLetter: 'JB',
-    directCancelUrl: 'https://account.jetbrains.com/licenses',
-    cancelSteps: 'JetBrains Account > Licenses > Cancel Auto-Renewal'
-  },
-  {
-    name: 'Figma',
+    id: 'figma-pro',
+    name: 'Figma Professional',
     category: 'Design',
-    defaultPlan: 'Professional',
-    defaultPrice: 15.00,
-    currency: 'USD',
-    color: '#A259FF',
-    iconLetter: 'Fg',
+    defaultPrice: 741.75,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Professional Seat',
+    billingCycle: 'monthly',
     directCancelUrl: 'https://www.figma.com/settings',
-    cancelSteps: 'Settings > Plan > Cancel Subscription'
+    brandColor: '#0acf83',
+    iconLetter: 'Fg',
+    notes: 'Geliştirici modu ve editör koltuğu ücretlendirmesi.'
   },
   {
-    name: 'ChatGPT Plus',
-    category: 'AI & Productivity',
-    defaultPlan: 'Plus (GPT-4o)',
-    defaultPrice: 20.00,
-    currency: 'USD',
-    color: '#10A37F',
-    iconLetter: 'GPT',
-    directCancelUrl: 'https://chatgpt.com/#settings/Subscription',
-    cancelSteps: 'Settings > Subscription > Manage Subscription > Cancel Plan'
-  },
-  {
-    name: 'Claude Pro',
-    category: 'AI & Productivity',
-    defaultPlan: 'Pro Team / Individual',
-    defaultPrice: 20.00,
-    currency: 'USD',
-    color: '#D97706',
-    iconLetter: 'Cl',
-    directCancelUrl: 'https://claude.ai/settings/billing',
-    cancelSteps: 'Settings > Billing > Cancel Subscription'
-  },
-  {
-    name: 'GitHub Copilot',
-    category: 'Development',
-    defaultPlan: 'Copilot Individual',
-    defaultPrice: 10.00,
-    currency: 'USD',
-    color: '#24292F',
-    iconLetter: 'GH',
-    directCancelUrl: 'https://github.com/settings/billing',
-    cancelSteps: 'GitHub Settings > Billing and plans > Cancel Copilot'
-  },
-  {
-    name: 'Netflix',
-    category: 'Entertainment',
-    defaultPlan: 'Özel (4K UHD)',
-    defaultPrice: 22.99,
-    currency: 'USD',
-    color: '#E50914',
-    iconLetter: 'Nf',
-    directCancelUrl: 'https://www.netflix.com/youraccount',
-    cancelSteps: 'Hesap > Üyeliği İptal Et > İptali Tamamla'
-  },
-  {
-    name: 'Spotify Premium',
-    category: 'Entertainment',
-    defaultPlan: 'Bireysel',
-    defaultPrice: 11.99,
-    currency: 'USD',
-    color: '#1DB954',
-    iconLetter: 'Sp',
-    directCancelUrl: 'https://www.spotify.com/account/subscription/',
-    cancelSteps: 'Hesap Özeti > Abonelik > Değiştir veya İptal Et'
-  },
-  {
-    name: 'YouTube Premium',
-    category: 'Entertainment',
-    defaultPlan: 'Bireysel / Aile',
-    defaultPrice: 13.99,
-    currency: 'USD',
-    color: '#FF0000',
-    iconLetter: 'YT',
-    directCancelUrl: 'https://www.youtube.com/paid_memberships',
-    cancelSteps: 'Ücretli Üyelikler > Üyeliği Yönet > İptal Et'
-  },
-  {
-    name: 'Amazon Prime',
-    category: 'Entertainment',
-    defaultPlan: 'Aylık Prime',
-    defaultPrice: 14.99,
-    currency: 'USD',
-    color: '#00A8E1',
-    iconLetter: 'Amz',
-    directCancelUrl: 'https://www.amazon.com/mc/manage',
-    cancelSteps: 'Prime Üyeliğini Yönet > Üyeliği Sonlandır'
-  },
-  {
+    id: 'canva-pro',
     name: 'Canva Pro',
     category: 'Design',
-    defaultPlan: 'Pro',
-    defaultPrice: 12.99,
-    currency: 'USD',
-    color: '#00C4CC',
-    iconLetter: 'Cv',
+    defaultPrice: 349.99,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Pro Plan',
+    billingCycle: 'monthly',
     directCancelUrl: 'https://www.canva.com/settings/billing-and-teams',
-    cancelSteps: 'Ayarlar > Faturalandırma > Aboneliği İptal Et'
+    brandColor: '#00c4cc',
+    iconLetter: 'Cv',
+    notes: 'Unutulan şablon üyeliği.'
   },
   {
-    name: 'Google One',
-    category: 'Cloud Storage',
-    defaultPlan: '2 TB Depolama',
-    defaultPrice: 9.99,
-    currency: 'USD',
-    color: '#4285F4',
-    iconLetter: 'G1',
-    directCancelUrl: 'https://one.google.com/settings',
-    cancelSteps: 'Ayarlar > Aboneliği İptal Et'
-  },
-  {
-    name: 'Notion',
+    id: 'chatgpt-plus',
+    name: 'ChatGPT Plus',
     category: 'AI & Productivity',
-    defaultPlan: 'Plus Plan',
-    defaultPrice: 10.00,
-    currency: 'USD',
-    color: '#000000',
-    iconLetter: 'Nt',
-    directCancelUrl: 'https://www.notion.so/my-account',
-    cancelSteps: 'Settings & Members > Billing > Cancel plan'
+    defaultPrice: 967.00,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Plus Tier (GPT-4o)',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://chat.openai.com/#settings',
+    brandColor: '#10a37f',
+    iconLetter: 'AI',
+    notes: 'Aylık otomatik kart çekimi.'
   },
   {
+    id: 'claude-pro',
+    name: 'Claude Pro',
+    category: 'AI & Productivity',
+    defaultPrice: 967.00,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Anthropic Pro',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://claude.ai/settings/billing',
+    brandColor: '#d97706',
+    iconLetter: 'Cl',
+    notes: 'Yüksek hacimli API veya web modeli üyeliği.'
+  },
+  {
+    id: 'cursor-pro',
+    name: 'Cursor AI',
+    category: 'Development',
+    defaultPrice: 967.00,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Pro Member',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://www.cursor.com/settings',
+    brandColor: '#6366f1',
+    iconLetter: 'Cr',
+    notes: 'Yapay zekâ destekli kod editörü planı.'
+  },
+  {
+    id: 'github-copilot',
+    name: 'GitHub Copilot',
+    category: 'Development',
+    defaultPrice: 483.50,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Individual Plan',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://github.com/settings/billing',
+    brandColor: '#24292e',
+    iconLetter: 'Gh',
+    notes: 'Geliştirici hesabı aylık çekimi.'
+  },
+  {
+    id: 'jetbrains-pack',
+    name: 'JetBrains Toolbox',
+    category: 'Development',
+    defaultPrice: 1429.11,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'All Products Pack',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://account.jetbrains.com/licenses',
+    brandColor: '#000000',
+    iconLetter: 'Jb',
+    notes: 'Birden çok IDE içeren kurumsal lisans paketi.'
+  },
+  {
+    id: 'midjourney-standard',
     name: 'Midjourney',
     category: 'AI & Productivity',
-    defaultPlan: 'Standard Plan',
-    defaultPrice: 30.00,
-    currency: 'USD',
-    color: '#2B2D42',
-    iconLetter: 'Mj',
+    defaultPrice: 1450.50,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Standard Membership',
+    billingCycle: 'monthly',
     directCancelUrl: 'https://www.midjourney.com/account',
-    cancelSteps: 'Manage Sub > Cancel Plan'
+    brandColor: '#3b82f6',
+    iconLetter: 'Mj',
+    notes: 'Discord üzerinden yinelenen görsel üretim planı.'
   },
   {
-    name: 'AWS Cloud Services',
-    category: 'Cloud Storage',
-    defaultPlan: 'EC2 / S3 Pay-As-You-Go',
-    defaultPrice: 45.00,
-    currency: 'USD',
-    color: '#FF9900',
-    iconLetter: 'AWS',
-    directCancelUrl: 'https://console.aws.amazon.com/billing/home',
-    cancelSteps: 'AWS Billing Console > Account Settings > Close Account'
+    id: 'netflix-standard',
+    name: 'Netflix',
+    category: 'Streaming',
+    defaultPrice: 299.99,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Standart Plan',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://www.netflix.com/cancelplan',
+    brandColor: '#e50914',
+    iconLetter: 'Nf',
+    notes: 'HD 2 Ekran yayın aboneliği.'
+  },
+  {
+    id: 'spotify-premium',
+    name: 'Spotify Premium',
+    category: 'Streaming',
+    defaultPrice: 99.99,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Bireysel Premium',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://www.spotify.com/account/subscription/change/',
+    brandColor: '#1db954',
+    iconLetter: 'Sp',
+    notes: 'Reklamsız müzik dinleme.'
+  },
+  {
+    id: 'youtube-premium',
+    name: 'YouTube Premium',
+    category: 'Streaming',
+    defaultPrice: 115.99,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Bireysel Üyelik',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://www.youtube.com/paid_memberships',
+    brandColor: '#ff0000',
+    iconLetter: 'Yt',
+    notes: 'YouTube Music & Reklamsız video.'
+  },
+  {
+    id: 'amazon-prime',
+    name: 'Amazon Prime',
+    category: 'Streaming',
+    defaultPrice: 49.90,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Prime Video & Kargo',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://www.amazon.com.tr/mc/manage',
+    brandColor: '#00a8e1',
+    iconLetter: 'Am',
+    notes: 'Yıllık veya aylık Prime paketi.'
+  },
+  {
+    id: 'disney-plus',
+    name: 'Disney+',
+    category: 'Streaming',
+    defaultPrice: 164.99,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Standart Üyelik',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://www.disneyplus.com/account',
+    brandColor: '#113ccf',
+    iconLetter: 'D+',
+    notes: 'Dizi ve film akış servisi.'
+  },
+  {
+    id: 'notion-plus',
+    name: 'Notion Plus',
+    category: 'AI & Productivity',
+    defaultPrice: 483.50,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'Plus Plan',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://www.notion.so/settings',
+    brandColor: '#000000',
+    iconLetter: 'Nt',
+    notes: 'Sınırsız blok ve ekip çalışma alanı.'
+  },
+  {
+    id: 'aws-cloud',
+    name: 'AWS Cloud',
+    category: 'Cloud & Hosting',
+    defaultPrice: 2417.50,
+    defaultCurrency: 'TRY',
+    defaultPlan: 'EC2 & S3 Alt Yapı',
+    billingCycle: 'monthly',
+    directCancelUrl: 'https://console.aws.amazon.com/billing/',
+    brandColor: '#ff9900',
+    iconLetter: 'Aws',
+    notes: 'Boşta çalışan unutulmuş sanal sunucu ve diskler.'
   }
 ];
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { SUB_PRESETS };
+  module.exports = SAAS_PRESETS;
 }

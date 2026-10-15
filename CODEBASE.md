@@ -84,19 +84,21 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 14 bileşenin varlığını ve dosya boyutlarını test eden Python otomasyonu.
 
 ### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/`)
-* [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 bağımlılığı ve `start`, `dev`, `test:vault` komutları.
-* [`main.js`](file:///c:/Users/arday/Desktop/SubRadar/app/main.js): Electron ana süreci (`frame: false`, `titleBarStyle: 'hidden'`, pencere kontrolleri, güvenli IPC kanalları, harici URL açma).
-* [`preload.js`](file:///c:/Users/arday/Desktop/SubRadar/app/preload.js): `contextIsolation: true` güvenlikli köprü; renderer sürecine `window.subradarAPI` (`vault`, `subscriptions`, `preferences`, `legalNotice`, `system`) nesnesini sunar.
+* [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 bağımlılığı ve `start`, `dev`, `test`, `test:vault`, `test:parser` komutları.
+* [`main.js`](file:///c:/Users/arday/Desktop/SubRadar/app/main.js): Electron ana süreci (`frame: false`, `titleBarStyle: 'hidden'`, pencere kontrolleri, güvenli IPC kanalları, dosya iletişim kutuları, pano köprüsü, harici URL açma).
+* [`preload.js`](file:///c:/Users/arday/Desktop/SubRadar/app/preload.js): `contextIsolation: true` güvenlikli köprü; renderer sürecine `window.subradarAPI` (`vault`, `subscriptions`, `preferences`, `legalNotice`, `statement`, `system`) nesnesini sunar.
 * [`src/main/vault.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/vault.js): Node.js yerel `crypto` motoru (`aes-256-cbc`, `scryptSync`, timing-safe `HMAC-SHA256`).
-* [`src/main/vault.test.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/vault.test.js): Sıfır-bağımlılık kriptografik kasa testleri (şifreleme, çözme, yanlış parola reddi).
-* [`src/main/store.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/store.js): Yerel diskte `encrypted_sqlite_aes256.subradar` dosyasını saklayan, bellek önbelleği ve yedek dışa/içe aktarma yöneticisi.
+* [`src/main/vault.test.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/vault.test.js): Sıfır-bağımlılık kriptografik kasa testleri (şifreleme, çözme, yanlış parola reddi, zararlı zarf tahrifat kontrolü).
+* [`src/main/store.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/store.js): Yerel diskte `encrypted_sqlite_aes256.subradar` dosyasını saklayan, bellek önbelleği ve şifreli yedek dışa/içe aktarma yöneticisi.
 * [`src/main/legal-notice.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/legal-notice.js): 6502 sayılı Tüketicinin Korunması Kanunu ve GDPR Madde 17 resmi fesih metni oluşturucu motor.
-* [`src/renderer/index.html`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/index.html): Çerçevesiz Apple Glass ana pencere, ana şifre kilit ekranı (Gate Screen), KPI kartları ve 5 sekme.
-* [`src/renderer/styles/app.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/app.css): Frameless pencere sürükleme kuralları, sidebar gezinimi, renk tokenları.
-* [`src/renderer/styles/components.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/components.css): Apple Glass kartlar, kilit ekranı modalı, KPI ızgarası, veri tablosu ve form kontrolleri.
-* [`src/renderer/scripts/app.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/app.js): Renderer reaktif kontrolcüsü (sekme geçişleri, kasa kilidi açma, CRUD, anlık arama, risk radarı hesaplama).
-* [`src/renderer/scripts/presets.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/presets.js): 15+ popüler SaaS servisi için tek tıkla doğrudan iptal URL'leri ve varsayılan fiyatlar.
-* [`src/renderer/scripts/crypto-fallback.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/crypto-fallback.js): Tarayıcı geliştirme ortamları için WebCrypto (`SubtleCrypto`) tabanlı yerel kasa motoru.
+* [`src/main/statement-parser.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/statement-parser.js): %100 çevrimdışı, bellek içi banka ekstresi ve CSV tarayıcısı (18+ SaaS regex kalıbı ve para birimi tanıma).
+* [`src/main/parser.test.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/parser.test.js): Ekstre tarayıcı ve yasal fesih mektubu üretim birim testleri.
+* [`src/renderer/index.html`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/index.html): Çerçevesiz Apple Glass ana pencere, ana şifre kilit ekranı (Gate Screen), KPI kartları, 6 modül görünümü (Genel Bakış, Abonelikler, Risk Radarı, Kill Switch, Ekstre Tarayıcı, Kasa Ayarları), ⌘K Komut Paleti ve modallar.
+* [`src/renderer/styles/app.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/app.css): Frameless pencere sürükleme kuralları, sidebar gezinimi, radar animasyonları, renk tokenları.
+* [`src/renderer/styles/components.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/components.css): Apple Glass kartlar, kilit ekranı modalı, KPI ızgarası, veri tablosu, ekstre yükleme sürükle-bırak alanı ve form kontrolleri.
+* [`src/renderer/scripts/app.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/app.js): Renderer reaktif kontrolcüsü (sekme geçişleri, kasa kilidi açma, CRUD, anlık arama, risk radarı hesaplama, ekstre ayrıştırma ve ⌘K komut paleti orkestrasyonu).
+* [`src/renderer/scripts/presets.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/presets.js): 16+ popüler SaaS servisi için tek tıkla doğrudan iptal URL'leri, kategoriler ve varsayılan fiyatlar.
+* [`src/renderer/scripts/crypto-fallback.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/crypto-fallback.js): Tarayıcı geliştirme ortamları için WebCrypto (`SubtleCrypto`) tabanlı yerel kasa ve ekstre tarayıcı taklidi.
 
 ---
 

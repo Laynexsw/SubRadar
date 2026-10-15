@@ -2,14 +2,13 @@
  * SubRadar Desktop — Secure Context-Isolated Preload Bridge
  * 
  * Exposes zero raw Node.js APIs to renderer.
- * Interacts only through strictly defined IPC channels.
+ * Strictly mediated through IPC channels.
  */
 
-const { contextBridge, ipcRenderer, clipboard } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('subradarAPI', {
   isElectron: true,
-  platform: process.platform,
 
   // Window Controls
   window: {
@@ -19,44 +18,47 @@ contextBridge.exposeInMainWorld('subradarAPI', {
     isMaximized: () => ipcRenderer.invoke('window:isMaximized')
   },
 
-  // Vault Management
+  // Vault Security
   vault: {
-    hasVaultFile: () => ipcRenderer.invoke('vault:hasVaultFile'),
-    setupVault: (masterPassword) => ipcRenderer.invoke('vault:setup', masterPassword),
+    hasVault: () => ipcRenderer.invoke('vault:hasVault'),
+    setup: (masterPassword, initialData) => ipcRenderer.invoke('vault:setup', masterPassword, initialData),
     unlock: (masterPassword) => ipcRenderer.invoke('vault:unlock', masterPassword),
     lock: () => ipcRenderer.invoke('vault:lock'),
-    isUnlocked: () => ipcRenderer.invoke('vault:isUnlocked')
+    changePassword: (oldPassword, newPassword) => ipcRenderer.invoke('vault:changePassword', oldPassword, newPassword),
+    factoryReset: () => ipcRenderer.invoke('vault:factoryReset')
   },
 
-  // Subscriptions & Data
+  // Subscriptions CRUD
   subscriptions: {
-    list: () => ipcRenderer.invoke('subscriptions:list'),
-    add: (subData) => ipcRenderer.invoke('subscriptions:add', subData),
-    update: (id, subData) => ipcRenderer.invoke('subscriptions:update', id, subData),
-    delete: (id) => ipcRenderer.invoke('subscriptions:delete', id),
-    executeKill: (id) => ipcRenderer.invoke('subscriptions:executeKill', id)
+    getAll: () => ipcRenderer.invoke('subs:getAll'),
+    create: (subData) => ipcRenderer.invoke('subs:create', subData),
+    update: (id, patch) => ipcRenderer.invoke('subs:update', id, patch),
+    delete: (id) => ipcRenderer.invoke('subs:delete', id),
+    killSwitch: (id) => ipcRenderer.invoke('subs:killSwitch', id)
   },
 
-  // Preferences & Currency
+  // User Preferences
   preferences: {
-    get: () => ipcRenderer.invoke('preferences:get'),
-    update: (prefs) => ipcRenderer.invoke('preferences:update', prefs)
+    get: () => ipcRenderer.invoke('prefs:get'),
+    update: (patch) => ipcRenderer.invoke('prefs:update', patch)
   },
 
-  // Cancellation & Legal Notice Generator
+  // Statement & Extrait Parser (100% Local)
+  statement: {
+    parse: (rawContent, defaultCurrency) => ipcRenderer.invoke('statement:parse', rawContent, defaultCurrency)
+  },
+
+  // Legal Notice
   legalNotice: {
-    generate: (subData, userInfo) => ipcRenderer.invoke('legal:generateNotice', subData, userInfo)
+    generateNotice: (subData, userInfo, language) => ipcRenderer.invoke('legal:generateNotice', subData, userInfo, language)
   },
 
   // System & Utilities
   system: {
     openExternal: (url) => ipcRenderer.invoke('system:openExternal', url),
-    copyToClipboard: (text) => {
-      clipboard.writeText(text);
-      return true;
-    },
+    copyToClipboard: (text) => ipcRenderer.invoke('system:copyToClipboard', text),
     exportBackup: () => ipcRenderer.invoke('system:exportBackup'),
-    importBackup: () => ipcRenderer.invoke('system:importBackup'),
+    importBackup: (masterPassword) => ipcRenderer.invoke('system:importBackup', masterPassword),
     getMemoryStats: () => ipcRenderer.invoke('system:getMemoryStats')
   }
 });

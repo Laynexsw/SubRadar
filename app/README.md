@@ -34,7 +34,7 @@ npm start
 
 ```text
 app/
-├── package.json                   # Bağımlılıklar, scriptler (start, dev, test:vault)
+├── package.json                   # Bağımlılıklar, scriptler (start, dev, test, test:vault, test:parser)
 ├── main.js                        # Electron Ana Süreci (Çerçevesiz Pencere, Güvenli IPC)
 ├── preload.js                     # contextIsolation & sandbox IPC Köprüsü
 ├── README.md                      # Bu kılavuz
@@ -44,16 +44,18 @@ app/
 │   │   ├── vault.js               # AES-256-CBC + scrypt + HMAC-SHA256 Şifreleme Motoru
 │   │   ├── vault.test.js          # Sıfır-bağımlılık Kripto Birim Testleri
 │   │   ├── store.js               # Şifreli Kasa Deposu (encrypted_sqlite_aes256.subradar)
-│   │   └── legal-notice.js        # 6502 SK & GDPR Madde 17 Yasal İptal Metni Üreticisi
+│   │   ├── legal-notice.js        # 6502 SK & GDPR Madde 17 Yasal İptal Metni Üreticisi
+│   │   ├── statement-parser.js    # 100% Çevrimdışı Banka Ekstresi / CSV Tarayıcı Motoru
+│   │   └── parser.test.js         # Ekstre ve Yasal Metin Birim Testleri
 │   │
 │   └── renderer/                  # Apple Glass Arayüzü (HTML / CSS / ES6)
-│       ├── index.html             # Çerçevesiz Ana Arayüz & Kasa Kilit Ekranı
+│       ├── index.html             # Çerçevesiz Ana Arayüz, 6 Modül Görünümü & Kasa Kilit Ekranı
 │       ├── styles/
 │       │   ├── app.css            # Pencere sürükleme, temel düzen ve renk değişkenleri
 │       │   └── components.css     # Apple Glass, KPI kartları, veri tablosu ve modallar
 │       └── scripts/
 │           ├── app.js             # Reaktif Arayüz Orkestratörü & Canlı Hesaplamalar
-│           ├── presets.js         # 15+ Hazır SaaS Şablonu (Doğrudan İptal Bağlantılı)
+│           ├── presets.js         # 16+ Hazır SaaS Şablonu (Doğrudan İptal Bağlantılı)
 │           └── crypto-fallback.js # WebCrypto (Tarayıcı önizleme uyumluluğu)
 ```
 
@@ -72,7 +74,9 @@ app/
 
 1. **Master Password Kasa Kilit Kapısı:** Uygulama açılışında ana şifre belirlenir/doğrulanır.
 2. **Apple Glassmorphism UI:** Koyu taban (`#07090e`), cam kart efektleri (`backdrop-filter: blur(24px)`), SF Pro / Inter tipografisi ve çerçevesiz macOS pencere tasarımı.
-3. **15+ Popüler SaaS Şablonu:** Adobe CC, Figma, GitHub Copilot, ChatGPT Plus, Claude Pro, JetBrains, Netflix vb. tek tıkla form doldurma.
+3. **16+ Popüler SaaS Şablonu:** Adobe CC, Figma, GitHub Copilot, ChatGPT Plus, Claude Pro, JetBrains, Netflix vb. tek tıkla form doldurma.
 4. **Risk & Deneme Radarı:** 30+ gündür açılmayan veya süresi dolmak üzere olan deneme sürümlerini tespit edip yıllık maliyet kaybını hesaplar.
 5. **Tek Tıkla İptal Sihirbazı & Resmi Fesih Mektubu:** Servislerin doğrudan iptal portallarına tek tıkla yönlendirir ve 6502 sayılı Kanun / GDPR Madde 17'ye uygun resmi fesih metnini panoya kopyalar.
-6. **Yedek Dışa/İçe Aktar:** Kasanızı `.subradar` uzantılı yerel şifreli dosya olarak dışa aktarabilir ve dilediğiniz zaman geri yükleyebilirsiniz.
+6. **%100 Çevrimdışı Ekstre / CSV Tarayıcısı:** Banka dekontu veya kredi kartı ekstresini yerel bellekte tarar, abonelikleri otomatik tespit edip kasaya aktarır.
+7. **⌘K / Ctrl+K Hızlı Komut Paleti:** Klavye odaklı gezinme ve anında filtreleme.
+8. **Yedek Dışa/İçe Aktar:** Kasanızı `.subradar` uzantılı yerel şifreli dosya olarak dışa aktarabilir ve dilediğiniz zaman geri yükleyebilirsiniz.

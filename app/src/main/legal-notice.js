@@ -1,94 +1,79 @@
 /**
- * SubRadar Desktop — 1-Click Legal Cancellation Notice Generator
+ * SubRadar Desktop — Legal Cancellation Notice Generator
  * 
- * Formats official legal cancellation & termination letters complying with:
- * - 6502 Sayılı Tüketicinin Korunması Hakkında Kanun (Mesafeli Sözleşmeler Yönetmeliği)
- * - EU Consumer Rights Directive (2011/83/EU) & GDPR Art. 17 Data Erasure
+ * Generates legally enforceable subscription termination notices
+ * under Turkish Consumer Protection Law (TKHK 6502 m. 52/4)
+ * and GDPR Article 17 / EU Directive 2011/83/EU.
  */
 
-function generateLegalNotice({
-  serviceName,
-  planName = '',
-  accountEmail = '',
-  accountId = '',
-  price = '',
-  currency = 'TRY',
-  renewalDate = '',
-  userName = 'Abone / Müşteri',
-  language = 'tr'
-}) {
-  const dateStr = new Date().toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+function generateLegalNotice(subscription, userInfo = {}, language = 'tr') {
+  const now = new Date();
+  const dateStrTR = now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const dateStrEN = now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 
-  if (language === 'tr') {
-    return `RESMİ ABONELİK FESİH VE OTOMATİK YENİLEME İPTAL BİLDİRİMİ
+  const serviceName = subscription.name || 'Hizmet Sağlayıcı';
+  const planName = subscription.plan || 'Standart Plan';
+  const userName = userInfo.name || subscription.accountName || 'Abonelik Sahibi';
+  const userEmail = userInfo.email || subscription.accountEmail || 'kayitli-eposta@ornek.com';
+  const subId = subscription.subId || subscription.id || 'N/A';
 
-Tarih: ${dateStr}
-Kime: ${serviceName} Müşteri Hizmetleri / Hukuk & Faturalandırma Departmanı
-Konu: Abonelik İptali, Otomatik Ödeme Talimatının Kaldırılması ve Fesih İhbarı
-
-Sayın Yetkili,
-
-Şahsıma ait aşağıda detayları belirtilen kullanıcı hesabı kapsamında yürütülmekte olan "${serviceName}${planName ? ' (' + planName + ')' : ''}" aboneliğimin derhal ve en geç bir sonraki yenileme tarihi olan ${renewalDate || 'fatura kesim tarihi'} itibarıyla sona erdirilmesini talep ediyorum.
-
-ABONELİK VE HESAP BİLGİLERİ:
-• Hizmet Sağlayıcı: ${serviceName}
-• Paket / Lisans: ${planName || 'Standart Abonelik'}
-• Kayıtlı E-Posta: ${accountEmail || '[E-Posta Adresiniz]'}
-• Müşteri / Abonelik No: ${accountId || '[Opsiyonel Müşteri Numarası]'}
-• Tutar: ${price} ${currency}
-
-YASAL GEREKÇE VE DAYANAK:
-6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği’nin ilgili hükümleri uyarınca;
-1. Tarafıma ait kayıtlı kredi kartı, banka kartı veya sanal kart üzerinden herhangi bir yeni periyodik çekim veya otomatik provizyon yapılmasını ONAYLAMIYORUM.
-2. Bu bildirim tarihi itibarıyla yenilenen ödeme talimatının sistemlerinizden kaldırılmasını,
-3. 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) uyarınca, yasal saklama zorunluluğu bulunmayan ödeme bilgilerimin ve ticari elektronik ileti izinlerimin derhal silinmesini/anonimleştirilmesini talep ederim.
-
-Aboneliğimin herhangi bir cezai şart veya cayma bedeli yansıtılmaksızın iptal edildiğine ve bir sonraki dönem için herhangi bir faturalandırma yapılmayacağına dair yazılı teyidin kayıtlı e-posta adresime ivedilikle iletilmesini arz ve talep ederim.
-
-Saygılarımla,
-
-Adı Soyadı: ${userName}
-Tarih: ${dateStr}
-Oluşturan: SubRadar Masaüstü Yerel Kasa (Sürüm 1.4.2)
-`;
-  }
-
-  // English (International / GDPR)
-  return `OFFICIAL NOTICE OF SUBSCRIPTION CANCELLATION & REVOCATION OF RECURRING BILLING
-
-Date: ${dateStr}
-To: ${serviceName} Customer Support & Billing Department
-Subject: Immediate Cancellation of Subscription and Revocation of Direct Debit Authorization
+  if (language === 'en') {
+    const text = `DATE: ${dateStrEN}
+TO: ${serviceName} / Customer Billing & Legal Department
+SUBJECT: Formal Notice of Immediate Subscription Cancellation and Revocation of Payment Authorization
+ACCOUNT / SUBSCRIPTION REF: ${subId}
+REGISTERED HOLDER: ${userName} (${userEmail})
 
 To Whom It May Concern,
 
-I am writing to formally request the immediate cancellation of my subscription for "${serviceName}${planName ? ' (' + planName + ')' : ''}", effective immediately or prior to the upcoming billing cycle scheduled for ${renewalDate || 'the next billing date'}.
+I hereby exercise my statutory right to immediately terminate my subscription for "${planName}" provided by ${serviceName}.
 
-ACCOUNT DETAILS:
-• Service Provider: ${serviceName}
-• Subscription Plan: ${planName || 'Standard Subscription'}
-• Account Email: ${accountEmail || '[Your Account Email]'}
-• Customer / Account ID: ${accountId || '[Optional Account ID]'}
-• Recurring Cost: ${price} ${currency}
+Pursuant to applicable consumer protection legislation and Article 17 of the General Data Protection Regulation (GDPR - Right to Erasure):
 
-LEGAL TERMS & REVOCATION:
-Pursuant to applicable consumer protection legislation and the EU Consumer Rights Directive:
-1. I hereby REVOKE all authorizations for recurring charges or automated debits against my credit/debit card on file.
-2. Please ensure no further automated renewals occur from this date forward.
-3. In accordance with GDPR (Article 17 - Right to Erasure), I also request the deletion of non-essential billing profiles and marketing consent once the final account reconciliation is complete.
+1. IMMEDIATE TERMINATION: This notice serves as unequivocal demand to terminate my subscription plan immediately and cease all recurring renewal mechanisms.
+2. REVOCATION OF BILLING MANDATE: All stored payment authorizations, recurring card charge mandates, or tokenized banking agreements registered under my name and email (${userEmail}) are REVOKED with immediate effect. No further debits are authorized.
+3. DATA RECTIFICATION: Any biometric, telemetry, or unnecessary payment records must be purged in compliance with statutory retention limits.
+4. CONFIRMATION REQUIREMENT: Please provide written confirmation via reply to this email (${userEmail}) acknowledging receipt of this notice, immediate termination of the service, and confirmation that no future renewal charges will occur.
 
-Please provide immediate written confirmation of this cancellation to my email address on record.
+Please consider this notice effective as of ${dateStrEN}.
 
-Sincerely,
+Respectfully submitted,
+${userName}
+${userEmail}`;
 
-Name: ${userName}
-Date: ${dateStr}
-Generated by: SubRadar Desktop Vault (v1.4.2)
-`;
+    const mailto = `mailto:support@${serviceName.toLowerCase().replace(/[^a-z0-9]/g, '')}.com?subject=${encodeURIComponent(`Immediate Subscription Cancellation — ${userName} (${subId})`)}&body=${encodeURIComponent(text)}`;
+
+    return { text, mailto, subject: `Immediate Subscription Cancellation — ${userName}` };
+  }
+
+  // Default: Türkçe (6502 SK m. 52/4 & KVKK m. 11)
+  const text = `TARİH: ${dateStrTR}
+KİME: ${serviceName} Müşteri Hizmetleri ve Hukuk/Abonelik Birimi
+KONU: Abonelik Sözleşmesinin Derhal Feshi, Otomatik Yenilemenin Durdurulması ve Kayıtlı Kart Yetkilerinin İptali İhtarı
+ABONELİK / HESAP NO: ${subId}
+HESAP SAHİBİ: ${userName} (${userEmail})
+
+Sayın Yetkili,
+
+Tarafınızca sunulmakta olan "${serviceName} - ${planName}" hizmetine ilişkin aboneliğimi, 6502 sayılı Tüketicinin Korunması Hakkında Kanun'un 52. maddesinin 4. fıkrası ve ilgili mevzuat uyarınca tek taraflı olarak DERHAL VE KOŞULSUZ FESHEDİYORUM.
+
+İşbu yasal bildirim ile:
+
+1. FESİH TALEBİ: Sözleşmemin işbu bildirimin tarafınıza ulaştığı tarih itibarıyla derhal sonlandırılmasını,
+2. OTOMATİK ÇEKİM İPTALİ: Hesabıma tanımlı tüm kredi kartı, banka kartı ve sanal kart otomatik yenileme / periyodik tahsilat yetkilerinin derhal iptal edilmesini ve ilerleyen dönemlere ait hiçbir ücret yansıtılmamasını,
+3. KİŞİSEL VERİ TALEBİ: 6698 sayılı KVKK kapsamında saklanması zorunlu olmayan finansal verilerimin ve ödeme araçlarımın sistemlerinizden imha edilmesini,
+4. YAZILI ONAY ZORUNLULUĞU: Fesih işleminin tamamlandığına, herhangi bir borç bakiyesi kalmadığına ve kartımdan çekim yapılmayacağına dair yazılı onay metninin kayıtlı e-posta adresime (${userEmail}) ivedilikle iletilmesini talep ederim.
+
+Kanunun amir hükmü gereğince, fesih bildiriminin yapılmasından sonra gerçekleşecek herhangi bir haksız kart çekiminde Tüketici Hakem Heyeti ve ilgili denetleyici kurumlara başvurulacağını ihtar ederim.
+
+Bilgilerinize arz ve ihtar olunur.
+
+${userName}
+E-Posta: ${userEmail}`;
+
+  const mailto = `mailto:destek@${serviceName.toLowerCase().replace(/[^a-z0-9]/g, '')}.com?subject=${encodeURIComponent(`Resmi Abonelik Fesih Bildirimi — ${userName} (${subId})`)}&body=${encodeURIComponent(text)}`;
+
+  return { text, mailto, subject: `Resmi Abonelik Fesih Bildirimi — ${userName}` };
 }
 
 module.exports = {

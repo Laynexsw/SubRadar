@@ -1,46 +1,49 @@
+/**
+ * SubRadar Desktop — Zero-Dependency Vault Cryptography Tests
+ */
+
+const assert = require('assert');
 const { encryptVault, decryptVault, verifyPassword } = require('./vault');
 
 console.log('--- Testing SubRadar AES-256 Vault Core ---');
 
-const dummyData = {
+const masterPass = 'SuperSecretKey2026!#';
+const sampleData = {
   subscriptions: [
-    { id: 'sub-1', name: 'Adobe Creative Cloud', price: 54.99, currency: 'USD', status: 'idle' },
-    { id: 'sub-2', name: 'Netflix 4K', price: 22.99, currency: 'USD', status: 'active' }
+    { id: 'sub-1', name: 'Adobe Creative Cloud', price: 54.99, status: 'idle' },
+    { id: 'sub-2', name: 'GitHub Copilot', price: 10.00, status: 'active' }
   ],
-  userPreferences: {
-    theme: 'dark',
-    currency: 'USD',
-    alertDaysAhead: 2
-  }
+  preferences: { currency: 'TRY', theme: 'dark' }
 };
 
-const password = 'SuperSecretLocalPassword123!';
+// 1. Encrypt
+const envelope = encryptVault(sampleData, masterPass);
+assert.strictEqual(envelope.algorithm, 'aes-256-cbc');
+assert.strictEqual(envelope.kdf, 'scrypt');
+assert(typeof envelope.ciphertext === 'string' && envelope.ciphertext.length > 0);
+assert(typeof envelope.salt === 'string' && envelope.salt.length > 0);
+assert(typeof envelope.tag === 'string' && envelope.tag.length > 0);
+console.log('✓ Encrypted Envelope created successfully');
 
-// 1. Encryption
-const envelope = encryptVault(dummyData, password);
-console.log('✓ Encrypted Envelope created:', {
-  algorithm: envelope.algorithm,
-  kdf: envelope.kdf,
-  saltLength: envelope.salt.length,
-  ivLength: envelope.iv.length,
-  tagLength: envelope.tag.length,
-  ciphertextLength: envelope.ciphertext.length
-});
+// 2. Correct Password Verification
+assert.strictEqual(verifyPassword(envelope, masterPass), true);
+console.log('✓ Correct password verification: PASSED');
 
-// 2. Verification
-const isCorrectPassValid = verifyPassword(envelope, password);
-console.log('✓ Correct password verification:', isCorrectPassValid === true ? 'PASSED' : 'FAILED');
+// 3. Wrong Password Rejection
+assert.strictEqual(verifyPassword(envelope, 'WrongPassword123!'), false);
+assert.throws(() => {
+  decryptVault(envelope, 'WrongPassword123!');
+}, /Vault verification failed/);
+console.log('✓ Wrong password verification rejected: PASSED');
 
-const isWrongPassValid = verifyPassword(envelope, 'WrongPassword!');
-console.log('✓ Wrong password verification rejected:', isWrongPassValid === false ? 'PASSED' : 'FAILED');
+// 4. Exact Payload Match
+const decrypted = decryptVault(envelope, masterPass);
+assert.deepStrictEqual(decrypted, sampleData);
+console.log('✓ Decrypted payload exact match: PASSED');
 
-// 3. Decryption
-const decrypted = decryptVault(envelope, password);
-if (JSON.stringify(decrypted) === JSON.stringify(dummyData)) {
-  console.log('✓ Decrypted payload exact match: PASSED');
-} else {
-  console.error('✗ Decrypted payload mismatch!');
-  process.exit(1);
-}
+// 5. Corrupted Tag Rejection
+const tamperedEnvelope = { ...envelope, tag: Buffer.from('TamperedTagBuffer1234567890123456').toString('base64') };
+assert.strictEqual(verifyPassword(tamperedEnvelope, masterPass), false);
+console.log('✓ Tampered HMAC verification rejected: PASSED');
 
 console.log('--- All Crypto Tests Passed Successfully! ---');

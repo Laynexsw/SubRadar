@@ -1,8 +1,8 @@
 /**
  * SubRadar Desktop — Secure Local Storage Manager
  * 
- * Persists the AES-256 encrypted envelope to local disk.
- * Keeps memory isolated and clears secrets when locked.
+ * Persists AES-256 encrypted vault to local disk.
+ * Keeps memory isolated and securely wipes plain secrets when locked.
  */
 
 const fs = require('fs');
@@ -27,7 +27,7 @@ class SecureVaultStore {
   }
 
   /**
-   * Checks if a vault file already exists on disk.
+   * Checks if an encrypted vault file already exists on disk.
    * @returns {boolean}
    */
   hasVaultFile() {
@@ -60,70 +60,87 @@ class SecureVaultStore {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       userPreferences: {
-        currency: 'USD',
+        currency: 'TRY',
         theme: 'dark',
         alertDaysAhead: 2,
-        language: 'tr'
+        language: 'tr',
+        userName: 'Abonelik Yöneticisi',
+        userEmail: 'kullanici@subradar.local'
       },
       subscriptions: [
         {
           id: 'sub-adobe-cc',
           name: 'Adobe Creative Cloud',
           plan: 'Tüm Uygulamalar',
-          price: 54.99,
-          currency: 'USD',
+          price: 2966.52,
+          currency: 'TRY',
           billingCycle: 'monthly',
-          nextRenewalDate: new Date(Date.now() + 18 * 86400000).toISOString().split('T')[0],
+          nextRenewalDate: new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0],
           category: 'Design',
           status: 'idle', // 'active' | 'trial' | 'idle' | 'cancelled'
           trialEndDate: null,
           directCancelUrl: 'https://account.adobe.com/plans',
-          notes: 'Son 45 gündür hiç Illustrator/Photoshop açılmadı.',
+          notes: 'Son 51 gündür arka plan işlemi başlatılmadı.',
           cancellationProtocolExecuted: false
         },
         {
           id: 'sub-jetbrains-pack',
           name: 'JetBrains Toolbox',
           plan: 'All Products Pack',
-          price: 28.90,
-          currency: 'USD',
+          price: 1429.11,
+          currency: 'TRY',
           billingCycle: 'monthly',
-          nextRenewalDate: new Date(Date.now() + 5 * 86400000).toISOString().split('T')[0],
+          nextRenewalDate: new Date(Date.now() + 6 * 86400000).toISOString().split('T')[0],
           category: 'Development',
           status: 'idle',
           trialEndDate: null,
           directCancelUrl: 'https://account.jetbrains.com/licenses',
-          notes: 'Ekip profilinde boşta duruyor.',
+          notes: '2 yerel geliştirici profilinde koltuklar atanmamış.',
           cancellationProtocolExecuted: false
         },
         {
           id: 'sub-figma-pro',
           name: 'Figma Professional',
-          plan: 'Editor Seat',
-          price: 15.00,
-          currency: 'USD',
+          plan: 'Ekip Lisansı',
+          price: 741.75,
+          currency: 'TRY',
           billingCycle: 'monthly',
-          nextRenewalDate: new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0],
+          nextRenewalDate: new Date(Date.now() + 21 * 86400000).toISOString().split('T')[0],
           category: 'Design',
-          status: 'trial', // Deneme bitmek üzere!
-          trialEndDate: new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0],
+          status: 'active',
+          trialEndDate: null,
           directCancelUrl: 'https://www.figma.com/settings',
-          notes: '14 günlük deneme sürümü 2 gün içinde faturaya dönüşecek.',
+          notes: 'Bu hafta 34 saat açık, vazgeçilmez iş akışı.',
           cancellationProtocolExecuted: false
         },
         {
           id: 'sub-chatgpt-plus',
           name: 'ChatGPT Plus',
-          plan: 'GPT-4o & Canvas',
-          price: 20.00,
-          currency: 'USD',
+          plan: 'Pro AI Asistanı',
+          price: 967.00,
+          currency: 'TRY',
           billingCycle: 'monthly',
-          nextRenewalDate: new Date(Date.now() + 22 * 86400000).toISOString().split('T')[0],
+          nextRenewalDate: new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0],
           category: 'AI & Productivity',
+          status: 'trial',
+          trialEndDate: new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0],
+          directCancelUrl: 'https://chat.openai.com/#settings',
+          notes: '48 saat içinde deneme süresi bitiyor! Kart çekimi tetiklenecek.',
+          cancellationProtocolExecuted: false
+        },
+        {
+          id: 'sub-spotify-prem',
+          name: 'Spotify Premium',
+          plan: 'Bireysel Plan',
+          price: 99.99,
+          currency: 'TRY',
+          billingCycle: 'monthly',
+          nextRenewalDate: new Date(Date.now() + 25 * 86400000).toISOString().split('T')[0],
+          category: 'Streaming',
           status: 'active',
           trialEndDate: null,
-          directCancelUrl: 'https://chatgpt.com/#settings/Subscription',
-          notes: 'Vazgeçilmez günlük akış.',
+          directCancelUrl: 'https://www.spotify.com/account/subscription/change/',
+          notes: 'Düzenli dinleniyor.',
           cancellationProtocolExecuted: false
         }
       ]
@@ -135,19 +152,18 @@ class SecureVaultStore {
     this.cachedData = defaultData;
     this.currentPassword = masterPassword;
     this.isUnlocked = true;
-
     return defaultData;
   }
 
   /**
-   * Unlocks the vault with master password.
+   * Attempts to unlock the encrypted vault file using master password.
    * @param {string} masterPassword 
-   * @returns {object} Decrypted vault payload
+   * @returns {object} Decrypted data
    */
-  unlock(masterPassword) {
+  unlockVault(masterPassword) {
     const envelope = this.readEnvelope();
     if (!envelope) {
-      throw new Error('No vault file exists. Setup is required first.');
+      throw new Error('No vault file found. Setup required.');
     }
 
     const decrypted = decryptVault(envelope, masterPassword);
@@ -158,68 +174,80 @@ class SecureVaultStore {
   }
 
   /**
-   * Locks the vault and completely wipes memory cache.
+   * Locks the vault immediately, wiping plaintext from memory.
    */
-  lock() {
+  lockVault() {
     this.cachedData = null;
     this.currentPassword = null;
     this.isUnlocked = false;
   }
 
   /**
-   * Saves updated data back to disk in encrypted envelope.
-   * @param {object} updatedData 
+   * Persists current in-memory data to encrypted disk file.
    */
-  save(updatedData) {
-    if (!this.isUnlocked || !this.currentPassword) {
-      throw new Error('Cannot save to vault: Vault is locked.');
+  saveVault() {
+    if (!this.isUnlocked || !this.currentPassword || !this.cachedData) {
+      throw new Error('Cannot save: Vault is locked.');
     }
-
-    updatedData.updatedAt = new Date().toISOString();
-    const envelope = encryptVault(updatedData, this.currentPassword);
+    this.cachedData.updatedAt = new Date().toISOString();
+    const envelope = encryptVault(this.cachedData, this.currentPassword);
     fs.writeFileSync(this.vaultFilePath, JSON.stringify(envelope, null, 2), 'utf8');
-    this.cachedData = updatedData;
-    return updatedData;
+    return true;
   }
 
   /**
-   * Returns in-memory cached vault payload.
-   * @returns {object|null}
+   * Changes the master password by re-encrypting with the new key.
+   * @param {string} oldPassword 
+   * @param {string} newPassword 
    */
-  getData() {
+  changePassword(oldPassword, newPassword) {
     if (!this.isUnlocked) {
-      throw new Error('Vault is currently locked.');
+      this.unlockVault(oldPassword);
     }
-    return this.cachedData;
+    this.currentPassword = newPassword;
+    this.saveVault();
+    return true;
   }
 
   /**
-   * Exports an encrypted backup (.subradar) to a target path.
-   * @param {string} destinationFilePath 
+   * Exports an encrypted backup envelope to a custom destination file path.
+   * @param {string} exportPath 
    */
-  exportBackup(destinationFilePath) {
+  exportBackup(exportPath) {
     const envelope = this.readEnvelope();
-    if (!envelope) throw new Error('No vault to export.');
-    fs.copyFileSync(this.vaultFilePath, destinationFilePath);
+    if (!envelope) throw new Error('No vault data to export.');
+    fs.writeFileSync(exportPath, JSON.stringify(envelope, null, 2), 'utf8');
+    return true;
   }
 
   /**
-   * Restores an encrypted backup from a file path.
-   * @param {string} sourceFilePath 
+   * Imports an external encrypted backup and replaces the active vault file.
+   * @param {string} importPath 
    * @param {string} masterPassword 
    */
-  importBackup(sourceFilePath, masterPassword) {
-    const raw = fs.readFileSync(sourceFilePath, 'utf8');
+  importBackup(importPath, masterPassword) {
+    const raw = fs.readFileSync(importPath, 'utf8');
     const envelope = JSON.parse(raw);
     // Verify password unlocks the imported file
     const decrypted = decryptVault(envelope, masterPassword);
 
-    // Save as active vault
+    // Save as current vault
     fs.writeFileSync(this.vaultFilePath, JSON.stringify(envelope, null, 2), 'utf8');
     this.cachedData = decrypted;
     this.currentPassword = masterPassword;
     this.isUnlocked = true;
     return decrypted;
+  }
+
+  /**
+   * Completely resets the vault and removes the encrypted file.
+   */
+  factoryReset() {
+    this.lockVault();
+    if (this.hasVaultFile()) {
+      fs.unlinkSync(this.vaultFilePath);
+    }
+    return true;
   }
 }
 

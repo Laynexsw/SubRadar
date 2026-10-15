@@ -1,25 +1,23 @@
 /**
  * SubRadar Desktop — AES-256-CBC Cryptographic Vault Engine
  * 
- * Zero-Knowledge, Offline-First Security Core.
- * Uses Node.js crypto module with Scrypt key derivation and HMAC-SHA256 integrity verification.
+ * %100 Zero-Knowledge, Offline-First Security Core.
+ * Built with native Node.js crypto (Scrypt KDF + AES-256-CBC + HMAC-SHA256).
  */
 
 const crypto = require('crypto');
 
 const ALGORITHM = 'aes-256-cbc';
-const KEY_LENGTH = 32; // 256 bits
 const SALT_LENGTH = 16;
 const IV_LENGTH = 16;
 
 /**
- * Derives a 32-byte cryptographic key and 32-byte HMAC key using Scrypt.
+ * Derives a 32-byte cipher key and 32-byte HMAC key using Scrypt.
  * @param {string} masterPassword 
  * @param {Buffer} salt 
  * @returns {{ cipherKey: Buffer, hmacKey: Buffer }}
  */
 function deriveKeys(masterPassword, salt) {
-  // Derive 64 bytes: first 32 for AES-256, last 32 for HMAC-SHA256
   const derived = crypto.scryptSync(masterPassword, salt, 64, {
     N: 16384,
     r: 8,
@@ -32,13 +30,13 @@ function deriveKeys(masterPassword, salt) {
 }
 
 /**
- * Encrypts an arbitrary JavaScript object or string into a sealed vault envelope.
+ * Encrypts an arbitrary object or string into a sealed vault envelope.
  * @param {any} dataObject 
  * @param {string} masterPassword 
- * @returns {object} Encrypted envelope containing base64 fields and verification token
+ * @returns {object} Encrypted envelope containing base64 fields
  */
 function encryptVault(dataObject, masterPassword) {
-  if (!masterPassword || typeof masterPassword !== 'string') {
+  if (!masterPassword || typeof masterPassword !== 'string' || masterPassword.trim().length === 0) {
     throw new Error('Master password must be a non-empty string.');
   }
 
@@ -59,7 +57,7 @@ function encryptVault(dataObject, masterPassword) {
   const tag = hmac.digest();
 
   return {
-    version: '1.0',
+    version: '1.5',
     algorithm: ALGORITHM,
     kdf: 'scrypt',
     salt: salt.toString('base64'),
@@ -80,6 +78,9 @@ function decryptVault(envelope, masterPassword) {
   if (!envelope || !envelope.ciphertext || !envelope.salt || !envelope.iv || !envelope.tag) {
     throw new Error('Invalid vault package format.');
   }
+  if (!masterPassword || typeof masterPassword !== 'string') {
+    throw new Error('Master password must be provided.');
+  }
 
   const salt = Buffer.from(envelope.salt, 'base64');
   const iv = Buffer.from(envelope.iv, 'base64');
@@ -88,7 +89,7 @@ function decryptVault(envelope, masterPassword) {
 
   const { cipherKey, hmacKey } = deriveKeys(masterPassword, salt);
 
-  // 1. Verify HMAC integrity before decryption (avoids padding oracle issues)
+  // 1. Verify HMAC integrity before decryption
   const hmac = crypto.createHmac('sha256', hmacKey);
   hmac.update(salt);
   hmac.update(iv);
@@ -107,7 +108,7 @@ function decryptVault(envelope, masterPassword) {
 }
 
 /**
- * Validates whether a provided master password correctly unlocks an envelope.
+ * Verifies if a password can unlock the envelope without throwing an unhandled exception.
  * @param {object} envelope 
  * @param {string} masterPassword 
  * @returns {boolean}

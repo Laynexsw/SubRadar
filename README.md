@@ -42,8 +42,8 @@ SubRadar/
 │   ├── BSD-3-CLAUSE.txt, MPL-2.0.txt     # BSD ve Mozilla kamu lisans şablonları
 │   └── PROPRIETARY.txt, UNLICENSE.txt    # Ticari ve kamu malı lisans şablonları
 │
-├── 💻 app/                               # MASAÜSTÜ UYGULAMASI (🟢 Canlı & Aktif - Electron + AES-256)
-│   ├── package.json                      # Bağımlılıklar ve çalıştırma scriptleri (start, dev, test:vault)
+├── 💻 app/                               # MASAÜSTÜ UYGULAMASI (🟢 Canlı & Aktif - Electron v1.5.0 + AES-256)
+│   ├── package.json                      # Bağımlılıklar ve çalıştırma scriptleri (start, dev, test, test:vault, test:parser)
 │   ├── main.js                           # Electron ana süreci (çerçevesiz Apple Glass pencere, güvenli IPC)
 │   ├── preload.js                        # contextIsolation IPC güvenli köprüsü (subradarAPI)
 │   ├── README.md                         # Masaüstü uygulaması detaylı mimari ve çalıştırma rehberi
@@ -52,12 +52,14 @@ SubRadar/
 │   │   ├── vault.js                      # AES-256-CBC + scrypt + HMAC-SHA256 şifreleme motoru
 │   │   ├── vault.test.js                 # Sıfır-bağımlılık kripto doğrulama birim testleri
 │   │   ├── store.js                      # Şifreli yerel disk deposu (encrypted_sqlite_aes256.subradar)
-│   │   └── legal-notice.js               # 6502 SK & GDPR Madde 17 yasal fesih metni oluşturucu
+│   │   ├── legal-notice.js               # 6502 SK & GDPR Madde 17 yasal fesih metni oluşturucu
+│   │   ├── statement-parser.js           # %100 Çevrimdışı banka ekstresi & CSV tarayıcısı (18+ SaaS kalıbı)
+│   │   └── parser.test.js                # Ekstre tarayıcı ve yasal fesih birim testleri
 │   │
-│   └── src/renderer/                     # Apple Glassmorphism Arayüzü
-│       ├── index.html                    # Çerçevesiz ana pencere & master parola kilit ekranı
+│   └── src/renderer/                     # Apple Glassmorphism Arayüzü (SF Pro & Inter)
+│       ├── index.html                    # Çerçevesiz ana pencere, 6 modül görünümü, ⌘K paleti & kilit kapısı
 │       ├── styles/                       # app.css (pencere & düzen), components.css (kartlar & modallar)
-│       └── scripts/                      # app.js (arayüz), presets.js (SaaS şablonları), crypto-fallback.js
+│       └── scripts/                      # app.js (arayüz), presets.js (16+ SaaS şablonu), crypto-fallback.js
 │
 └── 🌐 web/                               # WEB TANITIM VİTRİNİ & MODÜLER BİLEŞENLER
     ├── code.html                         # Entegre canlı vitrin uygulaması ve interaktif masaüstü simülatörü
@@ -119,7 +121,7 @@ SubRadar/
 | :--- | :--- | :--- | :--- |
 | **Kök (Root)** | `/` | Git, Markdown, HTML | Canlı GitHub Pages dağıtımını yönlendirir, lisans ve depo belgelerini barındırır. |
 | **Lisanslar (Licenses)** | `/licenses` | Markdown & Text | 📜 **Rehber & Şablonlar** — MIT, Apache, GPL, BSD vb. lisans karşılaştırma matrisi ve şablonları. |
-| **Masaüstü (App)** | `/app` | Electron, Node.js, AES-256 | 🟢 **Aktif / Çalışır Durumda** — Yerel şifreli kasa, 15+ SaaS şablonu, risk radarı ve çerçevesiz Apple Glass UI. |
+| **Masaüstü (App)** | `/app` | Electron v33, Node.js, AES-256 | 🟢 **Aktif / v1.5.0 Tam Sürüm** — Yerel şifreli kasa, 16+ SaaS şablonu, risk radarı, ekstre tarayıcı, ⌘K paleti ve çerçevesiz Apple Glass UI. |
 | **Web Vitrini** | `/web` | Vanilla JS, Modern CSS, HTML5 | 🟢 **Yayında** — GitHub Pages üzerinde canlı olan interaktif simülasyon ve vitrin. |
 
 ---

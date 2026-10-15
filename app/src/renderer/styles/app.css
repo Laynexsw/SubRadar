@@ -1,170 +1,179 @@
-/* =========================================================================
-   SubRadar Desktop — Master Application Design System
-   Operating Mode: Precision, Dark Apple Glass, Restrained Aesthetics
-   ========================================================================= */
+/**
+ * SubRadar Desktop — Core Design System & Window Layout (app.css)
+ * Impeccable Craft • Apple Glassmorphism • SF Pro Aesthetics
+ */
 
 :root {
-  --bg-app: #07090e;
-  --bg-sidebar: #090b12;
-  --bg-card: #0e111a;
-  --bg-card-hover: #131722;
-  --bg-glass: rgba(14, 17, 26, 0.82);
-  --bg-glass-elevated: rgba(20, 24, 36, 0.92);
+  /* Color Palette */
+  --bg-main: #07090e;
+  --bg-surface: #0c0e14;
+  --bg-card: rgba(18, 20, 28, 0.7);
+  --bg-card-hover: rgba(28, 32, 44, 0.85);
+  --bg-glass: rgba(12, 14, 20, 0.75);
   
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-medium: rgba(255, 255, 255, 0.12);
-  --border-active: rgba(99, 102, 241, 0.5);
-  
-  --text-primary: #ffffff;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --text-faint: #64748b;
-  
-  --accent-indigo: #6366f1;
-  --accent-indigo-hover: #4f46e5;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.14);
+  --border-bright: rgba(255, 255, 255, 0.28);
+
+  --text-white: #ffffff;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-dark: #0f172a;
+
+  /* Accents */
   --accent-emerald: #10b981;
-  --accent-emerald-bg: rgba(16, 185, 129, 0.12);
+  --accent-emerald-glow: rgba(16, 185, 129, 0.25);
   --accent-rose: #f43f5e;
-  --accent-rose-bg: rgba(244, 63, 94, 0.12);
+  --accent-rose-glow: rgba(244, 63, 94, 0.25);
+  --accent-indigo: #6366f1;
+  --accent-indigo-glow: rgba(99, 102, 241, 0.25);
   --accent-amber: #f59e0b;
-  --accent-amber-bg: rgba(245, 158, 11, 0.12);
-  
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", -apple-system, sans-serif;
-  --font-mono: "SF Mono", Menlo, Monaco, Consolas, monospace;
+  --accent-amber-glow: rgba(245, 158, 11, 0.25);
+  --accent-blue: #38bdf8;
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+
+  /* Elevation */
+  --shadow-glass: 0 20px 50px rgba(0, 0, 0, 0.7);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.15);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  -webkit-font-smoothing: antialiased;
+  user-select: none;
 }
 
 html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: var(--bg-app);
+  background-color: var(--bg-main);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 13px;
-  line-height: 1.45;
   letter-spacing: -0.015em;
-  user-select: none;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Accessibility: Visible Focus Ring */
-:focus-visible {
-  outline: 2px solid var(--accent-indigo);
-  outline-offset: 2px;
-  border-radius: 6px;
-}
-
-/* Tabular Numbers for all financial metrics and dates */
-.num-tabular, [data-amount], .price-tag, .stat-value, .date-cell {
+/* Tabular figures for money & dates */
+.font-mono, .tnum, td.price, .kpi-num, .stat-pill {
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
 }
 
-/* --------------------------------------------------------------------------
-   App Window Shell & Titlebar
-   -------------------------------------------------------------------------- */
+/* App Root Shell */
 #app-shell {
   display: flex;
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background: var(--bg-app);
-  border: 1px solid var(--border-subtle);
-  overflow: hidden;
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+              radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+              var(--bg-main);
 }
 
+/* -------------------------------------------------------------------------
+   1. Titlebar (Draggable Frameless Region)
+------------------------------------------------------------------------- */
 #window-titlebar {
-  height: 42px;
-  background: var(--bg-sidebar);
-  border-bottom: 1px solid var(--border-subtle);
+  -webkit-app-region: drag;
+  height: 48px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  -webkit-app-region: drag;
-  z-index: 50;
-  flex-shrink: 0;
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 100;
 }
 
+/* Interactive elements in titlebar must not drag */
+#window-titlebar button,
+#window-titlebar input,
+#window-titlebar select,
+#window-titlebar a {
+  -webkit-app-region: no-drag;
+}
+
+/* Traffic Lights (macOS-style) */
 .traffic-lights {
   display: flex;
   align-items: center;
   gap: 8px;
-  -webkit-app-region: no-drag;
+  width: 72px;
 }
 
 .traffic-light {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 8px;
-  color: rgba(0, 0, 0, 0.7);
-  font-weight: bold;
-  opacity: 0.9;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  font-weight: 700;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  padding: 0;
 }
-
-.traffic-light:hover {
-  opacity: 1;
-  transform: scale(1.06);
-}
-
-.traffic-light.close { background: #ff5f56; border-color: #e0443e; }
-.traffic-light.min { background: #ffbd2e; border-color: #dea123; }
-.traffic-light.max { background: #27c93f; border-color: #1aab29; }
 
 .traffic-light span {
   opacity: 0;
-  transition: opacity 0.1s ease;
+  transition: opacity 0.15s ease;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .traffic-lights:hover .traffic-light span {
   opacity: 1;
 }
 
+.traffic-light.close { background: #ff5f56; }
+.traffic-light.min { background: #ffbd2e; }
+.traffic-light.max { background: #27c93f; }
+.traffic-light:hover { transform: scale(1.1); }
+
+/* Titlebar Center */
 .titlebar-center {
   display: flex;
   align-items: center;
   gap: 12px;
-  -webkit-app-region: drag;
 }
 
 .app-brand {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-white);
   letter-spacing: -0.02em;
 }
 
 .brand-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--accent-emerald);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 10px var(--accent-emerald);
 }
 
 .vault-status-badge {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  font-size: 12px;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
   font-family: var(--font-mono);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-subtle);
@@ -172,36 +181,39 @@ html, body {
 }
 
 .vault-status-badge.unlocked {
+  background: rgba(16, 185, 129, 0.1);
   border-color: rgba(16, 185, 129, 0.3);
-  color: #34d399;
+  color: var(--accent-emerald);
 }
 
+/* Titlebar Actions */
 .titlebar-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
-  -webkit-app-region: no-drag;
+  gap: 10px;
 }
 
-/* --------------------------------------------------------------------------
-   App Main Layout: Sidebar + Viewport
-   -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------
+   2. Main Layout Architecture (Sidebar + Content Viewport)
+------------------------------------------------------------------------- */
 #app-body {
   display: flex;
   flex: 1;
-  height: calc(100vh - 42px);
+  height: calc(100vh - 48px);
   overflow: hidden;
 }
 
+/* Sidebar */
 #sidebar {
-  width: 220px;
-  background: var(--bg-sidebar);
+  width: 240px;
+  min-width: 240px;
+  background: rgba(10, 12, 17, 0.95);
   border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 16px 12px;
-  flex-shrink: 0;
+  backdrop-filter: blur(20px);
 }
 
 .sidebar-nav {
@@ -213,49 +225,65 @@ html, body {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.18s ease;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 10px;
   border: 1px solid transparent;
-  min-height: 36px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.nav-item svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+  opacity: 0.8;
+  transition: transform 0.15s ease;
 }
 
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
+  color: var(--text-white);
+}
+
+.nav-item:hover svg {
+  transform: scale(1.1);
 }
 
 .nav-item.active {
-  background: rgba(99, 102, 241, 0.12);
-  color: #a5b4fc;
-  border-color: rgba(99, 102, 241, 0.3);
-}
-
-.nav-item svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--text-white);
+  border-color: rgba(255, 255, 255, 0.12);
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .nav-badge {
   margin-left: auto;
-  font-size: 12px;
+  font-size: 11px;
   font-family: var(--font-mono);
-  padding: 1px 6px;
-  border-radius: 999px;
-  background: rgba(244, 63, 94, 0.2);
-  color: #fb7185;
-  border: 1px solid rgba(244, 63, 94, 0.3);
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
 }
 
+.nav-badge.danger {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.3);
+  color: var(--accent-rose);
+}
+
+/* Sidebar Footer */
 .sidebar-footer {
-  padding-top: 12px;
+  padding-top: 14px;
   border-top: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
@@ -266,43 +294,28 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 11px;
   font-family: var(--font-mono);
   color: var(--text-muted);
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.03);
+  padding: 4px 6px;
 }
 
-/* --------------------------------------------------------------------------
-   Main Content Area
-   -------------------------------------------------------------------------- */
+.system-stat-pill span:last-child {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* Main Viewport Container */
 #main-view {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
   overflow-y: auto;
-  background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent 45%),
-              radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.03), transparent 40%),
-              var(--bg-app);
-  padding: 24px 32px;
+  padding: 24px 32px 48px;
+  position: relative;
 }
 
-/* Custom Minimalist Scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.22);
-}
+/* Custom scrollbars */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.22); }
