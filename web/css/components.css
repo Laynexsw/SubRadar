@@ -146,3 +146,68 @@ html.light #sr-progress {
 [data-rv="left"].in { transform: none; }
 [data-rv="right"] { transform: translateX(24px); }
 [data-rv="right"].in { transform: none; }
+
+/* ── 12. Micro Loading Spinner ── */
+@keyframes srSpin {
+  to { transform: rotate(360deg); }
+}
+.sr-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: srSpin 0.7s linear infinite;
+  vertical-align: middle;
+}
+
+/* ── 13. Form Error States & Micro-Shake ── */
+@keyframes srShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+.form-field-invalid {
+  border-color: #f43f5e !important;
+  box-shadow: 0 0 0 1px #f43f5e, 0 0 15px rgba(244, 63, 94, 0.2) !important;
+}
+.shake-anim {
+  animation: srShake 0.4s ease-in-out;
+}
+
+/* ── 11. Sticky Mobile CTA Bar ── */
+#sr-mobile-sticky-cta {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 80;
+  transform: translateY(120%);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+  pointer-events: none;
+}
+#sr-mobile-sticky-cta.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── 17. Privacy & Storage Consent Banner ── */
+#sr-privacy-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(140%);
+  width: calc(100% - 32px);
+  max-width: 580px;
+  z-index: 95;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+#sr-privacy-banner.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+

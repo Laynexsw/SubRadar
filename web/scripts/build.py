@@ -28,13 +28,15 @@ def build():
         'components/modals/command-palette.html',
         'components/modals/download-modal.html',
         'components/modals/reclaim-modal.html',
+        'components/layout/cookie-banner.html',
+        'components/layout/mobile-sticky-cta.html',
     ]
 
     for comp in components:
         content = read_file(comp)
         print(f"Verified: {comp} ({len(content)} bytes)")
 
-    print("\nAll 14 components verified successfully.")
+    print(f"\nAll {len(components)} components verified successfully.")
 
 if __name__ == '__main__':
     build()

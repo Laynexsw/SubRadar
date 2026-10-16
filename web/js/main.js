@@ -12,6 +12,9 @@ import { initDownloadModal } from './modals/download-modal.js';
 import { initCommandPalette } from './modals/command-palette.js';
 import { initEnterpriseModal } from './modals/enterprise-modal.js';
 import { initReclaimModal } from './modals/reclaim-modal.js';
+import './analytics.js';
+import './cookie-banner.js';
+import './mobile-cta.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize modules

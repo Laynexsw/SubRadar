@@ -1,5 +1,5 @@
 /**
- * SubRadar — Enterprise Modal Controller
+ * SubRadar — Enterprise Modal Controller (Loading states & inline validation)
  */
 export function initEnterpriseModal() {
   const backdrop = document.getElementById('ent-modal-backdrop');
@@ -7,14 +7,45 @@ export function initEnterpriseModal() {
   const doneView = document.getElementById('ent-view-done');
   let opener = null;
 
+  const nameInput = document.getElementById('ent-name');
+  const emailInput = document.getElementById('ent-email');
+  const companyInput = document.getElementById('ent-company');
+  const nameErr = document.getElementById('ent-name-err');
+  const emailErr = document.getElementById('ent-email-err');
+  const companyErr = document.getElementById('ent-company-err');
+
+  function clearErrors() {
+    [nameInput, emailInput, companyInput].forEach(el => {
+      if (el) {
+        el.classList.remove('form-field-invalid', 'shake-anim');
+        el.removeAttribute('aria-invalid');
+      }
+    });
+    [nameErr, emailErr, companyErr].forEach(el => {
+      if (el) el.classList.add('hidden');
+    });
+  }
+
+  // Clear error on input
+  [nameInput, emailInput, companyInput].forEach(el => {
+    if (el) {
+      el.addEventListener('input', () => {
+        el.classList.remove('form-field-invalid');
+        el.removeAttribute('aria-invalid');
+        const err = document.getElementById(el.id + '-err');
+        if (err) err.classList.add('hidden');
+      });
+    }
+  });
+
   function openEntModal() {
     opener = document.activeElement;
+    clearErrors();
     if (formView) formView.classList.remove('hidden');
     if (doneView) doneView.classList.add('hidden');
     if (backdrop) { backdrop.classList.remove('hidden'); backdrop.classList.add('flex'); }
     try { document.body.style.overflow = 'hidden'; } catch (e) {}
-    const n = document.getElementById('ent-name');
-    if (n) setTimeout(() => n.focus(), 60);
+    if (nameInput) setTimeout(() => nameInput.focus(), 60);
   }
 
   function closeEntModal() {
@@ -29,6 +60,7 @@ export function initEnterpriseModal() {
   const closeBtn = document.getElementById('ent-modal-close');
   const doneClose = document.getElementById('ent-done-close');
   const submit = document.getElementById('ent-submit');
+  const submitText = document.getElementById('ent-submit-text');
 
   if (applyBtn) applyBtn.addEventListener('click', openEntModal);
   if (closeBtn) closeBtn.addEventListener('click', closeEntModal);
@@ -40,20 +72,66 @@ export function initEnterpriseModal() {
 
   if (submit) {
     submit.addEventListener('click', () => {
-      const name = (document.getElementById('ent-name') || {}).value || '';
-      const email = (document.getElementById('ent-email') || {}).value || '';
-      const company = (document.getElementById('ent-company') || {}).value || '';
-      const ok = name.trim().length > 1 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) && company.trim().length > 1;
-      const err = document.getElementById('ent-error');
-      if (!ok) {
-        if (err) err.classList.remove('hidden');
-        return;
+      clearErrors();
+      let hasError = false;
+
+      const nameVal = (nameInput ? nameInput.value : '').trim();
+      const emailVal = (emailInput ? emailInput.value : '').trim();
+      const companyVal = (companyInput ? companyInput.value : '').trim();
+
+      if (nameVal.length < 2) {
+        if (nameInput) {
+          nameInput.classList.add('form-field-invalid', 'shake-anim');
+          nameInput.setAttribute('aria-invalid', 'true');
+        }
+        if (nameErr) nameErr.classList.remove('hidden');
+        hasError = true;
       }
-      if (err) err.classList.add('hidden');
-      if (formView) formView.classList.add('hidden');
-      if (doneView) doneView.classList.remove('hidden');
-      const dc = document.getElementById('ent-done-close');
-      if (dc) dc.focus();
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        if (emailInput) {
+          emailInput.classList.add('form-field-invalid', 'shake-anim');
+          emailInput.setAttribute('aria-invalid', 'true');
+        }
+        if (emailErr) emailErr.classList.remove('hidden');
+        hasError = true;
+      }
+
+      if (companyVal.length < 2) {
+        if (companyInput) {
+          companyInput.classList.add('form-field-invalid', 'shake-anim');
+          companyInput.setAttribute('aria-invalid', 'true');
+        }
+        if (companyErr) companyErr.classList.remove('hidden');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      // Item 12: Loading State
+      submit.disabled = true;
+      if (submitText) {
+        submitText.innerHTML = '<span class="sr-spinner mr-2"></span> Gönderiliyor...';
+      }
+
+      setTimeout(() => {
+        submit.disabled = false;
+        if (submitText) submitText.textContent = 'Başvuruyu Gönder';
+        
+        // Item 14: Dynamic reference code
+        const refCodeEl = document.getElementById('ent-ref-code');
+        if (refCodeEl) {
+          refCodeEl.textContent = 'Takip Kodu: #SR-2026-' + Math.floor(1000 + Math.random() * 9000);
+        }
+
+        if (formView) formView.classList.add('hidden');
+        if (doneView) doneView.classList.remove('hidden');
+        if (doneClose) doneClose.focus();
+
+        if (window.srAnalytics && window.srAnalytics.track) {
+          window.srAnalytics.track('enterprise_apply');
+        }
+      }, 650);
     });
   }
 }

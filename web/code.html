@@ -2,13 +2,30 @@
 
 <html class="light" lang="tr"><head><script type="application/json" data-od-external-dependencies>["https://cdn.tailwindcss.com?plugins=forms,container-queries","https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@200..600,0..1&display=swap"]</script>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta name="description" content="SubRadar: masaüstünde abonelik zekâsı. Gizli yenilemeleri yakala, deneme tuzaklarını durdur, tek tıkla iptal et. %100 yerel ve çevrimdışı."/>
-<meta name="theme-color" content="#000000"/>
-<meta property="og:title" content="SubRadar — Masaüstü Abonelik Zekâsı"/>
-<meta property="og:description" content="Gizli yenilemeleri yakala, deneme tuzaklarını durdur, tek tıkla iptal et. %100 yerel."/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" name="viewport"/>
+<title>SubRadar — Masaüstü Abonelik Zekâsı ve Tek Tıkla İptal | %100 Yerel AES-256 Kasa</title>
+<meta name="description" content="Unutulan deneme tuzaklarını ve gizli abonelik yenilemelerini durdurun. %100 yerel AES-256 kasa, sıfır bulut, sıfır telemetri ve tek tıkla doğrudan iptal zekâsı."/>
+<meta name="theme-color" content="#07090e"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://laynexsw.github.io/SubRadar/"/>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<link rel="apple-touch-icon" href="favicon.svg"/>
+
+<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website"/>
-<title>SubRadar — Masaüstü Abonelik Zekâsı ve Tek Tıkla İptal</title>
+<meta property="og:url" content="https://laynexsw.github.io/SubRadar/"/>
+<meta property="og:title" content="SubRadar — Masaüstü Abonelik Zekâsı ve Tek Tıkla İptal"/>
+<meta property="og:description" content="Unutulan deneme tuzaklarını ve gizli abonelik zamlarını durdurun. %100 yerel AES-256 kasa, sıfır bulut, sıfır telemetri."/>
+<meta property="og:image" content="https://laynexsw.github.io/SubRadar/og-image.svg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:locale" content="tr_TR"/>
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="SubRadar — Masaüstü Abonelik Zekâsı"/>
+<meta name="twitter:description" content="Unutulan deneme tuzaklarını ve gizli abonelik zamlarını durdurun. %100 yerel AES-256 kasa."/>
+<meta name="twitter:image" content="https://laynexsw.github.io/SubRadar/og-image.svg"/>
 <!-- Material Symbols Outlined -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@200..600,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Tailwind CSS -->
@@ -483,8 +500,69 @@
   /* ── Kart kalkışı + 3D mikro-hareket ── */
   main .apple-card { transition: border-color .25s ease, background .25s ease, transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s cubic-bezier(.16,1,.3,1); }
   main .apple-card:hover { transform: translateY(-5px); box-shadow: 0 24px 60px rgba(0,0,0,.45); }
-  html.light main .apple-card:hover { box-shadow: 0 24px 60px rgba(0,0,0,.12); }
   main .download-trigger-btn:active { transform: scale(.97); }
+
+  /* ── 12. Micro Loading Spinner ── */
+  @keyframes srSpin { to { transform: rotate(360deg); } }
+  .sr-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: srSpin 0.7s linear infinite;
+    vertical-align: middle;
+  }
+
+  /* ── 13. Form Error States & Micro-Shake ── */
+  @keyframes srShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+  }
+  .form-field-invalid {
+    border-color: #f43f5e !important;
+    box-shadow: 0 0 0 1px #f43f5e, 0 0 15px rgba(244, 63, 94, 0.2) !important;
+  }
+  .shake-anim {
+    animation: srShake 0.4s ease-in-out;
+  }
+
+  /* ── 11. Sticky Mobile CTA Bar ── */
+  #sr-mobile-sticky-cta {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    z-index: 80;
+    transform: translateY(120%);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+    pointer-events: none;
+  }
+  #sr-mobile-sticky-cta.show {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── 17. Privacy & Storage Consent Banner ── */
+  #sr-privacy-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(140%);
+    width: calc(100% - 32px);
+    max-width: 580px;
+    z-index: 95;
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  }
+  #sr-privacy-banner.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
 </style>
 <noscript><style>[data-rv]{opacity:1 !important;transform:none !important}</style></noscript>
 <script>
@@ -601,7 +679,7 @@
 <p class="mt-7 text-base sm:text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto leading-relaxed font-normal" data-rv style="--d:.16s">
       Gizli otomatik yenilemeleri ortaya çıkaran, dijital dağınıklığı temizleyen ve aylık harcamalarının kontrolünü sana geri veren masaüstü yardımcısı.
     </p>
-<!-- Dual Desktop OS CTAs -->
+<!-- Dual Desktop OS CTAs & Quick Calculator Link -->
 <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 mb-4" id="download" data-rv style="--d:.24s">
 <!-- macOS için indir -->
 <button type="button" class="download-trigger-btn w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-black hover:bg-neutral-200 transition-all duration-200 flex items-center justify-center gap-2.5 font-medium text-xs tracking-tight shadow-[0_0_25px_rgba(255,255,255,0.12)] cursor-pointer min-h-[48px]" data-os="macOS">
@@ -609,7 +687,7 @@
 <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.64 1.35-.57.65-1.07 1.71-.93 2.73.99.08 2.02-.48 2.64-1.23z"></path>
 </svg>
 <span class="font-semibold">macOS için İndir</span>
-<span class="text-[10px] text-black/50 ml-1 font-mono">(Silicon ve Intel)</span>
+<span class="text-[10px] text-black/50 ml-1 font-mono">(Silicon &amp; Intel)</span>
 </button>
 <!-- Windows için indir -->
 <button type="button" class="download-trigger-btn w-full sm:w-auto px-7 py-3.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-white transition-all duration-200 flex items-center justify-center gap-2.5 text-xs font-medium tracking-tight cursor-pointer min-h-[48px]" data-os="Windows">
@@ -619,11 +697,20 @@
 <span>Windows 11/10 için İndir</span>
 <span class="text-[10px] text-white/40 font-mono">(x64/ARM)</span>
 </button>
+<!-- İkincil CTA: İsrafını Hesapla -->
+<a href="#hesaplayici" class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 transition-all duration-200 flex items-center justify-center gap-2 text-xs font-semibold tracking-tight min-h-[48px]">
+<span class="material-symbols-outlined text-[16px]">calculate</span>
+<span>İsrafını Hesapla</span>
+</a>
 </div>
-<!-- Sub meta -->
-<div class="text-[11px] font-mono text-white/40 tracking-wider">
-      macOS • Windows | %100 Yerel ve Önce Çevrimdışı
-    </div>
+<!-- Trust Reassurance Metrics Pills -->
+<div class="flex items-center justify-center gap-4 text-[11px] font-mono text-white/50 tracking-wider flex-wrap mt-3">
+  <span class="inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> %100 Çevrimdışı AES-256</span>
+  <span class="text-white/20">•</span>
+  <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-emerald-400 text-[13px]">credit_card_off</span> Kredi Kartı İstemez</span>
+  <span class="text-white/20">•</span>
+  <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-emerald-400 text-[13px]">cloud_off</span> Sıfır Bulut &amp; Sıfır Telemetri</span>
+</div>
 <!-- HERO DESKTOP APP WINDOW (Apple Studio Display / Native OS Window) -->
 <figure class="relative max-w-5xl mx-auto mt-14 text-left group/window transition-all duration-300" data-rv="scale" style="--d:.15s">
 <section class="rounded-xl bg-[#09090b] border border-white/15 shadow-[0_30px_90px_rgba(0,0,0,0.95)] overflow-hidden transition-all duration-300" id="hero-mock-window" aria-label="SubRadar masaüstü simülasyonu">
@@ -1528,112 +1615,6 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
   });
 })();
 </script>
-<!-- 7C. ENTERPRISE BAŞVURU MODALI -->
-<div class="fixed inset-0 z-[130] bg-black/75 backdrop-blur-md hidden items-center justify-center px-4" id="ent-modal-backdrop">
-<div class="animate-modal w-full max-w-md bg-[#101014] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)]" role="dialog" aria-modal="true" aria-labelledby="ent-modal-title">
-<div class="flex items-center justify-between pb-4 border-b border-white/10">
-<div class="flex items-center gap-2">
-<span class="w-2.5 h-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
-<h3 class="text-base font-semibold text-white" id="ent-modal-title">Enterprise Başvurusu</h3>
-</div>
-<button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center" id="ent-modal-close" aria-label="Başvuru penceresini kapat">
-<span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
-</button>
-</div>
-<div id="ent-view-form" class="py-5 space-y-4">
-<p class="text-xs text-neutral-400 leading-relaxed">Ekibini anlat, 24 saat içinde özel teklif ve kurulum planıyla dönelim.</p>
-<div>
-<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-name">Ad Soyad</label>
-<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-colors" id="ent-name" type="text" placeholder="Adın Soyadın" autocomplete="name"/>
-</div>
-<div>
-<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-email">Kurumsal e-posta</label>
-<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-colors" id="ent-email" type="email" placeholder="ad@sirket.com" autocomplete="email"/>
-</div>
-<div class="grid grid-cols-2 gap-3">
-<div>
-<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-company">Şirket</label>
-<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-colors" id="ent-company" type="text" placeholder="Şirket adı" autocomplete="organization"/>
-</div>
-<div>
-<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-seats">Ekip büyüklüğü</label>
-<select class="w-full bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white outline-none transition-colors cursor-pointer min-h-[44px]" id="ent-seats">
-<option value="10-25">10–25</option>
-<option value="25-100">25–100</option>
-<option value="100+">100+</option>
-</select>
-</div>
-</div>
-<p class="hidden text-xs text-red-400" id="ent-error" role="alert">Lütfen adını, geçerli bir kurumsal e-postanı ve şirketini yaz.</p>
-<button type="button" class="w-full py-3 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer min-h-[48px]" id="ent-submit">Başvuruyu Gönder</button>
-</div>
-<div id="ent-view-done" class="hidden py-8 text-center space-y-4">
-<span class="mx-auto w-12 h-12 rounded-full bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center">
-<span class="material-symbols-outlined text-emerald-400 text-[26px]" aria-hidden="true">check</span>
-</span>
-<h4 class="text-base font-semibold text-white">Başvurun alındı</h4>
-<p class="text-xs text-neutral-400 leading-relaxed max-w-xs mx-auto" id="ent-done-text">24 saat içinde e-postana özel teklifle döneceğiz.</p>
-<button type="button" class="px-6 py-2.5 rounded-full border border-white/15 text-xs text-white/70 hover:text-white transition-colors cursor-pointer min-h-[44px]" id="ent-done-close">Kapat</button>
-</div>
-</div>
-</div>
-<script>
-(function () {
-  var backdrop = document.getElementById('ent-modal-backdrop');
-  var formView = document.getElementById('ent-view-form');
-  var doneView = document.getElementById('ent-view-done');
-  var opener = null;
-  function openEntModal() {
-    opener = document.activeElement;
-    if (formView) formView.classList.remove('hidden');
-    if (doneView) doneView.classList.add('hidden');
-    if (backdrop) { backdrop.classList.remove('hidden'); backdrop.classList.add('flex'); }
-    try { document.body.style.overflow = 'hidden'; } catch (e) {}
-    var n = document.getElementById('ent-name');
-    if (n) setTimeout(function () { n.focus(); }, 60);
-  }
-  function closeEntModal() {
-    if (!backdrop) return;
-    backdrop.classList.add('hidden');
-    backdrop.classList.remove('flex');
-    try { document.body.style.overflow = ''; } catch (e) {}
-    if (opener && opener.focus) { try { opener.focus(); } catch (e) {} opener = null; }
-  }
-  document.addEventListener('DOMContentLoaded', function () {
-    var applyBtn = document.getElementById('ent-apply-btn');
-    var closeBtn = document.getElementById('ent-modal-close');
-    var doneClose = document.getElementById('ent-done-close');
-    var submit = document.getElementById('ent-submit');
-    if (applyBtn) applyBtn.addEventListener('click', openEntModal);
-    if (closeBtn) closeBtn.addEventListener('click', closeEntModal);
-    if (doneClose) doneClose.addEventListener('click', closeEntModal);
-    if (backdrop) backdrop.addEventListener('click', function (e) { if (e.target === backdrop) closeEntModal(); });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && backdrop && !backdrop.classList.contains('hidden')) closeEntModal();
-    });
-    if (submit) submit.addEventListener('click', function () {
-      var name = (document.getElementById('ent-name') || {}).value || '';
-      var email = (document.getElementById('ent-email') || {}).value || '';
-      var company = (document.getElementById('ent-company') || {}).value || '';
-      var seats = (document.getElementById('ent-seats') || {}).value || '10-25';
-      var ok = name.trim().length > 1 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) && company.trim().length > 1;
-      var err = document.getElementById('ent-error');
-      if (!ok) { if (err) err.classList.remove('hidden'); return; }
-      if (err) err.classList.add('hidden');
-      try {
-        var apps = JSON.parse(localStorage.getItem('sr-enterprise-apps') || '[]');
-        apps.push({ name: name.trim(), email: email.trim(), company: company.trim(), seats: seats, at: new Date().toISOString() });
-        localStorage.setItem('sr-enterprise-apps', JSON.stringify(apps));
-      } catch (e) {}
-      var dt = document.getElementById('ent-done-text');
-      if (dt) dt.textContent = t('Teşekkürler {name}! 24 saat içinde {email} adresine özel teklifle döneceğiz.').replace('{name}', name.trim().split(' ')[0]).replace('{email}', email.trim());
-      if (formView) formView.classList.add('hidden');
-      if (doneView) doneView.classList.remove('hidden');
-      if (doneClose) doneClose.focus();
-    });
-  });
-})();
-</script>
 <!-- 8. MARKA MANİFESTOSU & HAKKIMIZDA -->
 <section class="max-w-5xl mx-auto px-6 py-28 border-t border-white/10" data-od-id="hakkimizda" id="hakkimizda">
   <!-- Brand Manifesto Header (Center Aligned) -->
@@ -1850,7 +1831,7 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
 <!-- Col 1 -->
 <div class="col-span-2 space-y-3">
 <a class="flex items-center gap-2.5 group inline-flex" href="#" aria-label="SubRadar ana sayfasına dön">
-<span class="brand-mark w-5 h-5 rounded-full bg-white flex items-center justify-center text-black shadow-sm group-hover:scale-105 transition-transform" aria-hidden="true">
+<span class="brand-mark w-5 h-5 rounded-full bg-emerald-400 flex items-center justify-center text-black shadow-sm group-hover:scale-105 transition-transform" aria-hidden="true">
 <span class="brand-mark-dot w-1.5 h-1.5 rounded-full bg-black"></span>
 </span>
 <span class="text-sm font-semibold text-white tracking-tight group-hover:text-white transition-colors">SubRadar</span>
@@ -1859,8 +1840,12 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
 <p class="text-neutral-400 text-xs leading-relaxed max-w-sm">
           Profesyonellerin ve ileri düzey kullanıcıların yinelenen yazılım giderlerini yerelde takip edip denetleyip iptal etmesi için geliştirilmiş masaüstü yardımcısı.
         </p>
+<div class="space-y-1 pt-1 text-[11px] text-neutral-400 font-mono">
+  <div>Destek &amp; İletişim: <a href="mailto:iletisim@subradar.dev" class="text-white hover:text-emerald-400 transition-colors">iletisim@subradar.dev</a></div>
+  <div>Güvenlik Raporu: <a href="mailto:security@subradar.dev" class="text-white hover:text-emerald-400 transition-colors">security@subradar.dev</a> (PGP)</div>
+</div>
 <div class="pt-2 text-[11px] font-mono text-white/40">
-          v1.4 Evrensel Derleme • Motor Gecikmesi: <span class="text-white/70" id="footer-engine-ping">3,9ms</span>
+          v1.5.0 Evrensel Derleme • Motor Gecikmesi: <span class="text-emerald-400/80" id="footer-engine-ping">3,9ms</span>
 </div>
 </div>
 <!-- Col 2 -->
@@ -1881,28 +1866,29 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
 <li><a class="download-trigger-btn hover:text-white transition-colors cursor-pointer" data-os="macOS">macOS (Apple Silicon)</a></li>
 <li><a class="download-trigger-btn hover:text-white transition-colors cursor-pointer" data-os="macOS">macOS (Intel x86)</a></li>
 <li><a class="download-trigger-btn hover:text-white transition-colors cursor-pointer" data-os="Windows">Windows 11 / 10</a></li>
+<li><a class="download-trigger-btn hover:text-white transition-colors cursor-pointer" data-os="Linux">Linux (AppImage/deb)</a></li>
 </ul>
 </div>
 <!-- Col 4 -->
 <div class="space-y-2.5">
-<div class="font-semibold text-white text-[11px] font-mono uppercase tracking-wider">Güvenlik</div>
+<div class="font-semibold text-white text-[11px] font-mono uppercase tracking-wider">Güvenlik &amp; Topluluk</div>
 <ul class="space-y-2 text-neutral-400">
-<li>Yerel Şifreleme</li>
-<li>Sıfır Telemetri Şartnamesi</li>
-<li>KVKK ve Yerel Saklama</li>
-<li>Kaynak Kodu Denetle</li>
+<li><a href="../privacy.html" class="hover:text-white transition-colors">Yerel AES-256 Şartnamesi</a></li>
+<li><a href="../privacy.html" class="hover:text-white transition-colors">Sıfır Telemetri Güvencesi</a></li>
+<li><a href="https://github.com/Laynexsw/SubRadar" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub Kaynak Kodu</a></li>
+<li><a href="https://github.com/Laynexsw/SubRadar/issues" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Hata Bildir (Issues)</a></li>
 </ul>
 </div>
 </div>
 <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-white/40">
 <div>
-        © 2026 SubRadar Masaüstü Sistemleri. Tüm hakları saklıdır.
+        © 2026 SubRadar Masaüstü Sistemleri. Açık Kaynak MIT Lisansı.
       </div>
 <div class="flex items-center gap-6">
 <a href="#hakkimizda" class="hover:text-white transition-colors">Hakkımızda</a>
-<span>Gizlilik İlkesi</span>
-<span>Kullanım Şartları</span>
-<span>Güvenlik Raporu</span>
+<a href="../privacy.html" class="hover:text-white transition-colors">Gizlilik Politikası</a>
+<a href="../terms.html" class="hover:text-white transition-colors">Kullanım Koşulları</a>
+<a href="mailto:security@subradar.dev" class="hover:text-white transition-colors">Güvenlik Raporu</a>
 </div>
 </div>
 </div>
@@ -2425,6 +2411,129 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
 </footer>
 </div>
 </div>
+<!-- ========================================================================= -->
+<!-- 6. ENTERPRISE REQUEST & QUOTE MODAL (INLINE VALIDATION & LOADING STATE)   -->
+<!-- ========================================================================= -->
+<div class="fixed inset-0 z-[130] bg-black/75 backdrop-blur-md hidden items-center justify-center px-4" id="ent-modal-backdrop">
+<div class="animate-modal w-full max-w-md bg-[#101014] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)]" role="dialog" aria-modal="true" aria-labelledby="ent-modal-title">
+<div class="flex items-center justify-between pb-4 border-b border-white/10">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+<h3 class="text-base font-semibold text-white" id="ent-modal-title">Enterprise Başvurusu</h3>
+</div>
+<button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center" id="ent-modal-close" aria-label="Başvuru penceresini kapat">
+<span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
+</button>
+</div>
+<div id="ent-view-form" class="py-5 space-y-4">
+<p class="text-xs text-neutral-400 leading-relaxed">Ekibini anlat, 24 saat içinde özel teklif ve kurulum planıyla dönelim.</p>
+<div>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-name">Ad Soyad *</label>
+<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-all" id="ent-name" type="text" placeholder="Adın Soyadın" autocomplete="name" aria-required="true"/>
+<span class="text-[11px] text-rose-400 mt-1 hidden" id="ent-name-err" role="alert">Lütfen en az 2 karakterli adınızı girin.</span>
+</div>
+<div>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-email">Kurumsal e-posta *</label>
+<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-all" id="ent-email" type="email" placeholder="ad@sirket.com" autocomplete="email" aria-required="true"/>
+<span class="text-[11px] text-rose-400 mt-1 hidden" id="ent-email-err" role="alert">Geçerli bir kurumsal e-posta adresi yazın.</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-company">Şirket *</label>
+<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-all" id="ent-company" type="text" placeholder="Şirket adı" autocomplete="organization" aria-required="true"/>
+<span class="text-[11px] text-rose-400 mt-1 hidden" id="ent-company-err" role="alert">Şirket adı zorunludur.</span>
+</div>
+<div>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-seats">Ekip büyüklüğü</label>
+<select class="w-full bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white outline-none transition-colors cursor-pointer min-h-[44px]" id="ent-seats">
+<option value="10-25">10–25</option>
+<option value="25-100">25–100</option>
+<option value="100+">100+</option>
+</select>
+</div>
+</div>
+<button type="button" class="w-full py-3 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer min-h-[48px] flex items-center justify-center gap-2" id="ent-submit">
+  <span id="ent-submit-text">Başvuruyu Gönder</span>
+</button>
+</div>
+<div id="ent-view-done" class="hidden py-8 text-center space-y-4">
+<div class="mx-auto w-12 h-12 rounded-full bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-emerald-400 text-[26px]" aria-hidden="true">check</span>
+</div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[11px] font-mono text-emerald-400" id="ent-ref-code">
+  Takip Kodu: #SR-2026-X91
+</div>
+<h4 class="text-base font-semibold text-white">Başvurunuz Alındı — Teşekkür Ederiz</h4>
+<p class="text-xs text-neutral-400 leading-relaxed max-w-xs mx-auto" id="ent-done-text">24 saat içinde kurumsal e-posta adresinize özel teklif ve kurulum rehberiyle döneceğiz.</p>
+<div class="flex items-center justify-center gap-3 pt-2">
+  <button type="button" class="px-5 py-2.5 rounded-full border border-white/15 text-xs text-white/70 hover:text-white transition-colors cursor-pointer min-h-[44px]" id="ent-done-close">Kapat</button>
+  <a href="../thanks.html" class="px-5 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all flex items-center gap-1 min-h-[44px]">
+    Detayları Gör
+  </a>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 7. ÇEREZ VE YEREL DEPOLAMA GİZLİLİK BANNER'I                            -->
+<!-- ========================================================================= -->
+<aside id="sr-privacy-banner" role="region" aria-label="Gizlilik ve Yerel Bellek Bildirimi" class="rounded-2xl p-4 sm:p-5 bg-[#0f111a]/95 border border-white/15 backdrop-blur-2xl shadow-2xl text-left">
+  <div class="flex items-start gap-3.5">
+    <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+      <span class="material-symbols-outlined text-emerald-400 text-[20px]" aria-hidden="true">cookie_off</span>
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center justify-between gap-2">
+        <h3 class="text-sm font-semibold text-white tracking-tight flex items-center gap-1.5">
+          <span>%100 Sıfır Çerez Güvencesi</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+        </h3>
+        <button type="button" id="sr-privacy-close" class="text-neutral-400 hover:text-white transition-colors p-1 rounded-lg focus:outline-none" aria-label="Bildirimi kapat">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+      <p class="text-xs text-neutral-300 mt-1.5 leading-relaxed">
+        SubRadar hiçbir izleme, analitik veya reklam çerezi kullanmaz. Tercihleriniz (tema, dil, kur) sadece cihazınızdaki yerel bellekte saklanır.
+      </p>
+      <div class="flex items-center gap-3 mt-3.5 pt-3 border-t border-white/[0.08]">
+        <button type="button" id="sr-privacy-accept" class="px-4 py-1.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all cursor-pointer">
+          Anladım &amp; Kabul Et
+        </button>
+        <a href="../privacy.html" class="text-xs text-neutral-400 hover:text-white underline underline-offset-4 transition-colors">
+          Gizlilik Politikası
+        </a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ========================================================================= -->
+<!-- 8. SABİT MOBİL CTA ÇUBUĞU                                                -->
+<!-- ========================================================================= -->
+<nav id="sr-mobile-sticky-cta" class="md:hidden" aria-label="Hızlı İndirme Çubuğu">
+  <div class="rounded-2xl p-3 bg-black/85 border border-white/15 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.8)] flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 min-w-0">
+      <div class="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center flex-shrink-0">
+        <span class="material-symbols-outlined text-emerald-400 text-[18px]" aria-hidden="true">radar</span>
+      </div>
+      <div class="min-w-0">
+        <div class="text-xs font-semibold text-white truncate">SubRadar Masaüstü</div>
+        <div class="text-[10px] text-neutral-400 truncate font-mono">%100 Yerel AES-256 Kasa</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-1.5 flex-shrink-0">
+      <button type="button" class="download-trigger-btn px-4 py-2 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all flex items-center gap-1 cursor-pointer min-h-[38px]" data-os="macOS">
+        <span class="material-symbols-outlined text-[15px]">download</span>
+        <span>İndir</span>
+      </button>
+      <button type="button" id="sr-mobile-cta-close" class="p-1.5 text-neutral-400 hover:text-white transition-colors" aria-label="Mobil çubuğu kapat">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
 <!-- ========================================================================= -->
 <!-- JAVASCRIPT: ENTIRE PROTOTYPE INTERACTIVITY & LOGIC                        -->
 <!-- ========================================================================= -->
@@ -4962,6 +5071,274 @@ Rapor Üretici: https://subradar.dev
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  /* ========================================================================= */
+  /* 18. PRIVACY-FIRST ZERO-COOKIE LOCAL TELEMETRY                             */
+  /* ========================================================================= */
+  window.srAnalytics = (function () {
+    var dnt = navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.msDoNotTrack === '1';
+    var sessionKey = 'sr-local-metrics';
+    function getStore() {
+      if (dnt) return [];
+      try {
+        return JSON.parse(sessionStorage.getItem(sessionKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+    function track(evtName, payload) {
+      if (dnt) return;
+      try {
+        var logs = getStore();
+        logs.push({
+          evt: evtName,
+          meta: payload || {},
+          ts: Date.now()
+        });
+        if (logs.length > 50) logs.shift();
+        sessionStorage.setItem(sessionKey, JSON.stringify(logs));
+      } catch (e) {}
+    }
+    return { track: track, isDnt: dnt };
+  })();
+
+  /* ========================================================================= */
+  /* 17. ÇEREZ VE YEREL BELLEK GİZLİLİK BANNER'I MANTIĞI                       */
+  /* ========================================================================= */
+  (function initPrivacyBanner() {
+    var banner = document.getElementById('sr-privacy-banner');
+    if (!banner) return;
+    var accepted = false;
+    try {
+      accepted = localStorage.getItem('sr-privacy-dismissed');
+    } catch (e) {}
+
+    if (!accepted) {
+      setTimeout(function () {
+        banner.classList.add('show');
+      }, 1500);
+    }
+
+    var acceptBtn = document.getElementById('sr-privacy-accept');
+    var closeBtn = document.getElementById('sr-privacy-close');
+
+    function dismiss(mode) {
+      banner.classList.remove('show');
+      try {
+        localStorage.setItem('sr-privacy-dismissed', mode || 'acknowledged');
+      } catch (e) {}
+      if (window.srAnalytics) {
+        window.srAnalytics.track('privacy_banner_dismiss', { mode: mode });
+      }
+      if (mode === 'accepted' && typeof srShowToast === 'function') {
+        srShowToast('Gizlilik tercihi kaydedildi: Sıfır çerez, sıfır telemetri.');
+      }
+    }
+
+    if (acceptBtn) acceptBtn.addEventListener('click', function () { dismiss('accepted'); });
+    if (closeBtn) closeBtn.addEventListener('click', function () { dismiss('closed'); });
+  })();
+
+  /* ========================================================================= */
+  /* 11. SABİT MOBİL CTA ÇUBUĞU                                                */
+  /* ========================================================================= */
+  (function initMobileStickyCTA() {
+    var bar = document.getElementById('sr-mobile-sticky-cta');
+    var closeBtn = document.getElementById('sr-mobile-cta-close');
+    if (!bar) return;
+    var dismissed = false;
+    try {
+      dismissed = sessionStorage.getItem('sr-mobile-cta-dismissed') === '1';
+    } catch (e) {}
+
+    function checkSticky() {
+      if (dismissed || window.innerWidth >= 768) {
+        bar.classList.remove('show');
+        return;
+      }
+      var y = window.scrollY || 0;
+      if (y > 380) {
+        bar.classList.add('show');
+      } else {
+        bar.classList.remove('show');
+      }
+    }
+
+    window.addEventListener('scroll', checkSticky, { passive: true });
+    window.addEventListener('resize', checkSticky, { passive: true });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () {
+        dismissed = true;
+        bar.classList.remove('show');
+        try {
+          sessionStorage.setItem('sr-mobile-cta-dismissed', '1');
+        } catch (e) {}
+      });
+    }
+  })();
+
+  /* ========================================================================= */
+  /* 12, 13, 14. ENTERPRISE MODALI (LOADING, VALIDATION, TAKİP KODU)            */
+  /* ========================================================================= */
+  (function initEnterpriseModal() {
+    var backdrop = document.getElementById('ent-modal-backdrop');
+    var formView = document.getElementById('ent-view-form');
+    var doneView = document.getElementById('ent-view-done');
+    var applyBtn = document.getElementById('ent-apply-btn');
+    var closeBtn = document.getElementById('ent-modal-close');
+    var doneClose = document.getElementById('ent-done-close');
+    var submit = document.getElementById('ent-submit');
+    var submitText = document.getElementById('ent-submit-text');
+    var opener = null;
+
+    if (!backdrop) return;
+
+    function openModal() {
+      opener = document.activeElement;
+      if (formView) formView.classList.remove('hidden');
+      if (doneView) doneView.classList.add('hidden');
+      backdrop.classList.remove('hidden');
+      backdrop.classList.add('flex');
+      try { document.body.style.overflow = 'hidden'; } catch (e) {}
+      var n = document.getElementById('ent-name');
+      if (n) setTimeout(function () { n.focus(); }, 60);
+      if (window.srAnalytics) window.srAnalytics.track('enterprise_modal_open');
+    }
+
+    function closeModal() {
+      backdrop.classList.add('hidden');
+      backdrop.classList.remove('flex');
+      try { document.body.style.overflow = ''; } catch (e) {}
+      if (opener && opener.focus) {
+        try { opener.focus(); } catch (e) {}
+        opener = null;
+      }
+    }
+
+    if (applyBtn) applyBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (doneClose) doneClose.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', function (e) {
+      if (e.target === backdrop) closeModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !backdrop.classList.contains('hidden')) closeModal();
+    });
+
+    // Inputs real-time validation error clear
+    ['ent-name', 'ent-email', 'ent-company'].forEach(function (id) {
+      var input = document.getElementById(id);
+      var err = document.getElementById(id + '-err');
+      if (input) {
+        input.addEventListener('input', function () {
+          input.classList.remove('form-field-invalid');
+          if (err) err.classList.add('hidden');
+        });
+      }
+    });
+
+    if (submit) {
+      submit.addEventListener('click', function () {
+        var nameInput = document.getElementById('ent-name');
+        var emailInput = document.getElementById('ent-email');
+        var companyInput = document.getElementById('ent-company');
+        var seatsInput = document.getElementById('ent-seats');
+
+        var nameVal = (nameInput ? nameInput.value : '').trim();
+        var emailVal = (emailInput ? emailInput.value : '').trim();
+        var companyVal = (companyInput ? companyInput.value : '').trim();
+        var seatsVal = seatsInput ? seatsInput.value : '10-25';
+
+        var hasError = false;
+
+        if (nameVal.length < 2) {
+          if (nameInput) {
+            nameInput.classList.add('form-field-invalid', 'shake-anim');
+            setTimeout(function () { nameInput.classList.remove('shake-anim'); }, 450);
+          }
+          var nErr = document.getElementById('ent-name-err');
+          if (nErr) nErr.classList.remove('hidden');
+          hasError = true;
+        }
+
+        var emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRx.test(emailVal)) {
+          if (emailInput) {
+            emailInput.classList.add('form-field-invalid', 'shake-anim');
+            setTimeout(function () { emailInput.classList.remove('shake-anim'); }, 450);
+          }
+          var eErr = document.getElementById('ent-email-err');
+          if (eErr) eErr.classList.remove('hidden');
+          hasError = true;
+        }
+
+        if (companyVal.length < 2) {
+          if (companyInput) {
+            companyInput.classList.add('form-field-invalid', 'shake-anim');
+            setTimeout(function () { companyInput.classList.remove('shake-anim'); }, 450);
+          }
+          var cErr = document.getElementById('ent-company-err');
+          if (cErr) cErr.classList.remove('hidden');
+          hasError = true;
+        }
+
+        if (hasError) return;
+
+        // Loading state
+        submit.disabled = true;
+        submit.classList.add('opacity-80', 'cursor-not-allowed');
+        if (submitText) {
+          submitText.innerHTML = '<span class="sr-spinner w-4 h-4 mr-2" aria-hidden="true"></span> Başvuru İletiliyor...';
+        }
+
+        setTimeout(function () {
+          // Generate unique confirmation tracking reference code
+          var randHex = Math.floor(1000 + Math.random() * 9000).toString(16).toUpperCase();
+          var trackingCode = '#SR-2026-X' + randHex;
+
+          try {
+            var apps = JSON.parse(localStorage.getItem('sr-enterprise-apps') || '[]');
+            apps.push({
+              code: trackingCode,
+              name: nameVal,
+              email: emailVal,
+              company: companyVal,
+              seats: seatsVal,
+              at: new Date().toISOString()
+            });
+            localStorage.setItem('sr-enterprise-apps', JSON.stringify(apps));
+          } catch (e) {}
+
+          var refBadge = document.getElementById('ent-ref-code');
+          if (refBadge) refBadge.textContent = 'Takip Kodu: ' + trackingCode;
+
+          var doneText = document.getElementById('ent-done-text');
+          if (doneText) {
+            var firstName = nameVal.split(' ')[0] || nameVal;
+            doneText.textContent = (typeof t === 'function' ? t('Teşekkürler {name}! 24 saat içinde {email} adresine özel teklif ve kurulum rehberiyle döneceğiz.') : 'Teşekkürler {name}! 24 saat içinde {email} adresine özel teklifle döneceğiz.')
+              .replace('{name}', firstName)
+              .replace('{email}', emailVal);
+          }
+
+          submit.disabled = false;
+          submit.classList.remove('opacity-80', 'cursor-not-allowed');
+          if (submitText) submitText.textContent = 'Başvuruyu Gönder';
+
+          if (formView) formView.classList.add('hidden');
+          if (doneView) doneView.classList.remove('hidden');
+          if (doneClose) doneClose.focus();
+
+          if (window.srAnalytics) {
+            window.srAnalytics.track('enterprise_form_success', {
+              code: trackingCode,
+              seats: seatsVal
+            });
+          }
+        }, 750);
+      });
+    }
+  })();
 })();
 </script>
 </body></html>

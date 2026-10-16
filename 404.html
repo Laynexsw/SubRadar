@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"/>
+  <title>404 — Radar Sinyali Bulunamadı | SubRadar</title>
+  <meta name="description" content="Aradığınız koordinat radar alanının dışında kaldı. SubRadar ana sayfasına veya masaüstü uygulamasına dönün."/>
+  <meta name="theme-color" content="#07090e"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="apple-touch-icon" href="favicon.svg"/>
+  <!-- Fonts & Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@200..600,0..1&display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            surface: {
+              DEFAULT: "#07090e",
+              card: "rgba(255, 255, 255, 0.03)",
+              border: "rgba(255, 255, 255, 0.08)"
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #07090e;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .glass-card {
+      background: rgba(18, 22, 34, 0.65);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+    @keyframes radarSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .radar-sweep-anim {
+      animation: radarSpin 4s linear infinite;
+      transform-origin: center;
+    }
+    @keyframes pingPulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.08); opacity: 0.3; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .radar-pulse-anim {
+      animation: pingPulse 3s ease-in-out infinite;
+      transform-origin: center;
+    }
+  </style>
+</head>
+<body class="selection:bg-emerald-500/30 selection:text-white">
+
+  <!-- Background Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-emerald-500/10 rounded-full blur-[140px]"></div>
+    <div class="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px]"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-10 w-full border-b border-white/[0.08] bg-black/30 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+    <a href="web/code.html" class="flex items-center gap-2.5 text-white no-underline group focus:outline-none focus:ring-2 focus:ring-emerald-500/50 rounded-lg">
+      <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-emerald-400 text-[18px]">radar</span>
+      </div>
+      <span class="font-bold tracking-tight text-lg">SubRadar<span class="text-emerald-400">.</span></span>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <a href="web/code.html" class="text-xs text-neutral-400 hover:text-white transition-colors py-1.5 px-3 rounded-full hover:bg-white/[0.06]">
+        Ana Sayfa
+      </a>
+      <a href="web/code.html#downloads" class="text-xs font-semibold bg-white text-black hover:bg-neutral-200 transition-all py-1.5 px-4 rounded-full flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[15px]">download</span>
+        İndir
+      </a>
+    </div>
+  </header>
+
+  <!-- Main 404 Container -->
+  <main class="relative z-10 flex-1 flex items-center justify-center p-6" role="main">
+    <div class="glass-card max-w-xl w-full rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
+      
+      <!-- Radar Visual Container -->
+      <div class="relative w-44 h-44 mx-auto mb-8 flex items-center justify-center">
+        <!-- Concentric Radar Rings -->
+        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 160 160" fill="none" aria-hidden="true">
+          <circle cx="80" cy="80" r="72" stroke="rgba(255, 255, 255, 0.06)" stroke-width="1"/>
+          <circle cx="80" cy="80" r="52" stroke="rgba(16, 185, 129, 0.15)" stroke-width="1"/>
+          <circle cx="80" cy="80" r="32" stroke="rgba(16, 185, 129, 0.25)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="80" y1="8" x2="80" y2="152" stroke="rgba(16, 185, 129, 0.15)" stroke-width="1"/>
+          <line x1="8" y1="80" x2="152" y2="80" stroke="rgba(16, 185, 129, 0.15)" stroke-width="1"/>
+          <!-- Spinning Sweep -->
+          <g class="radar-sweep-anim">
+            <path d="M80 80 L140 50 A70 70 0 0 0 80 10 Z" fill="url(#radarGradient)" opacity="0.4"/>
+            <line x1="80" y1="80" x2="140" y2="50" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <!-- Center Pulse -->
+          <circle class="radar-pulse-anim" cx="80" cy="80" r="14" fill="rgba(244, 63, 94, 0.2)"/>
+          <circle cx="80" cy="80" r="4" fill="#f43f5e"/>
+          <defs>
+            <radialGradient id="radarGradient" cx="80" cy="80" r="70" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#10b981" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+        </svg>
+
+        <!-- Big 404 Overlay Badge -->
+        <div class="relative z-10 px-4 py-1.5 rounded-full bg-black/60 border border-white/15 text-xs font-mono font-bold tracking-widest text-rose-400 backdrop-blur-md">
+          ERR_404_NOT_FOUND
+        </div>
+      </div>
+
+      <!-- Text Headings -->
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
+        Radar Sinyali Kayboldu
+      </h1>
+      <p class="text-sm sm:text-base text-neutral-400 max-w-md mx-auto leading-relaxed mb-8">
+        Aradığınız sayfa silinmiş, taşınmış veya hiçbir zaman var olmamış olabilir. Güvenli bölgeye dönün veya aradığınızı komut paletinde sorgulayın.
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="web/code.html" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-neutral-200 transition-all shadow-lg shadow-white/10 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">home</span>
+          Ana Sayfaya Dön
+        </a>
+        <a href="web/code.html#calculator" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white/[0.06] border border-white/15 text-white text-sm font-medium hover:bg-white/[0.12] transition-colors flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">calculate</span>
+          İsrafını Hesapla
+        </a>
+      </div>
+
+      <!-- Footer Info Pill -->
+      <div class="mt-8 pt-6 border-t border-white/[0.08] flex items-center justify-center gap-2 text-xs text-neutral-500 font-mono">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        SubRadar v1.5.0 • Yerel Kasa Çevrimdışı Çalışır
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Minimal Footer -->
+  <footer class="relative z-10 py-6 text-center text-xs text-neutral-500 border-t border-white/[0.06]">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span>© 2026 SubRadar. Açık Kaynak &amp; Sıfır Bilgi Mimarisi.</span>
+      <div class="flex items-center gap-4">
+        <a href="privacy.html" class="hover:text-neutral-300 transition-colors">Gizlilik Politikası</a>
+        <a href="terms.html" class="hover:text-neutral-300 transition-colors">Kullanım Koşulları</a>
+        <a href="https://github.com/Laynexsw/SubRadar" target="_blank" rel="noopener noreferrer" class="hover:text-neutral-300 transition-colors">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

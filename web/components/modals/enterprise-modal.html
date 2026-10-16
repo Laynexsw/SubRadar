@@ -12,17 +12,20 @@
 <div id="ent-view-form" class="py-5 space-y-4">
 <p class="text-xs text-neutral-400 leading-relaxed">Ekibini anlat, 24 saat içinde özel teklif ve kurulum planıyla dönelim.</p>
 <div>
-<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-name">Ad Soyad</label>
-<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-colors" id="ent-name" type="text" placeholder="Adın Soyadın" autocomplete="name"/>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-name">Ad Soyad *</label>
+<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-all" id="ent-name" type="text" placeholder="Adın Soyadın" autocomplete="name" aria-required="true"/>
+<span class="text-[11px] text-rose-400 mt-1 hidden" id="ent-name-err" role="alert">Lütfen en az 2 karakterli adınızı girin.</span>
 </div>
 <div>
-<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-email">Kurumsal e-posta</label>
-<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-colors" id="ent-email" type="email" placeholder="ad@sirket.com" autocomplete="email"/>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-email">Kurumsal e-posta *</label>
+<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-all" id="ent-email" type="email" placeholder="ad@sirket.com" autocomplete="email" aria-required="true"/>
+<span class="text-[11px] text-rose-400 mt-1 hidden" id="ent-email-err" role="alert">Geçerli bir kurumsal e-posta adresi yazın.</span>
 </div>
 <div class="grid grid-cols-2 gap-3">
 <div>
-<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-company">Şirket</label>
-<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-colors" id="ent-company" type="text" placeholder="Şirket adı" autocomplete="organization"/>
+<label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-company">Şirket *</label>
+<input class="w-full bg-black border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/40 outline-none transition-all" id="ent-company" type="text" placeholder="Şirket adı" autocomplete="organization" aria-required="true"/>
+<span class="text-[11px] text-rose-400 mt-1 hidden" id="ent-company-err" role="alert">Şirket adı zorunludur.</span>
 </div>
 <div>
 <label class="text-[11px] font-mono uppercase text-white/50 block mb-1.5" for="ent-seats">Ekip büyüklüğü</label>
@@ -33,15 +36,24 @@
 </select>
 </div>
 </div>
-<p class="hidden text-xs text-red-400" id="ent-error" role="alert">Lütfen adını, geçerli bir kurumsal e-postanı ve şirketini yaz.</p>
-<button type="button" class="w-full py-3 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer min-h-[48px]" id="ent-submit">Başvuruyu Gönder</button>
+<button type="button" class="w-full py-3 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer min-h-[48px] flex items-center justify-center gap-2" id="ent-submit">
+  <span id="ent-submit-text">Başvuruyu Gönder</span>
+</button>
 </div>
 <div id="ent-view-done" class="hidden py-8 text-center space-y-4">
 <div class="mx-auto w-12 h-12 rounded-full bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center">
 <span class="material-symbols-outlined text-emerald-400 text-[26px]" aria-hidden="true">check</span>
 </div>
-<h4 class="text-base font-semibold text-white">Başvurun alındı</h4>
-<p class="text-xs text-neutral-400 leading-relaxed max-w-xs mx-auto" id="ent-done-text">24 saat içinde e-postana özel teklifle döneceğiz.</p>
-<button type="button" class="px-6 py-2.5 rounded-full border border-white/15 text-xs text-white/70 hover:text-white transition-colors cursor-pointer min-h-[44px]" id="ent-done-close">Kapat</button>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[11px] font-mono text-emerald-400" id="ent-ref-code">
+  Takip Kodu: #SR-2026-X91
+</div>
+<h4 class="text-base font-semibold text-white">Başvurunuz Alındı — Teşekkür Ederiz</h4>
+<p class="text-xs text-neutral-400 leading-relaxed max-w-xs mx-auto" id="ent-done-text">24 saat içinde kurumsal e-posta adresinize özel teklif ve kurulum rehberiyle döneceğiz.</p>
+<div class="flex items-center justify-center gap-3 pt-2">
+  <button type="button" class="px-5 py-2.5 rounded-full border border-white/15 text-xs text-white/70 hover:text-white transition-colors cursor-pointer min-h-[44px]" id="ent-done-close">Kapat</button>
+  <a href="../thanks.html" class="px-5 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all flex items-center gap-1 min-h-[44px]">
+    Detayları Gör
+  </a>
+</div>
 </div>
 </div>

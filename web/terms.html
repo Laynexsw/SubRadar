@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"/>
+  <title>Kullanım Koşulları & Yasal Şartlar | SubRadar</title>
+  <meta name="description" content="SubRadar açık kaynaklı masaüstü abonelik takip ve doğrudan iptal zekâsı kullanım koşulları ve yasal şartları."/>
+  <meta name="theme-color" content="#07090e"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="apple-touch-icon" href="favicon.svg"/>
+  <!-- Fonts & Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@200..600,0..1&display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            surface: {
+              DEFAULT: "#07090e",
+              card: "rgba(255, 255, 255, 0.03)",
+              border: "rgba(255, 255, 255, 0.08)"
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #07090e;
+      color: #cbd5e1;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+    .glass-card {
+      background: rgba(18, 22, 34, 0.55);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body class="selection:bg-emerald-500/30 selection:text-white">
+
+  <!-- Background Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <div class="absolute -top-40 right-1/3 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[140px]"></div>
+    <div class="absolute bottom-10 left-10 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px]"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-10 w-full border-b border-white/[0.08] bg-black/40 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+    <a href="code.html" class="flex items-center gap-2.5 text-white no-underline group focus:outline-none focus:ring-2 focus:ring-emerald-500/50 rounded-lg">
+      <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-emerald-400 text-[18px]">radar</span>
+      </div>
+      <span class="font-bold tracking-tight text-lg">SubRadar<span class="text-emerald-400">.</span></span>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <a href="web/code.html" class="text-xs text-neutral-400 hover:text-white transition-colors py-1.5 px-3 rounded-full hover:bg-white/[0.06]">
+        Ana Sayfa
+      </a>
+      <a href="web/code.html#downloads" class="text-xs font-semibold bg-white text-black hover:bg-neutral-200 transition-all py-1.5 px-4 rounded-full flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[15px]">download</span>
+        İndir
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="relative z-10 max-w-4xl mx-auto px-6 py-12 sm:py-16" role="main">
+    
+    <!-- Top Pill & Title -->
+    <div class="mb-10 text-center sm:text-left">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-4">
+        <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+        Hukuki Şartlar &amp; Lisans
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mt-1">
+        Kullanım Koşulları
+      </h1>
+      <p class="text-sm sm:text-base text-neutral-400 mt-3 max-w-2xl">
+        Son güncelleme: 16 Ekim 2026 • SubRadar v1.5.0
+      </p>
+    </div>
+
+    <!-- Terms Body -->
+    <div class="glass-card p-8 sm:p-12 rounded-3xl space-y-8 text-sm text-neutral-300">
+      
+      <section>
+        <h2 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
+          <span class="text-indigo-400 font-mono text-base">01.</span>
+          Lisans ve Açık Kaynak Hakları
+        </h2>
+        <p class="leading-relaxed">
+          SubRadar yazılımı ve kaynak kodları, MIT Lisansı koşulları altında dağıtılmaktadır. Yazılımı ticari veya kişisel amaçlarla serbestçe kullanabilir, inceleyebilir ve değiştirebilirsiniz. Lisansın tam metnine depodaki <code>LICENSE</code> dosyasından ulaşabilirsiniz.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
+          <span class="text-indigo-400 font-mono text-base">02.</span>
+          Hizmet Kapsamı ve İptal Köprüleri
+        </h2>
+        <p class="leading-relaxed">
+          SubRadar, kullanıcılara SaaS ve dijital aboneliklerin iptal süreçlerini kolaylaştırmak üzere üçüncü taraf servis sağlayıcıların resmi fesih sayfalarına doğrudan bağlantılar (Direct Kill Switch) sunar. Bu bağlantılar kamuya açık resmi sayfalara yönlendirme işlevi görür; ilgili sağlayıcıların arayüz değişikliklerinden SubRadar sorumlu tutulamaz.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
+          <span class="text-indigo-400 font-mono text-base">03.</span>
+          Kasa Parolası ve Sıfır Bilgi Sorumluluğu
+        </h2>
+        <p class="leading-relaxed">
+          SubRadar %100 yerel şifreleme (Zero-Knowledge) mimarisiyle geliştirildiğinden, **belirlediğiniz ana kasa şifresi (Master Password) hiçbir harici sunucuda saklanmaz**. Şifrenin unutulması veya kaybedilmesi durumunda, verilerin şifresini çözebilecek hiçbir merkezi arka kapı bulunmamaktadır. Kasa yedeklerinizi (<code>.subradar</code> dosyası) güvenli ortamlarda saklamak kullanıcının kendi sorumluluğundadır.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
+          <span class="text-indigo-400 font-mono text-base">04.</span>
+          Yasal İptal Metinlerinin Niteliği
+        </h2>
+        <p class="leading-relaxed">
+          Uygulama tarafından 6502 sayılı TKHK m. 52/4 ve GDPR Madde 17 uyarınca oluşturulan ihtarnameler genel hukuki şablonlardır. Bu metinler hukuki tavsiye veya avukatlık hizmeti teşkil etmez; bilgilendirme ve kullanıcıya fesih beyanını somutlaştırma amacıyla hazırlanmıştır.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
+          <span class="text-indigo-400 font-mono text-base">05.</span>
+          Garanti Reddi ve Sorumluluk Sınırı
+        </h2>
+        <p class="leading-relaxed">
+          Yazılım "OLDUĞU GİBİ" (AS IS) esasıyla, hiçbir açık veya zımni garanti verilmeksizin sunulmaktadır. Geliştiriciler, yazılımın kullanımından kaynaklanabilecek veri kaybı veya dolaylı zararlardan sorumlu tutulamaz.
+        </p>
+      </section>
+
+    </div>
+
+    <!-- Back to App Button -->
+    <div class="mt-10 text-center">
+      <a href="web/code.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-neutral-200 transition-all">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        SubRadar Uygulamasına Dön
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 py-8 text-center text-xs text-neutral-500 border-t border-white/[0.06] mt-16">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span>© 2026 SubRadar. Açık Kaynak &amp; Sıfır Bilgi Mimarisi.</span>
+      <div class="flex items-center gap-4">
+        <a href="privacy.html" class="hover:text-neutral-300 transition-colors">Gizlilik Politikası</a>
+        <a href="https://github.com/Laynexsw/SubRadar" target="_blank" rel="noopener noreferrer" class="hover:text-neutral-300 transition-colors">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

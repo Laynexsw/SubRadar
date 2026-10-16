@@ -37,6 +37,14 @@ Bu depoda **iki paralel katman** bulunur. Kod geliştirirken veya düzenlerken b
 SubRadar/
 │
 ├── index.html                   # Kök yönlendirici -> web/code.html
+├── 404.html                     # Özel Apple Glass 404 hata sayfası (animasyonlu radar)
+├── privacy.html                 # %100 Sıfır Bilgi & Çevrimdışı Gizlilik Politikası (GDPR/KVKK)
+├── terms.html                   # Kullanım Koşulları ve yerel sorumluluk sınırları
+├── thanks.html                  # Başvuru onay ve teşekkür sayfası (takip kodlu)
+├── robots.txt                   # Arama motoru robot direktifleri ve sitemap referansı
+├── sitemap.xml                  # Çok dilli (TR/EN/DE) SEO site haritası
+├── favicon.svg                  # Yüksek kontrastlı neon zümrüt radar favicon vektörü
+├── og-image.svg                 # 1200x630 Sosyal medya önizleme (Open Graph) kartı
 ├── .nojekyll                    # GitHub Pages için Jekyll devre dışı bırakıcı
 ├── .gitignore                   # IDE agent (.agent, .gemini, .codex) ve geçici dosyaları hariç tutar
 ├── LICENSE                      # Proje ana lisansı (MIT)
@@ -76,11 +84,19 @@ SubRadar/
 └── web/                         # WEB VİTRİNİ VE İNTERAKTİF SİMÜLATÖR
     ├── code.html                # Canlı çalışan tekil vitrin (GitHub Pages'ın sunduğu ana dosya)
     ├── index.html               # web/ içi hızlı yönlendirici -> code.html
+    ├── 404.html                 # Alt dizin 404 hata sayfası
+    ├── privacy.html             # Alt dizin gizlilik politikası sayfası
+    ├── terms.html               # Alt dizin kullanım koşulları sayfası
+    ├── thanks.html              # Alt dizin teşekkür ve onay sayfası
+    ├── favicon.svg              # Web vitrini favicon vektörü
+    ├── og-image.svg             # Web vitrini 1200x630 Open Graph görseli
     │
-    ├── components/              # 14 Parçalı Modüler HTML Parçaları
+    ├── components/              # 16 Parçalı Modüler HTML Parçaları
     │   ├── layout/
     │   │   ├── header.html      # Üst cam bar, logo, menü, Cmd+K, dil, kur ve tema butonları
-    │   │   └── footer.html      # Alt bilgi, canlı gecikme (ping), telif ve yasal bildirimler
+    │   │   ├── footer.html      # Alt bilgi, canlı gecikme (ping), telif ve yasal bildirimler
+    │   │   ├── cookie-banner.html # Sıfır çerez güvencesi ve yerel bellek onay banner'ı
+    │   │   └── mobile-sticky-cta.html # Mobilde altta sabit kalan hızlı indirme çubuğu
     │   │
     │   ├── sections/
     │   │   ├── hero.html        # Ana başlık, OS butonları ve interaktif macOS simülasyon penceresi
@@ -95,7 +111,7 @@ SubRadar/
     │   └── modals/
     │       ├── command-palette.html # ⌘K / Ctrl+K arama ve hızlı eylem paleti
     │       ├── download-modal.html  # Mimari seçimi (ARM/x86) ve ilerleme çubuklu indirme modalı
-    │       ├── enterprise-modal.html# Kurumsal teklif formu
+    │       ├── enterprise-modal.html# Kurumsal teklif formu (inline hata ve loading durumu)
     │       └── reclaim-modal.html   # CLI kurulumu (`curl`) ve geri kazanım adımları
     │
     ├── css/
@@ -112,16 +128,19 @@ SubRadar/
     │   ├── hero-window.js       # macOS pencere simülasyonu: trafik ışıkları, iptal, arama, sekmeler
     │   ├── scroll-motion.js     # İlerleme çizgisi (`#sr-progress`), scrollspy ve hero paralaksı
     │   ├── i18n.js              # TR/EN/DE sözlükleri, DOM metin düğümü çevirici (`t()`)
+    │   ├── analytics.js         # Sıfır-çerez, DNT uyumlu yerel oturum telemetrisi (`srAnalytics`)
+    │   ├── cookie-banner.js     # Gizlilik bildirimi ve yerel bellek rıza kontrolü
+    │   ├── mobile-cta.js        # Mobilde kaydırmaya bağlı beliren sabit indirme barı
     │   ├── main.js              # Tüm modülleri başlatan ana orkestrasyon dosyası
     │   │
     │   └── modals/
     │       ├── command-palette.js # ⌘K klavye kısayolu, filtreleme ve çalıştırma
     │       ├── download-modal.js  # İndirme simülasyonu, hız/boyut sayacı, SHA doğrulaması
-    │       ├── enterprise-modal.js# Kurumsal form alanları doğrulaması
+    │       ├── enterprise-modal.js# Kurumsal form alanları doğrulaması (inline hata & spinner)
     │       └── reclaim-modal.js   # CLI komutunu panoya kopyalama (`curl -sSL...`)
     │
     └── scripts/
-        └── build.py             # 14 modüler bileşeni doğrulayan test betiği
+        └── build.py             # 16 modüler bileşeni doğrulayan test betiği
 ```
 
 ---

@@ -25,8 +25,15 @@ Proje mimarisi **kök seviyesi**, **masaüstü uygulaması (`app/`)** ve **web v
 
 ```text
 SubRadar/
-│
-├── 📄 index.html                         # Kök Yönlendirici (Canlı GitHub Pages & yerel sunucuyu web/code.html'e aktarır)
+├── 🧭 index.html                         # Kök yönlendirici -> web/code.html
+├── 🔍 404.html                           # Özel Apple Glass 404 hata sayfası (animasyonlu radar)
+├── 🔒 privacy.html                       # %100 Sıfır Bilgi & Çevrimdışı Gizlilik Politikası (GDPR/KVKK)
+├── ⚖️ terms.html                         # Kullanım Koşulları ve yerel sorumluluk sınırları
+├── 🤝 thanks.html                        # Başvuru onay ve teşekkür sayfası (takip kodlu)
+├── 🤖 robots.txt                         # Arama motoru direktifleri ve sitemap bağlantısı
+├── 🗺️ sitemap.xml                        # Çok dilli (TR/EN/DE) SEO site haritası
+├── 🎨 favicon.svg                        # Yüksek kontrastlı neon zümrüt radar favicon vektörü
+├── 🖼️ og-image.svg                       # 1200x630 Sosyal medya önizleme (Open Graph & Twitter) kartı
 ├── ⚙️ .nojekyll                          # GitHub Pages statik yayın yapılandırması (Jekyll motorunu devre dışı bırakır)
 ├── 🛡️ .gitignore                         # Sürüm kontrolünden hariç tutulan dosyalar
 ├── 📜 LICENSE                            # MIT Açık Kaynak Lisansı
@@ -63,16 +70,23 @@ SubRadar/
 │
 └── 🌐 web/                               # WEB TANITIM VİTRİNİ & MODÜLER BİLEŞENLER
     ├── code.html                         # Entegre canlı vitrin uygulaması ve interaktif masaüstü simülatörü
-
     ├── index.html                        # web/ içi hızlı yönlendirici
+    ├── 404.html                          # Alt dizin 404 hata sayfası
+    ├── privacy.html                      # Alt dizin gizlilik politikası sayfası
+    ├── terms.html                        # Alt dizin kullanım koşulları sayfası
+    ├── thanks.html                       # Alt dizin teşekkür ve takip kodu sayfası
+    ├── favicon.svg                       # Web vitrini favicon vektörü
+    ├── og-image.svg                      # Web vitrini 1200x630 Open Graph görseli
     │
-    ├── components/                       # Modüler HTML Bileşenleri
+    ├── components/                       # 16 Parçalı Modüler HTML Bileşenleri
     │   ├── layout/
     │   │   ├── header.html               # Üst gezinme çubuğu, marka, dil, kur ve tema kontrolleri
-    │   │   └── footer.html               # Alt bilgi çubuğu, bağlantılar ve yerel gecikme göstergesi
+    │   │   ├── footer.html               # Alt bilgi çubuğu, iletişim bilgileri, bağlantılar ve yerel gecikme
+    │   │   ├── cookie-banner.html        # Sıfır çerez güvencesi ve yerel bellek onay banner'ı
+    │   │   └── mobile-sticky-cta.html    # Mobilde altta sabit kalan hızlı indirme çubuğu
     │   │
     │   ├── sections/
-    │   │   ├── hero.html                 # Hero vitrin alanı ve interaktif pencere simülasyonu
+    │   │   ├── hero.html                 # Hero vitrin alanı, çift CTA ve interaktif pencere simülasyonu
     │   │   ├── problem.html              # Abonelik israfı sorun tanımı ve sektör istatistikleri
     │   │   ├── calculator.html           # İsraf hesaplayıcı, kaydırıcılar ve hazır kullanıcı profilleri
     │   │   ├── features.html             # Çekirdek motor özellikleri 4'lü kart ızgarası
@@ -84,12 +98,12 @@ SubRadar/
     │   └── modals/
     │       ├── download-modal.html       # İndirme modalı (İlerleme çubuğu, işletim sistemi ve mimari seçimi)
     │       ├── command-palette.html      # Cmd+K / Ctrl+K komut paleti arama penceresi
-    │       ├── enterprise-modal.html     # Kurumsal talep ve iletişim formu
+    │       ├── enterprise-modal.html     # Kurumsal talep formu (inline hata denetimi & spinner)
     │       └── reclaim-modal.html        # Geri kazanım ve CLI kurulum adımları
     │
     ├── css/                              # Web Stil Dosyaları
     │   ├── base.css                      # Temel renk paleti, tipografi kuralları, açık/koyu tema değişkenleri
-    │   ├── components.css                # Apple Glass kartlar, kaydırıcılar, rozetler ve mikro animasyonlar
+    │   ├── components.css                # Apple Glass kartlar, spinner, form hata animasyonları, mobil çubuk
     │   └── main.css                      # Tüm CSS modüllerini birleştiren ana stil orkestrasyonu
     │
     ├── js/                               # Web JavaScript Modülleri
@@ -101,16 +115,18 @@ SubRadar/
     │   ├── calculator.js                 # İsraf hesaplama algoritmaları ve profil geçişleri
     │   ├── hero-window.js                # Hero masaüstü simülasyonu, trafik ışıkları ve iptal senaryoları
     │   ├── scroll-motion.js              # Sayfa okuma ilerleme çizgisi ve akıcı kaydırma efektleri
+    │   ├── analytics.js                  # Sıfır-çerez, DNT uyumlu yerel oturum telemetrisi (`srAnalytics`)
+    │   ├── cookie-banner.js              # Gizlilik bildirimi ve yerel bellek rıza kontrolü
+    │   ├── mobile-cta.js                 # Mobilde kaydırmaya bağlı beliren sabit indirme barı
     │   ├── main.js                       # Modüler web scriptlerinin ana giriş ve koordinasyon dosyası
     │   │
     │   └── modals/                       # Web Modal Kontrolcüleri
     │       ├── download-modal.js         # İndirme simülasyonu ve dosya indirme tetikleyicisi
     │       ├── command-palette.js        # Komut paleti klavye gezinimi ve hızlı arama
-    │       ├── enterprise-modal.js       # Kurumsal form doğrulama ve gönderim yönetimi
+    │       ├── enterprise-modal.js       # Kurumsal form doğrulama, spinner ve onay ekranı
     │       └── reclaim-modal.js          # CLI komut kopyalama ve geri kazanım adımları
-    │
     └── scripts/
-        └── build.py                      # 14 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
+        └── build.py                      # 16 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
 ```
 
 ---

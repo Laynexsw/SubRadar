@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"/>
+  <title>Talebiniz Alındı — Teşekkür Ederiz | SubRadar</title>
+  <meta name="description" content="SubRadar talebiniz başarıyla alındı. Yerel masaüstü kasanızı kurun ve aboneliklerinizi hemen denetleyin."/>
+  <meta name="theme-color" content="#07090e"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="apple-touch-icon" href="favicon.svg"/>
+  <!-- Fonts & Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@200..600,0..1&display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            surface: {
+              DEFAULT: "#07090e",
+              card: "rgba(255, 255, 255, 0.03)",
+              border: "rgba(255, 255, 255, 0.08)"
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #07090e;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .glass-card {
+      background: rgba(18, 22, 34, 0.65);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+    @keyframes checkPop {
+      0% { transform: scale(0.6); opacity: 0; }
+      70% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .check-anim {
+      animation: checkPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="selection:bg-emerald-500/30 selection:text-white">
+
+  <!-- Background Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[650px] h-[650px] bg-emerald-500/12 rounded-full blur-[140px]"></div>
+    <div class="absolute bottom-10 right-1/4 w-[450px] h-[450px] bg-indigo-500/10 rounded-full blur-[120px]"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-10 w-full border-b border-white/[0.08] bg-black/30 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+    <a href="code.html" class="flex items-center gap-2.5 text-white no-underline group focus:outline-none focus:ring-2 focus:ring-emerald-500/50 rounded-lg">
+      <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-emerald-400 text-[18px]">radar</span>
+      </div>
+      <span class="font-bold tracking-tight text-lg">SubRadar<span class="text-emerald-400">.</span></span>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <a href="web/code.html" class="text-xs text-neutral-400 hover:text-white transition-colors py-1.5 px-3 rounded-full hover:bg-white/[0.06]">
+        Ana Sayfa
+      </a>
+      <a href="web/code.html#downloads" class="text-xs font-semibold bg-white text-black hover:bg-neutral-200 transition-all py-1.5 px-4 rounded-full flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[15px]">download</span>
+        İndir
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="relative z-10 flex-1 flex items-center justify-center p-6" role="main">
+    <div class="glass-card max-w-xl w-full rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
+      
+      <!-- Checkmark Icon with Glow -->
+      <div class="relative w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full bg-emerald-500/20 blur-xl"></div>
+        <div class="relative w-20 h-20 rounded-full bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center check-anim">
+          <span class="material-symbols-outlined text-emerald-400 text-4xl font-bold">check_circle</span>
+        </div>
+      </div>
+
+      <!-- Reference Code Badge -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-emerald-400 mb-4">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        Kayıt Kodu: #SR-2026-X91
+      </div>
+
+      <!-- Headings -->
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
+        Talebiniz Başarıyla Alındı
+      </h1>
+      <p class="text-sm sm:text-base text-neutral-300 max-w-md mx-auto leading-relaxed mb-8">
+        İletişim talebiniz veya kurumsal deneme başvurunuz güvenli kuyruğa aktarıldı. Ekibimiz en geç 2 saat içinde kayıtlı e-posta adresiniz üzerinden sizinle iletişime geçecektir.
+      </p>
+
+      <!-- Next Step Card -->
+      <div class="mb-8 p-5 rounded-2xl bg-white/[0.03] border border-white/[0.08] text-left">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="material-symbols-outlined text-emerald-400 text-xl">bolt</span>
+          <h3 class="text-sm font-semibold text-white">Sırada Ne Var?</h3>
+        </div>
+        <p class="text-xs text-neutral-400 leading-relaxed mb-4">
+          Beklerken açık kaynak masaüstü istemcimizi hemen indirebilir, kendi bilgisayarınızda yerel şifreli kasanızı oluşturarak abonelik kaçaklarını anında tarayabilirsiniz.
+        </p>
+        <div class="flex items-center justify-between text-xs text-neutral-300 font-mono pt-3 border-t border-white/[0.06]">
+          <span>Masaüstü Sürüm:</span>
+          <span class="text-emerald-400">v1.5.0 (Offline-First)</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="web/code.html#downloads" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-neutral-200 transition-all shadow-lg shadow-white/10 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">download</span>
+          Masaüstü Uygulamasını İndir
+        </a>
+        <a href="web/code.html" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white/[0.06] border border-white/15 text-white text-sm font-medium hover:bg-white/[0.12] transition-colors flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">home</span>
+          Ana Sayfaya Dön
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 py-6 text-center text-xs text-neutral-500 border-t border-white/[0.06]">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span>© 2026 SubRadar. Açık Kaynak &amp; Sıfır Bilgi Mimarisi.</span>
+      <div class="flex items-center gap-4">
+        <a href="privacy.html" class="hover:text-neutral-300 transition-colors">Gizlilik Politikası</a>
+        <a href="terms.html" class="hover:text-neutral-300 transition-colors">Kullanım Koşulları</a>
+        <a href="https://github.com/Laynexsw/SubRadar" target="_blank" rel="noopener noreferrer" class="hover:text-neutral-300 transition-colors">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
