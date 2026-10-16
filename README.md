@@ -4,7 +4,7 @@
 ### Masaüstü Abonelik Zekâsı, Tek Tıkla İptal ve %100 Yerel AES-256 Kasa
 
 [![GitHub Pages](https://img.shields.io/badge/Live-GitHub%20Pages-6366f1?style=for-the-badge&logo=github)](https://laynexsw.github.io/SubRadar/)
-[![Desktop App](https://img.shields.io/badge/Desktop-Çok%20Yakında-amber?style=for-the-badge&logo=electron)](https://github.com/Laynexsw/SubRadar/tree/main/app)
+[![Desktop App](https://img.shields.io/badge/Desktop-v1.5.0%20Aktif-10b981?style=for-the-badge&logo=electron)](https://github.com/Laynexsw/SubRadar/tree/main/app)
 [![Security](https://img.shields.io/badge/Security-AES--256%20CBC-10b981?style=for-the-badge&logo=shield)](https://github.com/Laynexsw/SubRadar)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
@@ -13,7 +13,7 @@
 **SubRadar**, unutulan deneme üyeliklerini, gizli fiyat artışlarını ve aylarca açılmayan yazılım aboneliklerini tespit eden;  
 verilerinizi asla buluta göndermeden **%100 yerel ve çevrimdışı** çalışan masaüstü abonelik asistanıdır.
 
-[🌐 Canlı Web Sitesi](https://laynexsw.github.io/SubRadar/) &bull; [💻 Masaüstü Uygulaması (Çok Yakında)](https://github.com/Laynexsw/SubRadar/tree/main/app) &bull; [📑 Modüler Bileşenler](https://github.com/Laynexsw/SubRadar/tree/main/web) &bull; [🧠 Mimari & Kod Kataloğu](CODEBASE.md)
+[🌐 Canlı Web Sitesi](https://laynexsw.github.io/SubRadar/) &bull; [💻 Masaüstü Uygulaması (v1.5.0)](https://github.com/Laynexsw/SubRadar/tree/main/app) &bull; [📑 Modüler Bileşenler](https://github.com/Laynexsw/SubRadar/tree/main/web) &bull; [🧠 Mimari & Kod Kataloğu](CODEBASE.md)
 
 ---
 
