@@ -4,9 +4,9 @@
 <div class="absolute top-[60%] left-1/2 -translate-x-1/2 w-[800px] h-[550px] bg-white/[0.015] rounded-full blur-[240px]"></div>
 </div>
 <!-- Bildirimler kaldırıldı -->
-<!-- 1. TOP NAV: Fixed Minimalist Frosted Glass Bar -->
-<header class="fixed top-0 inset-x-0 z-50 apple-glass">
-<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-3">
+<!-- 1. TOP NAV: Fixed Minimalist Frosted Glass Bar (Scroll ile Bağımsız Adaya Dönüşür) -->
+<header class="fixed top-0 inset-x-0 z-50 flex flex-col items-center pointer-events-none transition-all duration-300" id="site-header">
+<div class="header-island-inner w-full max-w-7xl px-6 h-16 flex items-center justify-between gap-3 pointer-events-auto transition-all duration-300" id="header-island-container">
 <!-- Brand Mark -->
 <a class="flex items-center gap-2.5 group flex-shrink-0" href="#">
 <div class="brand-mark w-5 h-5 rounded-full bg-white flex items-center justify-center text-black shadow-sm group-hover:scale-105 transition-transform">
@@ -34,9 +34,6 @@
 <button type="button" class="flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] text-white/40 hover:text-white hover:border-white/20 transition-all cursor-pointer flex-shrink-0" id="sound-toggle-btn" aria-label="Ses efektlerini aç" title="Web Audio Dokunsal Sesler (S)">
 <span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_off</span>
 </button>
-<button type="button" class="hidden sm:flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] text-white/60 hover:text-white hover:border-white/20 text-xs font-mono transition-all cursor-pointer flex-shrink-0" id="shortcuts-help-btn" aria-label="Klavye kısayolları (?)" title="Klavye Kısayolları (?)">
-<span>?</span>
-</button>
 <button type="button" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs text-white/70 hover:text-white hover:border-white/20 transition-all cursor-pointer min-h-[36px] whitespace-nowrap flex-shrink-0" id="theme-toggle" aria-pressed="false" aria-label="Açık temaya geç">
 <span class="material-symbols-outlined text-[15px]" id="theme-toggle-icon" aria-hidden="true">light_mode</span>
 <span class="hidden min-[1440px]:inline" id="theme-toggle-label">Açık tema</span>
@@ -60,7 +57,7 @@
 </button>
 </div>
 </div>
-<div class="xl:hidden hidden border-t border-white/10 px-6 py-4" id="mobile-menu">
+<div class="xl:hidden hidden w-full max-w-7xl px-6 py-4 pointer-events-auto" id="mobile-menu">
 <nav class="flex flex-col gap-1 text-sm font-medium text-white/70" aria-label="Mobil">
 <a class="py-2.5 hover:text-white transition-colors" href="#ozellikler">Özellikler</a>
 <a class="py-2.5 hover:text-white transition-colors" href="#hesaplayici">İsraf Hesaplayıcı</a>

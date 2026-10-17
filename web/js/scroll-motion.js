@@ -36,6 +36,15 @@ export function initScrollMotion() {
       const y = window.scrollY || 0;
       const h = document.documentElement.scrollHeight - window.innerHeight;
       if (bar) bar.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+      
+      const siteHeader = document.getElementById('site-header');
+      if (siteHeader) {
+        if (y > 30) {
+          siteHeader.classList.add('is-scrolled-island');
+        } else {
+          siteHeader.classList.remove('is-scrolled-island');
+        }
+      }
       if (!reduce) {
         const hero = document.querySelector('[data-od-id="hero"]');
         if (hero && y < 1000) {
