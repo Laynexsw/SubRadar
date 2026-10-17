@@ -28,6 +28,7 @@ export function initScrollMotion() {
   }
 
   let tick = false;
+  let isIsland = false;
   function onScroll() {
     if (tick) return;
     tick = true;
@@ -39,9 +40,11 @@ export function initScrollMotion() {
       
       const siteHeader = document.getElementById('site-header');
       if (siteHeader) {
-        if (y > 30) {
+        if (!isIsland && y > 45) {
+          isIsland = true;
           siteHeader.classList.add('is-scrolled-island');
-        } else {
+        } else if (isIsland && y < 15) {
+          isIsland = false;
           siteHeader.classList.remove('is-scrolled-island');
         }
       }

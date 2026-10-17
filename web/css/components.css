@@ -371,62 +371,78 @@ html.light #shortcuts-modal-card .bg-white\/\[0\.02\] {
   top: 0;
   left: 0;
   right: 0;
+  width: 100%;
   z-index: 50;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0;
   pointer-events: none;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: top, padding;
 }
 .header-island-inner {
   width: 100%;
   max-width: 1280px;
-  height: 64px;
+  height: 60px !important;
   margin: 0 auto;
   padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
+  box-sizing: border-box;
+  border-radius: 0;
+  border: 1px solid transparent;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(9, 9, 11, 0.78);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(9, 9, 11, 0.75);
+  box-shadow: 0 0 0 0 transparent;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   pointer-events: auto;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-radius 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              background 0.35s ease,
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: max-width, border-radius, padding, box-shadow;
 }
 html.light .header-island-inner {
-  background: rgba(255, 255, 255, 0.84);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 
 /* Aşağı Kaydırıldığında Aktif Olan Bağımsız Ada (Floating Island) */
 #site-header.is-scrolled-island {
-  top: 14px;
+  top: 12px;
   padding: 0 16px;
 }
 #site-header.is-scrolled-island .header-island-inner {
-  max-width: 1140px;
-  height: 54px;
-  padding: 0 18px;
+  max-width: 1220px;
+  height: 60px !important;
+  padding: 0 24px;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(12, 13, 18, 0.86);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(12, 13, 18, 0.85);
+  box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.75),
+              0 0 0 1px rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
 }
 html.light #site-header.is-scrolled-island .header-island-inner {
   background: rgba(255, 255, 255, 0.92) !important;
-  border: 1px solid rgba(0, 0, 0, 0.12) !important;
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 16px 40px -6px rgba(0, 0, 0, 0.12),
+              0 0 0 1px rgba(0, 0, 0, 0.05) !important;
 }
 
 #site-header.is-scrolled-island #mobile-menu {
   margin-top: 8px;
-  border-radius: 18px;
+  border-radius: 20px;
   background: rgba(12, 13, 18, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
 }
 html.light #site-header.is-scrolled-island #mobile-menu {

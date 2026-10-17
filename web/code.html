@@ -562,59 +562,75 @@
     top: 0;
     left: 0;
     right: 0;
+    width: 100%;
     z-index: 50;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0;
     pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: top, padding;
   }
   .header-island-inner {
     width: 100%;
     max-width: 1280px;
-    height: 64px;
+    height: 60px !important;
     margin: 0 auto;
     padding: 0 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 16px;
+    box-sizing: border-box;
+    border-radius: 0;
+    border: 1px solid transparent;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(9, 9, 11, 0.78);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(9, 9, 11, 0.75);
+    box-shadow: 0 0 0 0 transparent;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     pointer-events: auto;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                border-radius 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.35s ease,
+                background 0.35s ease,
+                box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: max-width, border-radius, padding, box-shadow;
   }
   html.light .header-island-inner {
-    background: rgba(255, 255, 255, 0.84);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom-color: rgba(0, 0, 0, 0.08);
   }
   #site-header.is-scrolled-island {
-    top: 14px;
+    top: 12px;
     padding: 0 16px;
   }
   #site-header.is-scrolled-island .header-island-inner {
-    max-width: 1140px;
-    height: 54px;
-    padding: 0 18px;
+    max-width: 1220px;
+    height: 60px !important;
+    padding: 0 24px;
     border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(12, 13, 18, 0.86);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(28px);
-    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(12, 13, 18, 0.85);
+    box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.75),
+                0 0 0 1px rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
   }
   html.light #site-header.is-scrolled-island .header-island-inner {
     background: rgba(255, 255, 255, 0.92) !important;
-    border: 1px solid rgba(0, 0, 0, 0.12) !important;
-    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 16px 40px -6px rgba(0, 0, 0, 0.12),
+                0 0 0 1px rgba(0, 0, 0, 0.05) !important;
   }
   #site-header.is-scrolled-island #mobile-menu {
     margin-top: 8px;
-    border-radius: 18px;
+    border-radius: 20px;
     background: rgba(12, 13, 18, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
   }
   html.light #site-header.is-scrolled-island #mobile-menu {
@@ -806,8 +822,8 @@
 </div>
 <!-- Bildirimler kaldırıldı -->
 <!-- 1. TOP NAV: Fixed Minimalist Frosted Glass Bar (Scroll ile Bağımsız Adaya Dönüşür) -->
-<header class="fixed top-0 inset-x-0 z-50 flex flex-col items-center pointer-events-none transition-all duration-300" id="site-header">
-<div class="header-island-inner w-full max-w-7xl px-6 h-16 flex items-center justify-between gap-3 pointer-events-auto transition-all duration-300" id="header-island-container">
+<header class="fixed top-0 inset-x-0 z-50 flex flex-col items-center pointer-events-none" id="site-header">
+<div class="header-island-inner w-full max-w-7xl px-6 h-[60px] flex items-center justify-between gap-3 pointer-events-auto" id="header-island-container">
 <!-- Brand Mark -->
 <a class="flex items-center gap-2.5 group flex-shrink-0" href="#">
 <div class="brand-mark w-5 h-5 rounded-full bg-white flex items-center justify-center text-black shadow-sm group-hover:scale-105 transition-transform">
@@ -817,44 +833,44 @@
 <span class="hidden sm:inline-block text-[10px] font-mono uppercase text-white/40 border border-white/10 px-1.5 py-0.5 rounded tracking-widest">Desktop</span>
 </a>
 <!-- Nav Links -->
-<nav class="hidden xl:flex items-center gap-5 text-[13px] tracking-normal text-white/50 font-medium flex-shrink-0" aria-label="Birincil">
+<nav class="hidden xl:flex items-center gap-3.5 2xl:gap-5 text-[13px] tracking-normal text-white/50 font-medium flex-shrink-0" aria-label="Birincil">
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#ekstre-laboratuvari">Ekstre Lab</a>
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#hesaplayici">İsraf Hesaplayıcı</a>
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#karsilastirma">Karşılaştırma</a>
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#ozellikler">Özellikler</a>
-<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#mimari">Mimari</a>
-<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#isletim-sistemleri">İşletim Sistemleri</a>
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap hidden 2xl:inline-block" href="#mimari">Mimari</a>
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap hidden 2xl:inline-block" href="#isletim-sistemleri">İşletim Sistemleri</a>
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#fiyatlandirma">Fiyatlandırma</a>
 </nav>
 <!-- Actions -->
-<div class="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0 min-w-0">
-<button type="button" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-white/10 bg-white/[0.04] text-[11px] font-mono text-white/60 hover:text-white hover:border-white/20 transition-all cursor-pointer min-h-[36px]" id="nav-cmd-trigger" aria-label="Komut paletini aç">
+<div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0 min-w-0">
+<button type="button" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-white/10 bg-white/[0.04] text-[11px] font-mono text-white/60 hover:text-white hover:border-white/20 transition-all cursor-pointer h-8" id="nav-cmd-trigger" aria-label="Komut paletini aç">
 <span class="material-symbols-outlined text-[13px]" aria-hidden="true">search</span>
 <span>⌘K</span>
 </button>
 <button type="button" class="flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] text-white/40 hover:text-white hover:border-white/20 transition-all cursor-pointer flex-shrink-0" id="sound-toggle-btn" aria-label="Ses efektlerini aç" title="Web Audio Dokunsal Sesler (S)">
 <span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_off</span>
 </button>
-<button type="button" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs text-white/70 hover:text-white hover:border-white/20 transition-all cursor-pointer min-h-[36px] whitespace-nowrap flex-shrink-0" id="theme-toggle" aria-pressed="false" aria-label="Açık temaya geç">
+<button type="button" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs text-white/70 hover:text-white hover:border-white/20 transition-all cursor-pointer h-8 whitespace-nowrap flex-shrink-0" id="theme-toggle" aria-pressed="false" aria-label="Açık temaya geç">
 <span class="material-symbols-outlined text-[15px]" id="theme-toggle-icon" aria-hidden="true">light_mode</span>
-<span class="hidden min-[1440px]:inline" id="theme-toggle-label">Açık tema</span>
+<span class="hidden 2xl:inline" id="theme-toggle-label">Açık tema</span>
 </button>
-<div class="hidden lg:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0" role="group" aria-label="Dil seç">
-<button type="button" class="lang-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-lang="EN" aria-pressed="false">EN</button>
-<button type="button" class="lang-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-lang="DE" aria-pressed="false">DE</button>
-<button type="button" class="lang-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-lang="TR" aria-pressed="true">TR</button>
+<div class="hidden min-[1380px]:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0 h-8" role="group" aria-label="Dil seç">
+<button type="button" class="lang-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-lang="EN" aria-pressed="false">EN</button>
+<button type="button" class="lang-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-lang="DE" aria-pressed="false">DE</button>
+<button type="button" class="lang-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-lang="TR" aria-pressed="true">TR</button>
 </div>
-<div class="hidden lg:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0" role="group" aria-label="Para birimi seç">
-<button type="button" class="currency-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-currency="USD" aria-pressed="true">$ USD</button>
-<button type="button" class="currency-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-currency="EUR" aria-pressed="false">€ EUR</button>
-<button type="button" class="currency-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-currency="TRY" aria-pressed="false">₺ TRY</button>
+<div class="hidden min-[1680px]:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0 h-8" role="group" aria-label="Para birimi seç">
+<button type="button" class="currency-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-currency="USD" aria-pressed="true">$ USD</button>
+<button type="button" class="currency-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-currency="EUR" aria-pressed="false">€ EUR</button>
+<button type="button" class="currency-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-currency="TRY" aria-pressed="false">₺ TRY</button>
 </div>
-<button type="button" class="download-trigger-btn px-4 py-1.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all duration-200 hidden md:flex items-center gap-2 shadow-sm cursor-pointer min-h-[36px] whitespace-nowrap flex-shrink-0" data-os="auto">
+<button type="button" class="download-trigger-btn px-3.5 py-1.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all duration-200 hidden md:flex items-center gap-1.5 shadow-sm cursor-pointer h-8 whitespace-nowrap flex-shrink-0" data-os="auto">
 <span>Bilgisayara İndir</span>
 <span class="material-symbols-outlined text-[14px]" aria-hidden="true">arrow_downward</span>
 </button>
-<button type="button" class="xl:hidden flex items-center justify-center w-9 h-9 rounded-full border border-white/10 text-white/70 flex-shrink-0" id="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menüyü aç">
-<span class="material-symbols-outlined text-[20px]" aria-hidden="true">menu</span>
+<button type="button" class="xl:hidden flex items-center justify-center w-8 h-8 rounded-full border border-white/10 text-white/70 flex-shrink-0" id="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menüyü aç">
+<span class="material-symbols-outlined text-[18px]" aria-hidden="true">menu</span>
 </button>
 </div>
 </div>
@@ -5692,6 +5708,7 @@ Rapor Üretici: https://subradar.dev
   });
 
   var tick = false;
+  var isIsland = false;
   function onScroll() {
     if (tick) return;
     tick = true;
@@ -5703,9 +5720,11 @@ Rapor Üretici: https://subradar.dev
 
       var siteHeader = document.getElementById('site-header');
       if (siteHeader) {
-        if (y > 30) {
+        if (!isIsland && y > 45) {
+          isIsland = true;
           siteHeader.classList.add('is-scrolled-island');
-        } else {
+        } else if (isIsland && y < 15) {
+          isIsland = false;
           siteHeader.classList.remove('is-scrolled-island');
         }
       }
