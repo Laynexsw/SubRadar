@@ -379,7 +379,6 @@
   }
   .vault-stage-card:hover {
     background-color: rgba(255, 255, 255, 0.04);
-    transform: translateY(-2px);
   }
   .vault-stage-card.active {
     background-color: rgba(255, 255, 255, 0.05);
@@ -735,9 +734,9 @@
     #sr-progress { display: none; }
     .radar-beam, .radar-blip-ping, .sr-ambient-glow, .vault-stream-line, .vault-shield-pulse, .cloud-block-flash, .calc-leak-wave { animation: none !important; }
   }
-  /* ── Kart kalkışı + 3D mikro-hareket ── */
-  main .apple-card { transition: border-color .25s ease, background .25s ease, transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s cubic-bezier(.16,1,.3,1); }
-  main .apple-card:hover { transform: translateY(-5px); box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+  /* ── Kart Sabit Durumu (Yamulma ve hareket kaldırıldı) ── */
+  main .apple-card { transition: border-color .25s ease, background .25s ease, box-shadow .35s cubic-bezier(.16,1,.3,1); }
+  main .apple-card:hover { border-color: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 50px rgba(0,0,0,.45); }
   main .download-trigger-btn:active { transform: scale(.97); }
 
   /* ── 12. Micro Loading Spinner ── */
@@ -5510,22 +5509,7 @@ Rapor Üretici: https://subradar.dev
     els.forEach(function (el) { el.classList.add('in'); });
   }
 
-  // 3D Card Magnetic Tilt
-  if (!reduce && window.innerWidth > 768) {
-    document.querySelectorAll('.apple-card').forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        var rect = card.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
-        var rx = ((y - rect.height / 2) / (rect.height / 2)) * -3.5;
-        var ry = ((x - rect.width / 2) / (rect.width / 2)) * 3.5;
-        card.style.transform = 'perspective(750px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateY(-4px)';
-      });
-      card.addEventListener('mouseleave', function () {
-        card.style.transform = '';
-      });
-    });
-  }
+  // 3D Card Magnetic Tilt kaldırıldı — Paneller mouse hareketinde sabit kalır
 
   // Interactive Radar Blip Feedback
   document.querySelectorAll('[data-blip]').forEach(function (blip) {
