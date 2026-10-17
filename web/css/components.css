@@ -566,6 +566,19 @@ html.light #sr-scrollspy .spy-item.active {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
 }
 
+/* ── Calculator Leak Wave Flow ── */
+@keyframes srPulseWave {
+  0% { stroke-dashoffset: 48; }
+  100% { stroke-dashoffset: 0; }
+}
+.calc-leak-wave {
+  stroke-dasharray: 8 4;
+  animation: srPulseWave 9s linear infinite;
+}
+html.light .calc-leak-wave {
+  stroke: #059669;
+}
+
 
 
 

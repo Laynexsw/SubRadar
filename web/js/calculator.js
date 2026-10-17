@@ -25,6 +25,16 @@ export function initCalculator() {
     if (out1yr && typeof srFormat === 'function') out1yr.textContent = srFormat(annualWaste, 0);
     if (out5yr && typeof srFormat === 'function') out5yr.textContent = srFormat(fiveYearWaste, 0);
     if (reclaimTarget && typeof srFormat === 'function') reclaimTarget.textContent = srFormat(annualWaste, 2);
+
+    const leakRateDisplay = document.getElementById('calc-leak-rate-display');
+    if (leakRateDisplay && typeof srFormat === 'function' && typeof srPer === 'function') {
+      leakRateDisplay.textContent = `${srFormat(monthlyWaste, 0)}${srPer()}`;
+    }
+    const wave = document.querySelector('.calc-leak-wave');
+    if (wave) {
+      const speed = Math.max(6.5, 12.0 - (monthlyWaste / 300));
+      wave.style.animationDuration = `${speed.toFixed(1)}s`;
+    }
   }
 
   if (calcSubs && calcTrials) {

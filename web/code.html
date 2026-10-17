@@ -362,12 +362,12 @@
     animation: srCloudBlockFlash 2s ease-in-out infinite;
   }
   @keyframes srPulseWave {
-    0% { stroke-dashoffset: 240; }
+    0% { stroke-dashoffset: 48; }
     100% { stroke-dashoffset: 0; }
   }
   .calc-leak-wave {
     stroke-dasharray: 8 4;
-    animation: srPulseWave 2.8s linear infinite;
+    animation: srPulseWave 9s linear infinite;
   }
 
   /* ── Kriptografik Kasa Mimarisi & Etkileşimli Kart Stilleri ── */
@@ -4174,7 +4174,7 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
       }
       const wave = document.querySelector('.calc-leak-wave');
       if (wave) {
-        const speed = Math.max(0.8, 3.2 - (monthlyWaste / 800));
+        const speed = Math.max(6.5, 12.0 - (monthlyWaste / 300));
         wave.style.animationDuration = `${speed.toFixed(1)}s`;
       }
     }
