@@ -1,0 +1,93 @@
+<!-- AUTH MODAL: Apple Glass Zero-Knowledge Yerel Kasa Giriş & Kayıt Ol Modalı -->
+<div class="fixed inset-0 z-[130] bg-black/75 backdrop-blur-md hidden items-center justify-center px-4" id="auth-modal-backdrop" aria-hidden="true">
+  <div class="animate-modal w-full max-w-md bg-[#101014] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)]" id="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+    <!-- Header -->
+    <div class="flex items-center justify-between pb-4 border-b border-white/10">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white">
+          <span class="material-symbols-outlined text-[18px]">lock</span>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-white tracking-tight" id="auth-modal-title">Yerel Kasa Girişi</h3>
+          <div class="flex items-center gap-1.5 text-[10px] font-mono text-emerald-400">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>%100 ÇEVRİMDIŞI &bull; SIFIR BULUT</span>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10" id="auth-modal-close" aria-label="Giriş penceresini kapat">
+        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
+      </button>
+    </div>
+
+    <!-- Segmented Tab Switcher (Giriş Yap / Kayıt Ol) -->
+    <div class="mt-5 p-1 bg-white/[0.05] border border-white/10 rounded-xl flex items-center" role="tablist">
+      <button type="button" class="auth-tab-btn flex-1 py-1.5 text-xs font-medium rounded-lg transition-all text-white bg-white/15 shadow-sm cursor-pointer" data-tab="login" role="tab" aria-selected="true" id="auth-tab-login">
+        Giriş Yap
+      </button>
+      <button type="button" class="auth-tab-btn flex-1 py-1.5 text-xs font-medium rounded-lg transition-all text-white/50 hover:text-white cursor-pointer" data-tab="register" role="tab" aria-selected="false" id="auth-tab-register">
+        Kayıt Ol (Yeni Kasa)
+      </button>
+    </div>
+
+    <!-- Form Content -->
+    <form class="py-4 space-y-3.5" id="auth-form" onsubmit="return false;">
+      <div>
+        <label class="text-[11px] font-mono uppercase text-white/50 block mb-1" for="auth-email">E-posta veya Kasa Kimliği</label>
+        <div class="relative">
+          <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:border-white/40 outline-none transition-all pl-9" id="auth-email" type="text" placeholder="kullanici@subradar.dev" autocomplete="username" required/>
+          <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-3">person</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-[11px] font-mono uppercase text-white/50 block" for="auth-password">Ana Parola (AES-256 Anahtarı)</label>
+          <span class="text-[10px] font-mono text-emerald-400" id="auth-key-hint">Yerel PBKDF2</span>
+        </div>
+        <div class="relative">
+          <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:border-white/40 outline-none transition-all pl-9 pr-9" id="auth-password" type="password" placeholder="••••••••••••" autocomplete="current-password" required/>
+          <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-3">key</span>
+          <button type="button" class="absolute right-2.5 top-2.5 text-white/40 hover:text-white cursor-pointer p-0.5" id="auth-pwd-toggle" aria-label="Parolayı göster/gizle">
+            <span class="material-symbols-outlined text-[16px]" id="auth-pwd-icon">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Register Extra Fields -->
+      <div class="hidden space-y-3.5" id="auth-register-extra">
+        <div>
+          <label class="text-[11px] font-mono uppercase text-white/50 block mb-1" for="auth-password-confirm">Parola Doğrulama</label>
+          <div class="relative">
+            <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:border-white/40 outline-none transition-all pl-9" id="auth-password-confirm" type="password" placeholder="••••••••••••" autocomplete="new-password"/>
+            <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-3">verified_user</span>
+          </div>
+        </div>
+        <label class="flex items-start gap-2.5 cursor-pointer pt-1">
+          <input type="checkbox" id="auth-local-vault-check" checked class="mt-0.5 rounded border-white/20 bg-black text-emerald-500 focus:ring-0"/>
+          <span class="text-xs text-neutral-400 leading-snug">Bu cihazda sıfır-bilgi (zero-knowledge) yerel AES-256 şifreli SQLite kasası oluştur.</span>
+        </label>
+      </div>
+
+      <!-- Zero-Knowledge Callout -->
+      <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-xs text-neutral-400 flex items-start gap-2.5">
+        <span class="material-symbols-outlined text-emerald-400 text-[18px] flex-shrink-0 mt-0.5">shield</span>
+        <div class="text-[11px] leading-relaxed">
+          <strong class="text-white block font-medium">Sıfır Bulut &bull; %100 Cihaz İçi Kasa</strong>
+          Şifreniz veya verileriniz hiçbir zaman harici bir sunucuya iletilmez. Oturumunuz tamamen yerel diskinizde şifreli olarak açılır.
+        </div>
+      </div>
+
+      <!-- Submit CTA -->
+      <button type="submit" class="w-full py-3 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer min-h-[44px] flex items-center justify-center gap-2 shadow-lg mt-2" id="auth-submit-btn">
+        <span id="auth-submit-label">Giriş Yap</span>
+        <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+      </button>
+
+      <!-- Quick Local Demo CTA -->
+      <button type="button" class="w-full py-2.5 rounded-full border border-white/10 bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/10 text-xs font-mono transition-all cursor-pointer flex items-center justify-center gap-1.5" id="auth-quick-demo-btn">
+        <span>⚡ Demo Kasa ile Hızlı Giriş</span>
+      </button>
+    </form>
+  </div>
+</div>

@@ -22,7 +22,7 @@ SubRadar, kullanıcıların abonelik israfını engelleyen, tek tıkla iptal ba�
 Depo şu anda **üç ana katmandan** oluşur:
 1. **Kök Katmanı (`/`):** Dağıtım yapılandırması (`index.html`, `.nojekyll`, `.gitignore`), lisanslar ve dokümantasyon (`README.md`, `PRODUCT.md`, `AGENTS.md`, `CODEBASE.md`).
 2. **Web Vitrini Katmanı (`web/`):**
-   * **Modüler Kaynak:** `components/` (21 HTML parçası), `css/` (3 dosya), `js/` (20 modül), `manifest.json`, `sw.js`, `scripts/build.py`.
+   * **Modüler Kaynak:** `components/` (22 HTML parçası), `css/` (3 dosya), `js/` (21 modül), `manifest.json`, `sw.js`, `scripts/build.py`.
    * **Üretim / Canlı Yayın:** `code.html` (~340 KB, tüm stil, betik ve HTML'in birleştiği, GitHub Pages'ta yayınlanan monolitik dosya).
 3. **Masaüstü Katmanı (`app/`):** Electron, Node.js yerel AES-256 kasası, çerçevesiz Apple Glass UI ve güvenli IPC köprüsüne sahip tam fonksiyonel masaüstü istemcisi.
 
@@ -76,6 +76,7 @@ Depo şu anda **üç ana katmandan** oluşur:
   * `reclaim-modal.html`: CLI indirme komutu kopyalama (`curl -sSL subradar.dev/cli | sh`) ve 3 adımlı kurtarma rehberi.
   * `shortcuts-modal.html`: Raycast/Linear stili Power-User klavye kısayolları modalı (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`).
   * `legal-generator-modal.html`: Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı (canlı önizleme, pano kopyalama ve `.txt` dosya indirme).
+  * `auth-modal.html`: Sıfır bilgi yerel AES-256 kasa giriş ve kayıt modalı (hızlı demo girişi, şifre gizle/göster, yerel oturum yönetimi).
 
 ### 2.4 Web Stilleri (`web/css/`)
 * [`base.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/base.css): SF Pro font ailesi, `html.light` ve `html.dark` değişkenleri, skip-link, scroll-behavior, metin seçimi renkleri.
@@ -108,7 +109,8 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`modals/reclaim-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/reclaim-modal.js): CLI kopyalama ve modal görünürlüğü.
 * [`modals/shortcuts-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/shortcuts-modal.js): Power-User kısayol dinleyici (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`).
 * [`modals/legal-gen.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/legal-gen.js): Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme.
-* [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 21 bileşenin bütünlüğünü doğrulayan test betiği.
+* [`modals/auth-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/auth-modal.js): Sıfır bilgi yerel kasa giriş ve oturum kontrolcüsü (`initAuthModal`).
+* [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 22 bileşenin bütünlüğünü doğrulayan test betiği.
 
 ### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/`)
 * [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 bağımlılığı ve `start`, `dev`, `test`, `test:vault`, `test:parser` komutları.
@@ -192,6 +194,8 @@ Depo şu anda **üç ana katmandan** oluşur:
 | `#ent-modal-backdrop`| `modals/enterprise-modal.html`| Kurumsal form modalı |
 | `#reclaim-modal-backdrop`| `modals/reclaim-modal.html`| Sermaye geri kazanım & CLI modalı |
 | `#cli-copy-btn` | `modals/reclaim-modal.html`| `curl` komutunu kopyalayan buton |
+| `#auth-modal-btn` | `layout/header.html` | Üst ada sağında yer alan Giriş Yap / Kayıt Ol butonu |
+| `#auth-modal-backdrop`| `modals/auth-modal.html` | Sıfır bilgi yerel kasa giriş ve kayıt modalı |
 | `#sr-progress` | `scroll-motion.js` | Sayfa üstündeki akıcı okuma ilerleme çizgisi |
 | `#sr-scrollspy` | `scroll-motion.js` | Alt merkezde sabit yüzen minimalist bölüm gezinti adası |
 | `#site-header` | `layout/header.html` | Kaydırmayla adaya dönüşen (`is-scrolled-island`) Apple Glass üst çubuğu |

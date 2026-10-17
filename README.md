@@ -80,7 +80,7 @@ SubRadar/
     ├── manifest.json                     # PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği)
     ├── sw.js                             # Çevrimdışı Service Worker önbellekleme motoru
     │
-    ├── components/                       # 21 Parçalı Modüler HTML Bileşenleri
+    ├── components/                       # 22 Parçalı Modüler HTML Bileşenleri
     │   ├── layout/
     │   │   ├── header.html               # Üst gezinme çubuğu, ses, kısayol, dil, kur ve tema kontrolleri
     │   │   ├── footer.html               # Alt bilgi çubuğu, iletişim bilgileri, bağlantılar ve yerel gecikme
@@ -106,7 +106,8 @@ SubRadar/
     │       ├── enterprise-modal.html     # Kurumsal talep formu (inline hata denetimi & spinner)
     │       ├── reclaim-modal.html        # Geri kazanım ve CLI kurulum adımları
     │       ├── shortcuts-modal.html      # Raycast/Linear stili Power-User klavye kısayolları modalı
-    │       └── legal-generator-modal.html# Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı
+    │       ├── legal-generator-modal.html# Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı
+    │       └── auth-modal.html           # Sıfır bilgi yerel AES-256 kasa giriş ve kayıt modalı
     │
     ├── css/                              # Web Stil Dosyaları
     │   ├── base.css                      # Temel renk paleti, tipografi kuralları, açık/koyu tema değişkenleri
@@ -138,9 +139,10 @@ SubRadar/
     │       ├── enterprise-modal.js       # Kurumsal form doğrulama, spinner ve onay ekranı
     │       ├── reclaim-modal.js          # CLI komut kopyalama ve geri kazanım adımları
     │       ├── shortcuts-modal.js        # Power-User kısayol dinleyici (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`)
-    │       └── legal-gen.js              # Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme
+    │       ├── legal-gen.js              # Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme
+    │       └── auth-modal.js             # Sıfır bilgi yerel kasa giriş ve oturum kontrolcüsü (`initAuthModal`)
     └── scripts/
-        └── build.py                      # 21 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
+        └── build.py                      # 22 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
 ```
 
 ---

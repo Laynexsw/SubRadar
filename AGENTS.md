@@ -94,7 +94,7 @@ SubRadar/
     ├── manifest.json            # PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği)
     ├── sw.js                    # Çevrimdışı Service Worker önbellekleme motoru
     │
-    ├── components/              # 21 Parçalı Modüler HTML Parçaları
+    ├── components/              # 22 Parçalı Modüler HTML Parçaları
     │   ├── layout/
     │   │   ├── header.html      # Üst cam bar, logo, menü, Cmd+K, ses, kısayol, dil, kur ve tema butonları
     │   │   ├── footer.html      # Alt bilgi, canlı gecikme (ping), telif ve yasal bildirimler
@@ -120,7 +120,8 @@ SubRadar/
     │       ├── enterprise-modal.html# Kurumsal teklif formu (inline hata ve loading durumu)
     │       ├── reclaim-modal.html   # CLI kurulumu (`curl`) ve geri kazanım adımları
     │       ├── shortcuts-modal.html # Raycast/Linear stili Power-User klavye kısayolları modalı
-    │       └── legal-generator-modal.html # Canlı 6502 SK & GDPR Madde 17 resmi fesih ihtarname sihirbazı
+    │       ├── legal-generator-modal.html # Canlı 6502 SK & GDPR Madde 17 resmi fesih ihtarname sihirbazı
+    │       └── auth-modal.html      # Sıfır bilgi yerel AES-256 kasa giriş ve kayıt modalı
     │
     ├── css/
     │   ├── base.css             # Renk değişkenleri, tipografi hiyerarşisi, açık/koyu tema sınıfları
@@ -152,10 +153,11 @@ SubRadar/
     │       ├── enterprise-modal.js# Kurumsal form alanları doğrulaması (inline hata & spinner)
     │       ├── reclaim-modal.js   # CLI komutunu panoya kopyalama (`curl -sSL...`)
     │       ├── shortcuts-modal.js # `?`, `T`, `S`, `C`, `L`, `D`, `ESC` kısayol dinleyici ve modal yöneticisi
-    │       └── legal-gen.js       # Canlı yasal fesih metni derleyici, pano kopyalama ve `.txt` indirme
+    │       ├── legal-gen.js       # Canlı yasal fesih metni derleyici, pano kopyalama ve `.txt` indirme
+    │       └── auth-modal.js      # Yerel oturum yönetimi, parola gösterimi ve demo kasa girişi
     │
     └── scripts/
-        └── build.py             # 21 modüler bileşeni doğrulayan test betiği
+        └── build.py             # 22 modüler bileşeni doğrulayan test betiği
 ```
 
 ---
@@ -200,6 +202,7 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
   * `#download-modal-backdrop`: İndirme modalı
   * `#ent-modal-backdrop`: Kurumsal form modalı
   * `#reclaim-modal-backdrop`: Geri kazanım & CLI modalı
+  * `#auth-modal-backdrop`: Sıfır bilgi yerel kasa giriş ve kayıt modalı (`#auth-modal-btn`)
   * `#sr-toast`: Apple Glass bildirim balonu
 * **Gezinme & Yüzen Ada (Dock):**
   * `#sr-scrollspy`: Alt merkezde sabit yüzen minimalist bölüm gezinti adası (Ekstre Lab, İsraf Hesaplayıcı, Karşılaştırma, Özellikler, İşletim Sistemleri, Fiyatlandırma)

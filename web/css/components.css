@@ -365,6 +365,59 @@ html.light #shortcuts-modal-card .bg-white\/\[0\.02\] {
   border-color: rgba(0, 0, 0, 0.08) !important;
 }
 
+/* ── Auth Modal & Header Button ── */
+#auth-modal-btn {
+  transition: all 0.2s ease;
+}
+html.light #auth-modal-btn {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #0f172a !important;
+}
+html.light #auth-modal-btn:hover {
+  background: rgba(0, 0, 0, 0.1) !important;
+  border-color: rgba(0, 0, 0, 0.22) !important;
+}
+html.light #auth-modal-card {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #0f172a !important;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.22) !important;
+}
+html.light #auth-modal-card h3 {
+  color: #0f172a !important;
+}
+html.light #auth-modal-card input {
+  background-color: #f8fafc !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+  color: #0f172a !important;
+}
+html.light #auth-modal-card input::placeholder {
+  color: rgba(15, 23, 42, 0.4) !important;
+}
+html.light #auth-modal-card .auth-tab-btn[aria-selected="true"] {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+}
+html.light #auth-modal-card .auth-tab-btn[aria-selected="false"] {
+  color: rgba(15, 23, 42, 0.6) !important;
+}
+html.light #auth-modal-card #auth-submit-btn {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+}
+html.light #auth-modal-card #auth-submit-btn:hover {
+  background-color: #1e293b !important;
+}
+html.light #auth-modal-card #auth-quick-demo-btn {
+  background-color: #f1f5f9 !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #0f172a !important;
+}
+html.light #auth-modal-card #auth-quick-demo-btn:hover {
+  background-color: #e2e8f0 !important;
+}
+
 /* ── Dynamic Floating Island Header (Scroll ile Yüzen Bağımsız Ada) ── */
 #site-header {
   position: fixed;

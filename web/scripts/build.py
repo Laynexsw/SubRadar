@@ -33,6 +33,7 @@ def build():
         'components/modals/reclaim-modal.html',
         'components/modals/shortcuts-modal.html',
         'components/modals/legal-generator-modal.html',
+        'components/modals/auth-modal.html',
         'components/layout/cookie-banner.html',
         'components/layout/mobile-sticky-cta.html',
     ]
