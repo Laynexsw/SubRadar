@@ -1,52 +1,66 @@
 /**
- * SubRadar — Auth Modal ($10,000 Executive Apple Glass Split-Screen Controller)
+ * SubRadar — Auth Modal (Double Slider Sliding-Overlay Controller)
+ * Dribbble / Apple Glass Edition
  */
 import { srShowToast } from '../toast.js';
 
+function getToast() {
+  return typeof srShowToast === 'function' ? srShowToast : (window.srShowToast || function(msg) { console.log(msg); });
+}
+
 export function initAuthModal() {
   const backdrop = document.getElementById('auth-modal-backdrop');
-  if (!backdrop) return;
+  const authBox = document.getElementById('auth-box');
+  if (!backdrop || !authBox) return;
 
   const openBtns = document.querySelectorAll('#auth-modal-btn, .mobile-auth-trigger');
   const closeBtn = document.getElementById('auth-modal-close');
-  const sliderContainer = document.getElementById('auth-tab-slider-container');
-  const tabLogin = document.getElementById('auth-tab-login');
-  const tabRegister = document.getElementById('auth-tab-register');
-  const sliderGlider = document.getElementById('auth-tab-slider-glider');
-  const registerExtra = document.getElementById('auth-register-extra');
-  const nameGroup = document.getElementById('auth-name-group');
-  const rememberRow = document.getElementById('auth-remember-row');
-  const rightTitle = document.getElementById('auth-right-title');
-  const rightSubtitle = document.getElementById('auth-right-subtitle');
-  const submitBtn = document.getElementById('auth-submit-btn');
-  const submitLabel = document.getElementById('auth-submit-label');
-  const submitSpinner = document.getElementById('auth-submit-spinner');
-  const submitIcon = document.getElementById('auth-submit-icon');
+
+  // Double Slider Controls
+  const toSignUpBtn = document.getElementById('auth-to-signup-btn');
+  const toSignInBtn = document.getElementById('auth-to-signin-btn');
+
+  // Mobile Top Switcher Controls
+  const mobileTabLogin = document.getElementById('auth-mobile-tab-login');
+  const mobileTabRegister = document.getElementById('auth-mobile-tab-register');
+  const mobileSwitchToRegister = document.getElementById('auth-mobile-switch-to-register');
+  const mobileSwitchToLogin = document.getElementById('auth-mobile-switch-to-login');
+
+  // Forms & Inputs
+  const loginForm = document.getElementById('auth-login-form');
+  const loginEmail = document.getElementById('auth-login-email');
+  const loginPwd = document.getElementById('auth-login-password');
+  const loginPwdToggle = document.getElementById('auth-login-pwd-toggle');
+  const loginPwdIcon = document.getElementById('auth-login-pwd-icon');
+  const loginSpinner = document.getElementById('auth-login-spinner');
+  const loginSubmitLabel = document.getElementById('auth-login-submit-label');
   const quickDemoBtn = document.getElementById('auth-quick-demo-btn');
-  const switchPromptBtn = document.getElementById('auth-switch-prompt-btn');
-  const switchPromptText = document.getElementById('auth-switch-prompt-text');
-  const nameInput = document.getElementById('auth-name');
-  const emailInput = document.getElementById('auth-email');
-  const pwdInput = document.getElementById('auth-password');
-  const pwdConfirmInput = document.getElementById('auth-password-confirm');
-  const pwdToggle = document.getElementById('auth-pwd-toggle');
-  const pwdIcon = document.getElementById('auth-pwd-icon');
-  const authBtnLabel = document.getElementById('auth-btn-label');
+
+  const registerForm = document.getElementById('auth-register-form');
+  const registerName = document.getElementById('auth-register-name');
+  const registerEmail = document.getElementById('auth-register-email');
+  const registerPwd = document.getElementById('auth-register-password');
+  const registerPwdToggle = document.getElementById('auth-register-pwd-toggle');
+  const registerPwdIcon = document.getElementById('auth-register-pwd-icon');
+  const registerSpinner = document.getElementById('auth-register-spinner');
+  const registerSubmitLabel = document.getElementById('auth-register-submit-label');
+
+  // Real-time Checklist & Strength Bars
+  const regPwdStrengthText = document.getElementById('auth-register-pwd-strength-text');
+  const regBars = [
+    document.getElementById('auth-register-pwd-bar-1'),
+    document.getElementById('auth-register-pwd-bar-2'),
+    document.getElementById('auth-register-pwd-bar-3')
+  ];
+  const reqLen = document.getElementById('pwd-req-len');
+  const reqNum = document.getElementById('pwd-req-num');
+  const reqSpec = document.getElementById('pwd-req-spec');
+
+  // Social Buttons
   const socialBtns = document.querySelectorAll('.social-login-btn');
 
-  // Carousel Elements
-  const slides = document.querySelectorAll('.auth-carousel-slide');
-  const dots = document.querySelectorAll('.auth-carousel-dot');
-  const prevSlideBtn = document.getElementById('auth-carousel-prev');
-  const nextSlideBtn = document.getElementById('auth-carousel-next');
-  const showcasePanel = document.getElementById('auth-showcase-panel');
-  const progressBar = document.getElementById('auth-carousel-progress-bar');
-  const slideCounter = document.getElementById('auth-slide-counter');
-  const mockKillCard = document.getElementById('auth-mock-kill-card');
-  const killStatusBadge = document.getElementById('auth-kill-status-badge');
-
   // Views
-  const mainFlow = document.getElementById('auth-main-flow');
+  const sliderWrapper = document.getElementById('auth-slider-wrapper');
   const activeDashboard = document.getElementById('auth-active-dashboard');
   const forgotView = document.getElementById('auth-forgot-view');
   const forgotLink = document.getElementById('auth-forgot-link');
@@ -63,158 +77,45 @@ export function initAuthModal() {
   const btnExportJson = document.getElementById('auth-btn-export-json');
   const btnEditProfile = document.getElementById('auth-btn-edit-profile');
   const logoutBtn = document.getElementById('auth-logout-btn');
+  const authBtnLabel = document.getElementById('auth-btn-label');
 
-  // Strength bars & Checklist chips
-  const pwdStrengthText = document.getElementById('auth-pwd-strength-text');
-  const pwdMatchIcon = document.getElementById('auth-pwd-match-icon');
-  const reqLen = document.getElementById('pwd-req-len');
-  const reqNum = document.getElementById('pwd-req-num');
-  const reqSpec = document.getElementById('pwd-req-spec');
-  const bars = [
-    document.getElementById('auth-pwd-bar-1'),
-    document.getElementById('auth-pwd-bar-2'),
-    document.getElementById('auth-pwd-bar-3')
-  ];
-
-  let currentTab = 'login';
-  let currentSlide = 0;
-  let carouselProgressInterval = null;
-  let progressVal = 0;
-  let isCarouselHovered = false;
-  const SLIDE_DURATION_MS = 4500;
-  const PROGRESS_TICK_MS = 50;
-
-  // Carousel functionality
-  function goToSlide(index) {
-    if (!slides.length) return;
-    currentSlide = (index + slides.length) % slides.length;
-
-    slides.forEach((slide, idx) => {
-      if (idx === currentSlide) {
-        slide.classList.remove('hidden');
-      } else {
-        slide.classList.add('hidden');
+  // Switch between Sign-In and Sign-Up panels
+  function setPanel(mode) {
+    if (mode === 'register') {
+      authBox.classList.add('auth-right-panel-active');
+      if (mobileTabRegister && mobileTabLogin) {
+        mobileTabRegister.className = 'auth-mobile-btn flex-1 py-1 text-xs font-semibold rounded-full transition-all text-black bg-white cursor-pointer';
+        mobileTabLogin.className = 'auth-mobile-btn flex-1 py-1 text-xs font-semibold rounded-full transition-all text-white/60 hover:text-white cursor-pointer';
       }
-    });
-
-    dots.forEach((dot, idx) => {
-      if (idx === currentSlide) {
-        dot.className = 'auth-carousel-dot w-7 h-1.5 rounded-full bg-emerald-400 transition-all cursor-pointer';
-        dot.setAttribute('aria-label', `Slayt ${idx + 1} (Aktif)`);
-      } else {
-        dot.className = 'auth-carousel-dot w-2 h-1.5 rounded-full bg-white/20 hover:bg-white/50 transition-all cursor-pointer';
-        dot.setAttribute('aria-label', `Slayt ${idx + 1}`);
+    } else {
+      authBox.classList.remove('auth-right-panel-active');
+      if (mobileTabRegister && mobileTabLogin) {
+        mobileTabLogin.className = 'auth-mobile-btn flex-1 py-1 text-xs font-semibold rounded-full transition-all text-black bg-white cursor-pointer';
+        mobileTabRegister.className = 'auth-mobile-btn flex-1 py-1 text-xs font-semibold rounded-full transition-all text-white/60 hover:text-white cursor-pointer';
       }
-    });
-
-    if (slideCounter) {
-      slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
     }
-
-    // Reset progress
-    progressVal = 0;
-    if (progressBar) {
-      progressBar.style.width = '0%';
-    }
-  }
-
-  function startCarouselProgress() {
-    stopCarouselProgress();
-    carouselProgressInterval = setInterval(() => {
-      if (isCarouselHovered) return;
-      progressVal += (PROGRESS_TICK_MS / SLIDE_DURATION_MS) * 100;
-      if (progressBar) {
-        progressBar.style.width = `${Math.min(progressVal, 100)}%`;
-      }
-      if (progressVal >= 100) {
-        progressVal = 0;
-        goToSlide(currentSlide + 1);
-      }
-    }, PROGRESS_TICK_MS);
-  }
-
-  function stopCarouselProgress() {
-    if (carouselProgressInterval) {
-      clearInterval(carouselProgressInterval);
-      carouselProgressInterval = null;
-    }
-  }
-
-  if (prevSlideBtn) {
-    prevSlideBtn.addEventListener('click', () => {
-      goToSlide(currentSlide - 1);
-      if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
-    });
-  }
-
-  if (nextSlideBtn) {
-    nextSlideBtn.addEventListener('click', () => {
-      goToSlide(currentSlide + 1);
-      if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
-    });
-  }
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const target = parseInt(dot.getAttribute('data-target') || '0', 10);
-      goToSlide(target);
-      if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
-    });
-  });
-
-  if (showcasePanel) {
-    showcasePanel.addEventListener('mouseenter', () => {
-      isCarouselHovered = true;
-    });
-    showcasePanel.addEventListener('mouseleave', () => {
-      isCarouselHovered = false;
-    });
-  }
-
-  // Interactive Kill Switch simulation on Slide 0
-  if (mockKillCard && killStatusBadge) {
-    let isKilled = false;
-    mockKillCard.style.cursor = 'pointer';
-    mockKillCard.addEventListener('click', () => {
-      isKilled = !isKilled;
-      if (isKilled) {
-        killStatusBadge.className = 'inline-flex items-center gap-1 text-[10px] font-mono text-emerald-300 font-bold bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-400/40 shadow-sm';
-        killStatusBadge.innerHTML = '<span class="material-symbols-outlined text-[12px]">check_circle</span><span>İPTAL EDİLDİ</span>';
-        srShowToast('⚡ Adobe Creative Cloud tek tıkla iptal simülasyonu çalıştırıldı (+$59.99/ay kurtarıldı).', 'success');
-        if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
-      } else {
-        killStatusBadge.className = 'inline-flex items-center gap-1 text-[10px] font-mono text-emerald-400 font-bold bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/30 shadow-sm animate-pulse';
-        killStatusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>İPTAL HAZIR</span>';
-      }
-    });
-  }
-
-  function openModal(mode = 'login') {
-    updateSessionUI();
-    if (!hasActiveSession()) {
-      showMainFlow();
-      switchTab(mode);
-    }
-    backdrop.classList.remove('hidden');
-    backdrop.classList.add('flex');
-    backdrop.style.display = 'flex';
-    backdrop.setAttribute('aria-hidden', 'false');
-    try { document.body.style.overflow = 'hidden'; } catch (e) {}
     if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
-    goToSlide(0);
-    startCarouselProgress();
-    setTimeout(() => {
-      if (!hasActiveSession() && emailInput) emailInput.focus();
-    }, 80);
   }
 
-  function closeModal() {
-    backdrop.classList.add('hidden');
-    backdrop.classList.remove('flex');
-    backdrop.style.display = 'none';
-    backdrop.setAttribute('aria-hidden', 'true');
-    stopCarouselProgress();
-    try { document.body.style.overflow = ''; } catch (e) {}
+  if (toSignUpBtn) {
+    toSignUpBtn.addEventListener('click', () => setPanel('register'));
+  }
+  if (toSignInBtn) {
+    toSignInBtn.addEventListener('click', () => setPanel('login'));
+  }
+
+  // Mobile Switchers
+  if (mobileTabLogin) {
+    mobileTabLogin.addEventListener('click', () => setPanel('login'));
+  }
+  if (mobileTabRegister) {
+    mobileTabRegister.addEventListener('click', () => setPanel('register'));
+  }
+  if (mobileSwitchToRegister) {
+    mobileSwitchToRegister.addEventListener('click', () => setPanel('register'));
+  }
+  if (mobileSwitchToLogin) {
+    mobileSwitchToLogin.addEventListener('click', () => setPanel('login'));
   }
 
   function hasActiveSession() {
@@ -252,96 +153,42 @@ export function initAuthModal() {
     try {
       localStorage.removeItem('sr-local-auth');
     } catch (e) {}
-    if (emailInput) emailInput.value = '';
-    if (pwdInput) pwdInput.value = '';
-    if (pwdConfirmInput) pwdConfirmInput.value = '';
+    if (loginEmail) loginEmail.value = '';
+    if (loginPwd) loginPwd.value = '';
+    if (registerName) registerName.value = '';
+    if (registerEmail) registerEmail.value = '';
+    if (registerPwd) registerPwd.value = '';
     updateSessionUI();
-    showMainFlow();
-    switchTab('login');
+    showSliderWrapper();
+    setPanel('login');
   }
 
-  function showMainFlow() {
-    if (mainFlow) mainFlow.classList.remove('hidden');
+  function showSliderWrapper() {
+    if (sliderWrapper) sliderWrapper.classList.remove('hidden');
     if (activeDashboard) activeDashboard.classList.add('hidden');
     if (forgotView) forgotView.classList.add('hidden');
   }
 
   function showActiveDashboard() {
-    if (mainFlow) mainFlow.classList.add('hidden');
-    if (activeDashboard) activeDashboard.classList.remove('hidden');
+    if (sliderWrapper) sliderWrapper.classList.add('hidden');
+    if (activeDashboard) {
+      activeDashboard.classList.remove('hidden');
+      activeDashboard.classList.add('flex');
+    }
     if (forgotView) forgotView.classList.add('hidden');
   }
 
   function showForgotView() {
-    if (mainFlow) mainFlow.classList.add('hidden');
+    if (sliderWrapper) sliderWrapper.classList.add('hidden');
     if (activeDashboard) activeDashboard.classList.add('hidden');
-    if (forgotView) forgotView.classList.remove('hidden');
+    if (forgotView) {
+      forgotView.classList.remove('hidden');
+      forgotView.classList.add('flex');
+    }
     if (forgotSuccess) forgotSuccess.classList.add('hidden');
-    if (forgotEmail && emailInput && emailInput.value) {
-      forgotEmail.value = emailInput.value;
+    if (forgotEmail && loginEmail && loginEmail.value) {
+      forgotEmail.value = loginEmail.value;
     }
-  }
-
-  function switchTab(tab) {
-    currentTab = tab;
-    if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
-
-    if (tab === 'login') {
-      if (sliderGlider) {
-        sliderGlider.style.transform = 'translateX(0)';
-      }
-      if (tabLogin) {
-        tabLogin.className = 'auth-tab-btn relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-full transition-colors duration-200 text-black cursor-pointer flex items-center justify-center gap-1.5';
-        tabLogin.setAttribute('aria-selected', 'true');
-      }
-      if (tabRegister) {
-        tabRegister.className = 'auth-tab-btn relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-full transition-colors duration-200 text-white/60 hover:text-white cursor-pointer flex items-center justify-center gap-1.5';
-        tabRegister.setAttribute('aria-selected', 'false');
-      }
-      if (nameGroup) nameGroup.classList.add('hidden');
-      if (registerExtra) registerExtra.classList.add('hidden');
-      if (rememberRow) rememberRow.classList.remove('hidden');
-      if (rightTitle) rightTitle.textContent = "SubRadar'a Giriş Yap";
-      if (rightSubtitle) rightSubtitle.textContent = 'Aboneliklerinizi yerel kasanızda yönetmeye devam edin.';
-      if (submitLabel) submitLabel.textContent = 'Giriş Yap';
-      if (switchPromptText) switchPromptText.textContent = 'Henüz hesabınız yok mu?';
-      if (switchPromptBtn) switchPromptBtn.textContent = 'Kayıt Ol';
-    } else {
-      if (sliderGlider) {
-        sliderGlider.style.transform = 'translateX(calc(100% + 0px))';
-      }
-      if (tabRegister) {
-        tabRegister.className = 'auth-tab-btn relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-full transition-colors duration-200 text-black cursor-pointer flex items-center justify-center gap-1.5';
-        tabRegister.setAttribute('aria-selected', 'true');
-      }
-      if (tabLogin) {
-        tabLogin.className = 'auth-tab-btn relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-full transition-colors duration-200 text-white/60 hover:text-white cursor-pointer flex items-center justify-center gap-1.5';
-        tabLogin.setAttribute('aria-selected', 'false');
-      }
-      if (nameGroup) nameGroup.classList.remove('hidden');
-      if (registerExtra) registerExtra.classList.remove('hidden');
-      if (rememberRow) rememberRow.classList.add('hidden');
-      if (rightTitle) rightTitle.textContent = 'Ücretsiz Hesap Oluştur';
-      if (rightSubtitle) rightSubtitle.textContent = 'Sıfır bilgi korumalı yerel kasanızı saniyeler içinde başlatın.';
-      if (submitLabel) submitLabel.textContent = 'Kayıt Ol ve Başlat';
-      if (switchPromptText) switchPromptText.textContent = 'Zaten bir hesabınız var mı?';
-      if (switchPromptBtn) switchPromptBtn.textContent = 'Giriş Yap';
-    }
-  }
-
-  // Keyboard navigation for Tabs (ArrowLeft / ArrowRight)
-  if (sliderContainer) {
-    sliderContainer.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        switchTab('register');
-        if (tabRegister) tabRegister.focus();
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        switchTab('login');
-        if (tabLogin) tabLogin.focus();
-      }
-    });
   }
 
   function updateSessionUI() {
@@ -356,25 +203,53 @@ export function initAuthModal() {
       if (avatarInitials) {
         const parts = displayName.split(' ');
         const initials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : displayName.substring(0, 2).toUpperCase();
-        avatarInitials.innerHTML = `${initials}<span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#0e1017]"></span>`;
+        avatarInitials.innerHTML = `${initials}<span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-[#0b0e14]"></span>`;
       }
       showActiveDashboard();
     } else {
       if (authBtnLabel) {
         authBtnLabel.textContent = 'Giriş Yap / Kayıt Ol';
       }
-      showMainFlow();
+      showSliderWrapper();
     }
   }
 
-  function updatePasswordStrength() {
-    if (!pwdInput) return;
-    const pwd = pwdInput.value || '';
-    const confirm = pwdConfirmInput ? pwdConfirmInput.value : '';
+  function openModal(mode = 'login') {
+    updateSessionUI();
+    if (!hasActiveSession()) {
+      showSliderWrapper();
+      setPanel(mode);
+    }
+    backdrop.classList.remove('hidden');
+    backdrop.classList.add('flex');
+    backdrop.style.display = 'flex';
+    backdrop.setAttribute('aria-hidden', 'false');
+    try { document.body.style.overflow = 'hidden'; } catch (e) {}
+    if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
+    setTimeout(() => {
+      if (!hasActiveSession()) {
+        if (mode === 'register' && registerName) registerName.focus();
+        else if (loginEmail) loginEmail.focus();
+      }
+    }, 120);
+  }
 
-    let hasLen = pwd.length >= 8;
-    let hasNum = /[A-Z]/.test(pwd) || /[0-9]/.test(pwd);
-    let hasSpec = /[^A-Za-z0-9]/.test(pwd);
+  function closeModal() {
+    backdrop.classList.add('hidden');
+    backdrop.classList.remove('flex');
+    backdrop.style.display = 'none';
+    backdrop.setAttribute('aria-hidden', 'true');
+    try { document.body.style.overflow = ''; } catch (e) {}
+  }
+
+  // Password Strength Logic for Registration
+  function updateRegisterPasswordStrength() {
+    if (!registerPwd) return;
+    const pwd = registerPwd.value || '';
+
+    const hasLen = pwd.length >= 8;
+    const hasNum = /[A-Z]/.test(pwd) || /[0-9]/.test(pwd);
+    const hasSpec = /[^A-Za-z0-9]/.test(pwd);
 
     let score = 0;
     if (hasLen) score++;
@@ -384,22 +259,21 @@ export function initAuthModal() {
     const colors = ['bg-rose-500', 'bg-amber-500', 'bg-emerald-400'];
     const labels = ['Zayıf', 'Orta Düzey', 'Güçlü Şifre'];
 
-    bars.forEach((bar, idx) => {
+    regBars.forEach((bar, idx) => {
       if (!bar) return;
       bar.className = 'h-full flex-1 rounded-full transition-all duration-300 ' + (idx < score ? colors[Math.min(score - 1, colors.length - 1)] : 'bg-white/15');
     });
 
-    if (pwdStrengthText) {
+    if (regPwdStrengthText) {
       if (pwd.length === 0) {
-        pwdStrengthText.textContent = 'Bekleniyor';
-        pwdStrengthText.className = 'text-white/50 font-semibold font-mono';
+        regPwdStrengthText.textContent = 'Bekleniyor';
+        regPwdStrengthText.className = 'text-white/50 font-semibold font-mono';
       } else {
-        pwdStrengthText.textContent = labels[score - 1] || 'Zayıf';
-        pwdStrengthText.className = score <= 1 ? 'text-rose-400 font-semibold font-mono' : (score === 2 ? 'text-amber-400 font-semibold font-mono' : 'text-emerald-400 font-semibold font-mono');
+        regPwdStrengthText.textContent = labels[score - 1] || 'Zayıf';
+        regPwdStrengthText.className = score <= 1 ? 'text-rose-400 font-semibold font-mono' : (score === 2 ? 'text-amber-400 font-semibold font-mono' : 'text-emerald-400 font-semibold font-mono');
       }
     }
 
-    // Update real-time checklist chips
     function updateChip(el, isOk) {
       if (!el) return;
       const icon = el.querySelector('.req-icon');
@@ -415,30 +289,35 @@ export function initAuthModal() {
     updateChip(reqLen, hasLen);
     updateChip(reqNum, hasNum);
     updateChip(reqSpec, hasSpec);
+  }
 
-    if (pwdMatchIcon && pwdConfirmInput) {
-      if (confirm.length > 0) {
-        pwdMatchIcon.classList.remove('hidden');
-        if (pwd === confirm) {
-          pwdMatchIcon.textContent = 'check_circle';
-          pwdMatchIcon.className = 'material-symbols-outlined text-[18px] text-emerald-400 absolute right-3 top-3';
-        } else {
-          pwdMatchIcon.textContent = 'cancel';
-          pwdMatchIcon.className = 'material-symbols-outlined text-[18px] text-rose-400 absolute right-3 top-3';
-        }
-      } else {
-        pwdMatchIcon.classList.add('hidden');
-      }
-    }
+  if (registerPwd) {
+    ['input', 'keyup', 'change', 'paste'].forEach(evt => {
+      registerPwd.addEventListener(evt, updateRegisterPasswordStrength);
+    });
+  }
+
+  // Password Visibility Toggles
+  if (loginPwdToggle && loginPwd && loginPwdIcon) {
+    loginPwdToggle.addEventListener('click', () => {
+      const isPwd = loginPwd.type === 'password';
+      loginPwd.type = isPwd ? 'text' : 'password';
+      loginPwdIcon.textContent = isPwd ? 'visibility_off' : 'visibility';
+    });
+  }
+  if (registerPwdToggle && registerPwd && registerPwdIcon) {
+    registerPwdToggle.addEventListener('click', () => {
+      const isPwd = registerPwd.type === 'password';
+      registerPwd.type = isPwd ? 'text' : 'password';
+      registerPwdIcon.textContent = isPwd ? 'visibility_off' : 'visibility';
+    });
   }
 
   // Social Sign-in simulation
   socialBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const provider = btn.getAttribute('data-provider') || 'Google';
-      const label = btn.querySelector('.provider-label');
-      const oldText = label ? label.textContent : provider;
-      if (label) label.textContent = 'Giriş...';
+      btn.style.opacity = '0.6';
       btn.disabled = true;
 
       if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
@@ -455,11 +334,11 @@ export function initAuthModal() {
         }
 
         setAuthenticated({ name, email, provider });
-        srShowToast(`✓ ${provider} ile başarıyla giriş yapıldı. Hoş geldiniz!`, 'success');
+        getToast()(`✓ ${provider} ile başarıyla giriş yapıldı. Hoş geldiniz!`, 'success');
         if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
-        if (label) label.textContent = oldText;
+        btn.style.opacity = '1';
         btn.disabled = false;
-      }, 400);
+      }, 350);
     });
   });
 
@@ -471,73 +350,58 @@ export function initAuthModal() {
         email: 'arda@subradar.dev',
         provider: 'Demo'
       });
-      srShowToast('⚡ Demo hesabı ile tek tıkla giriş yapıldı. Hoş geldiniz!', 'success');
+      getToast()('⚡ Demo hesabı ile tek tıkla giriş yapıldı. Hoş geldiniz!', 'success');
       if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
     });
   }
 
-  // Switch prompt button (footer link between login/register)
-  if (switchPromptBtn) {
-    switchPromptBtn.addEventListener('click', () => {
-      switchTab(currentTab === 'login' ? 'register' : 'login');
-    });
-  }
-
-  // Main Form Submit with Spinner Animation
-  const authForm = document.getElementById('auth-form');
-  if (authForm) {
-    authForm.addEventListener('submit', (e) => {
+  // Sign-In Form Submit
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = (emailInput && emailInput.value.trim()) || 'kullanici@subradar.dev';
-      const pwd = pwdInput ? pwdInput.value : '';
+      const email = (loginEmail && loginEmail.value.trim()) || 'kullanici@subradar.dev';
 
-      // Show loader
-      if (submitSpinner) submitSpinner.classList.remove('hidden');
-      if (submitIcon) submitIcon.classList.add('hidden');
-      if (submitBtn) submitBtn.disabled = true;
+      if (loginSpinner) loginSpinner.classList.remove('hidden');
+      if (loginSubmitLabel) loginSubmitLabel.textContent = 'GİRİŞ YAPILIYOR...';
 
       setTimeout(() => {
-        if (submitSpinner) submitSpinner.classList.add('hidden');
-        if (submitIcon) submitIcon.classList.remove('hidden');
-        if (submitBtn) submitBtn.disabled = false;
+        if (loginSpinner) loginSpinner.classList.add('hidden');
+        if (loginSubmitLabel) loginSubmitLabel.textContent = 'GİRİŞ YAP';
 
-        if (currentTab === 'register') {
-          const nameVal = (nameInput && nameInput.value.trim()) || email.split('@')[0];
-          const confirmVal = pwdConfirmInput ? pwdConfirmInput.value : '';
-
-          if (confirmVal && pwd !== confirmVal) {
-            srShowToast('Şifreler birbiriyle eşleşmiyor!', 'error');
-            if (window.srAudio && window.srAudio.playError) window.srAudio.playError();
-            return;
-          }
-
-          setAuthenticated({
-            name: nameVal,
-            email: email,
-            provider: 'Local'
-          });
-          srShowToast('Hesabınız başarıyla oluşturuldu! Hoş geldiniz.', 'success');
-          if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
-        } else {
-          const nameVal = email.split('@')[0];
-          setAuthenticated({
-            name: nameVal.charAt(0).toUpperCase() + nameVal.slice(1),
-            email: email,
-            provider: 'Local'
-          });
-          srShowToast('Giriş başarılı! Hoş geldiniz.', 'success');
-          if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
-        }
+        const nameVal = email.split('@')[0];
+        setAuthenticated({
+          name: nameVal.charAt(0).toUpperCase() + nameVal.slice(1),
+          email: email,
+          provider: 'Local'
+        });
+        getToast()('Giriş başarılı! Hoş geldiniz.', 'success');
+        if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
       }, 350);
     });
   }
 
-  // Password Visibility Toggle
-  if (pwdToggle && pwdInput && pwdIcon) {
-    pwdToggle.addEventListener('click', () => {
-      const isPwd = pwdInput.type === 'password';
-      pwdInput.type = isPwd ? 'text' : 'password';
-      pwdIcon.textContent = isPwd ? 'visibility_off' : 'visibility';
+  // Sign-Up Form Submit
+  if (registerForm) {
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = (registerName && registerName.value.trim()) || 'Yeni Kullanıcı';
+      const email = (registerEmail && registerEmail.value.trim()) || 'kullanici@subradar.dev';
+
+      if (registerSpinner) registerSpinner.classList.remove('hidden');
+      if (registerSubmitLabel) registerSubmitLabel.textContent = 'KAYDEDİLİYOR...';
+
+      setTimeout(() => {
+        if (registerSpinner) registerSpinner.classList.add('hidden');
+        if (registerSubmitLabel) registerSubmitLabel.textContent = 'KAYIT OL';
+
+        setAuthenticated({
+          name: name,
+          email: email,
+          provider: 'Local'
+        });
+        getToast()('Hesabınız başarıyla oluşturuldu! Hoş geldiniz.', 'success');
+        if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+      }, 350);
     });
   }
 
@@ -548,24 +412,22 @@ export function initAuthModal() {
       if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
     });
   }
-
   if (forgotBackBtn) {
     forgotBackBtn.addEventListener('click', () => {
-      showMainFlow();
+      showSliderWrapper();
       if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
     });
   }
-
   if (forgotForm) {
     forgotForm.addEventListener('submit', (e) => {
       e.preventDefault();
       if (forgotSuccess) forgotSuccess.classList.remove('hidden');
-      srShowToast('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi!', 'success');
+      getToast()('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi!', 'success');
       if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
     });
   }
 
-  // Dashboard action buttons
+  // Active Dashboard Buttons
   if (btnViewSubs) {
     btnViewSubs.addEventListener('click', () => {
       closeModal();
@@ -609,7 +471,7 @@ export function initAuthModal() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      srShowToast('Hesap ve abonelik verileriniz (.json) başarıyla indirildi.', 'success');
+      getToast()('Hesap ve abonelik verileriniz (.json) başarıyla indirildi.', 'success');
       if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
     });
   }
@@ -622,7 +484,7 @@ export function initAuthModal() {
       if (newName && newName.trim()) {
         const updated = Object.assign({}, session, { name: newName.trim() });
         setAuthenticated(updated);
-        srShowToast('Profil adınız güncellendi!', 'success');
+        getToast()('Profil adınız güncellendi!', 'success');
         if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
       }
     });
@@ -631,20 +493,8 @@ export function initAuthModal() {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
       clearAuthentication();
-      srShowToast('Oturum kapatıldı.', 'info');
+      getToast()('Oturum kapatıldı.', 'info');
       if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
-    });
-  }
-
-  // Password Strength Listeners
-  if (pwdInput) {
-    ['input', 'keyup', 'change', 'paste'].forEach(evt => {
-      pwdInput.addEventListener(evt, updatePasswordStrength);
-    });
-  }
-  if (pwdConfirmInput) {
-    ['input', 'keyup', 'change', 'paste'].forEach(evt => {
-      pwdConfirmInput.addEventListener(evt, updatePasswordStrength);
     });
   }
 
@@ -661,8 +511,6 @@ export function initAuthModal() {
     openModal('login');
   }));
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
-  if (tabLogin) tabLogin.addEventListener('click', () => switchTab('login'));
-  if (tabRegister) tabRegister.addEventListener('click', () => switchTab('register'));
 
   // Global document click delegation for all auth triggers
   document.addEventListener('click', (e) => {

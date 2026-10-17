@@ -121,7 +121,7 @@ SubRadar/
     │       ├── reclaim-modal.html   # CLI kurulumu (`curl`) ve geri kazanım adımları
     │       ├── shortcuts-modal.html # Raycast/Linear stili Power-User klavye kısayolları modalı
     │       ├── legal-generator-modal.html # Canlı 6502 SK & GDPR Madde 17 resmi fesih ihtarname sihirbazı
-    │       └── auth-modal.html      # Genişletilmiş ikiye bölünmüş (split-screen) Apple Glass modal: Üstte kayan slider barı (Giriş/Kayıt), solda 4 slaytlı özellik vitrini karuseli, sağda kimlik doğrulama ve aktif profil paneli
+    │       └── auth-modal.html      # İkili kayan panelli (Double-Slider Sliding Overlay) Dribbble/Apple Glass modalı: Kayan zümrüt marka katmanı, geometrik yüzen şekiller, ghost pill butonlar, dairesel sosyal butonlar ve aktif profil paneli
     │
     ├── css/
     │   ├── base.css             # Renk değişkenleri, tipografi hiyerarşisi, açık/koyu tema sınıfları
@@ -154,7 +154,7 @@ SubRadar/
     │       ├── reclaim-modal.js   # CLI komutunu panoya kopyalama (`curl -sSL...`)
     │       ├── shortcuts-modal.js # `?`, `T`, `S`, `C`, `L`, `D`, `ESC` kısayol dinleyici ve modal yöneticisi
     │       ├── legal-gen.js       # Canlı yasal fesih metni derleyici, pano kopyalama ve `.txt` indirme
-    │       └── auth-modal.js      # Üst slider animasyonu (glider), sol özellik karuseli (otomatik döngü & hover duraklama), sosyal giriş simülasyonu, demo oturumu, şifre gücü ve profil yönetimi kontrolcüsü
+    │       └── auth-modal.js      # İkili kayan panel animasyonu (sliding overlay cubic-bezier), dairesel sosyal girişler, tek tıkla demo oturumu, şifre gücü ve profil yönetimi kontrolcüsü
     │
     └── scripts/
         └── build.py             # 22 modüler bileşeni doğrulayan test betiği
@@ -202,7 +202,7 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
   * `#download-modal-backdrop`: İndirme modalı
   * `#ent-modal-backdrop`: Kurumsal form modalı
   * `#reclaim-modal-backdrop`: Geri kazanım & CLI modalı
-  * `#auth-modal-backdrop`: Genişletilmiş split-screen giriş/kayıt modalı, üst slider barı (`#auth-tab-slider-glider`), sol vitrin karuseli (`#auth-showcase-panel`) ve profil paneli (`#auth-modal-btn`)
+  * `#auth-modal-backdrop`: İkili kayan panelli (Double-Slider Sliding Overlay) giriş/kayıt modalı, kayan zümrüt marka katmanı (`.auth-overlay`), ghost outline butonlar ve profil paneli (`#auth-modal-btn`)
   * `#sr-toast`: Apple Glass bildirim balonu
 * **Gezinme & Yüzen Ada (Dock):**
   * `#sr-scrollspy`: Alt merkezde sabit yüzen minimalist bölüm gezinti adası (Ekstre Lab, İsraf Hesaplayıcı, Karşılaştırma, Özellikler, İşletim Sistemleri, Fiyatlandırma)
