@@ -514,12 +514,20 @@ html.light .auth-carousel-slide h4 {
 html.light .auth-carousel-slide p {
   color: #475569 !important;
 }
-html.light .auth-carousel-slide > div:last-child {
+html.light #auth-mock-kill-card,
+html.light #auth-mock-crypto-card,
+html.light #auth-mock-scanner-card,
+html.light #auth-mock-savings-card {
   background-color: #ffffff !important;
-  border-color: rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
 }
-html.light .auth-carousel-slide > div:last-child span.text-white {
+html.light #auth-mock-kill-card span.text-white,
+html.light #auth-mock-scanner-card span.text-white {
   color: #0f172a !important;
+}
+html.light #auth-carousel-progress-track {
+  background-color: rgba(0, 0, 0, 0.08) !important;
 }
 html.light #auth-carousel-dots button:not(.bg-emerald-400) {
   background-color: rgba(0, 0, 0, 0.15) !important;
@@ -532,6 +540,45 @@ html.light #auth-carousel-next {
 }
 html.light #auth-switch-prompt-box {
   color: #64748b !important;
+}
+html.light #auth-esc-hint {
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #64748b !important;
+}
+
+/* ── Auth Modal Motion Graphics & Laser Animations ── */
+@keyframes authLaserScan {
+  0% { top: 0%; opacity: 0.3; }
+  50% { top: 90%; opacity: 1; }
+  100% { top: 0%; opacity: 0.3; }
+}
+.auth-laser-beam {
+  animation: authLaserScan 2.4s ease-in-out infinite;
+}
+
+@keyframes authSlideEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.auth-carousel-slide:not(.hidden) {
+  animation: authSlideEnter 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes authAmbientPulse {
+  0%, 100% { transform: scale(1); opacity: 0.75; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+#auth-ambient-glow-1 {
+  animation: authAmbientPulse 8s ease-in-out infinite;
+}
+#auth-ambient-glow-2 {
+  animation: authAmbientPulse 10s ease-in-out infinite reverse;
 }
 
 /* ── Dynamic Floating Island Header (Scroll ile Yüzen Bağımsız Ada) ── */
