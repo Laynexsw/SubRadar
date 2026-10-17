@@ -394,8 +394,30 @@ html.light #auth-modal-card {
   color: #0f172a !important;
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.22) !important;
 }
-html.light #auth-modal-card h3 {
+html.light #auth-modal-card h3,
+html.light #auth-modal-card h4 {
   color: #0f172a !important;
+}
+html.light #auth-modal-subtitle,
+html.light #auth-social-label {
+  color: #64748b !important;
+}
+html.light #auth-lock-aura {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+html.light .social-login-btn {
+  background-color: #f8fafc !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #0f172a !important;
+}
+html.light .social-login-btn:hover {
+  background-color: #f1f5f9 !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+html.light #auth-or-divider {
+  background-color: #ffffff !important;
+  color: rgba(15, 23, 42, 0.45) !important;
 }
 html.light #auth-modal-card input {
   background-color: #f8fafc !important;
@@ -405,6 +427,9 @@ html.light #auth-modal-card input {
 html.light #auth-modal-card input::placeholder {
   color: rgba(15, 23, 42, 0.4) !important;
 }
+html.light #auth-modal-card label {
+  color: #334155 !important;
+}
 html.light #auth-modal-card .auth-tab-btn[aria-selected="true"] {
   background-color: #0f172a !important;
   color: #ffffff !important;
@@ -412,20 +437,48 @@ html.light #auth-modal-card .auth-tab-btn[aria-selected="true"] {
 html.light #auth-modal-card .auth-tab-btn[aria-selected="false"] {
   color: rgba(15, 23, 42, 0.6) !important;
 }
-html.light #auth-modal-card #auth-submit-btn {
+html.light #auth-modal-card #auth-submit-btn,
+html.light #auth-modal-card #auth-forgot-submit-btn {
   background-color: #0f172a !important;
   color: #ffffff !important;
 }
-html.light #auth-modal-card #auth-submit-btn:hover {
+html.light #auth-modal-card #auth-submit-btn:hover,
+html.light #auth-modal-card #auth-forgot-submit-btn:hover {
   background-color: #1e293b !important;
 }
 html.light #auth-modal-card #auth-quick-demo-btn {
-  background-color: #f1f5f9 !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
-  color: #0f172a !important;
+  background-color: #fefce8 !important;
+  border-color: rgba(234, 179, 8, 0.35) !important;
+  color: #854d0e !important;
 }
 html.light #auth-modal-card #auth-quick-demo-btn:hover {
-  background-color: #e2e8f0 !important;
+  background-color: #fef9c3 !important;
+}
+html.light #auth-metric-box-1,
+html.light #auth-metric-box-2,
+html.light #auth-metric-box-3 {
+  background-color: #f8fafc !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.light #auth-dash-subs,
+html.light #auth-dash-monthly {
+  color: #0f172a !important;
+}
+html.light #auth-profile-name {
+  color: #0f172a !important;
+}
+html.light #auth-profile-email {
+  color: #64748b !important;
+}
+html.light #auth-btn-export-json,
+html.light #auth-btn-edit-profile {
+  background-color: #f8fafc !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #0f172a !important;
+}
+html.light #auth-btn-export-json:hover,
+html.light #auth-btn-edit-profile:hover {
+  background-color: #f1f5f9 !important;
 }
 
 /* ── Dynamic Floating Island Header (Scroll ile Yüzen Bağımsız Ada) ── */
