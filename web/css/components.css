@@ -347,4 +347,23 @@ html.light .group:hover .radar-blip-label {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18) !important;
 }
 
+/* ── Shortcuts Modal Light Theme ── */
+html.light #shortcuts-modal-card {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.22) !important;
+}
+html.light #shortcuts-modal-card kbd {
+  background-color: #f1f5f9 !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+html.light #shortcuts-modal-card .bg-white\/\[0\.02\] {
+  background-color: #f8fafc !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+
 
