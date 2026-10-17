@@ -15,6 +15,13 @@ import { initReclaimModal } from './modals/reclaim-modal.js';
 import './analytics.js';
 import './cookie-banner.js';
 import './mobile-cta.js';
+import './audio-fx.js';
+import './cursor-glow.js';
+import './statement-lab.js';
+import './hash-verifier.js';
+import './social-export.js';
+import './modals/shortcuts-modal.js';
+import './modals/legal-gen.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize modules
@@ -68,5 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (navCmd) navCmd.textContent = 'Ctrl+K';
     const heroSearch = document.getElementById('hero-sub-search');
     if (heroSearch) heroSearch.placeholder = 'Aboneliğe git (Ctrl+K)';
+  }
+
+  // Register Offline PWA Service Worker
+  if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
   }
 });

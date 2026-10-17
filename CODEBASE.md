@@ -22,8 +22,8 @@ SubRadar, kullanıcıların abonelik israfını engelleyen, tek tıkla iptal ba�
 Depo şu anda **üç ana katmandan** oluşur:
 1. **Kök Katmanı (`/`):** Dağıtım yapılandırması (`index.html`, `.nojekyll`, `.gitignore`), lisanslar ve dokümantasyon (`README.md`, `PRODUCT.md`, `AGENTS.md`, `CODEBASE.md`).
 2. **Web Vitrini Katmanı (`web/`):**
-   * **Modüler Kaynak:** `components/` (14 HTML parçası), `css/` (3 dosya), `js/` (13 modül), `scripts/build.py`.
-   * **Üretim / Canlı Yayın:** `code.html` (~297 KB, tüm stil, betik ve HTML'in birleştiği, GitHub Pages'ta yayınlanan monolitik dosya).
+   * **Modüler Kaynak:** `components/` (21 HTML parçası), `css/` (3 dosya), `js/` (20 modül), `manifest.json`, `sw.js`, `scripts/build.py`.
+   * **Üretim / Canlı Yayın:** `code.html` (~340 KB, tüm stil, betik ve HTML'in birleştiği, GitHub Pages'ta yayınlanan monolitik dosya).
 3. **Masaüstü Katmanı (`app/`):** Electron, Node.js yerel AES-256 kasası, çerçevesiz Apple Glass UI ve güvenli IPC köprüsüne sahip tam fonksiyonel masaüstü istemcisi.
 
 ---
@@ -53,17 +53,20 @@ Depo şu anda **üç ana katmandan** oluşur:
 
 ### 2.3 Web Modüler Bileşenleri (`web/components/`)
 * **`layout/`**:
-  * `header.html`: Atmospheric glow efekti, marka logosu, masaüstü/mobil menü, ⌘K butonu, tema butonu, dil (EN/DE/TR) ve kur ($/€/₺) butonları, "Bilgisayara İndir" ana aksiyonu.
+  * `header.html`: Atmospheric glow efekti, marka logosu, masaüstü/mobil menü, ⌘K butonu, Web Audio ses açma/kapama (`#sound-toggle-btn`), Power-User kısayol rehberi (`#shortcuts-help-btn`), tema butonu, dil (EN/DE/TR) ve kur ($/€/₺) butonları, "Bilgisayara İndir" ana aksiyonu.
   * `footer.html`: Canlı motor gecikme göstergesi (`#footer-engine-ping`), telif hakları, iletişim bilgileri (`iletisim@subradar.dev`), hızlı bağlantılar ve yerel güvenlik taahhütleri.
   * `cookie-banner.html`: Sıfır çerez güvencesi ve yerel bellek onay banner'ı (`#sr-privacy-banner`).
   * `mobile-sticky-cta.html`: Mobilde altta sabit kalan hızlı indirme çubuğu (`#sr-mobile-sticky-cta`).
 * **`sections/`**:
   * `hero.html`: Ana manşet, işletim sistemi indirme butonları (macOS / Windows), interaktif macOS simülasyon penceresi (`#hero-mock-window`).
   * `problem.html`: Gizli abonelik kayıpları, 4.2 dakikalık iptal atlama süresi ve sektör istatistikleri.
-  * `calculator.html`: İsraf hesaplama kaydırıcıları, hızlı kullanıcı profilleri ve 1/5 yıllık tasarruf projeksiyonu.
+  * `statement-lab.html`: Canlı hava boşluğu (Air-Gap) banka ekstresi ve sızıntı tarayıcısı laboratuvarı (`FileReader API`, sıfır bulut).
+  * `calculator.html`: İsraf hesaplama kaydırıcıları, hızlı kullanıcı profilleri, 1/5 yıllık tasarruf projeksiyonu, PNG "Abonelik Röntgeni" kart ihracı (`#calc-export-png-btn`) ve X paylaşımı.
+  * `comparison.html`: Şeffaflık & güven rakip karşılaştırma matrisi (SubRadar vs Rocket Money / Truebill vs Bobby vs Excel).
   * `features.html`: 4 çekirdek motor (Denetim, Otomatik Yakalama, Atlama Motoru, Yerel Kasa).
   * `architecture.html`: Yerel AES-256 SQLite kilitli kasa mimarisi ve sıfır-bulut ilkeleri.
-  * `os-downloads.html`: macOS (Apple Silicon / Intel), Windows (x64 / ARM64) ve Linux kartları + SHA-256 sağlama toplamları.
+  * `os-downloads.html`: macOS (Apple Silicon / Intel), Windows (x64 / ARM64) ve Linux kartları + v1.5.0 sürümü.
+  * `hash-verifier.html`: İstemci tarafı donanım ivmeli SHA-256 kurulum doğrulama aracı (`WebCrypto API`).
   * `pricing.html`: Free, Pro ($9/ay veya $79 ömür boyu), Max ($19/ay veya $149 ömür boyu), Enterprise modelleri.
   * `faq.html`: Sıkça sorulan sorular akordeonu.
 * **`modals/`**:
@@ -71,30 +74,41 @@ Depo şu anda **üç ana katmandan** oluşur:
   * `download-modal.html`: Mimari seçimi (Apple Silicon vs Intel, Windows x64 vs ARM64), simüle edilen hız ve ilerleme çubuğu, SHA256 göstergesi.
   * `enterprise-modal.html`: Kurumsal teklif formu (Ad, Şirket E-postası, Şirket Adı, inline hata doğrulaması ve loading spinner).
   * `reclaim-modal.html`: CLI indirme komutu kopyalama (`curl -sSL subradar.dev/cli | sh`) ve 3 adımlı kurtarma rehberi.
+  * `shortcuts-modal.html`: Raycast/Linear stili Power-User klavye kısayolları modalı (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`).
+  * `legal-generator-modal.html`: Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı (canlı önizleme, pano kopyalama ve `.txt` dosya indirme).
 
 ### 2.4 Web Stilleri (`web/css/`)
 * [`base.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/base.css): SF Pro font ailesi, `html.light` ve `html.dark` değişkenleri, skip-link, scroll-behavior, metin seçimi renkleri.
-* [`components.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/components.css): `.apple-glass` arka plan bluru, `.apple-card` kalkış ve gölge efektleri, `.apple-range` kaydırıcı başlıkları, modal açılış animasyonları (`@keyframes modalIn`), spinner (`.sr-spinner`), form hata animasyonları (`.shake-anim`, `.form-field-invalid`), mobil sabit CTA ve çerez banner'ı stilleri.
+* [`components.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/components.css): `.apple-glass` arka plan bluru, `.apple-card` kalkış ve imleç takipçi dinamik ışıma efekti (`--mouse-x`, `--mouse-y`), `.custom-scroll` cam kaydırma çubuğu, ses göstergesi animasyonları (`@keyframes soundPulse`), form hata animasyonları (`.shake-anim`), mobil sabit CTA ve çerez banner'ı stilleri.
 * [`main.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/main.css): `base.css` ve `components.css` modüllerini içe aktarır.
 
-### 2.5 Web Betikleri (`web/js/`)
+### 2.5 Web Betikleri (`web/js/`) & PWA
+* [`manifest.json`](file:///c:/Users/arday/Desktop/SubRadar/web/manifest.json): PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği).
+* [`sw.js`](file:///c:/Users/arday/Desktop/SubRadar/web/sw.js): Çevrimdışı Service Worker önbellekleme motoru.
 * [`config.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/config.js): Kurlar (`USD: 1`, `EUR: 0.86`, `TRY: 48.35`), `srCurrency`, `setCurrency(cur)`, `srConvert(usd)`.
 * [`theme.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/theme.js): Açık/koyu mod mantığı (`#theme-toggle`, `localStorage: sr-theme`).
 * [`fx.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/fx.js): Canlı döviz kurlarını `open.er-api.com` veya `api.frankfurter.app` üzerinden çeker (12 saat TTL önbellek).
 * [`toast.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/toast.js): Apple Glass bildirim balonu (`srShowToast(message)`).
+* [`audio-fx.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/audio-fx.js): Web Audio API sıfır-dosya matematiksel osilatörlü dokunsal ses motoru (`playClick`, `playToggle`, `playSuccess`, `toggle`).
+* [`cursor-glow.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/cursor-glow.js): Dinamik imleç takipçi cam aydınlatma motoru (`--mouse-x`, `--mouse-y`).
+* [`statement-lab.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/statement-lab.js): İstemci taraflı Air-Gap ekstre ve kaçak sızıntı analizörü (`FileReader API`).
+* [`hash-verifier.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/hash-verifier.js): WebCrypto donanım ivmeli SHA-256 kurulum paketi bütünlük doğrulayıcısı.
+* [`social-export.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/social-export.js): HTML5 Canvas 1200x630 Retina "Abonelik Röntgeni" kart üretici, PNG indirici ve X/LinkedIn paylaşım köprüsü.
 * [`calculator.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/calculator.js): Kaydırıcı dinleyicileri, profil butonları (`.calc-preset-btn`), formül hesaplama: `(subs * 32 + trials * 78) * 12`.
-* [`hero-window.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/hero-window.js): Hero macOS penceresi mantığı; pencere kapatma/küçültme/büyütme, doğrudan iptal butonları (`.direct-kill-btn`), bellek tüketimi sayacı (`18,4 MB`), simülasyonu sıfırlama (`#hero-demo-reset`), sekmeler (Genel Bakış, Abonelikler, Engelleme Kuralları, Yerel Kasa), canlı gecikme sayacı (3,7 - 4,4 ms).
+* [`hero-window.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/hero-window.js): Hero macOS penceresi mantığı; pencere kontrolleri, iptal butonları, bellek sayacı, sekmeler ve canlı gecikme.
 * [`scroll-motion.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/scroll-motion.js): Tepe ilerleme çizgisi (`#sr-progress`), `[data-rv]` animasyon tetikleyicileri, hero paralaks kayması.
-* [`i18n.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/i18n.js): `SR_I18N` (TR -> EN) ve `SR_I18N_DE` (TR -> DE) sözlükleri, DOM TreeWalker ile metin düğümlerini dinamik olarak çeviren `srApplyLang()` ve `t()` fonksiyonları.
+* [`i18n.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/i18n.js): TR/EN/DE sözlükleri, DOM TreeWalker ile metin düğümlerini dinamik olarak çeviren `t()` fonksiyonu.
 * [`analytics.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/analytics.js): Sıfır-çerez, DNT uyumlu yerel oturum telemetrisi (`srAnalytics`).
 * [`cookie-banner.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/cookie-banner.js): Gizlilik bildirimi ve yerel bellek rıza kontrolü.
 * [`mobile-cta.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/mobile-cta.js): Mobilde kaydırmaya bağlı beliren sabit indirme barı.
-* [`main.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/main.js): Tüm modülleri başlatan, para birimi butonlarını bağlayan ve platforma göre kısayol etiketlerini ayarlayan giriş dosyası.
-* [`modals/command-palette.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/command-palette.js): Cmd+K / Ctrl+K arama, ok tuşlarıyla gezinme ve eylem tetikleme.
-* [`modals/download-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/download-modal.js): İndirme simülasyonu, OS ve işlemci mimarisi seçimi, SHA256 gösterimi.
-* [`modals/enterprise-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/enterprise-modal.js): Kurumsal form kontrolü, gerçek zamanlı hata denetimi, loading spinner ve onay ekranı geçişi.
+* [`main.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/main.js): Tüm modülleri ve Service Worker'ı başlatan ana orkestrasyon dosyası.
+* [`modals/command-palette.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/command-palette.js): ⌘K / Ctrl+K arama, ok tuşlarıyla gezinme ve eylem tetikleme.
+* [`modals/download-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/download-modal.js): İndirme simülasyonu, OS ve mimari seçimi, SHA-256 doğrulama.
+* [`modals/enterprise-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/enterprise-modal.js): Kurumsal form kontrolü, gerçek zamanlı hata denetimi ve loading spinner.
 * [`modals/reclaim-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/reclaim-modal.js): CLI kopyalama ve modal görünürlüğü.
-* [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 16 bileşenin varlığını ve dosya boyutlarını test eden Python otomasyonu.
+* [`modals/shortcuts-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/shortcuts-modal.js): Power-User kısayol dinleyici (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`).
+* [`modals/legal-gen.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/legal-gen.js): Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme.
+* [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 21 bileşenin bütünlüğünü doğrulayan test betiği.
 
 ### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/`)
 * [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 bağımlılığı ve `start`, `dev`, `test`, `test:vault`, `test:parser` komutları.

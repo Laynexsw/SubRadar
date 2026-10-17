@@ -91,9 +91,12 @@ SubRadar/
     ├── favicon.svg              # Web vitrini favicon vektörü
     ├── og-image.svg             # Web vitrini 1200x630 Open Graph görseli
     │
-    ├── components/              # 16 Parçalı Modüler HTML Parçaları
+    ├── manifest.json            # PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği)
+    ├── sw.js                    # Çevrimdışı Service Worker önbellekleme motoru
+    │
+    ├── components/              # 21 Parçalı Modüler HTML Parçaları
     │   ├── layout/
-    │   │   ├── header.html      # Üst cam bar, logo, menü, Cmd+K, dil, kur ve tema butonları
+    │   │   ├── header.html      # Üst cam bar, logo, menü, Cmd+K, ses, kısayol, dil, kur ve tema butonları
     │   │   ├── footer.html      # Alt bilgi, canlı gecikme (ping), telif ve yasal bildirimler
     │   │   ├── cookie-banner.html # Sıfır çerez güvencesi ve yerel bellek onay banner'ı
     │   │   └── mobile-sticky-cta.html # Mobilde altta sabit kalan hızlı indirme çubuğu
@@ -101,10 +104,13 @@ SubRadar/
     │   ├── sections/
     │   │   ├── hero.html        # Ana başlık, OS butonları ve interaktif macOS simülasyon penceresi
     │   │   ├── problem.html     # Sektör istatistikleri, kayıp metrikleri ve karanlık desenler
-    │   │   ├── calculator.html  # İsraf hesaplayıcı kaydırıcıları ve profil butonları
+    │   │   ├── statement-lab.html # Canlı hava boşluğu (air-gap) ekstre ve sızıntı tarama laboratuvarı
+    │   │   ├── calculator.html  # İsraf hesaplayıcı kaydırıcıları, profil butonları ve PNG röntgen ihracı
+    │   │   ├── comparison.html  # Şeffaflık & güven rakip karşılaştırma matrisi (SubRadar vs Bulut)
     │   │   ├── features.html    # 4 çekirdek motor: Audit, Auto-Intercept, Bypass, Vault
     │   │   ├── architecture.html# Yerel AES-256 SQLite mimari diyagramı
     │   │   ├── os-downloads.html# macOS, Windows, Linux indirme kartları ve SHA-256 özetleri
+    │   │   ├── hash-verifier.html# İstemci tarafı WebCrypto donanım ivmeli SHA-256 kurulum doğrulayıcı
     │   │   ├── pricing.html     # Free, Pro, Max, Enterprise fiyatlandırma matrisi
     │   │   └── faq.html         # SSS akordeon soruları ve cevapları
     │   │
@@ -112,11 +118,13 @@ SubRadar/
     │       ├── command-palette.html # ⌘K / Ctrl+K arama ve hızlı eylem paleti
     │       ├── download-modal.html  # Mimari seçimi (ARM/x86) ve ilerleme çubuklu indirme modalı
     │       ├── enterprise-modal.html# Kurumsal teklif formu (inline hata ve loading durumu)
-    │       └── reclaim-modal.html   # CLI kurulumu (`curl`) ve geri kazanım adımları
+    │       ├── reclaim-modal.html   # CLI kurulumu (`curl`) ve geri kazanım adımları
+    │       ├── shortcuts-modal.html # Raycast/Linear stili Power-User klavye kısayolları modalı
+    │       └── legal-generator-modal.html # Canlı 6502 SK & GDPR Madde 17 resmi fesih ihtarname sihirbazı
     │
     ├── css/
     │   ├── base.css             # Renk değişkenleri, tipografi hiyerarşisi, açık/koyu tema sınıfları
-    │   ├── components.css       # Apple Glass, kart gölgeleri, range slider ve modal animasyonları
+    │   ├── components.css       # Apple Glass, kart gölgeleri, range slider, imleç ışığı ve modal animasyonları
     │   └── main.css             # `@import "base.css"; @import "components.css";`
     │
     ├── js/
@@ -124,6 +132,11 @@ SubRadar/
     │   ├── theme.js             # Koyu / Açık tema geçişi (`html.light`, `html.dark`)
     │   ├── fx.js                # Canlı döviz kurları çekici (open.er-api / frankfurter, 12h TTL)
     │   ├── toast.js             # Apple Glass kayan bildirim balonu (`srShowToast`)
+    │   ├── audio-fx.js          # Web Audio API sıfır-dosya matematiksel dokunsal ses motoru (`srAudio`)
+    │   ├── cursor-glow.js       # Dinamik imleç takipçi cam aydınlatma ve ışıma motoru
+    │   ├── statement-lab.js     # İstemci taraflı ekstre ayrıştırıcı ve kaçak analizörü
+    │   ├── hash-verifier.js     # WebCrypto API donanım ivmeli SHA-256 doğrulayıcı
+    │   ├── social-export.js     # HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı
     │   ├── calculator.js        # Kaydırıcı formülü ($32/araç + $78/deneme) ve hazır profiller
     │   ├── hero-window.js       # macOS pencere simülasyonu: trafik ışıkları, iptal, arama, sekmeler
     │   ├── scroll-motion.js     # İlerleme çizgisi (`#sr-progress`), scrollspy ve hero paralaksı
@@ -137,10 +150,12 @@ SubRadar/
     │       ├── command-palette.js # ⌘K klavye kısayolu, filtreleme ve çalıştırma
     │       ├── download-modal.js  # İndirme simülasyonu, hız/boyut sayacı, SHA doğrulaması
     │       ├── enterprise-modal.js# Kurumsal form alanları doğrulaması (inline hata & spinner)
-    │       └── reclaim-modal.js   # CLI komutunu panoya kopyalama (`curl -sSL...`)
+    │       ├── reclaim-modal.js   # CLI komutunu panoya kopyalama (`curl -sSL...`)
+    │       ├── shortcuts-modal.js # `?`, `T`, `S`, `C`, `L`, `D`, `ESC` kısayol dinleyici ve modal yöneticisi
+    │       └── legal-gen.js       # Canlı yasal fesih metni derleyici, pano kopyalama ve `.txt` indirme
     │
     └── scripts/
-        └── build.py             # 16 modüler bileşeni doğrulayan test betiği
+        └── build.py             # 21 modüler bileşeni doğrulayan test betiği
 ```
 
 ---

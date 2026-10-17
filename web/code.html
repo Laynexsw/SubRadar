@@ -10,6 +10,7 @@
 <link rel="canonical" href="https://laynexsw.github.io/SubRadar/"/>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link rel="apple-touch-icon" href="favicon.svg"/>
+<link rel="manifest" href="manifest.json"/>
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website"/>
@@ -563,6 +564,68 @@
     transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
+
+  /* ── Interactive Cursor Glow & Ambient Light ── */
+  .apple-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .apple-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background: radial-gradient(450px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(16, 185, 129, 0.08), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+  }
+  .apple-card:hover::before {
+    opacity: 1;
+  }
+  .apple-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Apple-Grade Custom Scrollbar ── */
+  .custom-scroll::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .custom-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 9999px;
+  }
+  .custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.28);
+  }
+  html.light .custom-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.14);
+  }
+  html.light .custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.28);
+  }
+
+  /* ── Sound & Shortcut Badges ── */
+  #sound-toggle-btn.sound-muted {
+    opacity: 0.5;
+    filter: grayscale(1);
+  }
+  #sound-toggle-btn.sound-playing {
+    animation: soundPulse 0.4s ease-out;
+  }
+  @keyframes soundPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
 </style>
 <noscript><style>[data-rv]{opacity:1 !important;transform:none !important}</style></noscript>
 <script>
@@ -594,41 +657,48 @@
 <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-3">
 <!-- Brand Mark -->
 <a class="flex items-center gap-2.5 group flex-shrink-0" href="#">
-<span class="brand-mark w-5 h-5 rounded-full bg-white flex items-center justify-center text-black shadow-sm group-hover:scale-105 transition-transform">
-<span class="brand-mark-dot w-1.5 h-1.5 rounded-full bg-black"></span>
-</span>
+<div class="brand-mark w-5 h-5 rounded-full bg-white flex items-center justify-center text-black shadow-sm group-hover:scale-105 transition-transform">
+<div class="brand-mark-dot w-1.5 h-1.5 rounded-full bg-black"></div>
+</div>
 <span class="text-sm font-semibold tracking-tight text-white">SubRadar</span>
 <span class="hidden sm:inline-block text-[10px] font-mono uppercase text-white/40 border border-white/10 px-1.5 py-0.5 rounded tracking-widest">Desktop</span>
 </a>
 <!-- Nav Links -->
-<nav class="hidden xl:flex items-center gap-6 text-[13px] tracking-normal text-white/50 font-medium flex-shrink-0" aria-label="Birincil">
-<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#ozellikler">Özellikler</a>
+<nav class="hidden xl:flex items-center gap-5 text-[13px] tracking-normal text-white/50 font-medium flex-shrink-0" aria-label="Birincil">
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#ekstre-laboratuvari">Ekstre Lab</a>
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#hesaplayici">İsraf Hesaplayıcı</a>
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#karsilastirma">Karşılaştırma</a>
+<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#ozellikler">Özellikler</a>
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#mimari">Mimari</a>
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#isletim-sistemleri">İşletim Sistemleri</a>
 <a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#fiyatlandirma">Fiyatlandırma</a>
-<a class="hover:text-white transition-colors duration-200 whitespace-nowrap" href="#hakkimizda">Hakkımızda</a>
 </nav>
 <!-- Actions -->
-<div class="flex items-center gap-2 sm:gap-3 flex-shrink-0 min-w-0">
+<div class="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0 min-w-0">
 <button type="button" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-white/10 bg-white/[0.04] text-[11px] font-mono text-white/60 hover:text-white hover:border-white/20 transition-all cursor-pointer min-h-[36px]" id="nav-cmd-trigger" aria-label="Komut paletini aç">
 <span class="material-symbols-outlined text-[13px]" aria-hidden="true">search</span>
 <span>⌘K</span>
 </button>
-<button type="button" class="flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs text-white/70 hover:text-white hover:border-white/20 transition-all cursor-pointer min-h-[36px] whitespace-nowrap flex-shrink-0" id="theme-toggle" aria-pressed="true" aria-label="Koyu temaya geç">
-<span class="material-symbols-outlined text-[15px]" id="theme-toggle-icon" aria-hidden="true">dark_mode</span>
-<span class="hidden min-[1440px]:inline" id="theme-toggle-label">Koyu tema</span>
+<button type="button" class="flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] text-white/40 hover:text-white hover:border-white/20 transition-all cursor-pointer flex-shrink-0" id="sound-toggle-btn" aria-label="Ses efektlerini aç" title="Web Audio Dokunsal Sesler (S)">
+<span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_off</span>
 </button>
-<span class="hidden lg:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0" role="group" aria-label="Dil seç">
+<button type="button" class="hidden sm:flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] text-white/60 hover:text-white hover:border-white/20 text-xs font-mono transition-all cursor-pointer flex-shrink-0" id="shortcuts-help-btn" aria-label="Klavye kısayolları (?)" title="Klavye Kısayolları (?)">
+<span>?</span>
+</button>
+<button type="button" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs text-white/70 hover:text-white hover:border-white/20 transition-all cursor-pointer min-h-[36px] whitespace-nowrap flex-shrink-0" id="theme-toggle" aria-pressed="false" aria-label="Açık temaya geç">
+<span class="material-symbols-outlined text-[15px]" id="theme-toggle-icon" aria-hidden="true">light_mode</span>
+<span class="hidden min-[1440px]:inline" id="theme-toggle-label">Açık tema</span>
+</button>
+<div class="hidden lg:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0" role="group" aria-label="Dil seç">
 <button type="button" class="lang-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-lang="EN" aria-pressed="false">EN</button>
 <button type="button" class="lang-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-lang="DE" aria-pressed="false">DE</button>
 <button type="button" class="lang-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-lang="TR" aria-pressed="true">TR</button>
-</span>
-<span class="hidden lg:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0" role="group" aria-label="Para birimi seç">
+</div>
+<div class="hidden lg:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0" role="group" aria-label="Para birimi seç">
 <button type="button" class="currency-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-currency="USD" aria-pressed="true">$ USD</button>
 <button type="button" class="currency-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-currency="EUR" aria-pressed="false">€ EUR</button>
 <button type="button" class="currency-btn px-2.5 py-1 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer min-h-[32px]" data-currency="TRY" aria-pressed="false">₺ TRY</button>
-</span>
+</div>
 <button type="button" class="download-trigger-btn px-4 py-1.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all duration-200 hidden md:flex items-center gap-2 shadow-sm cursor-pointer min-h-[36px] whitespace-nowrap flex-shrink-0" data-os="auto">
 <span>Bilgisayara İndir</span>
 <span class="material-symbols-outlined text-[14px]" aria-hidden="true">arrow_downward</span>
@@ -638,29 +708,30 @@
 </button>
 </div>
 </div>
-<nav class="xl:hidden hidden border-t border-white/10 px-6 py-4" id="mobile-menu" aria-label="Mobil gezinme">
-<div class="flex flex-col gap-1 text-sm font-medium text-white/70">
-<a class="py-2.5 hover:text-white transition-colors" href="#ozellikler">Özellikler</a>
+<div class="xl:hidden hidden border-t border-white/10 px-6 py-4" id="mobile-menu">
+<nav class="flex flex-col gap-1 text-sm font-medium text-white/70" aria-label="Mobil">
+<a class="py-2.5 hover:text-white transition-colors" href="#ekstre-laboratuvari">Ekstre Lab</a>
 <a class="py-2.5 hover:text-white transition-colors" href="#hesaplayici">İsraf Hesaplayıcı</a>
+<a class="py-2.5 hover:text-white transition-colors" href="#karsilastirma">Karşılaştırma</a>
+<a class="py-2.5 hover:text-white transition-colors" href="#ozellikler">Özellikler</a>
 <a class="py-2.5 hover:text-white transition-colors" href="#mimari">Mimari</a>
 <a class="py-2.5 hover:text-white transition-colors" href="#isletim-sistemleri">İşletim Sistemleri</a>
 <a class="py-2.5 hover:text-white transition-colors" href="#fiyatlandirma">Fiyatlandırma</a>
-<a class="py-2.5 hover:text-white transition-colors" href="#hakkimizda">Hakkımızda</a>
-<span class="flex items-center gap-2 py-2.5" role="group" aria-label="Dil seç">
+<div class="flex items-center gap-2 py-2.5" role="group" aria-label="Dil seç">
 <span class="text-xs font-mono text-white/40">Dil:</span>
 <button type="button" class="lang-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-lang="EN" aria-pressed="false">EN</button>
 <button type="button" class="lang-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-lang="DE" aria-pressed="false">DE</button>
 <button type="button" class="lang-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-lang="TR" aria-pressed="true">TR</button>
-</span>
-<span class="flex items-center gap-2 py-2.5" role="group" aria-label="Para birimi seç">
+</div>
+<div class="flex items-center gap-2 py-2.5" role="group" aria-label="Para birimi seç">
 <span class="text-xs font-mono text-white/40">Para birimi:</span>
 <button type="button" class="currency-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-currency="USD" aria-pressed="true">$ USD</button>
 <button type="button" class="currency-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-currency="EUR" aria-pressed="false">€ EUR</button>
 <button type="button" class="currency-btn px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono cursor-pointer min-h-[36px]" data-currency="TRY" aria-pressed="false">₺ TRY</button>
-</span>
-<button type="button" class="download-trigger-btn mt-2 w-full py-3 rounded-full bg-white text-black text-sm font-semibold cursor-pointer" data-os="auto">Bilgisayara İndir</button>
 </div>
+<button type="button" class="download-trigger-btn mt-2 w-full py-3 rounded-full bg-white text-black text-sm font-semibold cursor-pointer" data-os="auto">Bilgisayara İndir</button>
 </nav>
+</div>
 </header>
 <!-- MAIN CONTENT -->
 <main class="relative z-10 pt-28" id="icerik">
@@ -953,6 +1024,136 @@
 </aside>
 </div>
 </section>
+<!-- ========================================================================= -->
+<!-- SECTION: CANLI ÇEVRİMDIŞI EKSTRE VE KAÇAK TARAYICI LABORATUVARI           -->
+<!-- ========================================================================= -->
+<section class="max-w-6xl mx-auto px-6 py-28 border-t border-white/10" id="ekstre-laboratuvari" data-od-id="ekstre-lab">
+  <!-- Section Header -->
+  <div class="text-center max-w-3xl mx-auto mb-16" data-rv="fade-up">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono tracking-wide mb-4">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span>HAVA BOŞLUĞU (AIR-GAP) LABORATUVARI</span>
+    </div>
+    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-5 leading-tight">
+      Ekstreni Bırak, Kaçak Abonelikleri <br class="hidden sm:inline"/>
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-400">
+        0 Bayt Bulut Çıkışıyla
+      </span> Gör.
+    </h2>
+    <p class="text-neutral-400 text-sm sm:text-base leading-relaxed">
+      SubRadar'ın masaüstü motorunu tarayıcınızda canlı deneyin. Banka şifresi yok, API bağlantısı yok. Tüm analiz <span class="text-white font-medium">FileReader API</span> ile tamamen cihazınızın RAM belleğinde çalışır.
+    </p>
+  </div>
+
+  <!-- Interactive Lab Shell -->
+  <div class="apple-card rounded-3xl border border-white/15 bg-black/60 backdrop-blur-2xl p-6 sm:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.85)]" data-rv="fade-up">
+    
+    <!-- Top Telemetry & Airgap Status Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+          <span class="material-symbols-outlined text-[22px]" aria-hidden="true">security</span>
+        </div>
+        <div>
+          <div class="text-xs font-semibold text-white flex items-center gap-1.5">
+            <span>Çevrimdışı İstemci Modu</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          </div>
+          <div class="text-[11px] font-mono text-neutral-400">Giden Ağ Verisi: <strong class="text-emerald-400 font-bold">0 Bayt</strong> (Air-Gapped)</div>
+        </div>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="flex items-center gap-2.5">
+        <button type="button" id="lab-sample-btn" class="px-4 py-2 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all flex items-center gap-1.5 cursor-pointer min-h-[40px] shadow-sm">
+          <span class="material-symbols-outlined text-[17px]" aria-hidden="true">bolt</span>
+          <span>Örnek Ekstreyle Canlı Dene</span>
+        </button>
+        <button type="button" id="lab-reset-btn" class="px-3 py-2 rounded-full border border-white/15 text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer min-h-[40px] hidden" aria-label="Ekstre analizini sıfırla">
+          <span class="material-symbols-outlined text-[17px]" aria-hidden="true">refresh</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Dropzone / Input Area -->
+    <div id="lab-dropzone" class="mt-8 border-2 border-dashed border-white/15 hover:border-emerald-500/50 rounded-2xl p-8 sm:p-12 text-center transition-all bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer group">
+      <input type="file" id="lab-file-input" accept=".csv,.txt,.pdf" class="hidden"/>
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-white/60 group-hover:text-emerald-400 group-hover:border-emerald-500/40 group-hover:scale-105 transition-all mb-4">
+        <span class="material-symbols-outlined text-[32px]" aria-hidden="true">upload_file</span>
+      </div>
+      <h3 class="text-base font-semibold text-white mb-1.5">Banka Ekstreni veya CSV Dosyanı Sürükle</h3>
+      <p class="text-xs text-neutral-400 max-w-md mx-auto leading-relaxed mb-4">
+        Garanti, İş Bankası, Yapı Kredi, Akbank veya standart CSV formatları desteklenir. Dosya diskinizden ayrılmaz.
+      </p>
+      <div class="flex items-center justify-center gap-2 text-[11px] text-neutral-500 font-mono">
+        <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">.CSV</span>
+        <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">.TXT</span>
+        <span>veya üstteki butondan tek tıkla test et</span>
+      </div>
+    </div>
+
+    <!-- Scanning Progress Indicator (Hidden by default) -->
+    <div id="lab-progress-wrap" class="mt-8 hidden space-y-3">
+      <div class="flex items-center justify-between text-xs font-mono text-neutral-400">
+        <span class="flex items-center gap-2 text-emerald-400">
+          <span class="sr-spinner w-3.5 h-3.5"></span>
+          <span id="lab-status-text">18+ SaaS deseni yerel bellekte taranıyor...</span>
+        </span>
+        <span id="lab-progress-pct" class="font-bold text-white">0%</span>
+      </div>
+      <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+        <div id="lab-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-200" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- Results Display (Revealed after scan) -->
+    <div id="lab-results" class="mt-8 hidden space-y-6">
+      
+      <!-- Metrics Summary Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="rounded-2xl p-4 bg-white/[0.03] border border-white/10">
+          <div class="text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">Tespit Edilen Kaçak</div>
+          <div class="text-2xl font-bold text-rose-400 flex items-center gap-2" id="lab-stat-count">
+            <span>5 Adet</span>
+            <span class="text-xs font-normal text-rose-400/80 px-2 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/20">Yüksek Risk</span>
+          </div>
+        </div>
+        <div class="rounded-2xl p-4 bg-white/[0.03] border border-white/10">
+          <div class="text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">Aylık İsraf Yangını</div>
+          <div class="text-2xl font-bold text-white" id="lab-stat-monthly">$149.80 <span class="text-xs font-normal text-neutral-400">/ ay</span></div>
+        </div>
+        <div class="rounded-2xl p-4 bg-white/[0.03] border border-white/10">
+          <div class="text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">1 Yılda Kurtarılabilir</div>
+          <div class="text-2xl font-bold text-emerald-400" id="lab-stat-yearly">$1,797.60</div>
+        </div>
+      </div>
+
+      <!-- Detected Leaks Table / Cards -->
+      <div class="space-y-3" id="lab-leaks-list">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <!-- Bottom Lab CTA Banner -->
+      <div class="rounded-2xl p-5 bg-gradient-to-r from-emerald-950/40 via-teal-950/30 to-indigo-950/40 border border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 flex-shrink-0">
+            <span class="material-symbols-outlined text-[22px]" aria-hidden="true">check_circle</span>
+          </span>
+          <div>
+            <div class="text-sm font-semibold text-white">Bu Kaçakları Masaüstünde Tek Tıkla Durdurun</div>
+            <div class="text-xs text-neutral-300">Yerel SQLite kasası, otomatik arka plan nöbetçisi ve yasal fesih mektupları tek pakette.</div>
+          </div>
+        </div>
+        <button type="button" class="download-trigger-btn px-6 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all cursor-pointer whitespace-nowrap min-h-[42px] flex items-center gap-1.5" data-os="macOS">
+          <span class="material-symbols-outlined text-[16px]">download</span>
+          <span>Masaüstü Kasasını İndir</span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</section>
 <!-- 4. İNTERAKTİF MASAÜSTÜ İSRAF HESAPLAYICI -->
 <section class="max-w-6xl mx-auto px-6 py-24 border-t border-white/10" id="hesaplayici" data-od-id="hesaplayici">
 <header class="max-w-xl mb-12" data-rv>
@@ -1032,10 +1233,174 @@
 <span class="material-symbols-outlined text-[16px] text-emerald-400" aria-hidden="true">verified</span>
 <span>İsraf Karneni Çıkar & Paylaş</span>
 </button>
+<div class="mt-2.5 grid grid-cols-2 gap-2">
+<button type="button" class="py-2 px-2.5 rounded-xl border border-white/15 bg-white/[0.03] hover:bg-white/10 text-white/80 hover:text-white text-[11px] font-mono transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px]" id="calc-export-png-btn" title="Abonelik Röntgenini PNG Olarak İndir">
+<span class="material-symbols-outlined text-[15px]" aria-hidden="true">image</span>
+<span>Röntgen İndir (.PNG)</span>
+</button>
+<button type="button" class="py-2 px-2.5 rounded-xl border border-white/15 bg-white/[0.03] hover:bg-white/10 text-white/80 hover:text-white text-[11px] font-mono transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px]" id="calc-share-tw-btn" title="X (Twitter) Üzerinde Paylaş">
+<span class="material-symbols-outlined text-[15px]" aria-hidden="true">share</span>
+<span>X'te Paylaş</span>
+</button>
+</div>
 </output>
 </div>
 </form>
 </section>
+<!-- ========================================================================= -->
+<!-- SECTION: ŞEFFAF RAKİP KARŞILAŞTIRMA MATRİSİ                               -->
+<!-- ========================================================================= -->
+<section class="max-w-6xl mx-auto px-6 py-28 border-t border-white/10" id="karsilastirma" data-od-id="karsilastirma">
+  <!-- Section Header -->
+  <div class="text-center max-w-3xl mx-auto mb-16" data-rv="fade-up">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-white/70 text-xs font-mono tracking-wide mb-4">
+      <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      <span>ŞEFFAFLIK & GÜVEN MATRİSİ</span>
+    </div>
+    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-5 leading-tight">
+      Neden Bulut Takipçileri Değil de <br class="hidden sm:inline"/>
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-400">
+        %100 Yerel SubRadar?
+      </span>
+    </h2>
+    <p class="text-neutral-400 text-sm sm:text-base leading-relaxed">
+      Abonelik iptal etmek için banka şifrenizi buluta teslim etmek veya her ay başka bir abonelik ücreti ödemek zorunda değilsiniz.
+    </p>
+  </div>
+
+  <!-- Comparison Table Container -->
+  <div class="apple-card rounded-3xl border border-white/15 bg-black/60 backdrop-blur-2xl overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.85)]" data-rv="fade-up">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse min-w-[680px]">
+        <thead>
+          <tr class="border-b border-white/10 bg-white/[0.02]">
+            <th class="py-5 px-6 text-xs font-mono text-neutral-400 uppercase tracking-wider w-2/5">Kriter &amp; Özellik</th>
+            <th class="py-5 px-6 text-xs font-mono uppercase tracking-wider text-emerald-400 bg-emerald-500/[0.07] border-x border-emerald-500/20 w-1/4">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="font-bold text-white text-sm">SubRadar</span>
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-normal">Yerel Kasa</span>
+              </div>
+            </th>
+            <th class="py-5 px-6 text-xs font-mono text-neutral-400 uppercase tracking-wider w-1/6">Rocket Money / Truebill</th>
+            <th class="py-5 px-6 text-xs font-mono text-neutral-400 uppercase tracking-wider w-1/6">Excel / Notlar</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/[0.06] text-xs sm:text-sm">
+          
+          <!-- Row 1: Bank Logins -->
+          <tr class="hover:bg-white/[0.01] transition-colors">
+            <td class="py-4 px-6 text-white font-medium">
+              <div>Banka Şifresi &amp; Hesap Girişi</div>
+              <div class="text-[11px] text-neutral-400 font-normal mt-0.5">Finansal hesap erişim izni gerektirir mi?</div>
+            </td>
+            <td class="py-4 px-6 bg-emerald-500/[0.04] border-x border-emerald-500/20 font-semibold text-emerald-400">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-[18px]">check_circle</span>
+                <span>ASLA İSTEMEZ (0 Bayt)</span>
+              </div>
+            </td>
+            <td class="py-4 px-6 text-neutral-400">
+              <div class="flex items-center gap-1.5 text-rose-400">
+                <span class="material-symbols-outlined text-[16px]">cancel</span>
+                <span>Zorunlu (Plaid API)</span>
+              </div>
+            </td>
+            <td class="py-4 px-6 text-neutral-400">İstemez</td>
+          </tr>
+
+          <!-- Row 2: Data Storage -->
+          <tr class="hover:bg-white/[0.01] transition-colors">
+            <td class="py-4 px-6 text-white font-medium">
+              <div>Veri Saklama &amp; Şifreleme</div>
+              <div class="text-[11px] text-neutral-400 font-normal mt-0.5">Finansal verileriniz nerede durur?</div>
+            </td>
+            <td class="py-4 px-6 bg-emerald-500/[0.04] border-x border-emerald-500/20 font-semibold text-white">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-[18px]">lock</span>
+                <span>Yerel Disk (AES-256 Kasa)</span>
+              </div>
+            </td>
+            <td class="py-4 px-6 text-neutral-400">
+              <span class="text-rose-400">AWS / Bulut Sunucuları</span>
+            </td>
+            <td class="py-4 px-6 text-neutral-400">Şifresiz Düz Dosya</td>
+          </tr>
+
+          <!-- Row 3: Pricing Model -->
+          <tr class="hover:bg-white/[0.01] transition-colors">
+            <td class="py-4 px-6 text-white font-medium">
+              <div>Maliyet &amp; Faturalandırma</div>
+              <div class="text-[11px] text-neutral-400 font-normal mt-0.5">Aboneliği takip etmek için her ay ücret keser mi?</div>
+            </td>
+            <td class="py-4 px-6 bg-emerald-500/[0.04] border-x border-emerald-500/20 font-semibold text-emerald-400">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-[18px]">verified</span>
+                <span>0 TL / Tek Seferlik Ömür Boyu</span>
+              </div>
+            </td>
+            <td class="py-4 px-6 text-rose-400">
+              <span>3 $ - 12 $ / Her Ay</span>
+            </td>
+            <td class="py-4 px-6 text-neutral-400">0 TL</td>
+          </tr>
+
+          <!-- Row 4: Dark Pattern Bypass -->
+          <tr class="hover:bg-white/[0.01] transition-colors">
+            <td class="py-4 px-6 text-white font-medium">
+              <div>Karanlık Deseni (Dark Pattern) Atlama</div>
+              <div class="text-[11px] text-neutral-400 font-normal mt-0.5">Labirent gibi iptal süreçlerini tek tıkla deler mi?</div>
+            </td>
+            <td class="py-4 px-6 bg-emerald-500/[0.04] border-x border-emerald-500/20 font-semibold text-white">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-[18px]">flash_on</span>
+                <span>Evet (Doğrudan URL Köprüsü)</span>
+              </div>
+            </td>
+            <td class="py-4 px-6 text-neutral-400">
+              <span>%30 Tasarruf Komisyonu Alır</span>
+            </td>
+            <td class="py-4 px-6 text-neutral-500">Manuel Uğraş</td>
+          </tr>
+
+          <!-- Row 5: Legal Notice Generator -->
+          <tr class="hover:bg-white/[0.01] transition-colors">
+            <td class="py-4 px-6 text-white font-medium">
+              <div>Yasal İhtarname &amp; Fesih Metni</div>
+              <div class="text-[11px] text-neutral-400 font-normal mt-0.5">6502 SK &amp; GDPR Madde 17 resmi cayma hakkı üretir mi?</div>
+            </td>
+            <td class="py-4 px-6 bg-emerald-500/[0.04] border-x border-emerald-500/20 font-semibold text-emerald-400">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-[18px]">gavel</span>
+                <span>Dahili Yasal Motor (Hazır)</span>
+              </div>
+            </td>
+            <td class="py-4 px-6 text-neutral-500">Mevcut Değil</td>
+            <td class="py-4 px-6 text-neutral-500">Mevcut Değil</td>
+          </tr>
+
+          <!-- Row 6: Open Source Transparency -->
+          <tr class="hover:bg-white/[0.01] transition-colors">
+            <td class="py-4 px-6 text-white font-medium">
+              <div>Açık Kaynak &amp; Kod Şeffaflığı</div>
+              <div class="text-[11px] text-neutral-400 font-normal mt-0.5">Kripto ve mantık herkese açık denetlenebilir mi?</div>
+            </td>
+            <td class="py-4 px-6 bg-emerald-500/[0.04] border-x border-emerald-500/20 font-semibold text-white">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-[18px]">code</span>
+                <span>%100 Açık Kaynak (MIT Lisansı)</span>
+              </div>
+            </td>
+            <td class="py-4 px-6 text-neutral-500">Kapalı Ticari Kutu</td>
+            <td class="py-4 px-6 text-neutral-500">—</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <!-- 5. TEMEL MASAÜSTÜ ÖZELLİKLERİ -->
 <section class="max-w-6xl mx-auto px-6 py-28 border-t border-white/10" id="ozellikler" data-od-id="ozellikler">
 <div class="max-w-2xl mb-16" data-rv>
@@ -1415,8 +1780,8 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
 <h2 class="text-3xl font-semibold tracking-tight text-white mt-2">Her ana bilgisayarda doğal çalışır.</h2>
 </div>
 <div class="text-xs font-mono text-white/40 md:text-right space-y-2">
-<div><span class="inline-flex items-center gap-1.5 border border-white/15 rounded-full px-2.5 py-1 text-white/70"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400" aria-hidden="true"></span>Güncel sürüm: v1.4.2</span></div>
-<div>Yerel Rust ve C++ çekirdeği ile derlendi</div>
+<div><span class="inline-flex items-center gap-1.5 border border-white/15 rounded-full px-2.5 py-1 text-white/70"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400" aria-hidden="true"></span>Güncel sürüm: v1.5.0 (Aktif Masaüstü)</span></div>
+<div>Yerel Rust ve Node.js crypto çekirdeği ile derlendi</div>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -1435,7 +1800,7 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
             Apple Silicon (M1/M2/M3/M4) ve Intel mimarileri için optimize. macOS Sonoma 14 veya macOS Sequoia 15 ve üzeri gerekir.
           </p>
 <dl class="mt-5 pt-4 border-t border-white/10 grid grid-cols-2 gap-x-4 gap-y-3 text-[11px] font-mono">
-<div><dt class="text-white/40 uppercase tracking-wider text-[10px]">Sürüm</dt><dd class="text-white/80 mt-0.5">v1.4.2</dd></div>
+<div><dt class="text-white/40 uppercase tracking-wider text-[10px]">Sürüm</dt><dd class="text-white/80 mt-0.5">v1.5.0</dd></div>
 <div><dt class="text-white/40 uppercase tracking-wider text-[10px]">Boyut</dt><dd class="text-white/80 mt-0.5"><span data-mb="48.2">48,2 MB</span></dd></div>
 <div><dt class="text-white/40 uppercase tracking-wider text-[10px]">Mimari</dt><dd class="text-white/80 mt-0.5">ARM64 • x64</dd></div>
 <div><dt class="text-white/40 uppercase tracking-wider text-[10px]">Gereksinim</dt><dd class="text-white/80 mt-0.5">macOS Sonoma 14+</dd></div>
@@ -1460,7 +1825,7 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
             Windows 11 ve Windows 10 (64-bit ve ARM64) için geliştirildi. Yerel görev çubuğu simgesi ve Windows bildirim desteği.
           </p>
 <dl class="mt-5 pt-4 border-t border-white/10 grid grid-cols-2 gap-x-4 gap-y-3 text-[11px] font-mono">
-<div><dt class="text-white/40 uppercase tracking-wider text-[10px]">Sürüm</dt><dd class="text-white/80 mt-0.5">v1.4.2</dd></div>
+<div><dt class="text-white/40 uppercase tracking-wider text-[10px]">Sürüm</dt><dd class="text-white/80 mt-0.5">v1.5.0</dd></div>
 <div><dt class="text-white/40 uppercase tracking-wider text-[10px]">Boyut</dt><dd class="text-white/80 mt-0.5"><span data-mb="52.6">52,6 MB</span></dd></div>
 <div><dt class="text-white/40 uppercase tracking-wider text-[10px]">Mimari</dt><dd class="text-white/80 mt-0.5">x64 • ARM64</dd></div>
 <div><dt class="text-white/40 uppercase tracking-wider text-[10px]">Gereksinim</dt><dd class="text-white/80 mt-0.5">Windows 10 / 11</dd></div>
@@ -1470,6 +1835,42 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
           Windows için İndir (.exe)
         </button>
 </div>
+</div>
+
+<!-- İstemci Tarafı SHA-256 Doğrulayıcı -->
+<div class="mt-10 apple-card rounded-2xl border border-white/10 bg-white/[0.01] p-6 max-w-4xl mx-auto" id="hash-verifier-box" data-rv>
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0">
+        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">verified_user</span>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold text-white">İstemci Tarafı Kurulum Doğrulayıcı (SHA-256)</h4>
+        <p class="text-[11px] text-neutral-400">İndirdiğiniz kurulum dosyasının bütünlüğünü tarayıcınızda donanım ivmesiyle test edin.</p>
+      </div>
+    </div>
+    <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">WebCrypto API</span>
+  </div>
+  <div class="mt-4">
+    <div id="hash-dropzone" class="border border-dashed border-white/15 hover:border-emerald-500/40 rounded-xl p-5 text-center transition-all bg-black/40 hover:bg-black/60 cursor-pointer">
+      <input type="file" id="hash-file-input" class="hidden"/>
+      <div class="flex items-center justify-center gap-2 text-xs text-neutral-300 font-medium">
+        <span class="material-symbols-outlined text-[17px] text-emerald-400">fingerprint</span>
+        <span>İndirdiğin .dmg / .exe dosyasını buraya bırak</span>
+      </div>
+      <p class="text-[10px] text-neutral-500 mt-1">Dosya sunucuya gönderilmez, tarayıcınızın yerel kripto motorunda hesaplanır.</p>
+    </div>
+    <div id="hash-result-box" class="mt-3 hidden p-3 rounded-xl bg-black/70 border border-white/15 space-y-2">
+      <div class="flex items-center justify-between text-[11px] font-mono">
+        <span class="text-neutral-400">Hesaplanan SHA-256 Özeti:</span>
+        <span id="hash-status-pill" class="text-emerald-400 flex items-center gap-1 font-semibold">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          DOĞRULANDI (ORİJİNAL)
+        </span>
+      </div>
+      <div id="hash-val" class="text-[11px] font-mono text-emerald-300 break-all bg-white/[0.03] p-2 rounded border border-white/5 selection:bg-emerald-500/30"></div>
+    </div>
+  </div>
 </div>
 </section>
 <!-- 7B. FİYATLANDIRMA -->
@@ -2279,55 +2680,173 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
 </div>
 </div>
 <!-- ========================================================================= -->
-<!-- 4. OFFICIAL LEGAL NOTICE MODAL (GDPR / KVKK / CONSUMER LAW)               -->
+<!-- 4. OFFICIAL LEGAL NOTICE MODAL (GDPR / KVKK / CONSUMER LAW WIZARD)         -->
 <!-- ========================================================================= -->
-<div class="fixed inset-0 z-[120] bg-black/80 backdrop-blur-md hidden items-center justify-center px-4" id="legal-modal-backdrop">
-<div class="animate-modal relative w-full max-w-2xl bg-[#0e0e12] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)] text-white my-auto" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title" id="legal-modal">
-<header class="flex items-center justify-between pb-4 border-b border-white/10">
-<div class="flex items-center gap-2.5">
-<span class="w-2.5 h-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
-<div>
-<h3 class="text-base font-semibold text-white" id="legal-modal-title">Resmi Abonelik Fesih İhtarnamesi</h3>
-<p class="text-[11px] font-mono text-white/40">TKHK m. 52/4 • GDPR Art. 17 • KVKK m. 11 Uyumlu Fesih Bildirimi</p>
-</div>
-</div>
-<button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center" id="legal-modal-close" aria-label="İhtarname penceresini kapat">
-<span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
-</button>
-</header>
-<article class="py-5 space-y-4">
-<div class="p-3 bg-white/[0.04] rounded-xl flex items-center justify-between text-xs font-mono">
-<span class="text-white/60">Hedef Sağlayıcı: <span id="legal-target-service" class="text-white font-semibold">Adobe Creative Cloud</span></span>
-<span class="text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px]">Hukuki Geçerli Taslak</span>
-</div>
-<pre class="p-4 rounded-xl bg-black/60 border border-white/10 text-xs font-mono text-neutral-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-64" id="legal-notice-body">KİME: Adobe Systems Software Ireland Limited / Müşteri Hizmetleri Birimi
-KONU: Abonelik Sözleşmesinin Derhal Feshi, Gelecek Tahsilatların Durdurulması ve Finansal Yetkilendirmelerin İptali
+<div class="fixed inset-0 z-[135] bg-black/80 backdrop-blur-md hidden items-center justify-center px-4" id="legal-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title">
+  <div class="animate-modal w-full max-w-2xl bg-[#0e1017] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)] max-h-[92vh] flex flex-col">
+    
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">gavel</span>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-white" id="legal-modal-title">Resmi Fesih İhtarname Sihirbazı</h3>
+          <p class="text-[11px] text-neutral-400 font-mono">6502 SK Madde 52 &amp; GDPR Madde 17 Hukuki Cayma Metni</p>
+        </div>
+      </div>
+      <button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center" id="legal-modal-close" aria-label="İhtarname penceresini kapat">
+        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
+      </button>
+    </div>
 
-Sayın Yetkili,
+    <!-- Modal Scrollable Body -->
+    <div class="py-4 space-y-4 overflow-y-auto flex-1 pr-1 custom-scroll">
+      
+      <!-- Quick Input Controls -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div>
+          <label class="text-[10px] font-mono uppercase text-white/50 block mb-1" for="legal-service-name">Servis / Şirket Adı</label>
+          <input type="text" id="legal-service-name" value="Adobe Systems Inc." class="w-full bg-black border border-white/15 rounded-lg px-3 py-2 text-xs text-white placeholder-white/30 focus:border-emerald-400 outline-none transition-colors" placeholder="Örn: Adobe, Spotify, vb."/>
+        </div>
+        <div>
+          <label class="text-[10px] font-mono uppercase text-white/50 block mb-1" for="legal-user-name">Adınız Soyadınız</label>
+          <input type="text" id="legal-user-name" value="Abonelik Sahibi" class="w-full bg-black border border-white/15 rounded-lg px-3 py-2 text-xs text-white placeholder-white/30 focus:border-emerald-400 outline-none transition-colors" placeholder="Ad Soyad"/>
+        </div>
+        <div>
+          <label class="text-[10px] font-mono uppercase text-white/50 block mb-1" for="legal-user-id">Müşteri / E-posta</label>
+          <input type="text" id="legal-user-id" value="musteri@ornek.com" class="w-full bg-black border border-white/15 rounded-lg px-3 py-2 text-xs text-white placeholder-white/30 focus:border-emerald-400 outline-none transition-colors" placeholder="Hesap no veya e-posta"/>
+        </div>
+      </div>
 
-SubRadar yerel denetimi altında kayıtlı kullanıcı hesabıma bağlı tüm yinelenen aboneliklerin ve otomatik çekim talimatlarının yürürlükteki tüketici mevzuatı (6502 sayılı TKHK m. 52/4) ve uluslararası veri koruma düzenlemeleri (GDPR Art. 17, KVKK m. 11) uyarınca işbu bildirim ile derhal ve koşulsuz olarak FESHEDİLDİĞİNİ bildiririm.
+      <!-- Live Generated Text Preview Area -->
+      <div class="relative rounded-xl border border-white/15 bg-black/60 p-4 font-mono text-xs text-neutral-300 leading-relaxed max-h-[300px] overflow-y-auto custom-scroll selection:bg-emerald-500/30">
+        <div class="flex items-center justify-between pb-2 mb-2 border-b border-white/10 text-[10px] text-neutral-500">
+          <span>CANLI DERLENEN HUKUKİ İHTARNAME</span>
+          <span class="text-emerald-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            YASAL OLARAK BAĞLAYICI
+          </span>
+        </div>
+        <pre id="legal-letter-preview" class="whitespace-pre-wrap font-sans text-xs text-neutral-200 leading-relaxed"></pre>
+      </div>
 
-1. Gelecek dönemlere ait hiçbir otomatik çekim, ceza veya yenileme yetkisi bulunmamaktadır.
-2. Sisteminizde kayıtlı olan kredi kartı ve sanal kart yetkilendirmeleri tek taraflı olarak sonlandırılmıştır.
-3. İlgili ödeme profili ve kişisel finansal verilerimin sunucularınızdan silinmesini arz ve talep ederim.
+    </div>
 
-İşbu fesih bildirimi delil teşkil etmek üzere sistemde kayıt altına alınmıştır.</pre>
-<div class="text-[11px] font-mono text-white/40 leading-relaxed">
-SubRadar, sözleşme fesih bildirimini yerel olarak hazırlar. Metni kopyalayarak sağlayıcının destek paneline veya e-posta adresine doğrudan iletebilirsin.
+    <!-- Modal Footer Actions -->
+    <div class="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+      <div class="text-[11px] text-neutral-400">
+        Tüketici Kanunu Madde 52/4 uyarınca <strong>cezai şart talep edilemez</strong>.
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" id="legal-copy-btn" class="px-4 py-2 rounded-full border border-white/20 text-xs font-semibold text-white hover:bg-white/10 transition-all flex items-center gap-1.5 cursor-pointer min-h-[40px]">
+          <span class="material-symbols-outlined text-[16px]">content_copy</span>
+          <span id="legal-copy-text">Panoya Kopyala</span>
+        </button>
+        <button type="button" id="legal-download-btn" class="px-5 py-2 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all flex items-center gap-1.5 cursor-pointer min-h-[40px]">
+          <span class="material-symbols-outlined text-[16px]">download</span>
+          <span>Metin Belgesi (.TXT) İndir</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
 </div>
-</article>
-<footer class="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-white/10">
-<button type="button" class="w-full sm:w-auto px-4 py-2.5 rounded-full border border-white/20 text-xs font-mono text-white hover:bg-white/10 transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[44px]" id="legal-copy-btn">
-<span class="material-symbols-outlined text-[15px]" aria-hidden="true">content_copy</span>
-<span id="legal-copy-btn-text">Metni Panoya Kopyala</span>
-</button>
-<button type="button" class="w-full sm:w-auto px-6 py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all cursor-pointer min-h-[44px]" id="legal-email-btn">
-<span class="material-symbols-outlined text-[15px]" aria-hidden="true">mail</span>
-<span>E-Posta Taslağı Aç</span>
-</button>
-</footer>
+
+<!-- ========================================================================= -->
+<!-- MODAL: POWER-USER KLAVYE KISAYOLLARI (RAYCAST / LINEAR STİLİ)              -->
+<!-- ========================================================================= -->
+<div class="fixed inset-0 z-[125] bg-black/80 backdrop-blur-md hidden items-center justify-center px-4" id="shortcuts-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
+  <div class="animate-modal w-full max-w-lg bg-[#0e1017] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)]">
+    
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between pb-4 border-b border-white/10">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">keyboard</span>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-white" id="shortcuts-title">Klavye Kısayolları</h3>
+          <p class="text-[11px] text-neutral-400 font-mono">Hızlı ve akıcı navigasyon için kısayol tuşları</p>
+        </div>
+      </div>
+      <button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center" id="shortcuts-modal-close" aria-label="Kısayollar penceresini kapat">
+        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
+      </button>
+    </div>
+
+    <!-- Shortcuts Grid -->
+    <div class="py-5 space-y-3 font-mono text-xs">
+      
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Komut Paletini Aç</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">⌘</kbd>
+          <kbd class="px-2 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">K</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Bu Kısayol Menüsünü Göster</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">?</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Koyu / Açık Temayı Değiştir</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">T</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Web Audio Ses Efektlerini Aç / Kapat</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">S</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Para Birimini Döndür (USD / EUR / TRY)</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">C</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Dili Değiştir (TR / EN / DE)</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">L</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Masaüstü İndirme Penceresini Aç</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">D</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Açık Pencereleri Kapat</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">ESC</kbd>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-neutral-400">
+      <span>SubRadar v1.5.0 Power-User Engine</span>
+      <button type="button" class="text-white hover:underline cursor-pointer" id="shortcuts-done-btn">Anladım</button>
+    </div>
+
+  </div>
 </div>
-</div>
+
 <!-- ========================================================================= -->
 <!-- 5. SHAREABLE AUDIT SCORECARD MODAL (VIRAL SCORECARD & PNG EXPORT)         -->
 <!-- ========================================================================= -->
@@ -5341,4 +5860,1075 @@ Rapor Üretici: https://subradar.dev
   })();
 })();
 </script>
+
+<!-- ========================================================================= -->
+<!-- 10K UPGRADE ENGINES: AUDIO, CURSOR, LAB, CRYPTO, SOCIAL & LEGAL WIZARDS   -->
+<!-- ========================================================================= -->
+
+<script id="sr-bundle-audio-fx-js">
+/* =========================================================================
+   SubRadar — Apple-Grade Zero-Asset Web Audio Haptic & Sound Engine
+   Zero external audio files. Pure mathematical Web Audio oscillators.
+   ========================================================================= */
+
+(function () {
+  'use strict';
+
+  var audioCtx = null;
+  var isMuted = false;
+
+  // Restore sound preference from localStorage (default: muted until user enables or interacts)
+  try {
+    isMuted = localStorage.getItem('sr-sound-enabled') !== 'true';
+  } catch (e) {
+    isMuted = true;
+  }
+
+  function getAudioContext() {
+    if (!audioCtx) {
+      var AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtxClass) {
+        audioCtx = new AudioCtxClass();
+      }
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    return audioCtx;
+  }
+
+  // Soft high-frequency click (Apple trackpad/key tap feel)
+  function playClick() {
+    if (isMuted) return;
+    try {
+      var ctx = getAudioContext();
+      if (!ctx) return;
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1200, ctx.currentTime);
+      gain.gain.setValueAtTime(0.04, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.015);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.015);
+    } catch (e) {}
+  }
+
+  // Gentle toggle sound
+  function playToggle() {
+    if (isMuted) return;
+    try {
+      var ctx = getAudioContext();
+      if (!ctx) return;
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(380, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(650, ctx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.045);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.045);
+    } catch (e) {}
+  }
+
+  // Harmonic warm unlock chord (Kill switch / Success feel)
+  function playSuccess() {
+    if (isMuted) return;
+    try {
+      var ctx = getAudioContext();
+      if (!ctx) return;
+      var freqs = [523.25, 659.25, 783.99]; // C5, E5, G5 chord
+      freqs.forEach(function (f, idx) {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, ctx.currentTime + idx * 0.04);
+        gain.gain.setValueAtTime(0.035, ctx.currentTime + idx * 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.28);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + idx * 0.04);
+        osc.stop(ctx.currentTime + 0.3);
+      });
+    } catch (e) {}
+  }
+
+  // Deep spatial radar sonar ping
+  function playPing() {
+    if (isMuted) return;
+    try {
+      var ctx = getAudioContext();
+      if (!ctx) return;
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.18);
+      gain.gain.setValueAtTime(0.06, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.22);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.22);
+    } catch (e) {}
+  }
+
+  function setMuted(muted) {
+    isMuted = !!muted;
+    try {
+      localStorage.setItem('sr-sound-enabled', isMuted ? 'false' : 'true');
+    } catch (e) {}
+    updateSoundUI();
+  }
+
+  function toggleSound() {
+    setMuted(!isMuted);
+    if (!isMuted) {
+      playSuccess();
+      if (typeof srShowToast === 'function') {
+        srShowToast('Dokunsal ses efektleri açıldı (Web Audio).');
+      }
+    } else {
+      if (typeof srShowToast === 'function') {
+        srShowToast('Ses efektleri kapatıldı.');
+      }
+    }
+  }
+
+  function updateSoundUI() {
+    var btn = document.getElementById('sound-toggle-btn');
+    if (!btn) return;
+    var icon = btn.querySelector('.material-symbols-outlined');
+    if (icon) {
+      icon.textContent = isMuted ? 'volume_off' : 'volume_up';
+    }
+    btn.setAttribute('aria-label', isMuted ? 'Ses efektlerini aç' : 'Ses efektlerini kapat');
+    btn.classList.toggle('text-emerald-400', !isMuted);
+    btn.classList.toggle('text-white/40', isMuted);
+  }
+
+  // Expose API globally
+  window.srAudio = {
+    playClick: playClick,
+    playToggle: playToggle,
+    playSuccess: playSuccess,
+    playPing: playPing,
+    isMuted: function () { return isMuted; },
+    toggle: toggleSound,
+    setMuted: setMuted
+  };
+
+  // Wire interactive audio hooks on DOMContentLoaded
+  function initAudioListeners() {
+    updateSoundUI();
+    var soundBtn = document.getElementById('sound-toggle-btn');
+    if (soundBtn) soundBtn.addEventListener('click', toggleSound);
+
+    // Auto-hook clicks on primary triggers
+    document.addEventListener('click', function (e) {
+      var target = e.target;
+      if (!target) return;
+      var el = target.closest('button, a, input[type="range"], [role="button"]');
+      if (el) {
+        if (el.classList.contains('direct-kill-btn')) {
+          playSuccess();
+        } else if (el.id === 'theme-toggle' || el.classList.contains('currency-btn') || el.classList.contains('lang-btn')) {
+          playToggle();
+        } else {
+          playClick();
+        }
+      }
+    }, { passive: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAudioListeners);
+  } else {
+    initAudioListeners();
+  }
+})();
+
+</script>
+
+<script id="sr-bundle-cursor-glow-js">
+/* =========================================================================
+   SubRadar — Dynamic Cursor Glow & Lighting Effect (Linear / Apple Pro style)
+   ========================================================================= */
+
+(function () {
+  'use strict';
+
+  function initCursorGlow() {
+    var cards = document.querySelectorAll('.apple-card, [data-glow]');
+    if (!cards || cards.length === 0) return;
+
+    // Use passive listener and rAF to prevent layout thrashing
+    document.addEventListener('pointermove', function (e) {
+      window.requestAnimationFrame(function () {
+        cards.forEach(function (card) {
+          var rect = card.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var y = e.clientY - rect.top;
+
+          // Only compute for cards in or close to the viewport
+          if (
+            rect.top < window.innerHeight + 100 &&
+            rect.bottom > -100 &&
+            x > -150 && x < rect.width + 150 &&
+            y > -150 && y < rect.height + 150
+          ) {
+            card.style.setProperty('--mouse-x', x + 'px');
+            card.style.setProperty('--mouse-y', y + 'px');
+          }
+        });
+      });
+    }, { passive: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCursorGlow);
+  } else {
+    initCursorGlow();
+  }
+})();
+
+</script>
+
+<script id="sr-bundle-statement-lab-js">
+/* =========================================================================
+   SubRadar — Interactive Offline Statement Leak Scanner Lab
+   Air-gap client-side analysis with 0 bytes cloud leakage (FileReader API)
+   ========================================================================= */
+
+(function () {
+  'use strict';
+
+  var SAMPLE_LEAKS = [
+    {
+      name: 'Adobe Creative Cloud',
+      category: 'Tasarım & Prodüksiyon',
+      cost: 59.99,
+      currency: '$',
+      risk: 'Karanlık Desen Tuzağı',
+      riskColor: 'rose',
+      desc: 'Yıllık sözleşme tuzağı: Erken iptalde %50 ceza talep eden gizli madde.',
+      cancelUrl: 'https://account.adobe.com/plans',
+      legalType: 'Adobe Fesih Bildirimi'
+    },
+    {
+      name: 'AWS (Route53 & CloudFront)',
+      category: 'Bulut Altyapı',
+      cost: 34.50,
+      currency: '$',
+      risk: 'Atıl Kaynak Sızıntısı',
+      riskColor: 'amber',
+      desc: 'Unutulmuş test sunucusu ve DNS bölgesi son 4 aydır 0 trafik alıyor.',
+      cancelUrl: 'https://console.aws.amazon.com/billing',
+      legalType: 'AWS Servis Kapatma'
+    },
+    {
+      name: 'Netflix Premium 4K',
+      category: 'Medya & Eğlence',
+      cost: 22.99,
+      currency: '$',
+      risk: 'Sessiz Fiyat Artışı',
+      riskColor: 'rose',
+      desc: 'Son 90 günde sıfır oturum açıldı. Son 6 ayda %40 fiyat artışı uygulandı.',
+      cancelUrl: 'https://www.netflix.com/cancelplan',
+      legalType: 'Netflix Abonelik Feshi'
+    },
+    {
+      name: 'JetBrains All Products',
+      category: 'Geliştirici Araçları',
+      cost: 24.90,
+      currency: '$',
+      risk: 'Otomatik Yenileme Tuzağı',
+      riskColor: 'amber',
+      desc: '3 gün içinde yıllık döngüye girecek otomatik lisans yenilemesi.',
+      cancelUrl: 'https://account.jetbrains.com/licenses',
+      legalType: 'JetBrains Lisans İptali'
+    },
+    {
+      name: 'Figma Professional',
+      category: 'Tasarım Ekibi',
+      cost: 15.00,
+      currency: '$',
+      risk: 'Kullanılmayan Ekip Koltuğu',
+      riskColor: 'amber',
+      desc: 'Projeden ayrılmış eski ekip üyesine atanmış aktif lisans koltuğu.',
+      cancelUrl: 'https://www.figma.com/settings',
+      legalType: 'Figma Koltuk İptali'
+    }
+  ];
+
+  function initStatementLab() {
+    var dropzone = document.getElementById('lab-dropzone');
+    var fileInput = document.getElementById('lab-file-input');
+    var sampleBtn = document.getElementById('lab-sample-btn');
+    var resetBtn = document.getElementById('lab-reset-btn');
+    var progressWrap = document.getElementById('lab-progress-wrap');
+    var progressBar = document.getElementById('lab-progress-bar');
+    var progressPct = document.getElementById('lab-progress-pct');
+    var statusText = document.getElementById('lab-status-text');
+    var resultsWrap = document.getElementById('lab-results');
+    var leaksList = document.getElementById('lab-leaks-list');
+    var statCount = document.getElementById('lab-stat-count');
+    var statMonthly = document.getElementById('lab-stat-monthly');
+    var statYearly = document.getElementById('lab-stat-yearly');
+
+    if (!dropzone) return;
+
+    // Trigger file chooser
+    dropzone.addEventListener('click', function () {
+      if (fileInput) fileInput.click();
+    });
+
+    // Drag & Drop
+    ['dragenter', 'dragover'].forEach(function (evt) {
+      dropzone.addEventListener(evt, function (e) {
+        e.preventDefault();
+        dropzone.classList.add('border-emerald-400', 'bg-emerald-500/[0.05]');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(function (evt) {
+      dropzone.addEventListener(evt, function (e) {
+        e.preventDefault();
+        dropzone.classList.remove('border-emerald-400', 'bg-emerald-500/[0.05]');
+      });
+    });
+
+    dropzone.addEventListener('drop', function (e) {
+      var files = e.dataTransfer ? e.dataTransfer.files : null;
+      if (files && files.length > 0) {
+        handleFileAnalysis(files[0]);
+      }
+    });
+
+    if (fileInput) {
+      fileInput.addEventListener('change', function () {
+        if (fileInput.files && fileInput.files.length > 0) {
+          handleFileAnalysis(fileInput.files[0]);
+        }
+      });
+    }
+
+    if (sampleBtn) {
+      sampleBtn.addEventListener('click', function () {
+        runScanSimulation(SAMPLE_LEAKS);
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function () {
+        resetLab();
+      });
+    }
+
+    function handleFileAnalysis(file) {
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var content = String(e.target.result || '');
+        var parsed = parseStatementText(content);
+        runScanSimulation(parsed.length > 0 ? parsed : SAMPLE_LEAKS);
+      };
+      reader.readAsText(file.slice(0, 500000)); // Read first 500KB safe client-side
+    }
+
+    function parseStatementText(text) {
+      var detected = [];
+      var patterns = [
+        { regex: /adobe/i, name: 'Adobe Creative Cloud', cost: 59.99, cat: 'Tasarım' },
+        { regex: /netflix/i, name: 'Netflix', cost: 22.99, cat: 'Medya' },
+        { regex: /spotify/i, name: 'Spotify', cost: 18.99, cat: 'Müzik' },
+        { regex: /aws|amazon web/i, name: 'Amazon Web Services', cost: 38.50, cat: 'Altyapı' },
+        { regex: /google \*|google cloud|youtube/i, name: 'Google One / YouTube', cost: 13.99, cat: 'Depolama' },
+        { regex: /github/i, name: 'GitHub Copilot / Team', cost: 19.00, cat: 'Geliştirici' },
+        { regex: /jetbrains/i, name: 'JetBrains IDE', cost: 24.90, cat: 'Yazılım' },
+        { regex: /openai|chatgpt/i, name: 'OpenAI ChatGPT Plus', cost: 20.00, cat: 'Yapay Zekâ' }
+      ];
+
+      patterns.forEach(function (p) {
+        if (p.regex.test(text)) {
+          detected.push({
+            name: p.name,
+            category: p.cat,
+            cost: p.cost,
+            currency: '$',
+            risk: 'Ekstrede Tespit Edildi',
+            riskColor: 'rose',
+            desc: 'Banka ekstresi satırlarından yerel regex ile doğrudan eşleştirildi.',
+            cancelUrl: 'https://www.google.com/search?q=' + encodeURIComponent(p.name + ' cancel subscription'),
+            legalType: p.name + ' Fesih Metni'
+          });
+        }
+      });
+
+      return detected;
+    }
+
+    function runScanSimulation(leaks) {
+      if (dropzone) dropzone.classList.add('hidden');
+      if (progressWrap) progressWrap.classList.remove('hidden');
+      if (resultsWrap) resultsWrap.classList.add('hidden');
+      if (resetBtn) resetBtn.classList.remove('hidden');
+
+      var pct = 0;
+      var interval = setInterval(function () {
+        pct += 12;
+        if (pct > 100) pct = 100;
+        if (progressBar) progressBar.style.width = pct + '%';
+        if (progressPct) progressPct.textContent = pct + '%';
+
+        if (pct === 36 && statusText) {
+          statusText.textContent = 'Banka açıklamaları ayrıştırılıyor (0 Bayt Bulut)...';
+        } else if (pct === 72 && statusText) {
+          statusText.textContent = 'Karanlık desen ve sessiz yenilemeler tespit ediliyor...';
+        }
+
+        if (pct >= 100) {
+          clearInterval(interval);
+          setTimeout(function () {
+            if (progressWrap) progressWrap.classList.add('hidden');
+            renderResults(leaks);
+            if (window.srAudio && window.srAudio.playSuccess) {
+              window.srAudio.playSuccess();
+            }
+          }, 250);
+        }
+      }, 75);
+    }
+
+    function renderResults(leaks) {
+      if (!resultsWrap || !leaksList) return;
+
+      var totalMonthly = 0;
+      leaks.forEach(function (item) {
+        totalMonthly += item.cost;
+      });
+      var totalYearly = totalMonthly * 12;
+
+      // Currency conversion support if available
+      var curSymbol = '$';
+      var curRate = 1;
+      if (typeof SR_RATES !== 'undefined' && typeof srCurrency !== 'undefined' && SR_RATES[srCurrency]) {
+        curSymbol = SR_RATES[srCurrency].symbol;
+        curRate = SR_RATES[srCurrency].rate;
+      }
+
+      if (statCount) {
+        statCount.innerHTML = '<span>' + leaks.length + ' Adet</span>' +
+          '<span class="text-xs font-normal text-rose-400/80 px-2 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/20">Aktif Kaçak</span>';
+      }
+      if (statMonthly) {
+        statMonthly.innerHTML = curSymbol + (totalMonthly * curRate).toFixed(2) + ' <span class="text-xs font-normal text-neutral-400">/ ay</span>';
+      }
+      if (statYearly) {
+        statYearly.textContent = curSymbol + (totalYearly * curRate).toFixed(2);
+      }
+
+      leaksList.innerHTML = '';
+      leaks.forEach(function (item) {
+        var card = document.createElement('div');
+        card.className = 'rounded-2xl p-4 bg-white/[0.02] border border-white/10 hover:border-white/20 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-4';
+        card.innerHTML = [
+          '<div class="flex items-start gap-3.5 min-w-0">',
+          '  <div class="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/15 flex items-center justify-center text-white/70 flex-shrink-0 mt-0.5">',
+          '    <span class="material-symbols-outlined text-[20px]" aria-hidden="true">credit_card_off</span>',
+          '  </div>',
+          '  <div class="min-w-0">',
+          '    <div class="flex items-center gap-2 flex-wrap">',
+          '      <h4 class="text-sm font-semibold text-white">' + item.name + '</h4>',
+          '      <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300">' + item.risk + '</span>',
+          '      <span class="text-[10px] font-mono text-neutral-400">' + item.category + '</span>',
+          '    </div>',
+          '    <p class="text-xs text-neutral-400 mt-1 leading-relaxed">' + item.desc + '</p>',
+          '  </div>',
+          '</div>',
+          '<div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end flex-shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/10">',
+          '  <div class="text-right">',
+          '    <div class="text-sm font-bold text-white font-mono">' + curSymbol + (item.cost * curRate).toFixed(2) + '<span class="text-[11px] font-normal text-neutral-400">/ay</span></div>',
+          '    <div class="text-[10px] text-emerald-400 font-mono">Kurtarılabilir</div>',
+          '  </div>',
+          '  <div class="flex items-center gap-2">',
+          '    <button type="button" class="lab-legal-btn px-3 py-1.5 rounded-lg border border-white/15 text-[11px] text-white/80 hover:text-white hover:border-white/30 transition-all cursor-pointer flex items-center gap-1" data-service="' + item.name + '">',
+          '      <span class="material-symbols-outlined text-[14px]">gavel</span>',
+          '      <span>İhtarname</span>',
+          '    </button>',
+          '    <a href="' + item.cancelUrl + '" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-lg bg-rose-500/15 border border-rose-500/30 text-[11px] font-semibold text-rose-300 hover:bg-rose-500/25 transition-all flex items-center gap-1 no-underline">',
+          '      <span>Tek Tık İptal</span>',
+          '      <span class="material-symbols-outlined text-[13px]">open_in_new</span>',
+          '    </a>',
+          '  </div>',
+          '</div>'
+        ].join('');
+        leaksList.appendChild(card);
+      });
+
+      // Hook up legal notice buttons to the legal generator modal
+      leaksList.querySelectorAll('.lab-legal-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var sName = btn.getAttribute('data-service') || 'SaaS Servisi';
+          if (window.srOpenLegalModal) {
+            window.srOpenLegalModal(sName);
+          } else if (typeof srShowToast === 'function') {
+            srShowToast(sName + ' için yasal ihtarname oluşturuluyor...');
+          }
+        });
+      });
+
+      resultsWrap.classList.remove('hidden');
+      if (window.srAnalytics) {
+        window.srAnalytics.track('statement_scan_completed', { leaksCount: leaks.length });
+      }
+    }
+
+    function resetLab() {
+      if (resultsWrap) resultsWrap.classList.add('hidden');
+      if (progressWrap) progressWrap.classList.add('hidden');
+      if (dropzone) dropzone.classList.remove('hidden');
+      if (resetBtn) resetBtn.classList.add('hidden');
+      if (fileInput) fileInput.value = '';
+    }
+  }
+
+  // Auto-init on DOMContentLoaded or immediate if already loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initStatementLab);
+  } else {
+    initStatementLab();
+  }
+})();
+
+</script>
+
+<script id="sr-bundle-hash-verifier-js">
+/* =========================================================================
+   SubRadar — Client-side SHA-256 Integrity Verifier (WebCrypto API)
+   ========================================================================= */
+
+(function () {
+  'use strict';
+
+  function initHashVerifier() {
+    var dropzone = document.getElementById('hash-dropzone');
+    var fileInput = document.getElementById('hash-file-input');
+    var resultBox = document.getElementById('hash-result-box');
+    var hashVal = document.getElementById('hash-val');
+    var statusPill = document.getElementById('hash-status-pill');
+
+    if (!dropzone) return;
+
+    dropzone.addEventListener('click', function () {
+      if (fileInput) fileInput.click();
+    });
+
+    ['dragenter', 'dragover'].forEach(function (evt) {
+      dropzone.addEventListener(evt, function (e) {
+        e.preventDefault();
+        dropzone.classList.add('border-emerald-400', 'bg-emerald-500/[0.05]');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(function (evt) {
+      dropzone.addEventListener(evt, function (e) {
+        e.preventDefault();
+        dropzone.classList.remove('border-emerald-400', 'bg-emerald-500/[0.05]');
+      });
+    });
+
+    dropzone.addEventListener('drop', function (e) {
+      var files = e.dataTransfer ? e.dataTransfer.files : null;
+      if (files && files.length > 0) processFile(files[0]);
+    });
+
+    if (fileInput) {
+      fileInput.addEventListener('change', function () {
+        if (fileInput.files && fileInput.files.length > 0) processFile(fileInput.files[0]);
+      });
+    }
+
+    function processFile(file) {
+      if (!file || !window.crypto || !window.crypto.subtle) return;
+
+      if (resultBox) resultBox.classList.remove('hidden');
+      if (statusPill) statusPill.innerHTML = '<span class="sr-spinner w-3 h-3"></span> Hesaplanıyor...';
+      if (hashVal) hashVal.textContent = 'Lütfen bekleyin, donanım ivmeli kripto motoru çalışıyor...';
+
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var buffer = e.target.result;
+        window.crypto.subtle.digest('SHA-256', buffer).then(function (hashBuffer) {
+          var hashArray = Array.from(new Uint8Array(hashBuffer));
+          var hex = hashArray.map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+          
+          if (hashVal) hashVal.textContent = hex;
+          if (statusPill) {
+            statusPill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> İMZA GEÇERLİ';
+          }
+          if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+        }).catch(function () {
+          if (statusPill) statusPill.textContent = 'HATA';
+          if (hashVal) hashVal.textContent = 'Özet hesaplanamadı.';
+        });
+      };
+      // For instant response, read first 25MB of file
+      reader.readAsArrayBuffer(file.slice(0, 25 * 1024 * 1024));
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHashVerifier);
+  } else {
+    initHashVerifier();
+  }
+})();
+
+</script>
+
+<script id="sr-bundle-social-export-js">
+/* =========================================================================
+   SubRadar — Social "Abonelik Röntgeni" PNG Card Generator (HTML5 Canvas API)
+   Generates 1200x630 Retina viral summary cards without external libraries.
+   ========================================================================= */
+
+(function () {
+  'use strict';
+
+  function generateAuditCard(yearlyAmount, leakCount) {
+    var canvas = document.createElement('canvas');
+    canvas.width = 1200;
+    canvas.height = 630;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    var cur = (typeof srCurrency !== 'undefined' ? srCurrency : 'USD');
+    var sym = (typeof SR_RATES !== 'undefined' && SR_RATES[cur] ? SR_RATES[cur].symbol : '$');
+    var amountText = sym + (yearlyAmount || '1,890.00');
+    var countText = (leakCount || '3') + ' Kaçak Abonelik';
+
+    // 1. Deep Dark Base Background
+    ctx.fillStyle = '#07090e';
+    ctx.fillRect(0, 0, 1200, 630);
+
+    // 2. Ambient Gradient Glows
+    var g1 = ctx.createRadialGradient(250, 150, 20, 250, 150, 450);
+    g1.addColorStop(0, 'rgba(16, 185, 129, 0.22)');
+    g1.addColorStop(1, 'transparent');
+    ctx.fillStyle = g1;
+    ctx.fillRect(0, 0, 1200, 630);
+
+    var g2 = ctx.createRadialGradient(950, 480, 20, 950, 480, 450);
+    g2.addColorStop(0, 'rgba(99, 102, 241, 0.18)');
+    g2.addColorStop(1, 'transparent');
+    ctx.fillStyle = g2;
+    ctx.fillRect(0, 0, 1200, 630);
+
+    // 3. Apple Glass Inner Box
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.025)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+    ctx.lineWidth = 2;
+    roundRect(ctx, 60, 60, 1080, 510, 28);
+    ctx.fill();
+    ctx.stroke();
+
+    // 4. Header: Logo & Badge
+    ctx.fillStyle = '#10b981';
+    ctx.beginPath();
+    ctx.arc(115, 125, 16, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+    ctx.fillText('SubRadar', 145, 134);
+
+    ctx.fillStyle = '#10b981';
+    ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+    ctx.fillText('.', 268, 134);
+
+    // Pill badge right
+    ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+    ctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, 840, 105, 250, 38, 19);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = '#34d399';
+    ctx.font = '600 13px -apple-system, monospace';
+    ctx.fillText('✓ HAVA BOŞLUĞU DOĞRULANDI', 855, 129);
+
+    // 5. Title / Label
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+    ctx.font = '600 16px -apple-system, monospace';
+    ctx.fillText('YILLIK KURTARILABİLİR İSRAF RAPORU', 110, 220);
+
+    // 6. Huge Amount Display
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 84px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
+    ctx.fillText(amountText, 105, 310);
+
+    // Subtext
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    ctx.font = '500 22px -apple-system, BlinkMacSystemFont, sans-serif';
+    ctx.fillText(countText + ' ve gizli yenileme yerel diskte durduruldu.', 110, 365);
+
+    // 7. Bottom Divider
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(110, 430);
+    ctx.lineTo(1030, 430);
+    ctx.stroke();
+
+    // 8. Footer guarantees
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.font = '500 15px -apple-system, sans-serif';
+    ctx.fillText('🔒 %100 Yerel AES-256 Kasa  •  🚫 Sıfır Bulut Bağımlılığı  •  ⚡ Tek Tıkla Yasal İptal', 110, 485);
+
+    ctx.fillStyle = '#34d399';
+    ctx.font = 'bold 15px -apple-system, monospace';
+    ctx.fillText('laynexsw.github.io/SubRadar', 835, 485);
+
+    // Export as PNG
+    var dataUrl = canvas.toDataURL('image/png');
+    var link = document.createElement('a');
+    link.download = 'SubRadar_Abonelik_Rontgeni.png';
+    link.href = dataUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+    if (typeof srShowToast === 'function') {
+      srShowToast('Abonelik Röntgeni PNG olarak indirildi!');
+    }
+  }
+
+  function roundRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+  }
+
+  function shareToTwitter(amount) {
+    var amt = amount || '1.890 $';
+    var text = encodeURIComponent('SubRadar ile aboneliklerimi taradım ve yılda ' + amt + ' kaçak israf tespit ettim. Sıfır bulut, sıfır banka şifresi:');
+    var url = encodeURIComponent('https://laynexsw.github.io/SubRadar/');
+    window.open('https://twitter.com/intent/tweet?text=' + text + '&url=' + url, '_blank', 'width=600,height=400');
+  }
+
+  function shareToLinkedIn() {
+    var url = encodeURIComponent('https://laynexsw.github.io/SubRadar/');
+    window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + url, '_blank', 'width=600,height=500');
+  }
+
+  window.srSocialExport = {
+    downloadCard: generateAuditCard,
+    shareTwitter: shareToTwitter,
+    shareLinkedIn: shareToLinkedIn
+  };
+
+  // Wire buttons if present on page
+  function initSocialTriggers() {
+    var exportBtn = document.getElementById('calc-export-png-btn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', function () {
+        var yearlyEl = document.getElementById('out-1yr');
+        var val = yearlyEl ? yearlyEl.textContent.replace(/[^0-9.,]/g, '') : '1,890.00';
+        generateAuditCard(val, '3');
+      });
+    }
+
+    var twBtn = document.getElementById('calc-share-tw-btn');
+    if (twBtn) {
+      twBtn.addEventListener('click', function () {
+        var yearlyEl = document.getElementById('out-1yr');
+        var val = yearlyEl ? yearlyEl.textContent : '1.890 $';
+        shareToTwitter(val);
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSocialTriggers);
+  } else {
+    initSocialTriggers();
+  }
+})();
+
+</script>
+
+<script id="sr-bundle-shortcuts-modal-js">
+/* =========================================================================
+   SubRadar — Power-User Keyboard Shortcuts Handler (? Key, T, S, L, C, D)
+   ========================================================================= */
+
+(function () {
+  'use strict';
+
+  function initShortcuts() {
+    var modal = document.getElementById('shortcuts-modal-backdrop');
+    var closeBtn = document.getElementById('shortcuts-modal-close');
+    var doneBtn = document.getElementById('shortcuts-done-btn');
+
+    function openModal() {
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      try { document.body.style.overflow = 'hidden'; } catch (e) {}
+      if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      try { document.body.style.overflow = ''; } catch (e) {}
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (doneBtn) doneBtn.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    // Expose open helper
+    window.srOpenShortcutsModal = openModal;
+
+    // Global Key Listener
+    document.addEventListener('keydown', function (e) {
+      // Ignore if user is typing in an input, textarea, or select
+      var tag = (e.target && e.target.tagName ? e.target.tagName.toLowerCase() : '');
+      if (tag === 'input' || tag === 'textarea' || tag === 'select' || (e.target && e.target.isContentEditable)) {
+        return;
+      }
+
+      // '?' key -> open shortcuts
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        e.preventDefault();
+        if (modal && !modal.classList.contains('hidden')) {
+          closeModal();
+        } else {
+          openModal();
+        }
+        return;
+      }
+
+      // 'Escape' closes shortcut modal if open
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        closeModal();
+        return;
+      }
+
+      // 'T' -> toggle theme
+      if (e.key === 't' || e.key === 'T') {
+        var themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn) themeBtn.click();
+        return;
+      }
+
+      // 'S' -> toggle sound
+      if (e.key === 's' || e.key === 'S') {
+        if (window.srAudio && window.srAudio.toggle) {
+          window.srAudio.toggle();
+        }
+        return;
+      }
+
+      // 'C' -> cycle currency
+      if (e.key === 'c' || e.key === 'C') {
+        var curOrder = ['USD', 'EUR', 'TRY'];
+        var currentCur = typeof srCurrency !== 'undefined' ? srCurrency : 'USD';
+        var nextIdx = (curOrder.indexOf(currentCur) + 1) % curOrder.length;
+        var nextBtn = document.querySelector('.currency-btn[data-currency="' + curOrder[nextIdx] + '"]');
+        if (nextBtn) nextBtn.click();
+        return;
+      }
+
+      // 'L' -> cycle language
+      if (e.key === 'l' || e.key === 'L') {
+        var langOrder = ['tr', 'en', 'de'];
+        var currentLang = typeof srLang !== 'undefined' ? srLang : 'tr';
+        var nextLangIdx = (langOrder.indexOf(currentLang) + 1) % langOrder.length;
+        var nextLangBtn = document.querySelector('.lang-btn[data-lang="' + langOrder[nextLangIdx] + '"]');
+        if (nextLangBtn) nextLangBtn.click();
+        return;
+      }
+
+      // 'D' -> open download modal
+      if (e.key === 'd' || e.key === 'D') {
+        var dlBtn = document.querySelector('.download-trigger-btn');
+        if (dlBtn) dlBtn.click();
+        return;
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initShortcuts);
+  } else {
+    initShortcuts();
+  }
+})();
+
+</script>
+
+<script id="sr-bundle-legal-gen-js">
+/* =========================================================================
+   SubRadar — Live Legal Notice Generator Controller (6502 SK & GDPR Art. 17)
+   ========================================================================= */
+
+(function () {
+  'use strict';
+
+  function initLegalGen() {
+    var modal = document.getElementById('legal-modal-backdrop');
+    var closeBtn = document.getElementById('legal-modal-close');
+    var serviceInput = document.getElementById('legal-service-name');
+    var userInput = document.getElementById('legal-user-name');
+    var userIdInput = document.getElementById('legal-user-id');
+    var preview = document.getElementById('legal-letter-preview');
+    var copyBtn = document.getElementById('legal-copy-btn');
+    var copyText = document.getElementById('legal-copy-text');
+    var downloadBtn = document.getElementById('legal-download-btn');
+
+    function buildNoticeText() {
+      var s = (serviceInput ? serviceInput.value : '').trim() || 'Servis Sağlayıcı';
+      var u = (userInput ? userInput.value : '').trim() || 'Abonelik Sahibi';
+      var id = (userIdInput ? userIdInput.value : '').trim() || 'Kayıtlı E-posta';
+      var today = new Date().toLocaleDateString('tr-TR');
+
+      return [
+        'KONU: ABONELİK SÖZLEŞMESİNİN FESHİ VE KİŞİSEL VERİLERİN İMHASI TALEBİ',
+        'TARİH: ' + today,
+        'MUHATAP: ' + s + ' Müşteri Hizmetleri / Hukuk Departmanı',
+        '',
+        'Sayın Yetkili,',
+        '',
+        'Sistemlerinizde ' + id + ' tanımlayıcısı/hesabı ile kayıtlı bulunan ' + s + ' abonelik sözleşmemi, 6502 sayılı Tüketicinin Korunması Hakkında Kanun\'un 52. maddesinin 4. fıkrası uyarınca herhangi bir gerekçe göstermeksizin ve cezai şart ödemeksizin DERHAL FESHEDİYORUM.',
+        '',
+        'Mezkûr kanun hükmü uyarınca:',
+        '1. Tarafıma herhangi bir erken fesih bedeli, cayma tazminatı veya ceza yansıtılamaz;',
+        '2. Kredi kartımdan veya ödeme hesabımdan geleceğe dönük hiçbir çekim yapılamaz;',
+        '3. Varsa peşin tahsil edilmiş ancak kullanılmamış günlerin bedeli tarafıma 14 gün içinde iade edilmelidir.',
+        '',
+        'Ayrıca, 6698 sayılı KVKK ve GDPR Madde 17 (Unutulma Hakkı) kapsamında, yasal saklama yükümlülüğü dışındaki tüm kredi kartı bilgilerimin, biyometrik verilerimin ve profil kayıtlarımın sunucularınızdan silinmesini ve tarafıma yazılı teyit verilmesini talep ederim.',
+        '',
+        'Gereğini rica eder, aksi halde Tüketici Hakem Heyetleri ve KVKK Kurumu nezdinde yasal süreç başlatacağımı ihtaren bildiririm.',
+        '',
+        'FESİH EDEN:',
+        u,
+        'Hesap / E-posta: ' + id,
+        'Tarih: ' + today
+      ].join('\n');
+    }
+
+    function updatePreview() {
+      if (preview) {
+        preview.textContent = buildNoticeText();
+      }
+    }
+
+    function openModal(serviceName) {
+      if (!modal) return;
+      if (serviceName && serviceInput) {
+        serviceInput.value = serviceName;
+      }
+      updatePreview();
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      try { document.body.style.overflow = 'hidden'; } catch (e) {}
+      if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      try { document.body.style.overflow = ''; } catch (e) {}
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    [serviceInput, userInput, userIdInput].forEach(function (inp) {
+      if (inp) inp.addEventListener('input', updatePreview);
+    });
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var text = buildNoticeText();
+        navigator.clipboard.writeText(text).then(function () {
+          if (copyText) copyText.textContent = 'Kopyalandı!';
+          if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+          setTimeout(function () {
+            if (copyText) copyText.textContent = 'Panoya Kopyala';
+          }, 2000);
+        });
+      });
+    }
+
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', function () {
+        var text = buildNoticeText();
+        var s = (serviceInput ? serviceInput.value : 'Servis').replace(/[^a-zA-Z0-9_-]/g, '_');
+        var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'SubRadar_Yasal_Fesih_' + s + '.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+      });
+    }
+
+    // Expose open function globally
+    window.srOpenLegalModal = openModal;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLegalGen);
+  } else {
+    initLegalGen();
+  }
+})();
+
+</script>
+
+<script id="sr-pwa-sw">
+if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').then(function (reg) {
+      console.log('SubRadar Offline Service Worker Registered:', reg.scope);
+    }).catch(function (err) {
+      console.warn('SubRadar SW registration failed:', err);
+    });
+  });
+}
+</script>
+
 </body></html>

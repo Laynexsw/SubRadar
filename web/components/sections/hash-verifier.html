@@ -1,0 +1,43 @@
+<!-- ========================================================================= -->
+<!-- COMPONENT: İSTEMCİ TARAFI SHA-256 DOĞRULAYICI (AIR-GAP VERIFIER)           -->
+<!-- ========================================================================= -->
+<div class="mt-12 apple-card rounded-2xl border border-white/10 bg-white/[0.01] p-6 sm:p-7 shadow-lg" id="hash-verifier-box">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0">
+        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">verified_user</span>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold text-white">İstemci Tarafı Kurulum Doğrulayıcı (SHA-256)</h4>
+        <p class="text-[11px] text-neutral-400">İndirdiğiniz kurulum dosyasının bütünlüğünü tarayıcınızda yerel olarak test edin.</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">WebCrypto API</span>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <!-- Dropzone -->
+    <div id="hash-dropzone" class="border border-dashed border-white/15 hover:border-emerald-500/40 rounded-xl p-6 text-center transition-all bg-black/40 hover:bg-black/60 cursor-pointer">
+      <input type="file" id="hash-file-input" class="hidden"/>
+      <div class="flex items-center justify-center gap-2 text-xs text-neutral-300 font-medium">
+        <span class="material-symbols-outlined text-[18px] text-emerald-400">fingerprint</span>
+        <span>İndirdiğin .dmg / .exe dosyasını buraya bırak</span>
+      </div>
+      <p class="text-[11px] text-neutral-500 mt-1">Dosya sunucuya gönderilmez, tarayıcınızın donanım ivmeli kripto motorunda hesaplanır.</p>
+    </div>
+
+    <!-- Hash Result Output -->
+    <div id="hash-result-box" class="mt-3 hidden p-3 rounded-xl bg-black/70 border border-white/15 space-y-2">
+      <div class="flex items-center justify-between text-[11px] font-mono">
+        <span class="text-neutral-400">Hesaplanan SHA-256 Özeti:</span>
+        <span id="hash-status-pill" class="text-emerald-400 flex items-center gap-1 font-semibold">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          DOĞRULANDI (ORİJİNAL)
+        </span>
+      </div>
+      <div id="hash-val" class="text-[11px] font-mono text-emerald-300 break-all bg-white/[0.03] p-2 rounded border border-white/5 selection:bg-emerald-500/30"></div>
+    </div>
+  </div>
+</div>

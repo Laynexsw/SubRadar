@@ -1,0 +1,130 @@
+<!-- ========================================================================= -->
+<!-- SECTION: CANLI ÇEVRİMDIŞI EKSTRE VE KAÇAK TARAYICI LABORATUVARI           -->
+<!-- ========================================================================= -->
+<section class="max-w-6xl mx-auto px-6 py-28 border-t border-white/10" id="ekstre-laboratuvari" data-od-id="ekstre-lab">
+  <!-- Section Header -->
+  <div class="text-center max-w-3xl mx-auto mb-16" data-rv="fade-up">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono tracking-wide mb-4">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span>HAVA BOŞLUĞU (AIR-GAP) LABORATUVARI</span>
+    </div>
+    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-5 leading-tight">
+      Ekstreni Bırak, Kaçak Abonelikleri <br class="hidden sm:inline"/>
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-400">
+        0 Bayt Bulut Çıkışıyla
+      </span> Gör.
+    </h2>
+    <p class="text-neutral-400 text-sm sm:text-base leading-relaxed">
+      SubRadar'ın masaüstü motorunu tarayıcınızda canlı deneyin. Banka şifresi yok, API bağlantısı yok. Tüm analiz <span class="text-white font-medium">FileReader API</span> ile tamamen cihazınızın RAM belleğinde çalışır.
+    </p>
+  </div>
+
+  <!-- Interactive Lab Shell -->
+  <div class="apple-card rounded-3xl border border-white/15 bg-black/60 backdrop-blur-2xl p-6 sm:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.85)]" data-rv="fade-up">
+    
+    <!-- Top Telemetry & Airgap Status Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+          <span class="material-symbols-outlined text-[22px]" aria-hidden="true">security</span>
+        </div>
+        <div>
+          <div class="text-xs font-semibold text-white flex items-center gap-1.5">
+            <span>Çevrimdışı İstemci Modu</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          </div>
+          <div class="text-[11px] font-mono text-neutral-400">Giden Ağ Verisi: <strong class="text-emerald-400 font-bold">0 Bayt</strong> (Air-Gapped)</div>
+        </div>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="flex items-center gap-2.5">
+        <button type="button" id="lab-sample-btn" class="px-4 py-2 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all flex items-center gap-1.5 cursor-pointer min-h-[40px] shadow-sm">
+          <span class="material-symbols-outlined text-[17px]" aria-hidden="true">bolt</span>
+          <span>Örnek Ekstreyle Canlı Dene</span>
+        </button>
+        <button type="button" id="lab-reset-btn" class="px-3 py-2 rounded-full border border-white/15 text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer min-h-[40px] hidden" aria-label="Ekstre analizini sıfırla">
+          <span class="material-symbols-outlined text-[17px]" aria-hidden="true">refresh</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Dropzone / Input Area -->
+    <div id="lab-dropzone" class="mt-8 border-2 border-dashed border-white/15 hover:border-emerald-500/50 rounded-2xl p-8 sm:p-12 text-center transition-all bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer group">
+      <input type="file" id="lab-file-input" accept=".csv,.txt,.pdf" class="hidden"/>
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-white/60 group-hover:text-emerald-400 group-hover:border-emerald-500/40 group-hover:scale-105 transition-all mb-4">
+        <span class="material-symbols-outlined text-[32px]" aria-hidden="true">upload_file</span>
+      </div>
+      <h3 class="text-base font-semibold text-white mb-1.5">Banka Ekstreni veya CSV Dosyanı Sürükle</h3>
+      <p class="text-xs text-neutral-400 max-w-md mx-auto leading-relaxed mb-4">
+        Garanti, İş Bankası, Yapı Kredi, Akbank veya standart CSV formatları desteklenir. Dosya diskinizden ayrılmaz.
+      </p>
+      <div class="flex items-center justify-center gap-2 text-[11px] text-neutral-500 font-mono">
+        <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">.CSV</span>
+        <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">.TXT</span>
+        <span>veya üstteki butondan tek tıkla test et</span>
+      </div>
+    </div>
+
+    <!-- Scanning Progress Indicator (Hidden by default) -->
+    <div id="lab-progress-wrap" class="mt-8 hidden space-y-3">
+      <div class="flex items-center justify-between text-xs font-mono text-neutral-400">
+        <span class="flex items-center gap-2 text-emerald-400">
+          <span class="sr-spinner w-3.5 h-3.5"></span>
+          <span id="lab-status-text">18+ SaaS deseni yerel bellekte taranıyor...</span>
+        </span>
+        <span id="lab-progress-pct" class="font-bold text-white">0%</span>
+      </div>
+      <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+        <div id="lab-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-200" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- Results Display (Revealed after scan) -->
+    <div id="lab-results" class="mt-8 hidden space-y-6">
+      
+      <!-- Metrics Summary Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="rounded-2xl p-4 bg-white/[0.03] border border-white/10">
+          <div class="text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">Tespit Edilen Kaçak</div>
+          <div class="text-2xl font-bold text-rose-400 flex items-center gap-2" id="lab-stat-count">
+            <span>5 Adet</span>
+            <span class="text-xs font-normal text-rose-400/80 px-2 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/20">Yüksek Risk</span>
+          </div>
+        </div>
+        <div class="rounded-2xl p-4 bg-white/[0.03] border border-white/10">
+          <div class="text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">Aylık İsraf Yangını</div>
+          <div class="text-2xl font-bold text-white" id="lab-stat-monthly">$149.80 <span class="text-xs font-normal text-neutral-400">/ ay</span></div>
+        </div>
+        <div class="rounded-2xl p-4 bg-white/[0.03] border border-white/10">
+          <div class="text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">1 Yılda Kurtarılabilir</div>
+          <div class="text-2xl font-bold text-emerald-400" id="lab-stat-yearly">$1,797.60</div>
+        </div>
+      </div>
+
+      <!-- Detected Leaks Table / Cards -->
+      <div class="space-y-3" id="lab-leaks-list">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <!-- Bottom Lab CTA Banner -->
+      <div class="rounded-2xl p-5 bg-gradient-to-r from-emerald-950/40 via-teal-950/30 to-indigo-950/40 border border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 flex-shrink-0">
+            <span class="material-symbols-outlined text-[22px]" aria-hidden="true">check_circle</span>
+          </span>
+          <div>
+            <div class="text-sm font-semibold text-white">Bu Kaçakları Masaüstünde Tek Tıkla Durdurun</div>
+            <div class="text-xs text-neutral-300">Yerel SQLite kasası, otomatik arka plan nöbetçisi ve yasal fesih mektupları tek pakette.</div>
+          </div>
+        </div>
+        <button type="button" class="download-trigger-btn px-6 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all cursor-pointer whitespace-nowrap min-h-[42px] flex items-center gap-1.5" data-os="macOS">
+          <span class="material-symbols-outlined text-[16px]">download</span>
+          <span>Masaüstü Kasasını İndir</span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</section>

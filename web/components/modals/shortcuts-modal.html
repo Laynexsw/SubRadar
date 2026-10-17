@@ -1,0 +1,92 @@
+<!-- ========================================================================= -->
+<!-- MODAL: POWER-USER KLAVYE KISAYOLLARI (RAYCAST / LINEAR STİLİ)              -->
+<!-- ========================================================================= -->
+<div class="fixed inset-0 z-[125] bg-black/80 backdrop-blur-md hidden items-center justify-center px-4" id="shortcuts-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
+  <div class="animate-modal w-full max-w-lg bg-[#0e1017] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)]">
+    
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between pb-4 border-b border-white/10">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">keyboard</span>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-white" id="shortcuts-title">Klavye Kısayolları</h3>
+          <p class="text-[11px] text-neutral-400 font-mono">Hızlı ve akıcı navigasyon için kısayol tuşları</p>
+        </div>
+      </div>
+      <button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center" id="shortcuts-modal-close" aria-label="Kısayollar penceresini kapat">
+        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
+      </button>
+    </div>
+
+    <!-- Shortcuts Grid -->
+    <div class="py-5 space-y-3 font-mono text-xs">
+      
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Komut Paletini Aç</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">⌘</kbd>
+          <kbd class="px-2 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">K</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Bu Kısayol Menüsünü Göster</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">?</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Koyu / Açık Temayı Değiştir</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">T</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Web Audio Ses Efektlerini Aç / Kapat</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">S</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Para Birimini Döndür (USD / EUR / TRY)</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">C</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Dili Değiştir (TR / EN / DE)</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">L</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Masaüstü İndirme Penceresini Aç</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">D</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+        <span class="text-neutral-300">Açık Pencereleri Kapat</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-2 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">ESC</kbd>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-neutral-400">
+      <span>SubRadar v1.5.0 Power-User Engine</span>
+      <button type="button" class="text-white hover:underline cursor-pointer" id="shortcuts-done-btn">Anladım</button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,18 @@
+{
+  "name": "SubRadar — Masaüstü Abonelik Zekâsı",
+  "short_name": "SubRadar",
+  "description": "%100 Yerel AES-256 Kasa ve Tek Tıkla Abonelik İptali",
+  "start_url": "./code.html",
+  "display": "standalone",
+  "background_color": "#07090e",
+  "theme_color": "#07090e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
