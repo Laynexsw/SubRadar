@@ -1,288 +1,483 @@
-<!-- AUTH MODAL: Apple Glass Kolay & Detaylı Kullanıcı Giriş & Kayıt Ol Modalı -->
-<div class="fixed inset-0 z-[130] bg-black/80 backdrop-blur-md hidden items-center justify-center px-4 py-6" id="auth-modal-backdrop" aria-hidden="true">
-  <div class="animate-modal w-full max-w-lg bg-[#0e1017] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,0.95)] max-h-[92vh] overflow-y-auto" id="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+<!-- AUTH MODAL: Apple Glass Split-Screen Genişletilmiş Kullanıcı Giriş & Kayıt Ol Modalı -->
+<div class="fixed inset-0 z-[130] bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-5 md:p-6" id="auth-modal-backdrop" aria-hidden="true">
+  <div class="animate-modal w-full max-w-4xl lg:max-w-5xl bg-[#0b0e14] border border-white/15 rounded-3xl shadow-[0_30px_100px_rgba(0,0,0,0.95)] max-h-[94vh] flex flex-col overflow-hidden my-auto" id="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
     
-    <!-- Modal Header -->
-    <div class="flex items-center justify-between pb-4 border-b border-white/10">
+    <!-- ============================================================= -->
+    <!-- TOP BAR: Marka, Slider Tab Değiştirici ve Kapatma Butonu       -->
+    <!-- ============================================================= -->
+    <div class="px-5 sm:px-7 py-3.5 border-b border-white/10 flex items-center justify-between gap-3 flex-shrink-0" id="auth-top-bar">
+      <!-- Left: Logo & Title -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-950/40 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.2)]" id="auth-lock-aura">
-          <span class="material-symbols-outlined text-[20px]" id="auth-header-icon" aria-hidden="true">account_circle</span>
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-950/40 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.2)] flex-shrink-0" id="auth-lock-aura">
+          <span class="material-symbols-outlined text-[19px]" id="auth-header-icon" aria-hidden="true">account_circle</span>
         </div>
         <div>
-          <h3 class="text-base font-semibold text-white tracking-tight" id="auth-modal-title">SubRadar Hesabı</h3>
-          <p class="text-[11px] text-white/50" id="auth-modal-subtitle">Aboneliklerinizi kontrol altına alın ve tasarruf edin</p>
-        </div>
-      </div>
-      <button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors w-9 h-9 rounded-full flex items-center justify-center hover:bg-white/10" id="auth-modal-close" aria-label="Giriş penceresini kapat">
-        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
-      </button>
-    </div>
-
-    <!-- ============================================================= -->
-    <!-- VIEW 1: ACTIVE USER DASHBOARD (Giriş Yapılmışsa Görünür)       -->
-    <!-- ============================================================= -->
-    <div class="hidden space-y-4 pt-4" id="auth-active-dashboard">
-      <!-- Profile Header Card -->
-      <div class="p-4 rounded-xl bg-gradient-to-r from-emerald-500/[0.08] via-white/[0.03] to-transparent border border-emerald-500/25 flex items-center justify-between gap-3">
-        <div class="flex items-center gap-3.5">
-          <div class="relative w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-400 text-white font-bold flex items-center justify-center text-base shadow-lg shadow-emerald-500/20 border-2 border-white/20" id="auth-avatar-initials">
-            AY
-            <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#0e1017]"></span>
+          <div class="flex items-center gap-2">
+            <h3 class="text-sm sm:text-base font-bold text-white tracking-tight flex items-center gap-1.5" id="auth-modal-title">
+              <span>SubRadar</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-medium">v1.5</span>
+            </h3>
           </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h4 class="text-sm font-semibold text-white" id="auth-profile-name">Arda Yılmaz</h4>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-400/15 text-emerald-300 border border-emerald-400/30">★ Pro Plan</span>
-            </div>
-            <p class="text-xs text-white/60 font-mono mt-0.5 truncate max-w-[200px] sm:max-w-[260px]" id="auth-profile-email">arda@subradar.dev</p>
-          </div>
-        </div>
-        <div class="text-right flex-shrink-0">
-          <span class="text-[10px] text-white/40 block">Cihaz Durumu</span>
-          <span class="text-[11px] text-emerald-400 font-mono flex items-center gap-1 justify-end">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Çevrimdışı Kasa
-          </span>
+          <p class="text-[11px] text-white/50 hidden sm:block truncate max-w-[220px]" id="auth-modal-subtitle">Masaüstü Abonelik Zekâsı</p>
         </div>
       </div>
 
-      <!-- Mini Subscription Dashboard (Detaylı Metrikler) -->
-      <div class="grid grid-cols-3 gap-2 text-center">
-        <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10" id="auth-metric-box-1">
-          <span class="text-[10px] text-white/40 block uppercase tracking-wider">Abonelik</span>
-          <span class="text-base font-bold text-white block mt-0.5" id="auth-dash-subs">14 Servis</span>
-          <span class="text-[10px] text-emerald-400 mt-0.5 block">4 koruma altında</span>
-        </div>
-        <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10" id="auth-metric-box-2">
-          <span class="text-[10px] text-white/40 block uppercase tracking-wider">Aylık Gider</span>
-          <span class="text-base font-bold text-white block mt-0.5" id="auth-dash-monthly">$384,20</span>
-          <span class="text-[10px] text-white/40 mt-0.5 block">yıllık $4.610</span>
-        </div>
-        <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10" id="auth-metric-box-3">
-          <span class="text-[10px] text-white/40 block uppercase tracking-wider">Kurtarılan</span>
-          <span class="text-base font-bold text-emerald-400 block mt-0.5" id="auth-dash-saved">$1.890</span>
-          <span class="text-[10px] text-emerald-400/70 mt-0.5 block">yıllık israf</span>
-        </div>
-      </div>
-
-      <!-- Quick Action Buttons -->
-      <div class="space-y-2 pt-1">
-        <button type="button" class="w-full py-2.5 px-4 rounded-xl bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all cursor-pointer flex items-center justify-between shadow-sm" id="auth-btn-view-subs">
-          <span class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-[17px]">inventory_2</span>
-            <span>Aboneliklerimi ve İptalleri İncele</span>
-          </span>
-          <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-        </button>
-
-        <div class="grid grid-cols-2 gap-2">
-          <button type="button" class="py-2.5 px-3 rounded-xl border border-white/15 bg-white/[0.04] text-white/80 hover:text-white hover:bg-white/10 text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5" id="auth-btn-export-json">
-            <span class="material-symbols-outlined text-[16px]">download</span>
-            <span>Verilerimi Yedekle (.json)</span>
-          </button>
-          <button type="button" class="py-2.5 px-3 rounded-xl border border-white/15 bg-white/[0.04] text-white/80 hover:text-white hover:bg-white/10 text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5" id="auth-btn-edit-profile">
-            <span class="material-symbols-outlined text-[16px]">manage_accounts</span>
-            <span>Profil Ayarları</span>
-          </button>
-        </div>
-
-        <button type="button" class="w-full py-2.5 px-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5" id="auth-logout-btn">
-          <span class="material-symbols-outlined text-[16px]">logout</span>
-          <span>Oturumu Kapat</span>
-        </button>
-      </div>
-
-      <!-- Privacy Assurance -->
-      <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 text-[11px] text-white/40 flex items-start gap-2">
-        <span class="material-symbols-outlined text-emerald-400 text-[16px] flex-shrink-0 mt-0.5">verified_user</span>
-        <span>SubRadar %100 yerel ve gizlilik odaklıdır. Verileriniz sunuculara gönderilmez, yalnızca bu cihazda saklanır.</span>
-      </div>
-    </div>
-
-    <!-- ============================================================= -->
-    <!-- VIEW 2: LOGIN / REGISTER MAIN FLOW                            -->
-    <!-- ============================================================= -->
-    <div class="space-y-4 pt-4" id="auth-main-flow">
-      
-      <!-- 1-Click Social Sign-In Buttons (Google, GitHub, Apple) -->
-      <div class="space-y-2">
-        <div class="text-[11px] font-medium text-white/60 mb-1.5" id="auth-social-label">Tek Tıkla Kolay Giriş:</div>
-        <div class="grid grid-cols-3 gap-2">
-          <!-- Google Button -->
-          <button type="button" class="social-login-btn py-2.5 px-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.09] text-white text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-2 group" data-provider="Google" id="auth-social-google">
-            <svg class="w-4 h-4 flex-shrink-0 group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-            </svg>
-            <span class="provider-label">Google</span>
-          </button>
-
-          <!-- GitHub Button -->
-          <button type="button" class="social-login-btn py-2.5 px-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.09] text-white text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-2 group" data-provider="GitHub" id="auth-social-github">
-            <svg class="w-4 h-4 flex-shrink-0 fill-current group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-            </svg>
-            <span class="provider-label">GitHub</span>
-          </button>
-
-          <!-- Apple Button -->
-          <button type="button" class="social-login-btn py-2.5 px-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.09] text-white text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-2 group" data-provider="Apple" id="auth-social-apple">
-            <svg class="w-4 h-4 flex-shrink-0 fill-current group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
-              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.63 1.35-.56.64-1.05 1.7-0.92 2.73 1.01.08 2.03-.5 2.62-1.23z"/>
-            </svg>
-            <span class="provider-label">Apple</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Quick 1-Click Demo Option -->
-      <button type="button" class="w-full py-2.5 px-3 rounded-xl border border-amber-500/30 bg-amber-500/[0.07] hover:bg-amber-500/[0.14] text-amber-300 text-xs font-medium transition-all cursor-pointer flex items-center justify-between shadow-sm" id="auth-quick-demo-btn">
-        <span class="flex items-center gap-1.5">
-          <span>⚡</span>
-          <span>Tek Tıkla Demo Hesabı ile Aç (Form Doldurmadan)</span>
-        </span>
-        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-400/20 text-amber-300">Anında Giriş</span>
-      </button>
-
-      <!-- Divider -->
-      <div class="relative text-center my-2">
-        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
-        <span class="relative px-3 bg-[#0e1017] text-[10px] font-mono uppercase text-white/40" id="auth-or-divider">veya e-posta ile</span>
-      </div>
-
-      <!-- Segmented Tab Switcher (Giriş Yap / Kayıt Ol) -->
-      <div class="p-1 bg-white/[0.05] border border-white/10 rounded-xl flex items-center" role="tablist">
-        <button type="button" class="auth-tab-btn flex-1 py-2 text-xs font-medium rounded-lg transition-all text-white bg-white/15 shadow-sm cursor-pointer flex items-center justify-center gap-1.5" data-tab="login" role="tab" aria-selected="true" id="auth-tab-login">
+      <!-- Center: SLIDER SWITCHER (Giriş Yap / Kayıt Ol) -->
+      <div class="relative p-1 bg-white/[0.06] border border-white/10 rounded-full flex items-center w-56 sm:w-64 select-none shadow-inner" id="auth-tab-slider-container" role="tablist">
+        <!-- Animated Sliding Glider Background -->
+        <div class="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-white rounded-full shadow-md transition-transform duration-300 ease-out pointer-events-none" id="auth-tab-slider-glider"></div>
+        
+        <!-- Tab: Giriş Yap -->
+        <button type="button" class="auth-tab-btn relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-full transition-colors duration-200 text-black cursor-pointer flex items-center justify-center gap-1.5" data-tab="login" role="tab" aria-selected="true" id="auth-tab-login">
           <span class="material-symbols-outlined text-[15px]">login</span>
           <span>Giriş Yap</span>
         </button>
-        <button type="button" class="auth-tab-btn flex-1 py-2 text-xs font-medium rounded-lg transition-all text-white/50 hover:text-white cursor-pointer flex items-center justify-center gap-1.5" data-tab="register" role="tab" aria-selected="false" id="auth-tab-register">
+
+        <!-- Tab: Kayıt Ol -->
+        <button type="button" class="auth-tab-btn relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-full transition-colors duration-200 text-white/60 hover:text-white cursor-pointer flex items-center justify-center gap-1.5" data-tab="register" role="tab" aria-selected="false" id="auth-tab-register">
           <span class="material-symbols-outlined text-[15px]">person_add</span>
           <span>Kayıt Ol</span>
         </button>
       </div>
 
-      <!-- Form Content -->
-      <form class="space-y-3" id="auth-form" onsubmit="return false;">
-        
-        <!-- Register Only: Full Name -->
-        <div class="hidden" id="auth-name-group">
-          <label class="text-[11px] font-medium text-white/70 block mb-1" for="auth-name">Ad Soyad</label>
-          <div class="relative">
-            <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 outline-none transition-all pl-9" id="auth-name" type="text" placeholder="Arda Yılmaz" autocomplete="name"/>
-            <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-3">badge</span>
-          </div>
-        </div>
-
-        <!-- Email Field -->
-        <div>
-          <label class="text-[11px] font-medium text-white/70 block mb-1" for="auth-email">E-posta Adresi</label>
-          <div class="relative">
-            <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 outline-none transition-all pl-9" id="auth-email" type="email" placeholder="adiniz@subradar.dev" autocomplete="email" required/>
-            <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-3">mail</span>
-          </div>
-        </div>
-
-        <!-- Password Field -->
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="text-[11px] font-medium text-white/70 block" for="auth-password">Şifre</label>
-            <button type="button" class="text-[11px] text-emerald-400 hover:underline cursor-pointer" id="auth-forgot-link">Şifremi unuttum?</button>
-          </div>
-          <div class="relative">
-            <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 outline-none transition-all pl-9 pr-9" id="auth-password" type="password" placeholder="••••••••••••" autocomplete="current-password" required/>
-            <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-3">lock</span>
-            <button type="button" class="absolute right-2.5 top-2.5 text-white/40 hover:text-white cursor-pointer p-0.5" id="auth-pwd-toggle" aria-label="Şifreyi göster/gizle">
-              <span class="material-symbols-outlined text-[16px]" id="auth-pwd-icon">visibility</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Register Extra Fields (Password Strength, Confirm Password, Terms) -->
-        <div class="hidden space-y-3" id="auth-register-extra">
-          <!-- Password Strength Meter (Basit ve Anlaşılır) -->
-          <div class="space-y-1">
-            <div class="flex items-center justify-between text-[10px]">
-              <span class="text-white/50">Şifre Gücü:</span>
-              <span class="text-emerald-400 font-semibold" id="auth-pwd-strength-text">Bekleniyor</span>
-            </div>
-            <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden flex gap-1">
-              <div class="h-full flex-1 rounded-full bg-white/15 transition-all duration-300" id="auth-pwd-bar-1"></div>
-              <div class="h-full flex-1 rounded-full bg-white/15 transition-all duration-300" id="auth-pwd-bar-2"></div>
-              <div class="h-full flex-1 rounded-full bg-white/15 transition-all duration-300" id="auth-pwd-bar-3"></div>
-            </div>
-          </div>
-
-          <!-- Password Confirm -->
-          <div>
-            <label class="text-[11px] font-medium text-white/70 block mb-1" for="auth-password-confirm">Şifre Tekrarı</label>
-            <div class="relative">
-              <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 outline-none transition-all pl-9 pr-9" id="auth-password-confirm" type="password" placeholder="••••••••••••" autocomplete="new-password"/>
-              <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-3">verified</span>
-              <span class="material-symbols-outlined text-[16px] text-white/40 absolute right-3 top-3 hidden" id="auth-pwd-match-icon">check_circle</span>
-            </div>
-          </div>
-
-          <!-- Terms Checkbox -->
-          <label class="flex items-start gap-2 pt-1 text-xs text-white/60 cursor-pointer">
-            <input type="checkbox" id="auth-terms-check" checked class="mt-0.5 rounded border-white/20 bg-black text-emerald-500 focus:ring-0 cursor-pointer"/>
-            <span><a href="terms.html" target="_blank" class="text-white underline">Kullanım Koşulları</a> ve <a href="privacy.html" target="_blank" class="text-white underline">Gizlilik Politikası</a>'nı okudum, kabul ediyorum.</span>
-          </label>
-        </div>
-
-        <!-- Login Extra: Remember Me -->
-        <div class="flex items-center justify-between text-xs text-white/60 pt-0.5" id="auth-remember-row">
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" id="auth-remember-check" checked class="rounded border-white/20 bg-black text-emerald-500 focus:ring-0 cursor-pointer"/>
-            <span>Beni bu cihazda hatırla</span>
-          </label>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" class="w-full py-3 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer min-h-[44px] flex items-center justify-center gap-2 shadow-lg mt-3" id="auth-submit-btn">
-          <span id="auth-submit-label">Giriş Yap</span>
-          <span class="material-symbols-outlined text-[15px]" id="auth-submit-icon">arrow_forward</span>
-        </button>
-      </form>
+      <!-- Right: Close Button -->
+      <button type="button" class="text-white/40 hover:text-white cursor-pointer transition-colors w-9 h-9 rounded-full flex items-center justify-center hover:bg-white/10 flex-shrink-0" id="auth-modal-close" aria-label="Giriş penceresini kapat">
+        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">close</span>
+      </button>
     </div>
 
     <!-- ============================================================= -->
-    <!-- VIEW 3: FORGOT PASSWORD (Şifremi Unuttum Görünümü)             -->
+    <!-- ORTADAN BÖLÜNEN BİRLEŞİK EKRAN (SPLIT-SCREEN 50 / 50)          -->
     <!-- ============================================================= -->
-    <div class="hidden space-y-4 pt-4" id="auth-forgot-view">
-      <div class="p-4 rounded-xl bg-white/[0.03] border border-white/10 space-y-2">
-        <div class="flex items-center gap-2 text-white">
-          <span class="material-symbols-outlined text-amber-400 text-[20px]">lock_reset</span>
-          <h4 class="text-sm font-semibold">Şifre Sıfırlama</h4>
-        </div>
-        <p class="text-xs text-white/60 leading-relaxed">
-          Kayıtlı e-posta adresinizi girin. Güvenliğiniz için anında şifre sıfırlama bağlantısı oluşturulup iletilecektir.
-        </p>
-      </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 flex-1 overflow-y-auto min-h-0" id="auth-split-body">
+      
+      <!-- =========================================================== -->
+      <!-- SOL PANEL: Uygulamayı Tanıtan İnteraktif Kartlar (Carousel) -->
+      <!-- =========================================================== -->
+      <div class="p-6 sm:p-8 flex flex-col justify-between bg-gradient-to-br from-emerald-950/30 via-[#0c1018]/80 to-[#07090e] border-b md:border-b-0 md:border-r border-white/10 relative overflow-hidden select-none" id="auth-showcase-panel">
+        <!-- Ambient Decorative Glows -->
+        <div class="absolute -top-24 -left-24 w-64 h-64 rounded-full bg-emerald-500/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-64 h-64 rounded-full bg-teal-500/10 blur-3xl pointer-events-none"></div>
 
-      <form id="auth-forgot-form" onsubmit="return false;" class="space-y-3">
-        <div>
-          <label class="text-[11px] font-medium text-white/70 block mb-1" for="auth-forgot-email">E-posta Adresi</label>
-          <div class="relative">
-            <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 outline-none transition-all pl-9" id="auth-forgot-email" type="email" placeholder="adiniz@subradar.dev" required/>
-            <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-3">mail</span>
+        <!-- Top Showcase Title -->
+        <div class="relative z-10 space-y-2">
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-sm" id="auth-showcase-badge">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>ÖNE ÇIKAN YETENEKLER</span>
+          </div>
+          <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight leading-snug" id="auth-showcase-heading">
+            Aboneliklerinizi Zahmetsizce Yönetin & Koruyun
+          </h2>
+          <p class="text-xs text-white/50 leading-relaxed" id="auth-showcase-sub">
+            SubRadar, gizli yenilemeleri durduran ve israfı tek tıkla sonlandıran %100 yerel abonelik zekâsıdır.
+          </p>
+        </div>
+
+        <!-- Center: Interactive Sliding Feature Cards (Carousel) -->
+        <div class="relative z-10 my-6 flex-1 flex flex-col justify-center min-h-[200px]" id="auth-carousel-container">
+          
+          <!-- Slide 0: Kill Switch (Tek Tıkla İptal) -->
+          <div class="auth-carousel-slide transition-all duration-400 space-y-3.5" data-slide="0">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.25)]">
+              <span class="material-symbols-outlined text-[24px]">bolt</span>
+            </div>
+            <div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-semibold block">Akıllı İptal Motoru</span>
+              <h4 class="text-base font-bold text-white mt-0.5">Karanlık Desensiz Tek Tıkla İptal</h4>
+              <p class="text-xs text-white/60 leading-relaxed mt-1">
+                SaaS servislerinin sakladığı karmaşık iptal sayfalarını aramakla vakit kaybetmeyin. SubRadar, tuzakları atlayıp doğrudan resmi fesih ve iptal portalına bağlar.
+              </p>
+            </div>
+            <!-- Mock Live Pill -->
+            <div class="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between gap-3 text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="text-white font-medium">Adobe Creative Cloud ($59.99/ay)</span>
+              </div>
+              <span class="text-[10px] font-mono text-emerald-400 font-semibold bg-emerald-400/10 px-2 py-0.5 rounded border border-emerald-400/20">Tek Tıkla İptal Edildi</span>
+            </div>
+          </div>
+
+          <!-- Slide 1: AES-256 Vault (%100 Çevrimdışı Kasa) -->
+          <div class="auth-carousel-slide hidden transition-all duration-400 space-y-3.5" data-slide="1">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.25)]">
+              <span class="material-symbols-outlined text-[24px]">lock</span>
+            </div>
+            <div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-semibold block">Askeri Düzey Güvenlik</span>
+              <h4 class="text-base font-bold text-white mt-0.5">%100 Yerel AES-256 Kasa</h4>
+              <p class="text-xs text-white/60 leading-relaxed mt-1">
+                Banka şifresi yok, API anahtarı yok, bulut yok. Verileriniz yalnızca cihazınızda AES-256-CBC, scrypt ve HMAC korumalı yerel SQLite kasasında saklanır.
+              </p>
+            </div>
+            <!-- Mock Live Pill -->
+            <div class="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between gap-3 text-xs">
+              <div class="flex items-center gap-2 font-mono text-[11px] text-white/80">
+                <span class="material-symbols-outlined text-emerald-400 text-[15px]">database</span>
+                <span>encrypted_sqlite_aes256.db</span>
+              </div>
+              <span class="text-[10px] font-mono text-emerald-400 font-semibold bg-emerald-400/10 px-2 py-0.5 rounded border border-emerald-400/20">Cihazda Kilitli</span>
+            </div>
+          </div>
+
+          <!-- Slide 2: Air-Gap Ekstre Taraması -->
+          <div class="auth-carousel-slide hidden transition-all duration-400 space-y-3.5" data-slide="2">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.25)]">
+              <span class="material-symbols-outlined text-[24px]">document_scanner</span>
+            </div>
+            <div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-semibold block">İstemci Taraflı Analiz</span>
+              <h4 class="text-base font-bold text-white mt-0.5">Sessiz Fiyat Artışlarını Yakalayın</h4>
+              <p class="text-xs text-white/60 leading-relaxed mt-1">
+                Banka ekstrenizi sürükleyin; tarayıcınız sıfır internet erişimiyle unutulan deneme tuzaklarını ve gizlice artan abonelik ücretlerini anında listelesin.
+              </p>
+            </div>
+            <!-- Mock Live Pill -->
+            <div class="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between gap-3 text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span class="text-white font-medium">Figma: $15 → $18 Zam Tespit Edildi</span>
+              </div>
+              <span class="text-[10px] font-mono text-amber-400 font-semibold bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">Risk Uyarısı</span>
+            </div>
+          </div>
+
+          <!-- Slide 3: Tasarruf Radarı -->
+          <div class="auth-carousel-slide hidden transition-all duration-400 space-y-3.5" data-slide="3">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.25)]">
+              <span class="material-symbols-outlined text-[24px]">savings</span>
+            </div>
+            <div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-semibold block">Finansal Geri Kazanım</span>
+              <h4 class="text-base font-bold text-white mt-0.5">Yıllık Ortalama $1.890 Tasarruf</h4>
+              <p class="text-xs text-white/60 leading-relaxed mt-1">
+                Unutulan deneme üyelikleri, mükerrer faturalar ve kullanılmayan lisanslar bütçenizi tüketmesin. SubRadar ile tam finansal şeffaflık elde edin.
+              </p>
+            </div>
+            <!-- Mock Live Pill -->
+            <div class="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between gap-3 text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="text-white font-medium">Yıllık İsraf Kurtarma Hedefi</span>
+              </div>
+              <span class="text-xs font-mono text-emerald-400 font-bold bg-emerald-400/10 px-2.5 py-0.5 rounded border border-emerald-400/20">$1.890,00</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom: Carousel Navigation & Trust Badges -->
+        <div class="relative z-10 pt-4 border-t border-white/10 space-y-3">
+          <!-- Dots & Arrows Controls -->
+          <div class="flex items-center justify-between">
+            <!-- Dots -->
+            <div class="flex items-center gap-1.5" id="auth-carousel-dots">
+              <button type="button" class="auth-carousel-dot w-6 h-1.5 rounded-full bg-emerald-400 transition-all cursor-pointer" data-target="0" aria-label="Slayt 1"></button>
+              <button type="button" class="auth-carousel-dot w-2 h-1.5 rounded-full bg-white/20 hover:bg-white/40 transition-all cursor-pointer" data-target="1" aria-label="Slayt 2"></button>
+              <button type="button" class="auth-carousel-dot w-2 h-1.5 rounded-full bg-white/20 hover:bg-white/40 transition-all cursor-pointer" data-target="2" aria-label="Slayt 3"></button>
+              <button type="button" class="auth-carousel-dot w-2 h-1.5 rounded-full bg-white/20 hover:bg-white/40 transition-all cursor-pointer" data-target="3" aria-label="Slayt 4"></button>
+            </div>
+
+            <!-- Arrows -->
+            <div class="flex items-center gap-1">
+              <button type="button" class="w-7 h-7 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/10 text-white/70 hover:text-white flex items-center justify-center cursor-pointer transition-colors" id="auth-carousel-prev" aria-label="Önceki özellik">
+                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+              </button>
+              <button type="button" class="w-7 h-7 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/10 text-white/70 hover:text-white flex items-center justify-center cursor-pointer transition-colors" id="auth-carousel-next" aria-label="Sonraki özellik">
+                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Trust Badges Line -->
+          <div class="flex items-center justify-between text-[11px] text-white/40 pt-1">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-emerald-400 text-[14px]">shield</span> Sıfır Bilgi</span>
+            <span>•</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-emerald-400 text-[14px]">code</span> %100 Açık Kaynak</span>
+            <span>•</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-emerald-400 text-[14px]">wifi_off</span> Çevrimdışı Kasa</span>
           </div>
         </div>
 
-        <div class="hidden p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs" id="auth-forgot-success">
-          ✓ Şifre sıfırlama bağlantısı e-posta adresinize gönderildi! Lütfen gelen kutunuzu kontrol edin.
+      </div>
+
+      <!-- =========================================================== -->
+      <!-- SAĞ PANEL: Giriş / Kayıt Bilgileri ve Form Alanı             -->
+      <!-- =========================================================== -->
+      <div class="p-6 sm:p-8 flex flex-col justify-between overflow-y-auto" id="auth-form-panel">
+        
+        <!-- ========================================================= -->
+        <!-- VIEW 1: ACTIVE USER DASHBOARD (Giriş Yapılmışsa Görünür)   -->
+        <!-- ========================================================= -->
+        <div class="hidden space-y-4" id="auth-active-dashboard">
+          <div class="space-y-1">
+            <span class="text-[11px] font-mono text-emerald-400 uppercase tracking-wider font-semibold">Aktif Oturum</span>
+            <h4 class="text-lg font-bold text-white tracking-tight">SubRadar Hesabım</h4>
+            <p class="text-xs text-white/50">Yerel kasanız senkronize ve koruma altında.</p>
+          </div>
+
+          <!-- Profile Card -->
+          <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-500/[0.08] via-white/[0.03] to-transparent border border-emerald-500/25 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="relative w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-400 text-white font-bold flex items-center justify-center text-base shadow-lg shadow-emerald-500/20 border-2 border-white/20" id="auth-avatar-initials">
+                AY
+                <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#0e1017]"></span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-semibold text-white" id="auth-profile-name">Arda Yılmaz</span>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-400/15 text-emerald-300 border border-emerald-400/30">★ Pro Plan</span>
+                </div>
+                <p class="text-xs text-white/60 font-mono mt-0.5 truncate max-w-[180px] sm:max-w-[240px]" id="auth-profile-email">arda@subradar.dev</p>
+              </div>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <span class="text-[10px] text-white/40 block">Kasa</span>
+              <span class="text-[11px] text-emerald-400 font-mono flex items-center gap-1 justify-end">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Çevrimdışı
+              </span>
+            </div>
+          </div>
+
+          <!-- Mini Metrics -->
+          <div class="grid grid-cols-3 gap-2 text-center">
+            <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10" id="auth-metric-box-1">
+              <span class="text-[10px] text-white/40 block uppercase tracking-wider">Abonelik</span>
+              <span class="text-base font-bold text-white block mt-0.5" id="auth-dash-subs">14 Servis</span>
+              <span class="text-[10px] text-emerald-400 mt-0.5 block">4 korumada</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10" id="auth-metric-box-2">
+              <span class="text-[10px] text-white/40 block uppercase tracking-wider">Aylık</span>
+              <span class="text-base font-bold text-white block mt-0.5" id="auth-dash-monthly">$384,20</span>
+              <span class="text-[10px] text-white/40 mt-0.5 block">yıllık $4.610</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10" id="auth-metric-box-3">
+              <span class="text-[10px] text-white/40 block uppercase tracking-wider">Kurtarılan</span>
+              <span class="text-base font-bold text-emerald-400 block mt-0.5" id="auth-dash-saved">$1.890</span>
+              <span class="text-[10px] text-emerald-400/70 mt-0.5 block">yıllık israf</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="space-y-2 pt-2">
+            <button type="button" class="w-full py-2.5 px-4 rounded-xl bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all cursor-pointer flex items-center justify-between shadow-sm" id="auth-btn-view-subs">
+              <span class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[17px]">inventory_2</span>
+                <span>Aboneliklerimi ve İptalleri İncele</span>
+              </span>
+              <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+            </button>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" class="py-2.5 px-3 rounded-xl border border-white/15 bg-white/[0.04] text-white/80 hover:text-white hover:bg-white/10 text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5" id="auth-btn-export-json">
+                <span class="material-symbols-outlined text-[16px]">download</span>
+                <span>Yedekle (.json)</span>
+              </button>
+              <button type="button" class="py-2.5 px-3 rounded-xl border border-white/15 bg-white/[0.04] text-white/80 hover:text-white hover:bg-white/10 text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5" id="auth-btn-edit-profile">
+                <span class="material-symbols-outlined text-[16px]">manage_accounts</span>
+                <span>Profil Ayarları</span>
+              </button>
+            </div>
+
+            <button type="button" class="w-full py-2.5 px-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5" id="auth-logout-btn">
+              <span class="material-symbols-outlined text-[16px]">logout</span>
+              <span>Oturumu Kapat</span>
+            </button>
+          </div>
+
+          <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 text-[11px] text-white/40 flex items-start gap-2">
+            <span class="material-symbols-outlined text-emerald-400 text-[16px] flex-shrink-0 mt-0.5">verified_user</span>
+            <span>SubRadar %100 yerel ve gizlilik odaklıdır. Verileriniz sunuculara aktarılmaz.</span>
+          </div>
         </div>
 
-        <button type="submit" class="w-full py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm" id="auth-forgot-submit-btn">
-          <span>Sıfırlama Bağlantısı Gönder</span>
-          <span class="material-symbols-outlined text-[15px]">send</span>
-        </button>
+        <!-- ========================================================= -->
+        <!-- VIEW 2: LOGIN / REGISTER FORM AKIŞI                       -->
+        <!-- ========================================================= -->
+        <div class="space-y-4" id="auth-main-flow">
+          
+          <!-- Right Panel Header (Giriş Yap vs Kayıt Ol Başlığı) -->
+          <div class="space-y-1">
+            <h3 class="text-lg sm:text-xl font-bold text-white tracking-tight" id="auth-right-title">SubRadar'a Giriş Yap</h3>
+            <p class="text-xs text-white/50" id="auth-right-subtitle">Aboneliklerinizi yerel kasanızda yönetmeye devam edin.</p>
+          </div>
 
-        <button type="button" class="w-full py-2 text-xs text-white/50 hover:text-white transition-colors cursor-pointer text-center" id="auth-forgot-back-btn">
-          ← Giriş Ekranına Geri Dön
-        </button>
-      </form>
+          <!-- 1-Click Social Sign-In Buttons -->
+          <div class="space-y-1.5">
+            <div class="text-[11px] font-medium text-white/60" id="auth-social-label">Tek Tıkla Hızlı Giriş:</div>
+            <div class="grid grid-cols-3 gap-2">
+              <!-- Google Button -->
+              <button type="button" class="social-login-btn py-2.5 px-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.09] text-white text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-2 group" data-provider="Google" id="auth-social-google">
+                <svg class="w-4 h-4 flex-shrink-0 group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span class="provider-label">Google</span>
+              </button>
+
+              <!-- GitHub Button -->
+              <button type="button" class="social-login-btn py-2.5 px-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.09] text-white text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-2 group" data-provider="GitHub" id="auth-social-github">
+                <svg class="w-4 h-4 flex-shrink-0 fill-current group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                <span class="provider-label">GitHub</span>
+              </button>
+
+              <!-- Apple Button -->
+              <button type="button" class="social-login-btn py-2.5 px-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.09] text-white text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-2 group" data-provider="Apple" id="auth-social-apple">
+                <svg class="w-4 h-4 flex-shrink-0 fill-current group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.63 1.35-.56.64-1.05 1.7-0.92 2.73 1.01.08 2.03-.5 2.62-1.23z"/>
+                </svg>
+                <span class="provider-label">Apple</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick 1-Click Demo Option -->
+          <button type="button" class="w-full py-2.5 px-3 rounded-xl border border-amber-500/30 bg-amber-500/[0.07] hover:bg-amber-500/[0.14] text-amber-300 text-xs font-medium transition-all cursor-pointer flex items-center justify-between shadow-sm" id="auth-quick-demo-btn">
+            <span class="flex items-center gap-1.5">
+              <span>⚡</span>
+              <span>Tek Tıkla Demo Hesabı ile Aç</span>
+            </span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-400/20 text-amber-300">Anında Giriş</span>
+          </button>
+
+          <!-- Divider -->
+          <div class="relative text-center my-2">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+            <span class="relative px-3 bg-[#0b0e14] text-[10px] font-mono uppercase text-white/40" id="auth-or-divider">veya e-posta ile</span>
+          </div>
+
+          <!-- Form Content -->
+          <form class="space-y-3" id="auth-form" onsubmit="return false;">
+            
+            <!-- Register Only: Full Name -->
+            <div class="hidden" id="auth-name-group">
+              <label class="text-[11px] font-medium text-white/70 block mb-1" for="auth-name">Ad Soyad</label>
+              <div class="relative">
+                <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2 text-sm text-white placeholder-white/30 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 outline-none transition-all pl-9" id="auth-name" type="text" placeholder="Arda Yılmaz" autocomplete="name"/>
+                <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-2.5">badge</span>
+              </div>
+            </div>
+
+            <!-- Email Field -->
+            <div>
+              <label class="text-[11px] font-medium text-white/70 block mb-1" for="auth-email">E-posta Adresi</label>
+              <div class="relative">
+                <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2 text-sm text-white placeholder-white/30 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 outline-none transition-all pl-9" id="auth-email" type="email" placeholder="adiniz@subradar.dev" autocomplete="email" required/>
+                <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-2.5">mail</span>
+              </div>
+            </div>
+
+            <!-- Password Field -->
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-[11px] font-medium text-white/70 block" for="auth-password">Şifre</label>
+                <button type="button" class="text-[11px] text-emerald-400 hover:underline cursor-pointer" id="auth-forgot-link">Şifremi unuttum?</button>
+              </div>
+              <div class="relative">
+                <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2 text-sm text-white placeholder-white/30 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 outline-none transition-all pl-9 pr-9" id="auth-password" type="password" placeholder="••••••••••••" autocomplete="current-password" required/>
+                <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-2.5">lock</span>
+                <button type="button" class="absolute right-2.5 top-2 text-white/40 hover:text-white cursor-pointer p-0.5" id="auth-pwd-toggle" aria-label="Şifreyi göster/gizle">
+                  <span class="material-symbols-outlined text-[16px]" id="auth-pwd-icon">visibility</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Register Extra Fields (Password Strength, Confirm Password, Terms) -->
+            <div class="hidden space-y-2.5" id="auth-register-extra">
+              <!-- Password Strength Meter -->
+              <div class="space-y-1">
+                <div class="flex items-center justify-between text-[10px]">
+                  <span class="text-white/50">Şifre Gücü:</span>
+                  <span class="text-emerald-400 font-semibold" id="auth-pwd-strength-text">Bekleniyor</span>
+                </div>
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden flex gap-1">
+                  <div class="h-full flex-1 rounded-full bg-white/15 transition-all duration-300" id="auth-pwd-bar-1"></div>
+                  <div class="h-full flex-1 rounded-full bg-white/15 transition-all duration-300" id="auth-pwd-bar-2"></div>
+                  <div class="h-full flex-1 rounded-full bg-white/15 transition-all duration-300" id="auth-pwd-bar-3"></div>
+                </div>
+              </div>
+
+              <!-- Password Confirm -->
+              <div>
+                <label class="text-[11px] font-medium text-white/70 block mb-1" for="auth-password-confirm">Şifre Tekrarı</label>
+                <div class="relative">
+                  <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2 text-sm text-white placeholder-white/30 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 outline-none transition-all pl-9 pr-9" id="auth-password-confirm" type="password" placeholder="••••••••••••" autocomplete="new-password"/>
+                  <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-2.5">verified</span>
+                  <span class="material-symbols-outlined text-[16px] text-white/40 absolute right-3 top-2.5 hidden" id="auth-pwd-match-icon">check_circle</span>
+                </div>
+              </div>
+
+              <!-- Terms Checkbox -->
+              <label class="flex items-start gap-2 pt-0.5 text-xs text-white/60 cursor-pointer">
+                <input type="checkbox" id="auth-terms-check" checked class="mt-0.5 rounded border-white/20 bg-black text-emerald-500 focus:ring-0 cursor-pointer"/>
+                <span><a href="terms.html" target="_blank" class="text-white underline">Kullanım Koşulları</a> ve <a href="privacy.html" target="_blank" class="text-white underline">Gizlilik Politikası</a>'nı kabul ediyorum.</span>
+              </label>
+            </div>
+
+            <!-- Login Extra: Remember Me -->
+            <div class="flex items-center justify-between text-xs text-white/60 pt-0.5" id="auth-remember-row">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="auth-remember-check" checked class="rounded border-white/20 bg-black text-emerald-500 focus:ring-0 cursor-pointer"/>
+                <span>Beni bu cihazda hatırla</span>
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer min-h-[42px] flex items-center justify-center gap-2 shadow-lg mt-2" id="auth-submit-btn">
+              <span id="auth-submit-label">Giriş Yap</span>
+              <span class="material-symbols-outlined text-[15px]" id="auth-submit-icon">arrow_forward</span>
+            </button>
+          </form>
+
+          <!-- Bottom Switch Prompt -->
+          <div class="text-center text-xs text-white/50 pt-1" id="auth-switch-prompt-box">
+            <span id="auth-switch-prompt-text">Henüz hesabınız yok mu?</span>
+            <button type="button" class="text-emerald-400 font-semibold hover:underline ml-1 cursor-pointer" id="auth-switch-prompt-btn">Kayıt Ol</button>
+          </div>
+
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 3: FORGOT PASSWORD (Şifremi Unuttum Görünümü)         -->
+        <!-- ========================================================= -->
+        <div class="hidden space-y-4" id="auth-forgot-view">
+          <div class="space-y-1">
+            <h4 class="text-lg font-bold text-white tracking-tight">Şifrenizi mi Unuttunuz?</h4>
+            <p class="text-xs text-white/60 leading-relaxed">
+              Kayıtlı e-posta adresinizi girin. Güvenli sıfırlama bağlantısı anında iletilecektir.
+            </p>
+          </div>
+
+          <form id="auth-forgot-form" onsubmit="return false;" class="space-y-3 pt-2">
+            <div>
+              <label class="text-[11px] font-medium text-white/70 block mb-1" for="auth-forgot-email">E-posta Adresi</label>
+              <div class="relative">
+                <input class="w-full bg-black/60 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 outline-none transition-all pl-9" id="auth-forgot-email" type="email" placeholder="adiniz@subradar.dev" required/>
+                <span class="material-symbols-outlined text-[16px] text-white/40 absolute left-3 top-3">mail</span>
+              </div>
+            </div>
+
+            <div class="hidden p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs" id="auth-forgot-success">
+              ✓ Şifre sıfırlama bağlantısı e-posta adresinize gönderildi! Lütfen gelen kutunuzu kontrol edin.
+            </div>
+
+            <button type="submit" class="w-full py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm" id="auth-forgot-submit-btn">
+              <span>Sıfırlama Bağlantısı Gönder</span>
+              <span class="material-symbols-outlined text-[15px]">send</span>
+            </button>
+
+            <button type="button" class="w-full py-2 text-xs text-white/50 hover:text-white transition-colors cursor-pointer text-center" id="auth-forgot-back-btn">
+              ← Giriş Ekranına Geri Dön
+            </button>
+          </form>
+        </div>
+
+      </div>
+
     </div>
 
   </div>

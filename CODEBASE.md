@@ -76,7 +76,7 @@ Depo şu anda **üç ana katmandan** oluşur:
   * `reclaim-modal.html`: CLI indirme komutu kopyalama (`curl -sSL subradar.dev/cli | sh`) ve 3 adımlı kurtarma rehberi.
   * `shortcuts-modal.html`: Raycast/Linear stili Power-User klavye kısayolları modalı (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`).
   * `legal-generator-modal.html`: Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı (canlı önizleme, pano kopyalama ve `.txt` dosya indirme).
-  * `auth-modal.html`: Kullanıcı dostu sosyal giriş (Google, GitHub, Apple), tek tıkla demo, şifre sıfırlama akışı, 3 kademeli şifre gücü ve aktif hesap/profil yönetim paneli modalı.
+  * `auth-modal.html`: Genişletilmiş ikiye bölünmüş (50/50 split-screen) Apple Glass modal: Üst barda kayan zeminli slider sekme anahtarı (Giriş Yap / Kayıt Ol), solda 4 slaytlı interaktif özellik vitrini karuseli, sağda sosyal giriş (Google, GitHub, Apple), tek tıkla anında demo, 3 kademeli şifre gücü ve oturum açıldığında zengin profil yönetim paneli.
 
 ### 2.4 Web Stilleri (`web/css/`)
 * [`base.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/base.css): SF Pro font ailesi, `html.light` ve `html.dark` değişkenleri, skip-link, scroll-behavior, metin seçimi renkleri.
@@ -109,7 +109,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`modals/reclaim-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/reclaim-modal.js): CLI kopyalama ve modal görünürlüğü.
 * [`modals/shortcuts-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/shortcuts-modal.js): Power-User kısayol dinleyici (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`).
 * [`modals/legal-gen.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/legal-gen.js): Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme.
-* [`modals/auth-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/auth-modal.js): Sosyal giriş (Google/GitHub/Apple), tek tıkla demo oturumu, şifre sıfırlama, JSON veri yedekleme, 3 kademeli şifre gücü ve profil yönetimi kontrolcüsü (`initAuthModal`).
+* [`modals/auth-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/auth-modal.js): Üst slider sekme animasyonu (`#auth-tab-slider-glider`), sol özellik vitrini karuseli (otomatik 4.5s geçiş, hover duraklatma ve dot/ok kontrolleri), sosyal giriş simülasyonu, tek tıkla demo oturumu, şifre sıfırlama, JSON dışa aktarma ve aktif profil durum kontrolcüsü (`initAuthModal`).
 * [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 22 bileşenin bütünlüğünü doğrulayan test betiği.
 
 ### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/`)
@@ -195,7 +195,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 | `#reclaim-modal-backdrop`| `modals/reclaim-modal.html`| Sermaye geri kazanım & CLI modalı |
 | `#cli-copy-btn` | `modals/reclaim-modal.html`| `curl` komutunu kopyalayan buton |
 | `#auth-modal-btn` | `layout/header.html` | Üst ada sağında yer alan Giriş Yap / Kayıt Ol butonu |
-| `#auth-modal-backdrop`| `modals/auth-modal.html` | Sıfır bilgi yerel kasa giriş ve kayıt modalı |
+| `#auth-modal-backdrop`| `modals/auth-modal.html` | Genişletilmiş split-screen giriş/kayıt modalı (üst slider switcher + sol vitrin karuseli + sağ form) |
 | `#sr-progress` | `scroll-motion.js` | Sayfa üstündeki akıcı okuma ilerleme çizgisi |
 | `#sr-scrollspy` | `scroll-motion.js` | Alt merkezde sabit yüzen minimalist bölüm gezinti adası |
 | `#site-header` | `layout/header.html` | Kaydırmayla adaya dönüşen (`is-scrolled-island`) Apple Glass üst çubuğu |

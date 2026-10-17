@@ -107,7 +107,7 @@ SubRadar/
     │       ├── reclaim-modal.html        # Geri kazanım ve CLI kurulum adımları
     │       ├── shortcuts-modal.html      # Raycast/Linear stili Power-User klavye kısayolları modalı
     │       ├── legal-generator-modal.html# Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı
-    │       └── auth-modal.html           # Kullanıcı dostu sosyal giriş (Google/GitHub/Apple), şifre sıfırlama ve aktif profil paneli modalı
+    │       └── auth-modal.html           # Genişletilmiş split-screen giriş/kayıt modalı (üst slider bar, sol özellik karuseli, sağ form & aktif profil paneli)
     │
     ├── css/                              # Web Stil Dosyaları
     │   ├── base.css                      # Temel renk paleti, tipografi kuralları, açık/koyu tema değişkenleri
@@ -140,7 +140,7 @@ SubRadar/
     │       ├── reclaim-modal.js          # CLI komut kopyalama ve geri kazanım adımları
     │       ├── shortcuts-modal.js        # Power-User kısayol dinleyici (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`)
     │       ├── legal-gen.js              # Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme
-    │       └── auth-modal.js             # Tek tıkla sosyal/demo giriş, şifre sıfırlama ve detaylı profil kontrolcüsü (`initAuthModal`)
+    │       └── auth-modal.js             # Split-screen modal orkestrasyonu, üst bar slider göstergesi, özellik karuseli, sosyal/demo giriş ve profil kontrolcüsü
     └── scripts/
         └── build.py                      # 22 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
 ```

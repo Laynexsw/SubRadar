@@ -480,6 +480,59 @@ html.light #auth-btn-export-json:hover,
 html.light #auth-btn-edit-profile:hover {
   background-color: #f1f5f9 !important;
 }
+html.light #auth-top-bar {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.light #auth-tab-slider-container {
+  background-color: #f1f5f9 !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.light #auth-tab-slider-glider {
+  background-color: #0f172a !important;
+}
+html.light #auth-tab-slider-container .auth-tab-btn[aria-selected="true"] {
+  color: #ffffff !important;
+}
+html.light #auth-tab-slider-container .auth-tab-btn[aria-selected="false"] {
+  color: #64748b !important;
+}
+html.light #auth-showcase-panel {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.07) 0%, #f8fafc 100%) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.light #auth-showcase-heading,
+html.light #auth-right-title {
+  color: #0f172a !important;
+}
+html.light #auth-showcase-sub,
+html.light #auth-right-subtitle {
+  color: #64748b !important;
+}
+html.light .auth-carousel-slide h4 {
+  color: #0f172a !important;
+}
+html.light .auth-carousel-slide p {
+  color: #475569 !important;
+}
+html.light .auth-carousel-slide > div:last-child {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.light .auth-carousel-slide > div:last-child span.text-white {
+  color: #0f172a !important;
+}
+html.light #auth-carousel-dots button:not(.bg-emerald-400) {
+  background-color: rgba(0, 0, 0, 0.15) !important;
+}
+html.light #auth-carousel-prev,
+html.light #auth-carousel-next {
+  background-color: #f1f5f9 !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #334155 !important;
+}
+html.light #auth-switch-prompt-box {
+  color: #64748b !important;
+}
 
 /* ── Dynamic Floating Island Header (Scroll ile Yüzen Bağımsız Ada) ── */
 #site-header {
