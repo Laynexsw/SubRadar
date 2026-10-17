@@ -74,13 +74,39 @@ export function initAuthModal() {
     }
   }
 
+  const logoutBtn = document.getElementById('auth-logout-btn');
+
+  function updateSessionUI() {
+    try {
+      const raw = localStorage.getItem('sr-local-auth');
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (data && data.email) {
+          if (authBtnLabel) {
+            authBtnLabel.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 inline-block mr-1"></span>${data.email.split('@')[0]} (Kasa)`;
+          }
+          if (logoutBtn) {
+            logoutBtn.classList.remove('hidden');
+            logoutBtn.classList.add('flex');
+          }
+          return;
+        }
+      }
+    } catch (e) {}
+    if (authBtnLabel) {
+      authBtnLabel.textContent = 'Giriş Yap / Kayıt Ol';
+    }
+    if (logoutBtn) {
+      logoutBtn.classList.add('hidden');
+      logoutBtn.classList.remove('flex');
+    }
+  }
+
   function setAuthenticated(userEmail) {
     try {
       localStorage.setItem('sr-local-auth', JSON.stringify({ email: userEmail, ts: Date.now() }));
     } catch (e) {}
-    if (authBtnLabel) {
-      authBtnLabel.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 inline-block mr-1 animate-pulse"></span>${userEmail.split('@')[0]} (Kasa)`;
-    }
+    updateSessionUI();
   }
 
   function handleAuthSuccess(email) {
@@ -102,17 +128,7 @@ export function initAuthModal() {
   }
 
   // Restore existing session if present
-  try {
-    const raw = localStorage.getItem('sr-local-auth');
-    if (raw) {
-      const data = JSON.parse(raw);
-      if (data && data.email) {
-        if (authBtnLabel) {
-          authBtnLabel.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 inline-block mr-1"></span>${data.email.split('@')[0]} (Kasa)`;
-        }
-      }
-    }
-  } catch (e) {}
+  updateSessionUI();
 
   // Event Listeners
   openBtns.forEach(b => b.addEventListener('click', () => openModal('login')));
@@ -131,6 +147,16 @@ export function initAuthModal() {
   if (quickDemoBtn) {
     quickDemoBtn.addEventListener('click', () => {
       handleAuthSuccess('demo.kullanici@subradar.dev');
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      try { localStorage.removeItem('sr-local-auth'); } catch (e) {}
+      updateSessionUI();
+      closeModal();
+      srShowToast('Yerel Kasa oturumu kapatıldı.', 'info');
+      if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
     });
   }
 
