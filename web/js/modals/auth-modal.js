@@ -8,6 +8,39 @@ function getToast() {
   return typeof srShowToast === 'function' ? srShowToast : (window.srShowToast || function(msg) { console.log(msg); });
 }
 
+// Immediate global fail-safe opener
+if (typeof window !== 'undefined') {
+  window.srOpenAuthModal = window.srOpenAuthModal || function(mode) {
+    mode = mode || 'login';
+    var backdrop = document.getElementById('auth-modal-backdrop');
+    var authBox = document.getElementById('auth-box');
+    if (!backdrop) return;
+    if (authBox) {
+      if (mode === 'register') {
+        authBox.classList.add('auth-right-panel-active');
+      } else {
+        authBox.classList.remove('auth-right-panel-active');
+      }
+    }
+    backdrop.classList.remove('hidden');
+    backdrop.classList.add('flex');
+    backdrop.style.display = 'flex';
+    backdrop.setAttribute('aria-hidden', 'false');
+    try { document.body.style.overflow = 'hidden'; } catch (e) {}
+    if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
+  };
+
+  window.srCloseAuthModal = window.srCloseAuthModal || function() {
+    var backdrop = document.getElementById('auth-modal-backdrop');
+    if (!backdrop) return;
+    backdrop.classList.add('hidden');
+    backdrop.classList.remove('flex');
+    backdrop.style.display = 'none';
+    backdrop.setAttribute('aria-hidden', 'true');
+    try { document.body.style.overflow = ''; } catch (e) {}
+  };
+}
+
 export function initAuthModal() {
   const backdrop = document.getElementById('auth-modal-backdrop');
   const authBox = document.getElementById('auth-box');
