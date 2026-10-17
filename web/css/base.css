@@ -82,6 +82,8 @@ html.light .text-white\/50, html.light .text-white\/40, html.light .text-white\/
 html.light .text-neutral-400, html.light .text-neutral-500 { color: #6e6e73 !important; }
 html.light .text-neutral-300 { color: #3a3a3c !important; }
 html.light .text-emerald-400, html.light .text-emerald-300 { color: #00875a !important; }
+html.light .text-rose-400, html.light .text-rose-300 { color: #d70015 !important; }
+html.light .text-amber-400, html.light .text-amber-300 { color: #b25000 !important; }
 
 html.light .border-white\/10, html.light .border-white\/15, html.light .border-white\/20,
 html.light .border-white\/\[0\.08\], html.light .border-white\/\[0\.07\], html.light .border-white\/\[0\.04\] { 

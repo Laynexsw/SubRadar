@@ -462,13 +462,83 @@
     border-color: rgba(0, 0, 0, 0.1) !important;
     color: #1d1d1f !important;
   }
+  .radar-disc {
+    fill: rgba(16, 185, 129, 0.03);
+  }
+  html.light .radar-disc {
+    fill: rgba(16, 185, 129, 0.05);
+  }
   html.light #radar-screen {
-    background-color: rgba(16, 185, 129, 0.05) !important;
-    border-color: rgba(16, 185, 129, 0.25) !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  }
+  html.light #radar-screen svg {
+    color: rgba(16, 185, 129, 0.45) !important;
   }
   html.light .radar-beam {
-    background: conic-gradient(from 0deg, rgba(16, 185, 129, 0) 0deg, rgba(16, 185, 129, 0) 270deg, rgba(16, 185, 129, 0.06) 310deg, rgba(16, 185, 129, 0.3) 360deg) !important;
+    background: conic-gradient(from 0deg, rgba(16, 185, 129, 0) 0deg, rgba(16, 185, 129, 0) 270deg, rgba(16, 185, 129, 0.05) 310deg, rgba(16, 185, 129, 0.28) 360deg) !important;
   }
+  .radar-blip-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 2.5px 8px;
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    background: rgba(10, 10, 14, 0.92);
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0.95;
+    transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    z-index: 30;
+  }
+  .group:hover .radar-blip-label {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.06);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.65);
+  }
+  html.light .radar-blip-label {
+    background: rgba(255, 255, 255, 0.96) !important;
+    color: #0f172a !important;
+    border: 1px solid rgba(15, 23, 42, 0.16) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+    opacity: 1 !important;
+  }
+  html.light .group:hover .radar-blip-label {
+    border-color: rgba(15, 23, 42, 0.35) !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18) !important;
+  }
+  html.light #hash-dropzone {
+    background-color: #f8fafc !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+  }
+  html.light #hash-dropzone:hover {
+    background-color: #f1f5f9 !important;
+    border-color: rgba(16, 185, 129, 0.5) !important;
+  }
+  html.light #hash-result-box {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+  }
+  html.light #hash-val {
+    background-color: #f1f5f9 !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    color: #047857 !important;
+  }
+  html.light #mobile-sticky-cta > div {
+    background: rgba(255, 255, 255, 0.94) !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+  }
+  html.light .text-rose-400, html.light .text-rose-300 { color: #d70015 !important; }
+  html.light .text-amber-400, html.light .text-amber-300 { color: #b25000 !important; }
   html.light #sr-back-to-top {
     background-color: rgba(255, 255, 255, 0.9) !important;
     border-color: rgba(0, 0, 0, 0.12) !important;
@@ -1430,9 +1500,9 @@
 <div class="py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 <!-- Left: Radar Screen -->
 <div class="lg:col-span-6 flex flex-col items-center justify-center">
-<div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center" id="radar-screen">
+<div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center rounded-full" id="radar-screen">
 <svg class="w-full h-full text-emerald-500/20" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Abonelik Radar Tarama Ekranı">
-<circle cx="160" cy="160" r="150" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" />
+<circle cx="160" cy="160" r="150" class="radar-disc" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" />
 <circle cx="160" cy="160" r="115" stroke="currentColor" stroke-width="1" />
 <circle cx="160" cy="160" r="80" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
 <circle cx="160" cy="160" r="45" stroke="currentColor" stroke-width="1" />
@@ -1444,30 +1514,30 @@
 <text x="14" y="156" fill="currentColor" font-size="9" font-family="monospace">270°</text>
 </svg>
 <div class="radar-beam absolute inset-0 rounded-full pointer-events-none" aria-hidden="true"></div>
-<div class="absolute w-2.5 h-2.5 rounded-full bg-emerald-400 z-10" aria-hidden="true"></div>
+<div class="absolute w-2.5 h-2.5 rounded-full bg-emerald-400 z-10 shadow-[0_0_10px_rgba(52,211,153,0.8)]" aria-hidden="true"></div>
 <!-- Blip 1: Adobe CC -->
 <div class="absolute top-[75px] right-[75px] group z-20 cursor-pointer" data-blip="Adobe Creative Cloud" title="Adobe Creative Cloud">
 <span class="radar-blip-ping absolute -inset-1.5 rounded-full bg-rose-500/30 block" aria-hidden="true"></span>
-<span class="relative block w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-<span class="absolute left-4 top-1/2 -translate-y-1/2 px-2 py-0.5 rounded bg-black/90 border border-white/20 text-[10px] font-mono text-white whitespace-nowrap opacity-90 group-hover:opacity-100 transition-opacity">Adobe CC</span>
+<span class="relative block w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)]"></span>
+<span class="radar-blip-label absolute left-4 top-1/2 -translate-y-1/2">Adobe CC</span>
 </div>
 <!-- Blip 2: AWS EC2 -->
 <div class="absolute bottom-[95px] right-[90px] group z-20 cursor-pointer" data-blip="AWS EC2 Idle" title="AWS EC2 Idle">
 <span class="radar-blip-ping absolute -inset-1.5 rounded-full bg-amber-500/30 block" style="animation-delay: -0.6s;" aria-hidden="true"></span>
-<span class="relative block w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-<span class="absolute left-3.5 top-1/2 -translate-y-1/2 px-2 py-0.5 rounded bg-black/90 border border-white/20 text-[10px] font-mono text-white whitespace-nowrap opacity-90 group-hover:opacity-100 transition-opacity">AWS ($124)</span>
+<span class="relative block w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]"></span>
+<span class="radar-blip-label absolute left-3.5 top-1/2 -translate-y-1/2">AWS ($124)</span>
 </div>
 <!-- Blip 3: JetBrains -->
 <div class="absolute bottom-[75px] left-[75px] group z-20 cursor-pointer" data-blip="JetBrains All Pack" title="JetBrains All Pack">
 <span class="radar-blip-ping absolute -inset-1.5 rounded-full bg-amber-500/30 block" style="animation-delay: -1.2s;" aria-hidden="true"></span>
-<span class="relative block w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-<span class="absolute right-3.5 top-1/2 -translate-y-1/2 px-2 py-0.5 rounded bg-black/90 border border-white/20 text-[10px] font-mono text-white whitespace-nowrap opacity-90 group-hover:opacity-100 transition-opacity">JetBrains</span>
+<span class="relative block w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]"></span>
+<span class="radar-blip-label absolute left-4 top-1/2 -translate-y-1/2">JetBrains</span>
 </div>
 <!-- Blip 4: Figma Dev -->
 <div class="absolute top-[125px] left-[125px] group z-20 cursor-pointer" data-blip="Figma Dev Seat" title="Figma Dev Seat">
 <span class="radar-blip-ping absolute -inset-1.5 rounded-full bg-rose-500/30 block" style="animation-delay: -1.8s;" aria-hidden="true"></span>
-<span class="relative block w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-<span class="absolute right-3.5 top-1/2 -translate-y-1/2 px-2 py-0.5 rounded bg-black/90 border border-white/20 text-[10px] font-mono text-white whitespace-nowrap opacity-90 group-hover:opacity-100 transition-opacity">Figma Seat</span>
+<span class="relative block w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)]"></span>
+<span class="radar-blip-label absolute right-3.5 top-1/2 -translate-y-1/2">Figma Seat</span>
 </div>
 </div>
 </div>

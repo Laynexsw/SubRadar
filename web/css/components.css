@@ -273,3 +273,78 @@ html.light .custom-scroll::-webkit-scrollbar-thumb:hover {
   100% { transform: scale(1); }
 }
 
+/* ── Radar Scanner Animations & Blip Labels ── */
+@keyframes srRadarSweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.radar-beam {
+  background: conic-gradient(from 0deg, rgba(16, 185, 129, 0) 0deg, rgba(16, 185, 129, 0) 270deg, rgba(16, 185, 129, 0.08) 310deg, rgba(16, 185, 129, 0.4) 360deg);
+  animation: srRadarSweep 4.5s linear infinite;
+  transform-origin: center center;
+}
+@keyframes srRadarPing {
+  0% { transform: scale(0.6); opacity: 1; }
+  70% { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.radar-blip-ping {
+  animation: srRadarPing 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.radar-disc {
+  fill: rgba(16, 185, 129, 0.03);
+}
+.radar-blip-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 2.5px 8px;
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  background: rgba(10, 10, 14, 0.92);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0.95;
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  z-index: 30;
+}
+.group:hover .radar-blip-label {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.06);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.65);
+}
+
+/* Açık Tema (html.light) Radar Düzeltmeleri */
+html.light .radar-disc {
+  fill: rgba(16, 185, 129, 0.05);
+}
+html.light #radar-screen {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+html.light #radar-screen svg {
+  color: rgba(16, 185, 129, 0.45) !important;
+}
+html.light .radar-beam {
+  background: conic-gradient(from 0deg, rgba(16, 185, 129, 0) 0deg, rgba(16, 185, 129, 0) 270deg, rgba(16, 185, 129, 0.05) 310deg, rgba(16, 185, 129, 0.28) 360deg) !important;
+}
+html.light .radar-blip-label {
+  background: rgba(255, 255, 255, 0.96) !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(15, 23, 42, 0.16) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+  opacity: 1 !important;
+}
+html.light .group:hover .radar-blip-label {
+  border-color: rgba(15, 23, 42, 0.35) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18) !important;
+}
+
+
