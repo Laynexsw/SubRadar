@@ -121,7 +121,7 @@ SubRadar/
     │       ├── reclaim-modal.html   # CLI kurulumu (`curl`) ve geri kazanım adımları
     │       ├── shortcuts-modal.html # Raycast/Linear stili Power-User klavye kısayolları modalı
     │       ├── legal-generator-modal.html # Canlı 6502 SK & GDPR Madde 17 resmi fesih ihtarname sihirbazı
-    │       └── auth-modal.html      # İkili kayan panelli (Double-Slider Sliding Overlay) Dribbble/Apple Glass modalı: Kayan zümrüt marka katmanı, geometrik yüzen şekiller, ghost pill butonlar, dairesel sosyal butonlar ve aktif profil paneli
+    │       └── auth-modal.html      # İkili kayan panelli (Double-Slider Sliding Overlay) Apple Glass Monokrom modalı: Saf siyah-beyaz ve uzay grafiti/obsidyen marka katmanı, geometrik yüzen cam şekiller, parlak beyaz ve ghost pill butonlar, dairesel monokrom sosyal butonlar ve aktif profil paneli
     │
     ├── css/
     │   ├── base.css             # Renk değişkenleri, tipografi hiyerarşisi, açık/koyu tema sınıfları
@@ -202,7 +202,7 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
   * `#download-modal-backdrop`: İndirme modalı
   * `#ent-modal-backdrop`: Kurumsal form modalı
   * `#reclaim-modal-backdrop`: Geri kazanım & CLI modalı
-  * `#auth-modal-backdrop`: İkili kayan panelli (Double-Slider Sliding Overlay) giriş/kayıt modalı, kayan zümrüt marka katmanı (`.auth-overlay`), ghost outline butonlar ve profil paneli (`#auth-modal-btn`)
+  * `#auth-modal-backdrop`: İkili kayan panelli (Double-Slider Sliding Overlay) giriş/kayıt modalı, uzay grafiti/obsidyen marka katmanı (`.auth-overlay`), ghost outline butonlar ve profil paneli (`#auth-modal-btn`)
   * `#sr-toast`: Apple Glass bildirim balonu
 * **Gezinme & Yüzen Ada (Dock):**
   * `#sr-scrollspy`: Alt merkezde sabit yüzen minimalist bölüm gezinti adası (Ekstre Lab, İsraf Hesaplayıcı, Karşılaştırma, Özellikler, İşletim Sistemleri, Fiyatlandırma)

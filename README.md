@@ -107,7 +107,7 @@ SubRadar/
     │       ├── reclaim-modal.html        # Geri kazanım ve CLI kurulum adımları
     │       ├── shortcuts-modal.html      # Raycast/Linear stili Power-User klavye kısayolları modalı
     │       ├── legal-generator-modal.html# Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı
-    │       └── auth-modal.html           # İkili kayan panelli (Double-Slider Sliding Overlay) Dribbble/Apple Glass modalı
+    │       └── auth-modal.html           # İkili kayan panelli (Double-Slider Sliding Overlay) Apple Glass Monokrom modalı
     │
     ├── css/                              # Web Stil Dosyaları
     │   ├── base.css                      # Temel renk paleti, tipografi kuralları, açık/koyu tema değişkenleri

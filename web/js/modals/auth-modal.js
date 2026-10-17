@@ -229,14 +229,14 @@ export function initAuthModal() {
     if (session) {
       const displayName = session.name || (session.email ? session.email.split('@')[0] : 'Kullanıcı');
       if (authBtnLabel) {
-        authBtnLabel.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 inline-block mr-1"></span>${displayName} (Hesabım)`;
+        authBtnLabel.innerHTML = `<span class="w-2 h-2 rounded-full bg-white inline-block mr-1"></span>${displayName} (Hesabım)`;
       }
       if (profileName) profileName.textContent = displayName;
       if (profileEmail) profileEmail.textContent = session.email || 'kullanici@subradar.dev';
       if (avatarInitials) {
         const parts = displayName.split(' ');
         const initials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : displayName.substring(0, 2).toUpperCase();
-        avatarInitials.innerHTML = `${initials}<span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-[#0b0e14]"></span>`;
+        avatarInitials.innerHTML = `${initials}<span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-white border-2 border-[#09090b]"></span>`;
       }
       showActiveDashboard();
     } else {
@@ -275,7 +275,7 @@ export function initAuthModal() {
     try { document.body.style.overflow = ''; } catch (e) {}
   }
 
-  // Password Strength Logic for Registration
+  // Password Strength Logic for Registration (Apple Monochrome)
   function updateRegisterPasswordStrength() {
     if (!registerPwd) return;
     const pwd = registerPwd.value || '';
@@ -289,7 +289,7 @@ export function initAuthModal() {
     if (hasNum) score++;
     if (hasSpec) score++;
 
-    const colors = ['bg-rose-500', 'bg-amber-500', 'bg-emerald-400'];
+    const colors = ['bg-white/35', 'bg-white/70', 'bg-white shadow-[0_0_8px_rgba(255,255,255,0.7)]'];
     const labels = ['Zayıf', 'Orta Düzey', 'Güçlü Şifre'];
 
     regBars.forEach((bar, idx) => {
@@ -303,7 +303,7 @@ export function initAuthModal() {
         regPwdStrengthText.className = 'text-white/50 font-semibold font-mono';
       } else {
         regPwdStrengthText.textContent = labels[score - 1] || 'Zayıf';
-        regPwdStrengthText.className = score <= 1 ? 'text-rose-400 font-semibold font-mono' : (score === 2 ? 'text-amber-400 font-semibold font-mono' : 'text-emerald-400 font-semibold font-mono');
+        regPwdStrengthText.className = score <= 1 ? 'text-neutral-400 font-semibold font-mono' : (score === 2 ? 'text-neutral-200 font-semibold font-mono' : 'text-white font-bold font-mono');
       }
     }
 
@@ -311,7 +311,7 @@ export function initAuthModal() {
       if (!el) return;
       const icon = el.querySelector('.req-icon');
       if (isOk) {
-        el.className = 'flex items-center gap-1 text-emerald-400 font-medium transition-colors';
+        el.className = 'flex items-center gap-1 text-white font-medium transition-colors';
         if (icon) icon.textContent = '✓';
       } else {
         el.className = 'flex items-center gap-1 text-white/40 transition-colors';

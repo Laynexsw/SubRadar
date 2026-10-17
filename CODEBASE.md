@@ -76,7 +76,7 @@ Depo şu anda **üç ana katmandan** oluşur:
   * `reclaim-modal.html`: CLI indirme komutu kopyalama (`curl -sSL subradar.dev/cli | sh`) ve 3 adımlı kurtarma rehberi.
   * `shortcuts-modal.html`: Raycast/Linear stili Power-User klavye kısayolları modalı (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`).
   * `legal-generator-modal.html`: Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı (canlı önizleme, pano kopyalama ve `.txt` dosya indirme).
-  * `auth-modal.html`: İkili kayan panelli (Double-Slider Sliding Overlay) Dribbble/Apple Glass modalı: Kayan zümrüt marka katmanı (`.auth-overlay`), yüzen geometrik cam şekiller, ghost outline hap butonlar ("GİRİŞ YAP" / "KAYIT OL"), dairesel sosyal butonlar (Google, GitHub, Apple), tek tıkla VIP demo, şifre güvenlik göstergesi ve aktif profil yönetim paneli.
+  * `auth-modal.html`: İkili kayan panelli (Double-Slider Sliding Overlay) Apple Glass Monokrom modalı: Saf siyah-beyaz ve uzay grafiti/obsidyen marka katmanı (`.auth-overlay`), buzlu geometrik cam şekiller, parlak beyaz ve ghost outline hap butonlar ("GİRİŞ YAP" / "KAYIT OL"), dairesel monokrom sosyal butonlar (Google, GitHub, Apple), tek tıkla VIP demo, monokrom şifre güvenlik göstergesi ve aktif profil yönetim paneli.
 
 ### 2.4 Web Stilleri (`web/css/`)
 * [`base.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/base.css): SF Pro font ailesi, `html.light` ve `html.dark` değişkenleri, skip-link, scroll-behavior, metin seçimi renkleri.
