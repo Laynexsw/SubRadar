@@ -193,6 +193,8 @@ Depo şu anda **üç ana katmandan** oluşur:
 | `#reclaim-modal-backdrop`| `modals/reclaim-modal.html`| Sermaye geri kazanım & CLI modalı |
 | `#cli-copy-btn` | `modals/reclaim-modal.html`| `curl` komutunu kopyalayan buton |
 | `#sr-progress` | `scroll-motion.js` | Sayfa üstündeki akıcı okuma ilerleme çizgisi |
+| `#sr-scrollspy` | `scroll-motion.js` | Alt merkezde sabit yüzen minimalist bölüm gezinti adası |
+| `#site-header` | `layout/header.html` | Kaydırmayla adaya dönüşen (`is-scrolled-island`) Apple Glass üst çubuğu |
 | `#sr-toast` | `toast.js` | Dinamik olarak üretilen Apple Glass bildirim balonu |
 
 ---

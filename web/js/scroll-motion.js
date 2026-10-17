@@ -27,6 +27,26 @@ export function initScrollMotion() {
     els.forEach(el => el.classList.add('in'));
   }
 
+  // Floating Minimalist Scrollspy Island (Alt Gezinme Adası)
+  let spyNav = document.getElementById('sr-scrollspy');
+  if (!spyNav) {
+    spyNav = document.createElement('nav');
+    spyNav.id = 'sr-scrollspy';
+    spyNav.setAttribute('aria-label', 'Bölüm Gezintisi');
+    spyNav.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-40 hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-white/15 text-xs font-mono shadow-2xl transition-all duration-300 opacity-100 pointer-events-auto translate-y-0';
+    spyNav.innerHTML = [
+      '<a href="#ekstre-laboratuvari" class="spy-item active" data-target="ekstre-laboratuvari">Ekstre Lab</a>',
+      '<a href="#hesaplayici" class="spy-item" data-target="hesaplayici">İsraf Hesaplayıcı</a>',
+      '<a href="#karsilastirma" class="spy-item" data-target="karsilastirma">Karşılaştırma</a>',
+      '<a href="#ozellikler" class="spy-item" data-target="ozellikler">Özellikler</a>',
+      '<a href="#isletim-sistemleri" class="spy-item" data-target="isletim-sistemleri">İşletim Sistemleri</a>',
+      '<a href="#fiyatlandirma" class="spy-item" data-target="fiyatlandirma">Fiyatlandırma</a>'
+    ].join('');
+    document.body.appendChild(spyNav);
+  }
+  const spyItems = spyNav.querySelectorAll('.spy-item');
+  const spySectionIds = ['ekstre-laboratuvari', 'hesaplayici', 'karsilastirma', 'ozellikler', 'isletim-sistemleri', 'fiyatlandirma'];
+
   let tick = false;
   let isIsland = false;
   function onScroll() {
@@ -48,6 +68,26 @@ export function initScrollMotion() {
           siteHeader.classList.remove('is-scrolled-island');
         }
       }
+
+      // Active Section Scrollspy Tracking
+      let currentId = 'ekstre-laboratuvari';
+      for (let i = 0; i < spySectionIds.length; i++) {
+        const sec = document.getElementById(spySectionIds[i]);
+        if (sec) {
+          const rect = sec.getBoundingClientRect();
+          if (rect.top <= 240) {
+            currentId = spySectionIds[i];
+          }
+        }
+      }
+      spyItems.forEach(item => {
+        if (item.getAttribute('data-target') === currentId) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+
       if (!reduce) {
         const hero = document.querySelector('[data-od-id="hero"]');
         if (hero && y < 1000) {

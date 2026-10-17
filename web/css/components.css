@@ -451,6 +451,53 @@ html.light #site-header.is-scrolled-island #mobile-menu {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14) !important;
 }
 
+/* ── Floating Scrollspy Island (Alt Bölüm Gezintisi Adası) ──────── */
+#sr-scrollspy {
+  background: rgba(9, 9, 11, 0.82);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+#sr-scrollspy .spy-item {
+  padding: 5px 12px;
+  border-radius: 9999px;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+#sr-scrollspy .spy-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+#sr-scrollspy .spy-item.active {
+  color: #000000 !important;
+  background: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html.light #sr-scrollspy {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 16px 40px -6px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+}
+html.light #sr-scrollspy .spy-item {
+  color: rgba(29, 29, 31, 0.65) !important;
+}
+html.light #sr-scrollspy .spy-item:hover {
+  color: #000000 !important;
+  background: rgba(0, 0, 0, 0.06) !important;
+}
+html.light #sr-scrollspy .spy-item.active {
+  background-color: #1d1d1f !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
 
 
 

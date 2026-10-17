@@ -201,6 +201,10 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
   * `#ent-modal-backdrop`: Kurumsal form modalı
   * `#reclaim-modal-backdrop`: Geri kazanım & CLI modalı
   * `#sr-toast`: Apple Glass bildirim balonu
+* **Gezinme & Yüzen Ada (Dock):**
+  * `#sr-scrollspy`: Alt merkezde sabit yüzen minimalist bölüm gezinti adası (Ekstre Lab, İsraf Hesaplayıcı, Karşılaştırma, Özellikler, İşletim Sistemleri, Fiyatlandırma)
+  * `#sr-progress`: Sayfa üstü minimalist kaydırma ilerleme çizgisi
+  * `#site-header`: Kaydırmayla adaya dönüşen (`is-scrolled-island`) dinamik Apple Glass üst çubuğu
 
 ---
 
