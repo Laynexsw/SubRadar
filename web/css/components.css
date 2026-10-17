@@ -378,9 +378,19 @@ html.light #shortcuts-modal-card .bg-white\/\[0\.02\] {
   align-items: center;
   padding: 0;
   pointer-events: none;
+  background: rgba(9, 9, 11, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: top, padding;
+              padding 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.35s ease,
+              border-color 0.35s ease;
+  will-change: top, padding, background;
+}
+html.light #site-header {
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 .header-island-inner {
   width: 100%;
@@ -395,11 +405,8 @@ html.light #shortcuts-modal-card .bg-white\/\[0\.02\] {
   box-sizing: border-box;
   border-radius: 0;
   border: 1px solid transparent;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(9, 9, 11, 0.75);
+  background: transparent;
   box-shadow: 0 0 0 0 transparent;
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
   pointer-events: auto;
   transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               border-radius 0.35s cubic-bezier(0.16, 1, 0.3, 1),
@@ -410,14 +417,22 @@ html.light #shortcuts-modal-card .bg-white\/\[0\.02\] {
   will-change: max-width, border-radius, padding, box-shadow;
 }
 html.light .header-island-inner {
-  background: rgba(255, 255, 255, 0.85);
-  border-bottom-color: rgba(0, 0, 0, 0.08);
+  background: transparent;
+  border-color: transparent;
 }
 
 /* Aşağı Kaydırıldığında Aktif Olan Bağımsız Ada (Floating Island) */
 #site-header.is-scrolled-island {
   top: 12px;
   padding: 0 16px;
+  background: transparent !important;
+  border-bottom-color: transparent !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.light #site-header.is-scrolled-island {
+  background: transparent !important;
+  border-bottom-color: transparent !important;
 }
 #site-header.is-scrolled-island .header-island-inner {
   max-width: 1220px;
