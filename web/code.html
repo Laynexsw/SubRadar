@@ -1579,6 +1579,7 @@ html.light #auth-mobile-tab-slider {
     left: 0;
     right: 0;
     bottom: 0;
+    border-radius: inherit;
     pointer-events: none;
     background: radial-gradient(450px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(16, 185, 129, 0.08), transparent 70%);
     opacity: 0;
@@ -1591,6 +1592,75 @@ html.light #auth-mobile-tab-slider {
   .apple-card > * {
     position: relative;
     z-index: 1;
+  }
+
+  /* ── Pricing Floating Capsule Badges (Anti-Clipping & Apple Contrast) ── */
+  #fiyatlandirma .apple-card {
+    overflow: visible !important;
+  }
+
+  .sr-pricing-badge {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 4px 14px;
+    border-radius: 9999px;
+    z-index: 30;
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.3;
+  }
+
+  .sr-pricing-badge .badge-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    display: inline-block;
+  }
+
+  /* Pro / Önerilen Rozeti */
+  .sr-pricing-badge-popular {
+    background: #ffffff;
+    color: #09090b;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 0 16px rgba(16, 185, 129, 0.25);
+  }
+
+  html.light .sr-pricing-badge-popular {
+    background: #09090b;
+    color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18), 0 0 12px rgba(16, 185, 129, 0.2);
+  }
+
+  /* Enterprise / Şirketler İçin Rozeti */
+  .sr-pricing-badge-enterprise {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  }
+
+  html.light .sr-pricing-badge-enterprise {
+    background: #f4f4f5;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: #18181b;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   }
 
   /* ── Apple-Grade Custom Scrollbar ── */
@@ -2714,7 +2784,7 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
 <button type="button" class="arch-btn py-2 px-3 rounded-lg border border-white/10 bg-transparent text-white/60 font-medium text-center hover:border-white/30 transition-all cursor-pointer min-h-[44px]" id="bill-yearly" aria-pressed="false">Yıllık • −20%</button>
 </div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch" data-rv-stagger>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch pt-4" data-rv-stagger>
 <!-- Free -->
 <div class="apple-card rounded-2xl p-7 flex flex-col justify-between" data-od-id="pricing-free" data-rv="fade-up">
 <div>
@@ -2737,7 +2807,7 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
 </div>
 <!-- Pro -->
 <div class="apple-card rounded-2xl p-7 flex flex-col justify-between relative" data-od-id="pricing-pro" data-rv="scale">
-<span class="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-mono uppercase tracking-widest bg-white text-black px-3 py-1 rounded-full font-semibold whitespace-nowrap">En popüler</span>
+<span class="sr-pricing-badge sr-pricing-badge-popular"><span class="badge-dot" aria-hidden="true"></span>Önerilen</span>
 <div>
 <div class="text-[11px] font-mono uppercase tracking-widest text-white/50">Pro</div>
 <h3 class="text-base font-semibold text-white mt-1">Kontrol</h3>
@@ -2786,7 +2856,7 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
 </div>
 <!-- Enterprise -->
 <div class="apple-card rounded-2xl p-7 flex flex-col justify-between relative" data-od-id="pricing-enterprise" data-rv="fade-blur">
-<span class="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-mono uppercase tracking-widest bg-white/10 border border-white/15 text-white/70 px-3 py-1 rounded-full font-semibold whitespace-nowrap">Şirketler için</span>
+<span class="sr-pricing-badge sr-pricing-badge-enterprise">Şirketler için</span>
 <div>
 <div class="text-[11px] font-mono uppercase tracking-widest text-white/50">Enterprise</div>
 <h3 class="text-base font-semibold text-white mt-1">Kurumsal</h3>
@@ -4783,6 +4853,7 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
     "Keşif": "Explore",
     "Kontrol": "Control",
     "Ekip": "Team",
+    "Önerilen": "Recommended",
     "En popüler": "Most popular",
     "Ücretsiz İndir": "Download Free",
     "Pro'yu Başlat": "Start Pro",
@@ -5168,6 +5239,7 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
     "Keşif": "Entdecken",
     "Kontrol": "Kontrolle",
     "Ekip": "Team",
+    "Önerilen": "Empfohlen",
     "En popüler": "Beliebteste",
     "Ücretsiz İndir": "Kostenlos laden",
     "Pro'yu Başlat": "Pro starten",
