@@ -1,115 +1,39 @@
 <!-- ========================================================================= -->
-<!-- 17. ÇEREZ VE YEREL DEPOLAMA GİZLİLİK BANNER'I                            -->
+<!-- 17. ÇEREZ VE KULLANICI ETKİLEŞİMİ TAKİP BİLDİRİMİ                        -->
 <!-- ========================================================================= -->
-<aside id="sr-privacy-banner" role="region" aria-label="Gizlilik ve Yerel Bellek Bildirimi" class="text-left" aria-live="polite">
-  <div class="sr-capsule-card" id="sr-capsule-card">
-    <!-- 1. COMPACT PILL BAR (Default Apple Capsule View) -->
-    <div class="sr-capsule-bar">
-      <!-- Left: Status Beacon & Title -->
-      <div class="sr-capsule-badge">
-        <span class="sr-capsule-pulse" aria-hidden="true"></span>
-        <span class="material-symbols-outlined text-[17px] text-emerald-400">shield_lock</span>
-        <span class="sr-capsule-title">%100 Yerel Kasa</span>
+<aside id="sr-privacy-banner" role="region" aria-label="Çerez ve Etkileşim Takibi" class="text-left" aria-live="polite">
+  <div class="sr-cookie-card" id="sr-cookie-card">
+    <!-- Header -->
+    <div class="sr-cookie-header">
+      <div class="sr-cookie-title-group">
+        <span class="sr-cookie-pulse" aria-hidden="true"></span>
+        <span class="material-symbols-outlined text-[18px] text-amber-400" aria-hidden="true">cookie</span>
+        <h4 class="sr-cookie-title">Çerezler ve Etkileşim Takibi</h4>
       </div>
-
-      <!-- Center: Metrics Summary -->
-      <div class="sr-capsule-stats hidden sm:flex">
-        <span class="sr-capsule-metric">0 Çerez</span>
-        <span class="sr-capsule-sep">·</span>
-        <span class="sr-capsule-metric">0 KB Bulut</span>
-      </div>
-
-      <!-- Right: Action Buttons -->
-      <div class="sr-capsule-actions">
-        <button type="button" id="sr-privacy-inspect-toggle" class="sr-capsule-btn-inspect" aria-expanded="false" aria-controls="sr-privacy-drawer">
-          <span id="sr-privacy-toggle-label">Detay</span>
-          <span class="material-symbols-outlined text-[15px] transition-transform duration-300" id="sr-privacy-toggle-icon">expand_more</span>
-        </button>
-        <button type="button" id="sr-privacy-accept" class="sr-capsule-btn-accept">
-          <span>Koru &amp; Devam Et</span>
-        </button>
-        <button type="button" id="sr-privacy-close" class="sr-capsule-btn-close" aria-label="Kapat">
-          <span class="material-symbols-outlined text-[16px]">close</span>
-        </button>
-      </div>
+      <button type="button" id="sr-privacy-close" class="sr-cookie-close-btn" aria-label="Kapat">
+        <span class="material-symbols-outlined text-[16px]">close</span>
+      </button>
     </div>
 
-    <!-- 2. EXPANDED INTERACTIVE AIR-GAP SWITCHBOARD (Depth on user interaction) -->
-    <div class="sr-capsule-drawer" id="sr-privacy-drawer" aria-hidden="true">
-      <div class="sr-capsule-drawer-content">
-        <!-- Drawer Header -->
-        <div class="sr-drawer-header">
-          <div>
-            <h4 class="sr-drawer-title">Gizlilik &amp; Veri Kalkanı</h4>
-            <p class="sr-drawer-subtitle">Tarayıcınızda çalışan sıfır-çerez ve hava boşluğu mimarisi.</p>
-          </div>
-          <span class="sr-drawer-badge">Hava Boşluğu Aktif</span>
-        </div>
+    <!-- Description -->
+    <p class="sr-cookie-desc">
+      Deneyiminizi geliştirmek ve sitedeki her tıklama, kaydırma derinliği ve oturum hareketinizi saniye saniye analiz etmek için çerezler ve canlı analitik izleyiciler kullanıyoruz.
+    </p>
 
-        <!-- Cupertino Interactive Switches -->
-        <div class="sr-switches-list">
-          <!-- Switch 1: Local Storage -->
-          <div class="sr-switch-item" id="sr-sw-row-local">
-            <div class="sr-switch-info">
-              <div class="sr-switch-name">Yerel Arayüz Tercihleri</div>
-              <div class="sr-switch-desc">Tema, dil ve para birimi tercihleriniz cihazınızda tutulur.</div>
-            </div>
-            <div class="sr-cupertino-toggle is-active" id="sr-sw-local" role="switch" aria-checked="true" tabindex="0">
-              <span class="sr-toggle-handle"></span>
-            </div>
-          </div>
+    <!-- Footer Controls -->
+    <div class="sr-cookie-footer">
+      <div class="sr-cookie-telemetry-pill">
+        <span class="sr-telemetry-live-dot" aria-hidden="true"></span>
+        <span id="sr-active-seconds-badge">Oturum: 0s · Canlı İzleniyor</span>
+      </div>
 
-          <!-- Switch 2: Tracking Cookies (Locked OFF) -->
-          <div class="sr-switch-item" id="sr-sw-row-tracking">
-            <div class="sr-switch-info">
-              <div class="sr-switch-name flex items-center gap-1.5">
-                <span>İzleme &amp; Reklam Çerezleri</span>
-                <span class="sr-switch-tag">Engellendi</span>
-              </div>
-              <div class="sr-switch-desc">Google Analytics, Meta Pixel vb. sıfır kod ve çerez.</div>
-            </div>
-            <div class="sr-cupertino-toggle is-locked" id="sr-sw-tracking" role="switch" aria-checked="false" title="Sıfır Çerez: Üçüncü taraf kodu SubRadar'da tamamen engellenmiştir">
-              <span class="sr-toggle-handle"></span>
-            </div>
-          </div>
-
-          <!-- Switch 3: Cloud Telemetry (Locked OFF) -->
-          <div class="sr-switch-item" id="sr-sw-row-telemetry">
-            <div class="sr-switch-info">
-              <div class="sr-switch-name flex items-center gap-1.5">
-                <span>Bulut Telemetrisi</span>
-                <span class="sr-switch-tag">Sıfır Veri</span>
-              </div>
-              <div class="sr-switch-desc">Finansal verileriniz ve ekstreleriniz asla buluta aktarılmaz.</div>
-            </div>
-            <div class="sr-cupertino-toggle is-locked" id="sr-sw-telemetry" role="switch" aria-checked="false" title="Hava Boşluğu: Verileriniz sunucuya aktarılmaz">
-              <span class="sr-toggle-handle"></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Live Storage Footprint & Purge Action -->
-        <div class="sr-storage-audit-bar">
-          <div class="sr-storage-stats">
-            <span class="material-symbols-outlined text-[14px] text-emerald-400">database</span>
-            <span>Bellek: <strong id="sr-privacy-ls-size" class="text-emerald-400 font-mono">~74 Bayt</strong></span>
-            <span class="sr-capsule-sep">·</span>
-            <span>Ağ: <strong class="text-emerald-400 font-mono">0 Bayt</strong></span>
-          </div>
-          <button type="button" id="sr-privacy-purge-btn" class="sr-storage-purge-btn">
-            <span class="material-symbols-outlined text-[13px]">delete_sweep</span>
-            <span>Belleği Sıfırla</span>
-          </button>
-        </div>
-
-        <!-- Drawer Footer Links -->
-        <div class="sr-drawer-footer">
-          <a href="../privacy.html" class="sr-drawer-link">Gizlilik Politikası ve Yasal Güvence</a>
-          <button type="button" id="sr-privacy-drawer-seal" class="sr-drawer-seal-btn">
-            <span class="material-symbols-outlined text-[14px]">verified_user</span>
-            <span>Kalkanı Onayla</span>
-          </button>
-        </div>
+      <div class="sr-cookie-actions">
+        <button type="button" id="sr-privacy-reject" class="sr-cookie-btn-ghost">
+          <span>Reddet</span>
+        </button>
+        <button type="button" id="sr-privacy-accept" class="sr-cookie-btn-primary">
+          <span>Tümünü Kabul Et</span>
+        </button>
       </div>
     </div>
   </div>

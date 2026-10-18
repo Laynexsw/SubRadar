@@ -195,161 +195,87 @@ html.light #sr-progress {
   pointer-events: auto;
 }
 
-/* ── 17. Privacy & Storage Dynamic Capsule (Apple Minimalism & Interactive Switchboard) ── */
+/* ── 17. Minimalist Apple Glass Cookie & User Tracking Banner ── */
 #sr-privacy-banner {
   position: fixed;
   bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(140%) scale(0.96);
-  width: calc(100% - 32px);
-  max-width: 540px;
+  right: 24px;
+  width: calc(100% - 48px);
+  max-width: 420px;
   z-index: 95;
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+  transform: translateY(120%) scale(0.96);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
 }
 
 #sr-privacy-banner.show {
-  transform: translateX(-50%) translateY(0) scale(1);
   opacity: 1;
   pointer-events: auto;
+  transform: translateY(0) scale(1);
 }
 
-#sr-privacy-banner .sr-capsule-card {
-  border-radius: 26px;
-  background: rgba(14, 15, 20, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.sr-cookie-card {
+  border-radius: 20px;
+  background: rgba(12, 13, 17, 0.88);
   backdrop-filter: blur(32px) saturate(200%);
   -webkit-backdrop-filter: blur(32px) saturate(200%);
-  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.14) inset;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.65), 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-/* 1. Capsule Pill Bar (Default Closed State) */
-#sr-privacy-banner .sr-capsule-bar {
+.sr-cookie-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 8px 10px 8px 16px;
-  min-height: 48px;
 }
 
-#sr-privacy-banner .sr-capsule-badge {
+.sr-cookie-title-group {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  flex-shrink: 0;
 }
 
-#sr-privacy-banner .sr-capsule-pulse {
+.sr-cookie-pulse {
   position: relative;
   display: inline-block;
   width: 7px;
   height: 7px;
   border-radius: 9999px;
-  background: #10b981;
+  background: #f59e0b;
 }
 
-#sr-privacy-banner .sr-capsule-pulse::after {
+.sr-cookie-pulse::after {
   content: '';
   position: absolute;
   inset: -3px;
   border-radius: 9999px;
-  background: rgba(16, 185, 129, 0.45);
-  animation: srCapsulePing 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  background: rgba(245, 158, 11, 0.4);
+  animation: srCookiePing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
-@keyframes srCapsulePing {
+@keyframes srCookiePing {
   0% { transform: scale(0.8); opacity: 0.8; }
   75%, 100% { transform: scale(2.2); opacity: 0; }
 }
 
-#sr-privacy-banner .sr-capsule-title {
+.sr-cookie-title {
   color: #ffffff;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  white-space: nowrap;
+  margin: 0;
 }
 
-#sr-privacy-banner .sr-capsule-stats {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-family: ui-monospace, SFMono-Regular, monospace;
-  color: #a1a1aa;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 9999px;
-  padding: 3px 10px;
-}
-
-#sr-privacy-banner .sr-capsule-sep {
-  opacity: 0.4;
-}
-
-#sr-privacy-banner .sr-capsule-actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: auto;
-}
-
-#sr-privacy-banner .sr-capsule-btn-inspect {
+.sr-cookie-close-btn {
+  width: 24px;
+  height: 24px;
   display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 11px;
-  border-radius: 9999px;
-  font-size: 11.5px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-#sr-privacy-banner .sr-capsule-btn-inspect:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-}
-
-#sr-privacy-banner .sr-capsule-btn-accept {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 15px;
-  border-radius: 9999px;
-  background: #ffffff;
-  color: #000000;
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  white-space: nowrap;
-}
-
-#sr-privacy-banner .sr-capsule-btn-accept:hover {
-  background: #f4f4f5;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-}
-
-#sr-privacy-banner .sr-capsule-btn-accept:active {
-  transform: translateY(0) scale(0.98);
-}
-
-#sr-privacy-banner .sr-capsule-btn-close {
-  width: 26px;
-  height: 26px;
-  display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
@@ -361,370 +287,159 @@ html.light #sr-progress {
   padding: 0;
 }
 
-#sr-privacy-banner .sr-capsule-btn-close:hover {
+.sr-cookie-close-btn:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* 2. Expanded Drawer: Air-Gap Switchboard */
-#sr-privacy-banner .sr-capsule-drawer {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
-}
-
-#sr-privacy-banner .sr-capsule-drawer.is-expanded {
-  max-height: 560px;
-  opacity: 1;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-#sr-privacy-banner .sr-capsule-drawer-content {
-  padding: 16px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-#sr-privacy-banner .sr-drawer-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-#sr-privacy-banner .sr-drawer-title {
-  color: #ffffff;
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+.sr-cookie-desc {
+  color: #a1a1aa;
+  font-size: 12px;
+  line-height: 1.5;
   margin: 0;
 }
 
-#sr-privacy-banner .sr-drawer-subtitle {
-  color: #a1a1aa;
-  font-size: 11.5px;
-  margin: 2px 0 0;
-  line-height: 1.45;
-}
-
-#sr-privacy-banner .sr-drawer-badge {
-  font-size: 9.5px;
-  font-weight: 700;
-  font-family: ui-monospace, SFMono-Regular, monospace;
-  padding: 2.5px 8px;
-  border-radius: 9999px;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #34d399;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-
-/* Cupertino Switches List */
-#sr-privacy-banner .sr-switches-list {
+.sr-cookie-footer {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-
-#sr-privacy-banner .sr-switch-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 9px 12px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background-color 0.2s ease;
-}
-
-#sr-privacy-banner .sr-switch-item:hover {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-#sr-privacy-banner .sr-switch-info {
-  flex: 1;
-  min-width: 0;
-}
-
-#sr-privacy-banner .sr-switch-name {
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-#sr-privacy-banner .sr-switch-desc {
-  color: #71717a;
-  font-size: 11px;
-  margin-top: 1px;
-}
-
-#sr-privacy-banner .sr-switch-tag {
-  font-size: 9px;
-  font-family: ui-monospace, monospace;
-  font-weight: 600;
-  padding: 1px 5px;
-  border-radius: 4px;
-  background: rgba(239, 68, 68, 0.12);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.2);
-}
-
-/* Cupertino Toggle Switch */
-#sr-privacy-banner .sr-cupertino-toggle {
-  width: 36px;
-  height: 20px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.14);
-  position: relative;
-  cursor: pointer;
-  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  flex-shrink: 0;
-}
-
-#sr-privacy-banner .sr-cupertino-toggle .sr-toggle-handle {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 9999px;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-#sr-privacy-banner .sr-cupertino-toggle.is-active {
-  background: #10b981;
-}
-
-#sr-privacy-banner .sr-cupertino-toggle.is-active .sr-toggle-handle {
-  transform: translateX(16px);
-}
-
-#sr-privacy-banner .sr-cupertino-toggle.is-locked {
-  cursor: not-allowed;
-  opacity: 0.65;
-}
-
-#sr-privacy-banner .sr-cupertino-toggle.is-locked .sr-toggle-handle {
-  background: #71717a;
-}
-
-/* Storage Audit Bar */
-#sr-privacy-banner .sr-storage-audit-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: 10px;
-  padding: 7px 12px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  font-size: 11px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-#sr-privacy-banner .sr-storage-stats {
+.sr-cookie-telemetry-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #a1a1aa;
+  font-size: 10.5px;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 9999px;
+  padding: 2.5px 10px;
+  width: fit-content;
 }
 
-#sr-privacy-banner .sr-storage-purge-btn {
+.sr-telemetry-live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+.sr-cookie-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.sr-cookie-btn-ghost {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2.5px 8px;
-  border-radius: 6px;
-  font-size: 10.5px;
-  font-family: ui-monospace, monospace;
-  color: #ef4444;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-#sr-privacy-banner .sr-storage-purge-btn:hover {
-  background: rgba(239, 68, 68, 0.18);
-  color: #f87171;
-}
-
-/* Drawer Footer */
-#sr-privacy-banner .sr-drawer-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding-top: 4px;
-}
-
-#sr-privacy-banner .sr-drawer-link {
-  font-size: 11.5px;
-  color: #a1a1aa;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color 0.15s ease;
-}
-
-#sr-privacy-banner .sr-drawer-link:hover {
+.sr-cookie-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
 }
 
-#sr-privacy-banner .sr-drawer-seal-btn {
+.sr-cookie-btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 6px 14px;
+  justify-content: center;
+  padding: 6px 16px;
   border-radius: 9999px;
   background: #ffffff;
   color: #000000;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   border: none;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-#sr-privacy-banner .sr-drawer-seal-btn:hover {
+.sr-cookie-btn-primary:hover {
   background: #f4f4f5;
   transform: translateY(-1px);
 }
 
 /* ── Light Mode (html.light) — Apple Clean Frosted Ceramic ── */
-html.light #sr-privacy-banner .sr-capsule-card {
-  background: rgba(255, 255, 255, 0.92) !important;
-  border: 1px solid rgba(0, 0, 0, 0.09) !important;
-  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.12), 0 1px 0 rgba(255, 255, 255, 1) inset, 0 0 0 1px rgba(0, 0, 0, 0.03) !important;
+html.light .sr-cookie-card {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
 }
 
-html.light #sr-privacy-banner .sr-capsule-title {
-  color: #09090b !important;
+html.light .sr-cookie-title {
+  color: #09090b;
 }
 
-html.light #sr-privacy-banner .sr-capsule-pulse {
-  background: #059669 !important;
+html.light .sr-cookie-desc {
+  color: #52525b;
 }
 
-html.light #sr-privacy-banner .sr-capsule-pulse::after {
-  background: rgba(5, 150, 105, 0.35) !important;
+html.light .sr-cookie-close-btn {
+  color: #71717a;
 }
 
-html.light #sr-privacy-banner .sr-capsule-stats {
-  background: rgba(0, 0, 0, 0.04) !important;
-  border-color: rgba(0, 0, 0, 0.06) !important;
-  color: #4b5563 !important;
+html.light .sr-cookie-close-btn:hover {
+  color: #09090b;
+  background: rgba(0, 0, 0, 0.05);
 }
 
-html.light #sr-privacy-banner .sr-capsule-btn-inspect {
-  background: rgba(0, 0, 0, 0.04) !important;
-  border-color: rgba(0, 0, 0, 0.08) !important;
-  color: #111827 !important;
+html.light .sr-cookie-footer {
+  border-top-color: rgba(0, 0, 0, 0.06);
 }
 
-html.light #sr-privacy-banner .sr-capsule-btn-inspect:hover {
-  background: rgba(0, 0, 0, 0.08) !important;
+html.light .sr-cookie-telemetry-pill {
+  color: #b45309;
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.25);
 }
 
-html.light #sr-privacy-banner .sr-capsule-btn-accept {
-  background: #09090b !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+html.light .sr-cookie-btn-ghost {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #27272a;
 }
 
-html.light #sr-privacy-banner .sr-capsule-btn-accept:hover {
-  background: #000000 !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+html.light .sr-cookie-btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #09090b;
 }
 
-html.light #sr-privacy-banner .sr-capsule-btn-close {
-  color: #9ca3af !important;
+html.light .sr-cookie-btn-primary {
+  background: #09090b;
+  color: #ffffff;
 }
 
-html.light #sr-privacy-banner .sr-capsule-btn-close:hover {
-  color: #111827 !important;
-  background: rgba(0, 0, 0, 0.06) !important;
+html.light .sr-cookie-btn-primary:hover {
+  background: #18181b;
 }
 
-html.light #sr-privacy-banner .sr-capsule-drawer.is-expanded {
-  border-top-color: rgba(0, 0, 0, 0.06) !important;
-}
-
-html.light #sr-privacy-banner .sr-drawer-title {
-  color: #09090b !important;
-}
-
-html.light #sr-privacy-banner .sr-drawer-subtitle {
-  color: #4b5563 !important;
-}
-
-html.light #sr-privacy-banner .sr-drawer-badge {
-  background: #ecfdf5 !important;
-  border-color: rgba(16, 185, 129, 0.3) !important;
-  color: #059669 !important;
-}
-
-html.light #sr-privacy-banner .sr-switch-item {
-  background: rgba(0, 0, 0, 0.02) !important;
-  border-color: rgba(0, 0, 0, 0.05) !important;
-}
-
-html.light #sr-privacy-banner .sr-switch-item:hover {
-  background: rgba(0, 0, 0, 0.04) !important;
-}
-
-html.light #sr-privacy-banner .sr-switch-name {
-  color: #09090b !important;
-}
-
-html.light #sr-privacy-banner .sr-switch-desc {
-  color: #64748b !important;
-}
-
-html.light #sr-privacy-banner .sr-switch-tag {
-  background: #fef2f2 !important;
-  border-color: rgba(239, 68, 68, 0.25) !important;
-  color: #dc2626 !important;
-}
-
-html.light #sr-privacy-banner .sr-cupertino-toggle {
-  background: rgba(0, 0, 0, 0.12) !important;
-}
-
-html.light #sr-privacy-banner .sr-cupertino-toggle.is-active {
-  background: #10b981 !important;
-}
-
-html.light #sr-privacy-banner .sr-cupertino-toggle.is-locked .sr-toggle-handle {
-  background: #94a3b8 !important;
-}
-
-html.light #sr-privacy-banner .sr-storage-audit-bar {
-  background: #f8fafc !important;
-  border-color: rgba(0, 0, 0, 0.06) !important;
-  color: #4b5563 !important;
-}
-
-html.light #sr-privacy-banner .sr-drawer-link {
-  color: #64748b !important;
-}
-
-html.light #sr-privacy-banner .sr-drawer-link:hover {
-  color: #09090b !important;
-}
-
-html.light #sr-privacy-banner .sr-drawer-seal-btn {
-  background: #09090b !important;
-  color: #ffffff !important;
-}
-
-html.light #sr-privacy-banner .sr-drawer-seal-btn:hover {
-  background: #000000 !important;
+/* Mobil cihaz uyumu */
+@media (max-width: 640px) {
+  #sr-privacy-banner {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    max-width: none;
+  }
 }
 
 /* ── Interactive Cursor Glow & Ambient Light ── */

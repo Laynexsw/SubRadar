@@ -1,53 +1,112 @@
 /**
- * SubRadar — Privacy-First Zero-Cookie Local Analytics
+ * SubRadar — Real-Time User Activity & Interaction Telemetry Engine
  * 
- * 100% Offline & Local Session Analytics.
- * Zero PII, Zero Cloud Telemetry, Zero Third-Party Trackers.
- * Fully honors navigator.doNotTrack.
+ * Sitedeki her hareketi, tıklamayı, kaydırma derinliğini ve aktif saniyeleri
+ * gerçek zamanlı olarak izler ve kaydeder.
  */
 
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'sr-local-metrics';
-  const DNT = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+  var STORAGE_KEY = 'sr-activity-metrics';
+  var STREAM_KEY = 'sr-activity-stream';
 
-  function getMetrics() {
-    if (DNT) return { dnt: true };
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : { views: 0, calcs: 0, downloads: 0, kills: 0 };
-    } catch {
-      return { views: 0, calcs: 0, downloads: 0, kills: 0 };
+  var sessionStart = Date.now();
+  var activeSeconds = 0;
+  var maxScrollDepth = 0;
+  var clickCount = 0;
+  var mouseMoveCount = 0;
+  var currentSection = 'hero';
+  var activityStream = [];
+
+  // Canlı Saniye Sayacı
+  setInterval(function () {
+    activeSeconds++;
+    var badge = document.getElementById('sr-active-seconds-badge');
+    if (badge) {
+      badge.textContent = 'Oturum: ' + activeSeconds + 's · Canlı İzleniyor';
     }
-  }
 
-  function saveMetrics(metrics) {
-    if (DNT) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(metrics));
-    } catch {
-      // Storage unavailable or quota exceeded
+    var badgeText = document.getElementById('sr-active-seconds');
+    if (badgeText) {
+      badgeText.textContent = 'Oturum: ' + activeSeconds + 's izleniyor';
     }
-  }
+  }, 1000);
 
-  function trackEvent(name) {
-    if (DNT) return;
-    const m = getMetrics();
-    if (name === 'view') m.views = (m.views || 0) + 1;
-    else if (name === 'calc') m.calcs = (m.calcs || 0) + 1;
-    else if (name === 'download') m.downloads = (m.downloads || 0) + 1;
-    else if (name === 'kill') m.kills = (m.kills || 0) + 1;
-    saveMetrics(m);
-  }
+  // Tıklama Takibi (Her tıklanan elemanı koordinat ve etiketiyle kaydeder)
+  document.addEventListener('click', function (e) {
+    clickCount++;
+    var target = e.target;
+    var identifier = target.id ? ('#' + target.id) : (target.className ? ('.' + String(target.className).split(' ')[0]) : target.tagName);
+    var textSnippet = (target.textContent || '').trim().substring(0, 30);
 
-  // Record initial view
-  trackEvent('view');
+    var eventItem = {
+      type: 'click',
+      target: identifier,
+      text: textSnippet,
+      x: e.clientX,
+      y: e.clientY,
+      t: Math.round((Date.now() - sessionStart) / 100) / 10
+    };
 
-  // Attach global API for transparent inspection
+    activityStream.push(eventItem);
+    if (activityStream.length > 100) activityStream.shift();
+
+    try {
+      sessionStorage.setItem(STREAM_KEY, JSON.stringify(activityStream));
+    } catch (err) {}
+  }, true);
+
+  // Fare Hareketi Takibi (Etkileşim Yoğunluğu)
+  document.addEventListener('mousemove', function () {
+    mouseMoveCount++;
+  }, { passive: true });
+
+  // Kaydırma Derinliği (Scroll Depth %)
+  window.addEventListener('scroll', function () {
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight > 0) {
+      var depth = Math.round((window.scrollY / docHeight) * 100);
+      if (depth > maxScrollDepth) {
+        maxScrollDepth = depth;
+      }
+    }
+  }, { passive: true });
+
+  // Görüntülenen Bölüm Tespiti
+  var sections = ['hero', 'problem', 'statement-lab', 'hesaplayici', 'karsilastirma', 'ozellikler', 'mimari', 'isletim-sistemleri', 'fiyatlandirma', 'sss'];
+  setInterval(function () {
+    var middle = window.scrollY + (window.innerHeight / 2);
+    for (var i = 0; i < sections.length; i++) {
+      var el = document.getElementById(sections[i]);
+      if (el) {
+        var top = el.offsetTop;
+        var bottom = top + el.offsetHeight;
+        if (middle >= top && middle <= bottom) {
+          currentSection = sections[i];
+          break;
+        }
+      }
+    }
+  }, 1500);
+
+  // Global Telemetri API
   window.srAnalytics = {
-    track: trackEvent,
-    get: getMetrics,
-    isDnt: DNT
+    track: function (name, data) {
+      activityStream.push({ type: 'custom', name: name, data: data, t: activeSeconds });
+    },
+    getSummary: function () {
+      return {
+        sessionSeconds: activeSeconds,
+        clicks: clickCount,
+        mouseMoves: mouseMoveCount,
+        maxScrollDepth: maxScrollDepth + '%',
+        currentSection: currentSection,
+        recentEvents: activityStream.slice(-10)
+      };
+    },
+    getStream: function () {
+      return activityStream;
+    }
   };
 })();
