@@ -67,7 +67,7 @@ Depo şu anda **üç ana katmandan** oluşur:
   * `architecture.html`: Yerel AES-256 SQLite kilitli kasa mimarisi ve sıfır-bulut ilkeleri.
   * `os-downloads.html`: macOS (Apple Silicon / Intel), Windows (x64 / ARM64) ve Linux kartları + v1.5.0 sürümü.
   * `hash-verifier.html`: İstemci tarafı donanım ivmeli SHA-256 kurulum doğrulama aracı (`WebCrypto API`).
-  * `pricing.html`: Free, Pro ($9/ay veya $79 ömür boyu), Max ($19/ay veya $149 ömür boyu), Enterprise modelleri.
+  * `pricing.html`: Free ($0), Pro ($79 tek seferlik ömür boyu lisans) ve Enterprise (özel kurumsal lisans) modelleri; aboneliksiz tek seferlik ödeme mimarisi.
   * `faq.html`: Sıkça sorulan sorular akordeonu.
 * **`modals/`**:
   * `command-palette.html`: ⌘K / Ctrl+K arama paleti, klavye ok tuşları ile gezinim.

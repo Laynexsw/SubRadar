@@ -97,7 +97,7 @@ SubRadar/
     │   │   ├── architecture.html         # Yerel AES-256 SQLite mimari ve güvenlik kartları
     │   │   ├── os-downloads.html         # macOS, Windows, Linux indirme kartları ve sağlama toplamları
     │   │   ├── hash-verifier.html        # İstemci tarafı WebCrypto donanım ivmeli SHA-256 kurulum doğrulayıcı
-    │   │   ├── pricing.html              # Free, Pro, Max, Enterprise fiyatlandırma tablosu
+    │   │   ├── pricing.html              # Free, Pro ($79) ve Enterprise tek seferlik ömür boyu fiyatlandırma tablosu
     │   │   └── faq.html                  # Sıkça sorulan sorular (SSS) akordeon paneli
     │   │
     │   └── modals/
