@@ -55,7 +55,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 * **`layout/`**:
   * `header.html`: Atmospheric glow efekti, marka logosu, masaüstü/mobil menü, ⌘K butonu, Web Audio ses açma/kapama (`#sound-toggle-btn`), Power-User kısayol rehberi (`#shortcuts-help-btn`), tema butonu, dil (EN/DE/TR) ve kur ($/€/₺) butonları, "Bilgisayara İndir" ana aksiyonu.
   * `footer.html`: Canlı motor gecikme göstergesi (`#footer-engine-ping`), telif hakları, iletişim bilgileri (`iletisim@subradar.dev`), hızlı bağlantılar ve yerel güvenlik taahhütleri.
-  * `cookie-banner.html`: Sıfır çerez güvencesi ve yerel bellek onay banner'ı (`#sr-privacy-banner`).
+  * `cookie-banner.html`: Apple Dynamic Capsule: Sıfır çerez güvencesi, Cupertino toggle anahtarları, canlı yerel bellek sayacı ve hava boşluğu (air-gap) gizlilik kontrol paneli (`#sr-privacy-banner`).
   * `mobile-sticky-cta.html`: Mobilde altta sabit kalan hızlı indirme çubuğu (`#sr-mobile-sticky-cta`).
 * **`sections/`**:
   * `hero.html`: Ana manşet, işletim sistemi indirme butonları (macOS / Windows), interaktif macOS simülasyon penceresi (`#hero-mock-window`).
@@ -100,7 +100,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`scroll-motion.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/scroll-motion.js): Tepe ilerleme çizgisi (`#sr-progress`), `[data-rv]` animasyon tetikleyicileri, hero paralaks kayması.
 * [`i18n.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/i18n.js): TR/EN/DE sözlükleri, DOM TreeWalker ile metin düğümlerini dinamik olarak çeviren `t()` fonksiyonu.
 * [`analytics.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/analytics.js): Sıfır-çerez, DNT uyumlu yerel oturum telemetrisi (`srAnalytics`).
-* [`cookie-banner.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/cookie-banner.js): Gizlilik bildirimi ve yerel bellek rıza kontrolü.
+* [`cookie-banner.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/cookie-banner.js): Apple Dynamic Capsule: Cupertino toggle anahtarları, canlı yerel bellek sayacı, bellek sıfırlama ve Air-Gap kalkan kontrolcüsü.
 * [`mobile-cta.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/mobile-cta.js): Mobilde kaydırmaya bağlı beliren sabit indirme barı.
 * [`main.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/main.js): Tüm modülleri ve Service Worker'ı başlatan ana orkestrasyon dosyası.
 * [`modals/command-palette.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/command-palette.js): ⌘K / Ctrl+K arama, ok tuşlarıyla gezinme ve eylem tetikleme.

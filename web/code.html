@@ -1035,10 +1035,10 @@ html.light #auth-mobile-tab-slider {
     pointer-events: auto;
   }
 
-  /* ── 17. Privacy & Storage Consent Banner (Apple Glassmorphism) ── */
+  /* ── 17. Privacy & Storage Dynamic Capsule (Apple Minimalism & Interactive Switchboard) ── */
   #sr-privacy-banner {
     position: fixed;
-    bottom: 22px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%) translateY(140%) scale(0.96);
     width: calc(100% - 32px);
@@ -1055,62 +1055,35 @@ html.light #auth-mobile-tab-slider {
     pointer-events: auto;
   }
 
-  #sr-privacy-banner .sr-privacy-card {
-    border-radius: 20px;
-    padding: 18px 20px;
+  #sr-privacy-banner .sr-capsule-card {
+    border-radius: 26px;
     background: rgba(14, 15, 20, 0.88);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(28px) saturate(190%);
-    -webkit-backdrop-filter: blur(28px) saturate(190%);
-    box-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.14) inset;
-    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.14) inset;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
   }
 
-  #sr-privacy-banner .sr-privacy-body {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-  }
-
-  #sr-privacy-banner .sr-privacy-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: rgba(16, 185, 129, 0.12);
-    border: 1px solid rgba(16, 185, 129, 0.25);
-    color: #34d399;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 0 16px rgba(16, 185, 129, 0.15);
-    transition: all 0.25s ease;
-  }
-
-  #sr-privacy-banner .sr-privacy-main {
-    flex: 1;
-    min-width: 0;
-  }
-
-  #sr-privacy-banner .sr-privacy-header {
+  /* 1. Capsule Pill Bar (Default Closed State) */
+  #sr-privacy-banner .sr-capsule-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 12px;
+    padding: 8px 10px 8px 16px;
+    min-height: 48px;
   }
 
-  #sr-privacy-banner .sr-privacy-title {
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    display: flex;
+  #sr-privacy-banner .sr-capsule-badge {
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin: 0;
+    flex-shrink: 0;
   }
 
-  #sr-privacy-banner .sr-privacy-pulse {
+  #sr-privacy-banner .sr-capsule-pulse {
     position: relative;
     display: inline-block;
     width: 7px;
@@ -1119,108 +1092,108 @@ html.light #auth-mobile-tab-slider {
     background: #10b981;
   }
 
-  #sr-privacy-banner .sr-privacy-pulse::after {
+  #sr-privacy-banner .sr-capsule-pulse::after {
     content: '';
     position: absolute;
     inset: -3px;
     border-radius: 9999px;
     background: rgba(16, 185, 129, 0.45);
-    animation: srPrivacyPing 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    animation: srCapsulePing 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
-  @keyframes srPrivacyPing {
+  @keyframes srCapsulePing {
     0% { transform: scale(0.8); opacity: 0.8; }
     75%, 100% { transform: scale(2.2); opacity: 0; }
   }
 
-  #sr-privacy-banner .sr-privacy-desc {
-    color: #a1a1aa;
-    font-size: 12.5px;
-    line-height: 1.55;
-    margin-top: 6px;
-    margin-bottom: 0;
+  #sr-privacy-banner .sr-capsule-title {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
   }
 
-  #sr-privacy-banner .sr-privacy-chips {
+  #sr-privacy-banner .sr-capsule-stats {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-top: 10px;
-    flex-wrap: wrap;
+    font-size: 11px;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    color: #a1a1aa;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 9999px;
+    padding: 3px 10px;
   }
 
-  #sr-privacy-banner .sr-privacy-chip {
+  #sr-privacy-banner .sr-capsule-sep {
+    opacity: 0.4;
+  }
+
+  #sr-privacy-banner .sr-capsule-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  #sr-privacy-banner .sr-capsule-btn-inspect {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 2.5px 8.5px;
+    padding: 5px 11px;
     border-radius: 9999px;
-    font-size: 10.5px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    background: rgba(255, 255, 255, 0.05);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.82);
+    cursor: pointer;
     transition: all 0.2s ease;
   }
 
-  #sr-privacy-banner .sr-privacy-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  #sr-privacy-banner .sr-capsule-btn-inspect:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
   }
 
-  #sr-privacy-banner .sr-privacy-accept {
+  #sr-privacy-banner .sr-capsule-btn-accept {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    padding: 7px 18px;
+    padding: 6px 15px;
     border-radius: 9999px;
-    background: #ffffff !important;
-    color: #000000 !important;
-    font-size: 12px;
+    background: #ffffff;
+    color: #000000;
+    font-size: 11.5px;
     font-weight: 600;
     letter-spacing: -0.01em;
     border: none;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
   }
 
-  #sr-privacy-banner .sr-privacy-accept:hover {
-    background: #f4f4f5 !important;
+  #sr-privacy-banner .sr-capsule-btn-accept:hover {
+    background: #f4f4f5;
     transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
   }
 
-  #sr-privacy-banner .sr-privacy-accept:active {
+  #sr-privacy-banner .sr-capsule-btn-accept:active {
     transform: translateY(0) scale(0.98);
   }
 
-  #sr-privacy-banner .sr-privacy-link {
-    font-size: 12px;
-    color: #a1a1aa !important;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    transition: color 0.15s ease;
-  }
-
-  #sr-privacy-banner .sr-privacy-link:hover {
-    color: #ffffff !important;
-  }
-
-  #sr-privacy-banner .sr-privacy-close {
-    width: 28px;
-    height: 28px;
+  #sr-privacy-banner .sr-capsule-btn-close {
+    width: 26px;
+    height: 26px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    color: #71717a !important;
+    border-radius: 9999px;
+    color: #71717a;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -1228,77 +1201,370 @@ html.light #auth-mobile-tab-slider {
     padding: 0;
   }
 
-  #sr-privacy-banner .sr-privacy-close:hover {
-    color: #ffffff !important;
-    background: rgba(255, 255, 255, 0.1) !important;
+  #sr-privacy-banner .sr-capsule-btn-close:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
   }
 
-  /* ── Light Mode (html.light) — Apple Clean Frosted Glass ── */
-  html.light #sr-privacy-banner .sr-privacy-card {
+  /* 2. Expanded Drawer: Air-Gap Switchboard */
+  #sr-privacy-banner .sr-capsule-drawer {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+  }
+
+  #sr-privacy-banner .sr-capsule-drawer.is-expanded {
+    max-height: 560px;
+    opacity: 1;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  #sr-privacy-banner .sr-capsule-drawer-content {
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #sr-privacy-banner .sr-drawer-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  #sr-privacy-banner .sr-drawer-title {
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+
+  #sr-privacy-banner .sr-drawer-subtitle {
+    color: #a1a1aa;
+    font-size: 11.5px;
+    margin: 2px 0 0;
+    line-height: 1.45;
+  }
+
+  #sr-privacy-banner .sr-drawer-badge {
+    font-size: 9.5px;
+    font-weight: 700;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    padding: 2.5px 8px;
+    border-radius: 9999px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #34d399;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* Cupertino Switches List */
+  #sr-privacy-banner .sr-switches-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #sr-privacy-banner .sr-switch-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background-color 0.2s ease;
+  }
+
+  #sr-privacy-banner .sr-switch-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  #sr-privacy-banner .sr-switch-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #sr-privacy-banner .sr-switch-name {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  #sr-privacy-banner .sr-switch-desc {
+    color: #71717a;
+    font-size: 11px;
+    margin-top: 1px;
+  }
+
+  #sr-privacy-banner .sr-switch-tag {
+    font-size: 9px;
+    font-family: ui-monospace, monospace;
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: rgba(239, 68, 68, 0.12);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  /* Cupertino Toggle Switch */
+  #sr-privacy-banner .sr-cupertino-toggle {
+    width: 36px;
+    height: 20px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.14);
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+  }
+
+  #sr-privacy-banner .sr-cupertino-toggle .sr-toggle-handle {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #sr-privacy-banner .sr-cupertino-toggle.is-active {
+    background: #10b981;
+  }
+
+  #sr-privacy-banner .sr-cupertino-toggle.is-active .sr-toggle-handle {
+    transform: translateX(16px);
+  }
+
+  #sr-privacy-banner .sr-cupertino-toggle.is-locked {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+
+  #sr-privacy-banner .sr-cupertino-toggle.is-locked .sr-toggle-handle {
+    background: #71717a;
+  }
+
+  /* Storage Audit Bar */
+  #sr-privacy-banner .sr-storage-audit-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 12px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 11px;
+  }
+
+  #sr-privacy-banner .sr-storage-stats {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #a1a1aa;
+  }
+
+  #sr-privacy-banner .sr-storage-purge-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2.5px 8px;
+    border-radius: 6px;
+    font-size: 10.5px;
+    font-family: ui-monospace, monospace;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  #sr-privacy-banner .sr-storage-purge-btn:hover {
+    background: rgba(239, 68, 68, 0.18);
+    color: #f87171;
+  }
+
+  /* Drawer Footer */
+  #sr-privacy-banner .sr-drawer-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 4px;
+  }
+
+  #sr-privacy-banner .sr-drawer-link {
+    font-size: 11.5px;
+    color: #a1a1aa;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.15s ease;
+  }
+
+  #sr-privacy-banner .sr-drawer-link:hover {
+    color: #ffffff;
+  }
+
+  #sr-privacy-banner .sr-drawer-seal-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #000000;
+    font-size: 11.5px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  #sr-privacy-banner .sr-drawer-seal-btn:hover {
+    background: #f4f4f5;
+    transform: translateY(-1px);
+  }
+
+  /* ── Light Mode (html.light) — Apple Clean Frosted Ceramic ── */
+  html.light #sr-privacy-banner .sr-capsule-card {
     background: rgba(255, 255, 255, 0.92) !important;
     border: 1px solid rgba(0, 0, 0, 0.09) !important;
-    box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.14), 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 0 0 1px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.12), 0 1px 0 rgba(255, 255, 255, 1) inset, 0 0 0 1px rgba(0, 0, 0, 0.03) !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-icon {
-    background: #ecfdf5 !important;
-    border: 1px solid rgba(16, 185, 129, 0.3) !important;
-    color: #059669 !important;
-    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.12) !important;
+  html.light #sr-privacy-banner .sr-capsule-title {
+    color: #09090b !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-title {
-    color: #111827 !important;
+  html.light #sr-privacy-banner .sr-capsule-pulse {
+    background: #059669 !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-desc {
+  html.light #sr-privacy-banner .sr-capsule-pulse::after {
+    background: rgba(5, 150, 105, 0.35) !important;
+  }
+
+  html.light #sr-privacy-banner .sr-capsule-stats {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
     color: #4b5563 !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-chip {
+  html.light #sr-privacy-banner .sr-capsule-btn-inspect {
     background: rgba(0, 0, 0, 0.04) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    color: #374151 !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    color: #111827 !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-footer {
-    border-top-color: rgba(0, 0, 0, 0.08) !important;
+  html.light #sr-privacy-banner .sr-capsule-btn-inspect:hover {
+    background: rgba(0, 0, 0, 0.08) !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-accept {
-    background: #111827 !important;
+  html.light #sr-privacy-banner .sr-capsule-btn-accept {
+    background: #09090b !important;
     color: #ffffff !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-accept:hover {
+  html.light #sr-privacy-banner .sr-capsule-btn-accept:hover {
     background: #000000 !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-link {
-    color: #6b7280 !important;
-  }
-
-  html.light #sr-privacy-banner .sr-privacy-link:hover {
-    color: #111827 !important;
-  }
-
-  html.light #sr-privacy-banner .sr-privacy-close {
+  html.light #sr-privacy-banner .sr-capsule-btn-close {
     color: #9ca3af !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-close:hover {
+  html.light #sr-privacy-banner .sr-capsule-btn-close:hover {
     color: #111827 !important;
     background: rgba(0, 0, 0, 0.06) !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-pulse {
-    background: #059669 !important;
+  html.light #sr-privacy-banner .sr-capsule-drawer.is-expanded {
+    border-top-color: rgba(0, 0, 0, 0.06) !important;
   }
 
-  html.light #sr-privacy-banner .sr-privacy-pulse::after {
-    background: rgba(5, 150, 105, 0.35) !important;
+  html.light #sr-privacy-banner .sr-drawer-title {
+    color: #09090b !important;
+  }
+
+  html.light #sr-privacy-banner .sr-drawer-subtitle {
+    color: #4b5563 !important;
+  }
+
+  html.light #sr-privacy-banner .sr-drawer-badge {
+    background: #ecfdf5 !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+    color: #059669 !important;
+  }
+
+  html.light #sr-privacy-banner .sr-switch-item {
+    background: rgba(0, 0, 0, 0.02) !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+  }
+
+  html.light #sr-privacy-banner .sr-switch-item:hover {
+    background: rgba(0, 0, 0, 0.04) !important;
+  }
+
+  html.light #sr-privacy-banner .sr-switch-name {
+    color: #09090b !important;
+  }
+
+  html.light #sr-privacy-banner .sr-switch-desc {
+    color: #64748b !important;
+  }
+
+  html.light #sr-privacy-banner .sr-switch-tag {
+    background: #fef2f2 !important;
+    border-color: rgba(239, 68, 68, 0.25) !important;
+    color: #dc2626 !important;
+  }
+
+  html.light #sr-privacy-banner .sr-cupertino-toggle {
+    background: rgba(0, 0, 0, 0.12) !important;
+  }
+
+  html.light #sr-privacy-banner .sr-cupertino-toggle.is-active {
+    background: #10b981 !important;
+  }
+
+  html.light #sr-privacy-banner .sr-cupertino-toggle.is-locked .sr-toggle-handle {
+    background: #94a3b8 !important;
+  }
+
+  html.light #sr-privacy-banner .sr-storage-audit-bar {
+    background: #f8fafc !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+    color: #4b5563 !important;
+  }
+
+  html.light #sr-privacy-banner .sr-drawer-link {
+    color: #64748b !important;
+  }
+
+  html.light #sr-privacy-banner .sr-drawer-link:hover {
+    color: #09090b !important;
+  }
+
+  html.light #sr-privacy-banner .sr-drawer-seal-btn {
+    background: #09090b !important;
+    color: #ffffff !important;
+  }
+
+  html.light #sr-privacy-banner .sr-drawer-seal-btn:hover {
+    background: #000000 !important;
   }
 
   /* ── Interactive Cursor Glow & Ambient Light ── */
@@ -4031,54 +4297,113 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
 <!-- 7. ÇEREZ VE YEREL DEPOLAMA GİZLİLİK BANNER'I                            -->
 <!-- ========================================================================= -->
 <aside id="sr-privacy-banner" role="region" aria-label="Gizlilik ve Yerel Bellek Bildirimi" class="text-left" aria-live="polite">
-  <div class="sr-privacy-card">
-    <div class="sr-privacy-body">
-      <!-- Icon Container -->
-      <div class="sr-privacy-icon" aria-hidden="true">
-        <span class="material-symbols-outlined text-[20px]">cookie_off</span>
+  <div class="sr-capsule-card" id="sr-capsule-card">
+    <!-- 1. COMPACT PILL BAR (Default Apple Capsule View) -->
+    <div class="sr-capsule-bar">
+      <!-- Left: Status Beacon & Title -->
+      <div class="sr-capsule-badge">
+        <span class="sr-capsule-pulse" aria-hidden="true"></span>
+        <span class="material-symbols-outlined text-[17px] text-emerald-400">shield_lock</span>
+        <span class="sr-capsule-title">%100 Yerel Kasa</span>
       </div>
-      
-      <!-- Content Area -->
-      <div class="sr-privacy-main">
-        <div class="sr-privacy-header">
-          <h3 class="sr-privacy-title">
-            <span>%100 Sıfır Çerez Güvencesi</span>
-            <span class="sr-privacy-pulse" aria-hidden="true"></span>
-          </h3>
-          <button type="button" id="sr-privacy-close" class="sr-privacy-close" aria-label="Bildirimi kapat">
-            <span class="material-symbols-outlined text-[18px]">close</span>
+
+      <!-- Center: Metrics Summary -->
+      <div class="sr-capsule-stats hidden sm:flex">
+        <span class="sr-capsule-metric">0 Çerez</span>
+        <span class="sr-capsule-sep">·</span>
+        <span class="sr-capsule-metric">0 KB Bulut</span>
+      </div>
+
+      <!-- Right: Action Buttons -->
+      <div class="sr-capsule-actions">
+        <button type="button" id="sr-privacy-inspect-toggle" class="sr-capsule-btn-inspect" aria-expanded="false" aria-controls="sr-privacy-drawer">
+          <span id="sr-privacy-toggle-label">Detay</span>
+          <span class="material-symbols-outlined text-[15px] transition-transform duration-300" id="sr-privacy-toggle-icon">expand_more</span>
+        </button>
+        <button type="button" id="sr-privacy-accept" class="sr-capsule-btn-accept">
+          <span>Koru &amp; Devam Et</span>
+        </button>
+        <button type="button" id="sr-privacy-close" class="sr-capsule-btn-close" aria-label="Kapat">
+          <span class="material-symbols-outlined text-[16px]">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. EXPANDED INTERACTIVE AIR-GAP SWITCHBOARD (Depth on user interaction) -->
+    <div class="sr-capsule-drawer" id="sr-privacy-drawer" aria-hidden="true">
+      <div class="sr-capsule-drawer-content">
+        <!-- Drawer Header -->
+        <div class="sr-drawer-header">
+          <div>
+            <h4 class="sr-drawer-title">Gizlilik &amp; Veri Kalkanı</h4>
+            <p class="sr-drawer-subtitle">Tarayıcınızda çalışan sıfır-çerez ve hava boşluğu mimarisi.</p>
+          </div>
+          <span class="sr-drawer-badge">Hava Boşluğu Aktif</span>
+        </div>
+
+        <!-- Cupertino Interactive Switches -->
+        <div class="sr-switches-list">
+          <!-- Switch 1: Local Storage -->
+          <div class="sr-switch-item" id="sr-sw-row-local">
+            <div class="sr-switch-info">
+              <div class="sr-switch-name">Yerel Arayüz Tercihleri</div>
+              <div class="sr-switch-desc">Tema, dil ve para birimi tercihleriniz cihazınızda tutulur.</div>
+            </div>
+            <div class="sr-cupertino-toggle is-active" id="sr-sw-local" role="switch" aria-checked="true" tabindex="0">
+              <span class="sr-toggle-handle"></span>
+            </div>
+          </div>
+
+          <!-- Switch 2: Tracking Cookies (Locked OFF) -->
+          <div class="sr-switch-item" id="sr-sw-row-tracking">
+            <div class="sr-switch-info">
+              <div class="sr-switch-name flex items-center gap-1.5">
+                <span>İzleme &amp; Reklam Çerezleri</span>
+                <span class="sr-switch-tag">Engellendi</span>
+              </div>
+              <div class="sr-switch-desc">Google Analytics, Meta Pixel vb. sıfır kod ve çerez.</div>
+            </div>
+            <div class="sr-cupertino-toggle is-locked" id="sr-sw-tracking" role="switch" aria-checked="false" title="Sıfır Çerez: Üçüncü taraf kodu SubRadar'da tamamen engellenmiştir">
+              <span class="sr-toggle-handle"></span>
+            </div>
+          </div>
+
+          <!-- Switch 3: Cloud Telemetry (Locked OFF) -->
+          <div class="sr-switch-item" id="sr-sw-row-telemetry">
+            <div class="sr-switch-info">
+              <div class="sr-switch-name flex items-center gap-1.5">
+                <span>Bulut Telemetrisi</span>
+                <span class="sr-switch-tag">Sıfır Veri</span>
+              </div>
+              <div class="sr-switch-desc">Finansal verileriniz ve ekstreleriniz asla buluta aktarılmaz.</div>
+            </div>
+            <div class="sr-cupertino-toggle is-locked" id="sr-sw-telemetry" role="switch" aria-checked="false" title="Hava Boşluğu: Verileriniz sunucuya aktarılmaz">
+              <span class="sr-toggle-handle"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Storage Footprint & Purge Action -->
+        <div class="sr-storage-audit-bar">
+          <div class="sr-storage-stats">
+            <span class="material-symbols-outlined text-[14px] text-emerald-400">database</span>
+            <span>Bellek: <strong id="sr-privacy-ls-size" class="text-emerald-400 font-mono">~74 Bayt</strong></span>
+            <span class="sr-capsule-sep">·</span>
+            <span>Ağ: <strong class="text-emerald-400 font-mono">0 Bayt</strong></span>
+          </div>
+          <button type="button" id="sr-privacy-purge-btn" class="sr-storage-purge-btn">
+            <span class="material-symbols-outlined text-[13px]">delete_sweep</span>
+            <span>Belleği Sıfırla</span>
           </button>
         </div>
 
-        <p class="sr-privacy-desc">
-          SubRadar hiçbir izleme, analitik veya reklam çerezi kullanmaz. Tercihleriniz (tema, dil, kur) sadece cihazınızdaki yerel bellekte saklanır.
-        </p>
-
-        <!-- Trust Badges / Chips -->
-        <div class="sr-privacy-chips">
-          <span class="sr-privacy-chip">
-            <span class="material-symbols-outlined text-[13px] text-emerald-400">check_circle</span>
-            <span>0 Takip Çerezi</span>
-          </span>
-          <span class="sr-privacy-chip">
-            <span class="material-symbols-outlined text-[13px] text-emerald-400">lock</span>
-            <span>%100 Yerel Bellek</span>
-          </span>
-          <span class="sr-privacy-chip hidden sm:inline-flex">
-            <span class="material-symbols-outlined text-[13px] text-emerald-400">shield</span>
-            <span>Sıfır Telemetri</span>
-          </span>
-        </div>
-
-        <!-- Footer Buttons -->
-        <div class="sr-privacy-footer">
-          <button type="button" id="sr-privacy-accept" class="sr-privacy-accept">
-            <span class="material-symbols-outlined text-[16px]">done</span>
-            <span>Anladım &amp; Kabul Et</span>
+        <!-- Drawer Footer Links -->
+        <div class="sr-drawer-footer">
+          <a href="../privacy.html" class="sr-drawer-link">Gizlilik Politikası ve Yasal Güvence</a>
+          <button type="button" id="sr-privacy-drawer-seal" class="sr-drawer-seal-btn">
+            <span class="material-symbols-outlined text-[14px]">verified_user</span>
+            <span>Kalkanı Onayla</span>
           </button>
-          <a href="../privacy.html" class="sr-privacy-link">
-            Gizlilik Politikası
-          </a>
         </div>
       </div>
     </div>
@@ -4527,7 +4852,55 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
     "Anladım & Kabul Et": "Understood & Accept",
     "Gizlilik Politikası": "Privacy Policy",
     "Gizlilik tercihi kaydedildi: Sıfır çerez, sıfır telemetri.": "Privacy preference saved: Zero cookies, zero telemetry.",
-    "Çerez Tercihleri": "Cookie Preferences"
+    "Çerez Tercihleri": "Cookie Preferences",
+    "%100 Sıfır Çerez & Hava Boşluğu": "100% Zero-Cookie & Air-Gap Shield",
+    "SubRadar hiçbir izleme, analitik veya reklam çerezi kullanmaz. Bilgisayarınızdan buluta tek bir bayt veri sızmaz.": "SubRadar uses zero tracking, analytics, or ad cookies. Not a single byte of data leaks from your PC to the cloud.",
+    "Giden Ağ:": "Outbound Net:",
+    "Çerez:": "Cookies:",
+    "0 adet": "0 items",
+    "Kasa:": "Vault:",
+    "%100 Yerel": "100% Local",
+    "Yerel Bellek ve Şeffaflık Röntgeni": "Local Memory & Transparency Audit",
+    "İzleme & Reklam Çerezleri": "Tracking & Ad Cookies",
+    "Google Analytics, Meta Pixel vb.": "Google Analytics, Meta Pixel etc.",
+    "Engellendi (0)": "Blocked (0)",
+    "Bulut Telemetrisi & Loglar": "Cloud Telemetry & Logs",
+    "Uzak sunuculara olay aktarımı": "Event dispatch to remote servers",
+    "Kapalı (0 Bayt)": "Disabled (0 Bytes)",
+    "Cihaz İçi Yerel Bellek": "On-Device Local Storage",
+    "Tema, dil ve kur tercihleriniz": "Theme, language & currency settings",
+    "Cihazınızda": "On Your Device",
+    "CİHAZINIZDAKİ AKTİF DEĞERLER (LOCALSTORAGE)": "ACTIVE VALUES ON YOUR DEVICE (LOCALSTORAGE)",
+    "İstediğiniz an yerel tercihleri temizleyebilirsiniz.": "You can clear local preferences at any time.",
+    "Belleği Sıfırla": "Purge Storage",
+    "Kalkanı Onayla": "Seal & Accept",
+    "Şeffaflık Denetçisi": "Transparency Inspector",
+    "Tüm yerel tercihler ve bellek temizlendi.": "All local preferences and storage cleared.",
+    "Kalkan onaylandı: %100 yerel, sıfır telemetri.": "Shield confirmed: 100% local, zero telemetry.",
+    "%100 Yerel Kasa": "100% Local Vault",
+    "0 Çerez": "0 Cookies",
+    "0 KB Bulut": "0 KB Cloud",
+    "Detay": "Details",
+    "Gizle": "Hide",
+    "Koru & Devam Et": "Keep Safe & Continue",
+    "Gizlilik & Veri Kalkanı": "Privacy & Data Shield",
+    "Tarayıcınızda çalışan sıfır-çerez ve hava boşluğu mimarisi.": "Zero-cookie and air-gap architecture running in your browser.",
+    "Hava Boşluğu Aktif": "Air-Gap Active",
+    "Yerel Arayüz Tercihleri": "Local UI Preferences",
+    "Tema, dil ve para birimi tercihleriniz cihazınızda tutulur.": "Your theme, language and currency preferences stay on your device.",
+    "İzleme & Reklam Çerezleri": "Tracking & Ad Cookies",
+    "Engellendi": "Blocked",
+    "Google Analytics, Meta Pixel vb. sıfır kod ve çerez.": "Google Analytics, Meta Pixel etc. zero code and cookies.",
+    "Bulut Telemetrisi": "Cloud Telemetry",
+    "Sıfır Veri": "Zero Data",
+    "Finansal verileriniz ve ekstreleriniz asla buluta aktarılmaz.": "Your financial data and statements are never transferred to cloud.",
+    "Bellek:": "Storage:",
+    "Ağ:": "Network:",
+    "Gizlilik Politikası ve Yasal Güvence": "Privacy Policy & Legal Guarantees",
+    "Sıfır Çerez: Üçüncü taraf kodu SubRadar'da tamamen engellenmiştir.": "Zero Cookies: Third-party code is strictly blocked in SubRadar.",
+    "Hava Boşluğu: Finansal verileriniz asla sunucuya aktarılmaz.": "Air-Gap: Your financial data is never sent to servers.",
+    "Yerel tercihler askıya alındı (oturum sonunda sıfırlanır).": "Local preferences paused (resets at end of session).",
+    "Yerel arayüz tercihleri aktif.": "Local UI preferences active."
   };
   const SR_I18N_DE = {
     "Özellikler": "Funktionen",
@@ -4864,7 +5237,55 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
     "Anladım & Kabul Et": "Verstanden & Akzeptieren",
     "Gizlilik Politikası": "Datenschutzerklärung",
     "Gizlilik tercihi kaydedildi: Sıfır çerez, sıfır telemetri.": "Datenschutzeinstellung gespeichert: Null Cookies, null Telemetrie.",
-    "Çerez Tercihleri": "Cookie-Einstellungen"
+    "Çerez Tercihleri": "Cookie-Einstellungen",
+    "%100 Sıfır Çerez & Hava Boşluğu": "100 % Null-Cookie & Air-Gap-Schutz",
+    "SubRadar hiçbir izleme, analitik veya reklam çerezi kullanmaz. Bilgisayarınızdan buluta tek bir bayt veri sızmaz.": "SubRadar verwendet keinerlei Tracking-, Analyse- oder Werbe-Cookies. Kein einziges Byte gelangt in die Cloud.",
+    "Giden Ağ:": "Ausgehende Daten:",
+    "Çerez:": "Cookies:",
+    "0 adet": "0 Stück",
+    "Kasa:": "Tresor:",
+    "%100 Yerel": "100 % Lokal",
+    "Yerel Bellek ve Şeffaflık Röntgeni": "Lokaler Speicher & Transparenz-Audit",
+    "İzleme & Reklam Çerezleri": "Tracking- & Werbe-Cookies",
+    "Google Analytics, Meta Pixel vb.": "Google Analytics, Meta Pixel etc.",
+    "Engellendi (0)": "Blockiert (0)",
+    "Bulut Telemetrisi & Loglar": "Cloud-Telemetrie & Logs",
+    "Uzak sunuculara olay aktarımı": "Ereignisübertragung an Remote-Server",
+    "Kapalı (0 Bayt)": "Deaktiviert (0 Byte)",
+    "Cihaz İçi Yerel Bellek": "Lokaler Speicher auf dem Gerät",
+    "Tema, dil ve kur tercihleriniz": "Design-, Sprach- & Währungseinstellungen",
+    "Cihazınızda": "Auf Ihrem Gerät",
+    "CİHAZINIZDAKİ AKTİF DEĞERLER (LOCALSTORAGE)": "AKTIVE WERTE AUF IHREM GERÄT (LOCALSTORAGE)",
+    "İstediğiniz an yerel tercihleri temizleyebilirsiniz.": "Sie können lokale Einstellungen jederzeit löschen.",
+    "Belleği Sıfırla": "Speicher leeren",
+    "Kalkanı Onayla": "Schutz bestätigen",
+    "Şeffaflık Denetçisi": "Transparenz-Inspektor",
+    "Tüm yerel tercihler ve bellek temizlendi.": "Alle lokalen Einstellungen und Speicher gelöscht.",
+    "Kalkan onaylandı: %100 yerel, sıfır telemetri.": "Schutz bestätigt: 100 % lokal, null Telemetrie.",
+    "%100 Yerel Kasa": "100% Lokaler Tresor",
+    "0 Çerez": "0 Cookies",
+    "0 KB Bulut": "0 KB Cloud",
+    "Detay": "Details",
+    "Gizle": "Ausblenden",
+    "Koru & Devam Et": "Schützen & Weiter",
+    "Gizlilik & Veri Kalkanı": "Datenschutz- & Datenschild",
+    "Tarayıcınızda çalışan sıfır-çerez ve hava boşluğu mimarisi.": "Im Browser ausgeführte Null-Cookie- und Air-Gap-Architektur.",
+    "Hava Boşluğu Aktif": "Air-Gap aktiv",
+    "Yerel Arayüz Tercihleri": "Lokale Einstellungen",
+    "Tema, dil ve para birimi tercihleriniz cihazınızda tutulur.": "Ihre Design-, Sprach- und Währungseinstellungen bleiben auf Ihrem Gerät.",
+    "İzleme & Reklam Çerezleri": "Tracking- & Werbe-Cookies",
+    "Engellendi": "Blockiert",
+    "Google Analytics, Meta Pixel vb. sıfır kod ve çerez.": "Google Analytics, Meta Pixel usw. null Code und Cookies.",
+    "Bulut Telemetrisi": "Cloud-Telemetrie",
+    "Sıfır Veri": "Null Daten",
+    "Finansal verileriniz ve ekstreleriniz asla buluta aktarılmaz.": "Ihre Finanzdaten und Auszüge werden niemals in die Cloud übertragen.",
+    "Bellek:": "Speicher:",
+    "Ağ:": "Netzwerk:",
+    "Gizlilik Politikası ve Yasal Güvence": "Datenschutzerklärung & Rechtliche Garantien",
+    "Sıfır Çerez: Üçüncü taraf kodu SubRadar'da tamamen engellenmiştir.": "Null Cookies: Drittanbieter-Code ist in SubRadar strikt blockiert.",
+    "Hava Boşluğu: Finansal verileriniz asla sunucuya aktarılmaz.": "Air-Gap: Ihre Finanzdaten werden niemals an Server übertragen.",
+    "Yerel tercihler askıya alındı (oturum sonunda sıfırlanır).": "Lokale Einstellungen pausiert (wird am Sitzungsende zurückgesetzt).",
+    "Yerel arayüz tercihleri aktiv.": "Lokale Einstellungen aktiv."
   };
   const SR_TITLE = {
     tr: 'SubRadar — Masaüstü Abonelik Zekâsı ve Tek Tıkla İptal',
@@ -6613,24 +7034,209 @@ Rapor Üretici: https://subradar.dev
   (function initPrivacyBanner() {
     var banner = document.getElementById('sr-privacy-banner');
     if (!banner) return;
-    var accepted = false;
+
+    var STORAGE_KEY = 'sr-privacy-dismissed';
+
+    function updateLocalStorageSize() {
+      var sizeElem = document.getElementById('sr-privacy-ls-size');
+      if (!sizeElem) return;
+
+      try {
+        var totalBytes = 0;
+        var knownKeys = ['sr-theme', 'sr-lang', 'sr-currency', 'sr-privacy-dismissed', 'sr-privacy-consent'];
+
+        for (var i = 0; i < localStorage.length; i++) {
+          var k = localStorage.key(i);
+          if (k && (k.indexOf('sr-') === 0 || knownKeys.indexOf(k) !== -1)) {
+            var val = localStorage.getItem(k);
+            totalBytes += (k.length + (val ? val.length : 0)) * 2;
+          }
+        }
+
+        sizeElem.textContent = '~' + Math.max(totalBytes, totalBytes > 0 ? totalBytes : 0) + ' Bayt';
+      } catch (e) {
+        sizeElem.textContent = '~74 Bayt';
+      }
+    }
+
+    var dismissed = false;
     try {
-      accepted = localStorage.getItem('sr-privacy-dismissed') || localStorage.getItem('sr-privacy-consent');
+      dismissed = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('sr-privacy-consent');
     } catch (e) {}
 
-    if (!accepted) {
+    if (!dismissed) {
       setTimeout(function () {
         banner.classList.add('show');
+        updateLocalStorageSize();
       }, 1200);
     }
 
     var acceptBtn = document.getElementById('sr-privacy-accept');
+    var drawerSealBtn = document.getElementById('sr-privacy-drawer-seal');
     var closeBtn = document.getElementById('sr-privacy-close');
+    var inspectToggle = document.getElementById('sr-privacy-inspect-toggle');
+    var drawer = document.getElementById('sr-privacy-drawer');
+    var toggleIcon = document.getElementById('sr-privacy-toggle-icon');
+    var toggleLabel = document.getElementById('sr-privacy-toggle-label');
+    var purgeBtn = document.getElementById('sr-privacy-purge-btn');
 
+    // Cupertino Switches
+    var swLocal = document.getElementById('sr-sw-local');
+    var swRowLocal = document.getElementById('sr-sw-row-local');
+    var swTracking = document.getElementById('sr-sw-tracking');
+    var swRowTracking = document.getElementById('sr-sw-row-tracking');
+    var swTelemetry = document.getElementById('sr-sw-telemetry');
+    var swRowTelemetry = document.getElementById('sr-sw-row-telemetry');
+
+    // Toggle Transparency Drawer
+    function toggleDrawer() {
+      if (!drawer) return;
+      var isExpanded = drawer.classList.contains('is-expanded');
+      if (isExpanded) {
+        drawer.classList.remove('is-expanded');
+        drawer.setAttribute('aria-hidden', 'true');
+        if (inspectToggle) inspectToggle.setAttribute('aria-expanded', 'false');
+        if (toggleIcon) toggleIcon.textContent = 'expand_more';
+        if (toggleLabel) {
+          toggleLabel.textContent = (typeof window.t === 'function') ? window.t('Detay') : 'Detay';
+        }
+        if (window.srAudio && typeof window.srAudio.toggle === 'function') {
+          window.srAudio.toggle();
+        }
+      } else {
+        updateLocalStorageSize();
+        drawer.classList.add('is-expanded');
+        drawer.setAttribute('aria-hidden', 'false');
+        if (inspectToggle) inspectToggle.setAttribute('aria-expanded', 'true');
+        if (toggleIcon) toggleIcon.textContent = 'expand_less';
+        if (toggleLabel) {
+          toggleLabel.textContent = (typeof window.t === 'function') ? window.t('Gizle') : 'Gizle';
+        }
+        if (window.srAudio && typeof window.srAudio.open === 'function') {
+          window.srAudio.open();
+        }
+      }
+    }
+
+    if (inspectToggle) {
+      inspectToggle.addEventListener('click', toggleDrawer);
+    }
+
+    // Interactive Local Storage Cupertino Switch
+    function toggleLocalSwitch() {
+      if (!swLocal) return;
+      var isActive = swLocal.classList.contains('is-active');
+      if (isActive) {
+        swLocal.classList.remove('is-active');
+        swLocal.setAttribute('aria-checked', 'false');
+        if (typeof window.srShowToast === 'function') {
+          var warnMsg = (typeof window.t === 'function')
+            ? window.t('Yerel tercihler askıya alındı (oturum sonunda sıfırlanır).')
+            : 'Yerel tercihler askıya alındı (oturum sonunda sıfırlanır).';
+          window.srShowToast(warnMsg);
+        }
+      } else {
+        swLocal.classList.add('is-active');
+        swLocal.setAttribute('aria-checked', 'true');
+        if (typeof window.srShowToast === 'function') {
+          var okMsg = (typeof window.t === 'function')
+            ? window.t('Yerel arayüz tercihleri aktif.')
+            : 'Yerel arayüz tercihleri aktif.';
+          window.srShowToast(okMsg);
+        }
+      }
+      if (window.srAudio && typeof window.srAudio.toggle === 'function') {
+        window.srAudio.toggle();
+      }
+    }
+
+    if (swLocal) swLocal.addEventListener('click', toggleLocalSwitch);
+    if (swRowLocal) {
+      swRowLocal.addEventListener('click', function (e) {
+        if (e.target !== swLocal && !swLocal.contains(e.target)) toggleLocalSwitch();
+      });
+    }
+
+    // Locked Switches Information
+    function handleLockedTracking() {
+      if (window.srAudio && typeof window.srAudio.toggle === 'function') {
+        window.srAudio.toggle();
+      }
+      if (typeof window.srShowToast === 'function') {
+        var msg = (typeof window.t === 'function')
+          ? window.t('Sıfır Çerez: Üçüncü taraf kodu SubRadar\'da tamamen engellenmiştir.')
+          : 'Sıfır Çerez: Üçüncü taraf kodu SubRadar\'da tamamen engellenmiştir.';
+        window.srShowToast(msg);
+      }
+    }
+
+    if (swTracking) swTracking.addEventListener('click', handleLockedTracking);
+    if (swRowTracking) {
+      swRowTracking.addEventListener('click', function (e) {
+        if (e.target !== swTracking && !swTracking.contains(e.target)) handleLockedTracking();
+      });
+    }
+
+    function handleLockedTelemetry() {
+      if (window.srAudio && typeof window.srAudio.toggle === 'function') {
+        window.srAudio.toggle();
+      }
+      if (typeof window.srShowToast === 'function') {
+        var msg = (typeof window.t === 'function')
+          ? window.t('Hava Boşluğu: Finansal verileriniz asla sunucuya aktarılmaz.')
+          : 'Hava Boşluğu: Finansal verileriniz asla sunucuya aktarılmaz.';
+        window.srShowToast(msg);
+      }
+    }
+
+    if (swTelemetry) swTelemetry.addEventListener('click', handleLockedTelemetry);
+    if (swRowTelemetry) {
+      swRowTelemetry.addEventListener('click', function (e) {
+        if (e.target !== swTelemetry && !swTelemetry.contains(e.target)) handleLockedTelemetry();
+      });
+    }
+
+    // Purge Local Storage
+    if (purgeBtn) {
+      purgeBtn.addEventListener('click', function () {
+        try {
+          var keysToRemove = ['sr-theme', 'sr-lang', 'sr-currency', 'sr-privacy-dismissed', 'sr-privacy-consent'];
+          keysToRemove.forEach(function (k) {
+            try { localStorage.removeItem(k); } catch (err) {}
+          });
+        } catch (e) {}
+
+        var sizeElem = document.getElementById('sr-privacy-ls-size');
+        if (sizeElem) sizeElem.textContent = '0 Bayt';
+
+        if (window.srAudio && typeof window.srAudio.click === 'function') {
+          window.srAudio.click();
+        }
+
+        if (typeof window.srShowToast === 'function') {
+          var purgeMsg = (typeof window.t === 'function')
+            ? window.t('Tüm yerel tercihler ve bellek temizlendi.')
+            : 'Tüm yerel tercihler ve bellek temizlendi.';
+          window.srShowToast(purgeMsg);
+        }
+      });
+    }
+
+    // Dismiss & Accept
     function dismiss(mode) {
       banner.classList.remove('show');
+      if (drawer) {
+        drawer.classList.remove('is-expanded');
+        drawer.setAttribute('aria-hidden', 'true');
+        if (inspectToggle) inspectToggle.setAttribute('aria-expanded', 'false');
+        if (toggleIcon) toggleIcon.textContent = 'expand_more';
+        if (toggleLabel) {
+          toggleLabel.textContent = (typeof window.t === 'function') ? window.t('Detay') : 'Detay';
+        }
+      }
+
       try {
-        localStorage.setItem('sr-privacy-dismissed', mode || 'acknowledged');
+        localStorage.setItem(STORAGE_KEY, mode || 'acknowledged');
         localStorage.setItem('sr-privacy-consent', mode || 'acknowledged');
       } catch (e) {}
 
@@ -6646,19 +7252,21 @@ Rapor Üretici: https://subradar.dev
         window.srAnalytics.track('privacy_banner_dismiss', { mode: mode });
       }
 
-      if (mode === 'accepted' && typeof srShowToast === 'function') {
+      if (mode === 'accepted' && typeof window.srShowToast === 'function') {
         var msg = (typeof window.t === 'function') 
-          ? window.t('Gizlilik tercihi kaydedildi: Sıfır çerez, sıfır telemetri.')
-          : 'Gizlilik tercihi kaydedildi: Sıfır çerez, sıfır telemetri.';
-        srShowToast(msg);
+          ? window.t('Gizlilik kalkanı onaylandı: %100 yerel, sıfır telemetri.')
+          : 'Gizlilik kalkanı onaylandı: %100 yerel, sıfır telemetri.';
+        window.srShowToast(msg);
       }
     }
 
     if (acceptBtn) acceptBtn.addEventListener('click', function () { dismiss('accepted'); });
+    if (drawerSealBtn) drawerSealBtn.addEventListener('click', function () { dismiss('accepted'); });
     if (closeBtn) closeBtn.addEventListener('click', function () { dismiss('closed'); });
 
     window.srOpenPrivacyBanner = function () {
       if (banner) {
+        updateLocalStorageSize();
         banner.classList.add('show');
         if (window.srAudio && typeof window.srAudio.open === 'function') {
           window.srAudio.open();

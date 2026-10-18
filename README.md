@@ -84,7 +84,7 @@ SubRadar/
     │   ├── layout/
     │   │   ├── header.html               # Üst gezinme çubuğu, ses, kısayol, dil, kur ve tema kontrolleri
     │   │   ├── footer.html               # Alt bilgi çubuğu, iletişim bilgileri, bağlantılar ve yerel gecikme
-    │   │   ├── cookie-banner.html        # Sıfır çerez güvencesi ve yerel bellek onay banner'ı
+    │   │   ├── cookie-banner.html        # Apple Dynamic Capsule: Sıfır çerez, Cupertino toggle anahtarları ve Air-Gap paneli
     │   │   └── mobile-sticky-cta.html    # Mobilde altta sabit kalan hızlı indirme çubuğu
     │   │
     │   ├── sections/
@@ -129,7 +129,7 @@ SubRadar/
     │   ├── hero-window.js                # Hero masaüstü simülasyonu, trafik ışıkları ve iptal senaryoları
     │   ├── scroll-motion.js              # Sayfa okuma ilerleme çizgisi ve akıcı kaydırma efektleri
     │   ├── analytics.js                  # Sıfır-çerez, DNT uyumlu yerel oturum telemetrisi (`srAnalytics`)
-    │   ├── cookie-banner.js              # Gizlilik bildirimi ve yerel bellek rıza kontrolü
+    │   ├── cookie-banner.js              # Apple Dynamic Capsule: Cupertino anahtarları, canlı bellek sayacı ve kalkan yöneticisi
     │   ├── mobile-cta.js                 # Mobilde kaydırmaya bağlı beliren sabit indirme barı
     │   ├── main.js                       # Modüler web scriptlerinin ve Service Worker'ın ana giriş dosyası
     │   │
