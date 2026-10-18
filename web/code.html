@@ -242,6 +242,17 @@
     background-color: #000 !important;
     color: #fff !important;
   }
+  /* ── Apple Segmented Control (Concentric Language & Currency Pills) ── */
+  .lang-btn, .currency-btn {
+    height: 100% !important;
+    min-height: 26px;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
   /* ── Açık temada yasal fesih kutusu ve butonları ── */
   html.light #legal-notice-body {
     background-color: #f4f4f6 !important;
@@ -1748,15 +1759,15 @@ html.light #auth-mobile-tab-slider {
 <span class="material-symbols-outlined text-[15px]" id="theme-toggle-icon" aria-hidden="true">light_mode</span>
 <span class="hidden md:inline" id="theme-toggle-label">Açık tema</span>
 </button>
-<div class="hidden sm:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0 h-8" role="group" aria-label="Dil seç">
-<button type="button" class="lang-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-lang="EN" aria-pressed="false">EN</button>
-<button type="button" class="lang-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-lang="DE" aria-pressed="false">DE</button>
-<button type="button" class="lang-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-lang="TR" aria-pressed="true">TR</button>
+<div class="hidden sm:flex items-center p-[3px] rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0 h-8" role="group" aria-label="Dil seç">
+<button type="button" class="lang-btn h-full px-2.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer flex items-center justify-center" data-lang="EN" aria-pressed="false">EN</button>
+<button type="button" class="lang-btn h-full px-2.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer flex items-center justify-center" data-lang="DE" aria-pressed="false">DE</button>
+<button type="button" class="lang-btn h-full px-2.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer flex items-center justify-center" data-lang="TR" aria-pressed="true">TR</button>
 </div>
-<div class="hidden lg:flex items-center p-0.5 rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0 h-8" role="group" aria-label="Para birimi seç">
-<button type="button" class="currency-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-currency="USD" aria-pressed="true">$ USD</button>
-<button type="button" class="currency-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-currency="EUR" aria-pressed="false">€ EUR</button>
-<button type="button" class="currency-btn px-2.5 py-0.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer" data-currency="TRY" aria-pressed="false">₺ TRY</button>
+<div class="hidden lg:flex items-center p-[3px] rounded-full border border-white/10 bg-white/[0.04] flex-shrink-0 h-8" role="group" aria-label="Para birimi seç">
+<button type="button" class="currency-btn h-full px-2.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer flex items-center justify-center" data-currency="USD" aria-pressed="true">$ USD</button>
+<button type="button" class="currency-btn h-full px-2.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer flex items-center justify-center" data-currency="EUR" aria-pressed="false">€ EUR</button>
+<button type="button" class="currency-btn h-full px-2.5 rounded-full text-[11px] font-mono whitespace-nowrap transition-all cursor-pointer flex items-center justify-center" data-currency="TRY" aria-pressed="false">₺ TRY</button>
 </div>
 <button type="button" class="download-trigger-btn px-3.5 py-1.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all duration-200 hidden md:flex items-center gap-1.5 shadow-sm cursor-pointer h-8 whitespace-nowrap flex-shrink-0" data-os="auto">
 <span>Bilgisayara İndir</span>
