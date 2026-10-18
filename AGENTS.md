@@ -246,12 +246,12 @@ Bu bilgiler her yeni sohbette yapay zekânın doğrudan bilmesi için kaydedilmi
   * `.nojekyll`: GitHub Pages'ın Jekyll motorunu devre dışı bırakarak tüm klasörleri eksiksiz sunmasını sağlar.
 * **GitHub CLI (`gh`):**
   * Yetkili Hesap: `Laynexsw` (Aktif oturum açık, `repo`, `gist`, `read:org` izinleri tanımlı)
-  * Canlı Açıklama (Description): `"⚡ Masaüstü abonelik zekâsı, tek tıkla yasal iptal ve %100 yerel AES-256 kasa. Unutulan deneme tuzaklarını ve gizli yenilemeleri durdurun. Sıfır bulut, sıfır telemetri."`
+  * Canlı Açıklama (Description): `"⚡ Masaüstü abonelik zekâsı, tek tıkla yasal iptal ve tek seferlik ömür boyu yerel AES-256 kasa. Unutulan deneme tuzaklarını ve gizli yenilemeleri durdurun. Sıfır bulut bağımlılığı."`
   * Canlı Ana Sayfa (Homepage): `https://laynexsw.github.io/SubRadar/`
-  * Canlı Konular (Topics): `apple-design`, `desktop-app`, `electron`, `offline-first`, `privacy-first`, `subscription-tracker`, `license-templates`, `open-source`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`, `zero-cookie`, `gdpr`
+  * Canlı Konular (Topics): `apple-design`, `desktop-app`, `electron`, `offline-first`, `privacy-first`, `subscription-tracker`, `license-templates`, `open-source`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`, `gdpr`, `lifetime-deal`, `lifetime-license`
   * Hızlı Meta Veri Güncelleme Komutu:
     ```powershell
-    gh repo edit Laynexsw/SubRadar -d "⚡ Masaüstü abonelik zekâsı, tek tıkla yasal iptal ve %100 yerel AES-256 kasa. Unutulan deneme tuzaklarını ve gizli yenilemeleri durdurun. Sıfır bulut, sıfır telemetri." -h "https://laynexsw.github.io/SubRadar/" --add-topic "apple-design,desktop-app,electron,offline-first,privacy-first,subscription-tracker,license-templates,open-source,aes-256,dark-patterns,glassmorphism,security,zero-knowledge,zero-cookie,gdpr"
+    gh repo edit Laynexsw/SubRadar -d "⚡ Masaüstü abonelik zekâsı, tek tıkla yasal iptal ve tek seferlik ömür boyu yerel AES-256 kasa. Unutulan deneme tuzaklarını ve gizli yenilemeleri durdurun. Sıfır bulut bağımlılığı." -h "https://laynexsw.github.io/SubRadar/" --remove-topic zero-cookie --add-topic "lifetime-license,lifetime-deal"
     ```
 * **Git İş Akışı & Windows PowerShell Notu:**
   * Windows PowerShell'de komut birleştirirken `&&` yerine `;` kullanılmalıdır.
