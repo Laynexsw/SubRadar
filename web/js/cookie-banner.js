@@ -5,33 +5,78 @@
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'sr-privacy-consent';
+  var STORAGE_KEY = 'sr-privacy-dismissed';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const banner = document.getElementById('sr-privacy-banner');
+  function initPrivacyBanner() {
+    var banner = document.getElementById('sr-privacy-banner');
     if (!banner) return;
 
-    const consent = localStorage.getItem(STORAGE_KEY);
-    if (!consent) {
-      setTimeout(() => {
+    var dismissed = false;
+    try {
+      dismissed = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('sr-privacy-consent');
+    } catch (e) {}
+
+    if (!dismissed) {
+      setTimeout(function () {
         banner.classList.add('show');
-      }, 1000);
+      }, 1200);
     }
 
-    const acceptBtn = document.getElementById('sr-privacy-accept');
+    var acceptBtn = document.getElementById('sr-privacy-accept');
+    var closeBtn = document.getElementById('sr-privacy-close');
+
+    function dismiss(mode) {
+      banner.classList.remove('show');
+      try {
+        localStorage.setItem(STORAGE_KEY, mode || 'acknowledged');
+        localStorage.setItem('sr-privacy-consent', mode || 'acknowledged');
+      } catch (e) {}
+
+      if (window.srAudio) {
+        if (mode === 'accepted' && typeof window.srAudio.click === 'function') {
+          window.srAudio.click();
+        } else if (typeof window.srAudio.toggle === 'function') {
+          window.srAudio.toggle();
+        }
+      }
+
+      if (window.srAnalytics && typeof window.srAnalytics.track === 'function') {
+        window.srAnalytics.track('privacy_banner_dismiss', { mode: mode });
+      }
+
+      if (mode === 'accepted' && typeof window.srShowToast === 'function') {
+        var msg = (typeof window.t === 'function') 
+          ? window.t('Gizlilik tercihi kaydedildi: Sıfır çerez, sıfır telemetri.')
+          : 'Gizlilik tercihi kaydedildi: Sıfır çerez, sıfır telemetri.';
+        window.srShowToast(msg);
+      }
+    }
+
     if (acceptBtn) {
-      acceptBtn.addEventListener('click', () => {
-        try { localStorage.setItem(STORAGE_KEY, 'accepted'); } catch {}
-        banner.classList.remove('show');
+      acceptBtn.addEventListener('click', function () {
+        dismiss('accepted');
       });
     }
 
-    const closeBtn = document.getElementById('sr-privacy-close');
     if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        try { localStorage.setItem(STORAGE_KEY, 'dismissed'); } catch {}
-        banner.classList.remove('show');
+      closeBtn.addEventListener('click', function () {
+        dismiss('closed');
       });
     }
-  });
+
+    window.srOpenPrivacyBanner = function () {
+      if (banner) {
+        banner.classList.add('show');
+        if (window.srAudio && typeof window.srAudio.open === 'function') {
+          window.srAudio.open();
+        }
+      }
+    };
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPrivacyBanner);
+  } else {
+    initPrivacyBanner();
+  }
 })();

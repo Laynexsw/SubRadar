@@ -317,7 +317,16 @@ const SR_I18N = {
     "Başvuruyu Gönder": "Submit Application",
     "Başvurun alındı": "Application received",
     "gösterge kuru": "indicative rates",
-    "canlı kur": "live rates"
+    "canlı kur": "live rates",
+    "%100 Sıfır Çerez Güvencesi": "100% Zero-Cookie Guarantee",
+    "SubRadar hiçbir izleme, analitik veya reklam çerezi kullanmaz. Tercihleriniz (tema, dil, kur) sadece cihazınızdaki yerel bellekte saklanır.": "SubRadar uses zero tracking, analytics, or ad cookies. Preferences (theme, language, currency) are stored solely in your local storage.",
+    "0 Takip Çerezi": "0 Tracking Cookies",
+    "%100 Yerel Bellek": "100% Local Storage",
+    "Sıfır Telemetri": "Zero Telemetry",
+    "Anladım & Kabul Et": "Understood & Accept",
+    "Gizlilik Politikası": "Privacy Policy",
+    "Gizlilik tercihi kaydedildi: Sıfır çerez, sıfır telemetri.": "Privacy preference saved: Zero cookies, zero telemetry.",
+    "Çerez Tercihleri": "Cookie Preferences"
   };
   const SR_I18N_DE = {
     "Özellikler": "Funktionen",
@@ -633,7 +642,16 @@ const SR_I18N = {
     "Başvuruyu Gönder": "Bewerbung senden",
     "Başvurun alındı": "Bewerbung erhalten",
     "gösterge kuru": "Richtkurse",
-    "canlı kur": "Live-Kurse"
+    "canlı kur": "Live-Kurse",
+    "%100 Sıfır Çerez Güvencesi": "100 % Null-Cookie-Garantie",
+    "SubRadar hiçbir izleme, analitik veya reklam çerezi kullanmaz. Tercihleriniz (tema, dil, kur) sadece cihazınızdaki yerel bellekte saklanır.": "SubRadar verwendet keinerlei Tracking-, Analyse- oder Werbe-Cookies. Ihre Einstellungen (Design, Sprache, Währung) werden nur lokal gespeichert.",
+    "0 Takip Çerezi": "0 Tracking-Cookies",
+    "%100 Yerel Bellek": "100 % Lokaler Speicher",
+    "Sıfır Telemetri": "Null Telemetrie",
+    "Anladım & Kabul Et": "Verstanden & Akzeptieren",
+    "Gizlilik Politikası": "Datenschutzerklärung",
+    "Gizlilik tercihi kaydedildi: Sıfır çerez, sıfır telemetri.": "Datenschutzeinstellung gespeichert: Null Cookies, null Telemetrie.",
+    "Çerez Tercihleri": "Cookie-Einstellungen"
   };
   const SR_TITLE = {
     tr: 'SubRadar — Masaüstü Abonelik Zekâsı ve Tek Tıkla İptal',

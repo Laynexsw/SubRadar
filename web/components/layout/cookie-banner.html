@@ -1,31 +1,56 @@
 <!-- ========================================================================= -->
 <!-- 17. ÇEREZ VE YEREL DEPOLAMA GİZLİLİK BANNER'I                            -->
 <!-- ========================================================================= -->
-<aside id="sr-privacy-banner" role="region" aria-label="Gizlilik ve Yerel Bellek Bildirimi" class="rounded-2xl p-4 sm:p-5 bg-[#0f111a]/95 border border-white/15 backdrop-blur-2xl shadow-2xl text-left">
-  <div class="flex items-start gap-3.5">
-    <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-      <span class="material-symbols-outlined text-emerald-400 text-[20px]" aria-hidden="true">cookie_off</span>
-    </div>
-    <div class="flex-1 min-w-0">
-      <div class="flex items-center justify-between gap-2">
-        <h3 class="text-sm font-semibold text-white tracking-tight flex items-center gap-1.5">
-          <span>%100 Sıfır Çerez Güvencesi</span>
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-        </h3>
-        <button type="button" id="sr-privacy-close" class="text-neutral-400 hover:text-white transition-colors p-1 rounded-lg focus:outline-none" aria-label="Bildirimi kapat">
-          <span class="material-symbols-outlined text-[18px]">close</span>
-        </button>
+<aside id="sr-privacy-banner" role="region" aria-label="Gizlilik ve Yerel Bellek Bildirimi" class="text-left" aria-live="polite">
+  <div class="sr-privacy-card">
+    <div class="sr-privacy-body">
+      <!-- Icon Container -->
+      <div class="sr-privacy-icon" aria-hidden="true">
+        <span class="material-symbols-outlined text-[20px]">cookie_off</span>
       </div>
-      <p class="text-xs text-neutral-300 mt-1.5 leading-relaxed">
-        SubRadar hiçbir izleme, analitik veya reklam çerezi kullanmaz. Tercihleriniz (tema, dil, kur) sadece cihazınızdaki yerel bellekte saklanır.
-      </p>
-      <div class="flex items-center gap-3 mt-3.5 pt-3 border-t border-white/[0.08]">
-        <button type="button" id="sr-privacy-accept" class="px-4 py-1.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all cursor-pointer">
-          Anladım &amp; Kabul Et
-        </button>
-        <a href="../privacy.html" class="text-xs text-neutral-400 hover:text-white underline underline-offset-4 transition-colors">
-          Gizlilik Politikası
-        </a>
+      
+      <!-- Content Area -->
+      <div class="sr-privacy-main">
+        <div class="sr-privacy-header">
+          <h3 class="sr-privacy-title">
+            <span>%100 Sıfır Çerez Güvencesi</span>
+            <span class="sr-privacy-pulse" aria-hidden="true"></span>
+          </h3>
+          <button type="button" id="sr-privacy-close" class="sr-privacy-close" aria-label="Bildirimi kapat">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+          </button>
+        </div>
+
+        <p class="sr-privacy-desc">
+          SubRadar hiçbir izleme, analitik veya reklam çerezi kullanmaz. Tercihleriniz (tema, dil, kur) sadece cihazınızdaki yerel bellekte saklanır.
+        </p>
+
+        <!-- Trust Badges / Chips -->
+        <div class="sr-privacy-chips">
+          <span class="sr-privacy-chip">
+            <span class="material-symbols-outlined text-[13px] text-emerald-400">check_circle</span>
+            <span>0 Takip Çerezi</span>
+          </span>
+          <span class="sr-privacy-chip">
+            <span class="material-symbols-outlined text-[13px] text-emerald-400">lock</span>
+            <span>%100 Yerel Bellek</span>
+          </span>
+          <span class="sr-privacy-chip hidden sm:inline-flex">
+            <span class="material-symbols-outlined text-[13px] text-emerald-400">shield</span>
+            <span>Sıfır Telemetri</span>
+          </span>
+        </div>
+
+        <!-- Footer Buttons -->
+        <div class="sr-privacy-footer">
+          <button type="button" id="sr-privacy-accept" class="sr-privacy-accept">
+            <span class="material-symbols-outlined text-[16px]">done</span>
+            <span>Anladım &amp; Kabul Et</span>
+          </button>
+          <a href="../privacy.html" class="sr-privacy-link">
+            Gizlilik Politikası
+          </a>
+        </div>
       </div>
     </div>
   </div>
