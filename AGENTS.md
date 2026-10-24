@@ -137,6 +137,7 @@ SubRadar/
     │   ├── toast.js             # Apple Glass kayan bildirim balonu (`srShowToast`)
     │   ├── audio-fx.js          # Web Audio API sıfır-dosya matematiksel dokunsal ses motoru (`srAudio`)
     │   ├── cursor-glow.js       # Dinamik imleç takipçi cam aydınlatma ve ışıma motoru
+    │   ├── hero-radar-3d.js     # Three.js WebGL 3D radar küresi motoru (geodesic küre, gimbal halkalar, SaaS uyduları)
     │   ├── statement-lab.js     # İstemci taraflı ekstre ayrıştırıcı ve kaçak analizörü
     │   ├── hash-verifier.js     # WebCrypto API donanım ivmeli SHA-256 doğrulayıcı
     │   ├── social-export.js     # HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı
@@ -186,7 +187,9 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
 * **Tema & Dil & Kur:**
   * `#theme-toggle`, `#theme-toggle-icon`, `#theme-toggle-label`
   * `.lang-btn` (`data-lang="EN|DE|TR"`), `.currency-btn` (`data-currency="USD|EUR|TRY"`)
-* **Hero macOS Simülasyonu:**
+* **Hero macOS Simülasyonu & 3D WebGL Radar:**
+  * `#hero-radar-3d-wrapper`: Three.js 3D interaktif siber radar küresi konteyneri
+  * `#hero-radar-3d-canvas`: Three.js WebGL canvas (yörünge sürükleme, 360° sonar taraması, tema adaptasyonu, görünürlük tasarrufu)
   * `#hero-mock-window`: Simüle edilen pencere konteyneri
   * `#hero-win-close`, `#hero-win-min`, `#hero-win-zoom`: Trafik ışıkları
   * `#hero-win-restore-bar`, `#hero-win-restore`: Kapatılan pencereyi geri getirme çubuğu

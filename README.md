@@ -123,6 +123,7 @@ SubRadar/
     │   ├── toast.js                      # Kayan Apple Glass bildirim balonu sistemi
     │   ├── audio-fx.js                   # Web Audio API sıfır-dosya osilatörlü dokunsal ses motoru
     │   ├── cursor-glow.js                # Dinamik imleç takipçi cam aydınlatma ve ışıma motoru
+    │   ├── hero-radar-3d.js              # Three.js WebGL 3D radar küresi motoru (geodesic küre, gimbal halkalar, SaaS uyduları)
     │   ├── statement-lab.js              # İstemci taraflı Air-Gap ekstre ve kaçak sızıntı analizörü
     │   ├── hash-verifier.js              # WebCrypto API donanım ivmeli SHA-256 doğrulayıcı
     │   ├── social-export.js              # HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı

@@ -58,7 +58,7 @@ Depo şu anda **üç ana katmandan** oluşur:
   * `cookie-banner.html`: Minimal Apple Glass çerez ve canlı kullanıcı etkileşimi bildirim kartı (`#sr-privacy-banner`), canlı saniye sayacı rozeti (`#sr-active-seconds-badge`).
   * `mobile-sticky-cta.html`: Mobilde altta sabit kalan hızlı indirme çubuğu (`#sr-mobile-sticky-cta`).
 * **`sections/`**:
-  * `hero.html`: Ana manşet, işletim sistemi indirme butonları (macOS / Windows), interaktif macOS simülasyon penceresi (`#hero-mock-window`).
+  * `hero.html`: Ana manşet, işletim sistemi indirme butonları (macOS / Windows), Three.js WebGL 3D interaktif radar küresi (`#hero-radar-3d-wrapper`, `#hero-radar-3d-canvas`) ve interaktif macOS simülasyon penceresi (`#hero-mock-window`).
   * `problem.html`: Gizli abonelik kayıpları, 4.2 dakikalık iptal atlama süresi ve sektör istatistikleri.
   * `statement-lab.html`: Canlı hava boşluğu (Air-Gap) banka ekstresi ve sızıntı tarayıcısı laboratuvarı (`FileReader API`, sıfır bulut).
   * `calculator.html`: İsraf hesaplama kaydırıcıları, hızlı kullanıcı profilleri, 1/5 yıllık tasarruf projeksiyonu, PNG "Abonelik Röntgeni" kart ihracı (`#calc-export-png-btn`) ve X paylaşımı.
@@ -93,6 +93,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`toast.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/toast.js): Apple Glass bildirim balonu (`srShowToast(message)`).
 * [`audio-fx.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/audio-fx.js): Web Audio API sıfır-dosya matematiksel osilatörlü dokunsal ses motoru (`playClick`, `playToggle`, `playSuccess`, `toggle`).
 * [`cursor-glow.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/cursor-glow.js): Dinamik imleç takipçi cam aydınlatma motoru (`--mouse-x`, `--mouse-y`).
+* [`hero-radar-3d.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/hero-radar-3d.js): Three.js WebGL 3D radar küresi motoru (`initHeroRadar3D()`), geodesic tel kafes küre, 3 eksenli gimbal halkaları, dönen sonar radar fanı, 7 adet yüzen SaaS uydu düğümü, fareyle sürükle-döndür ve paralaks eğimi, `IntersectionObserver` ile sıfır işlemci yükü ve dinamik açık/koyu tema adaptasyonu.
 * [`statement-lab.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/statement-lab.js): İstemci taraflı Air-Gap ekstre ve kaçak sızıntı analizörü (`FileReader API`).
 * [`hash-verifier.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/hash-verifier.js): WebCrypto donanım ivmeli SHA-256 kurulum paketi bütünlük doğrulayıcısı.
 * [`social-export.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/social-export.js): HTML5 Canvas 1200x630 Retina "Abonelik Röntgeni" kart üretici, PNG indirici ve X/LinkedIn paylaşım köprüsü.
@@ -173,6 +174,8 @@ Depo şu anda **üç ana katmandan** oluşur:
 | `.lang-btn` | `layout/header.html` | Dil seçim butonları (`data-lang="EN|DE|TR"`) |
 | `.currency-btn` | `layout/header.html` | Para birimi butonları (`data-currency="USD|EUR|TRY"`) |
 | `#nav-cmd-trigger` | `layout/header.html` | ⌘K paletini açan üst çubuk butonu |
+| `#hero-radar-3d-wrapper`| `sections/hero.html` | Three.js 3D interaktif siber radar küresi konteyneri |
+| `#hero-radar-3d-canvas` | `sections/hero.html` | Three.js WebGL canvas (yörünge sürükleme, 360° sonar taraması, tema adaptasyonu) |
 | `#hero-mock-window` | `sections/hero.html` | Simüle edilen masaüstü penceresi |
 | `#hero-win-close` | `sections/hero.html` | Kırmızı macOS trafik ışığı (pencereyi gizler) |
 | `#hero-win-min` | `sections/hero.html` | Sarı macOS trafik ışığı (içeriği daraltır) |
