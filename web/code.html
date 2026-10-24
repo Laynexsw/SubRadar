@@ -29,10 +29,10 @@
 <meta name="twitter:image" content="https://laynexsw.github.io/SubRadar/og-image.svg"/>
 <!-- Material Symbols Outlined -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@200..600,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Supabase JS SDK v2 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Three.js 3D Engine (Offline-First Local Vendor) -->
-<script src="vendor/three/three.min.js"></script>
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
@@ -1574,39 +1574,6 @@ html.light #auth-mobile-tab-slider {
   <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-emerald-400 text-[13px]">credit_card_off</span> Kredi Kartı İstemez</span>
   <span class="text-white/20">•</span>
   <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-emerald-400 text-[13px]">cloud_off</span> Sıfır Bulut &amp; Sıfır Telemetri</span>
-</div>
-<!-- 3D Interactive Radar Globe Widget (Three.js WebGL) -->
-<div class="relative max-w-4xl mx-auto mt-10 mb-2" data-rv="fade-up" style="--d:.15s">
-  <div id="hero-radar-3d-wrapper" class="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-2xl bg-gradient-to-b from-white/[0.04] to-transparent border border-white/10 overflow-hidden backdrop-blur-md flex items-center justify-center group/radar shadow-2xl">
-    <canvas id="hero-radar-3d-canvas" class="w-full h-full cursor-grab active:cursor-grabbing" aria-label="İnteraktif 3D Radar Küresi"></canvas>
-    
-    <!-- Top-Left Live Radar Status Pill -->
-    <div class="absolute top-3.5 left-4 pointer-events-none flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-emerald-500/30 backdrop-blur-md">
-      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping" aria-hidden="true"></span>
-      <span class="text-[11px] font-mono text-emerald-400 font-medium">3D Radar: Canlı SaaS Taraması</span>
-    </div>
-
-    <!-- Top-Right Orbiting Hint -->
-    <div class="absolute top-3.5 right-4 pointer-events-none hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md text-[10px] font-mono text-white/50">
-      <span class="material-symbols-outlined text-[13px]">3d_rotation</span>
-      <span>Döndür • 360°</span>
-    </div>
-
-    <!-- Bottom Center Detected Nodes Ticker -->
-    <div class="absolute bottom-3 inset-x-4 pointer-events-none flex items-center justify-center">
-      <div class="inline-flex items-center gap-3 px-3.5 py-1 rounded-full bg-black/50 border border-white/10 backdrop-blur-md text-[10px] font-mono text-white/60 flex-wrap justify-center">
-        <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Netflix</span>
-        <span>•</span>
-        <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Adobe CC</span>
-        <span>•</span>
-        <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Spotify</span>
-        <span>•</span>
-        <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span> ChatGPT</span>
-        <span>•</span>
-        <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> Figma</span>
-      </div>
-    </div>
-  </div>
 </div>
 <!-- HERO DESKTOP APP WINDOW (Apple Studio Display / Native OS Window) -->
 <figure class="relative max-w-5xl mx-auto mt-14 text-left group/window transition-all duration-300" data-rv="scale" style="--d:.15s">
@@ -7016,11 +6983,33 @@ Rapor Üretici: https://subradar.dev
           submitText.innerHTML = '<span class="sr-spinner w-4 h-4 mr-2" aria-hidden="true"></span> Başvuru İletiliyor...';
         }
 
-        setTimeout(function () {
-          // Generate unique confirmation tracking reference code
-          var randHex = Math.floor(1000 + Math.random() * 9000).toString(16).toUpperCase();
-          var trackingCode = '#SR-2026-X' + randHex;
+        // Generate unique confirmation tracking reference code
+        var randHex = Math.floor(1000 + Math.random() * 9000).toString(16).toUpperCase();
+        var trackingCode = '#SR-2026-X' + randHex;
 
+        // Asynchronously push to Supabase enterprise_inquiries table
+        try {
+          fetch('https://lkdyhelgxsdjuhkqundt.supabase.co/rest/v1/enterprise_inquiries', {
+            method: 'POST',
+            headers: {
+              'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrZHloZWxneHNkanVoa3F1bmR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3ODIxMDQsImV4cCI6MjEwNDM1ODEwNH0.g-XERM3AuygktefIhL02F9ekYZfOfbFhKjlzWE2lCtw',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrZHloZWxneHNkanVoa3F1bmR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3ODIxMDQsImV4cCI6MjEwNDM1ODEwNH0.g-XERM3AuygktefIhL02F9ekYZfOfbFhKjlzWE2lCtw',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              ref_code: trackingCode,
+              name: nameVal,
+              email: emailVal,
+              company: companyVal,
+              seats: seatsVal,
+              status: 'pending'
+            })
+          }).catch(function (e) {
+            console.warn('[SubRadar] Supabase enterprise save fallback:', e);
+          });
+        } catch (e) {}
+
+        setTimeout(function () {
           try {
             var apps = JSON.parse(localStorage.getItem('sr-enterprise-apps') || '[]');
             apps.push({
@@ -7059,7 +7048,7 @@ Rapor Üretici: https://subradar.dev
               seats: seatsVal
             });
           }
-        }, 750);
+        }, 550);
       });
     }
   })();
@@ -8470,16 +8459,39 @@ function initAuthModal() {
     });
   }
 
-  // Social Sign-in simulation
+  // Supabase Client Integration
+  const SR_SB_URL = 'https://lkdyhelgxsdjuhkqundt.supabase.co';
+  const SR_SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrZHloZWxneHNkanVoa3F1bmR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3ODIxMDQsImV4cCI6MjEwNDM1ODEwNH0.g-XERM3AuygktefIhL02F9ekYZfOfbFhKjlzWE2lCtw';
+  let srSb = null;
+  if (typeof window !== 'undefined' && window.supabase && typeof window.supabase.createClient === 'function') {
+    try {
+      srSb = window.supabase.createClient(SR_SB_URL, SR_SB_KEY, {
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+      });
+    } catch (e) {}
+  }
+
+  // Social Sign-in via Supabase OAuth
   socialBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const provider = btn.getAttribute('data-provider') || 'Google';
       btn.style.opacity = '0.6';
       btn.disabled = true;
 
       if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
 
-      setTimeout(() => {
+      try {
+        if (srSb) {
+          const { error } = await srSb.auth.signInWithOAuth({
+            provider: provider.toLowerCase(),
+            options: { redirectTo: window.location.origin + window.location.pathname }
+          });
+          if (error) throw error;
+        } else {
+          throw new Error('Supabase SDK not loaded');
+        }
+      } catch (err) {
+        console.warn('[SubRadar] Supabase OAuth redirect notice:', err);
         let name = 'Arda Yılmaz';
         let email = 'arda.yilmaz@gmail.com';
         if (provider === 'GitHub') {
@@ -8490,12 +8502,13 @@ function initAuthModal() {
           email = 'arda@privaterelay.appleid.com';
         }
 
-        setAuthenticated({ name, email, provider });
-        getToast()(`✓ ${provider} ile başarıyla giriş yapıldı. Hoş geldiniz!`, 'success');
+        setAuthenticated({ name, email, provider: provider + ' (Demo)' });
+        getToast()(`✓ ${provider} ile oturum açıldı. Hoş geldiniz!`, 'success');
         if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+      } finally {
         btn.style.opacity = '1';
         btn.disabled = false;
-      }, 350);
+      }
     });
   });
 
@@ -8512,57 +8525,130 @@ function initAuthModal() {
     });
   }
 
-  // Sign-In Form Submit
+  // Sign-In Form Submit via Supabase
   if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = (loginEmail && loginEmail.value.trim()) || 'kullanici@subradar.dev';
+      const email = (loginEmail && loginEmail.value.trim()) || '';
+      const password = (loginPwd && loginPwd.value) || '';
+
+      if (!email || !password) {
+        getToast()('Lütfen e-posta ve şifrenizi girin.', 'error');
+        return;
+      }
 
       if (loginSpinner) loginSpinner.classList.remove('hidden');
       if (loginSubmitLabel) loginSubmitLabel.textContent = 'GİRİŞ YAPILIYOR...';
 
-      setTimeout(() => {
-        if (loginSpinner) loginSpinner.classList.add('hidden');
-        if (loginSubmitLabel) loginSubmitLabel.textContent = 'GİRİŞ YAP';
+      try {
+        if (srSb) {
+          const { data, error } = await srSb.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+          const user = data.user;
+          const meta = user.user_metadata || {};
+          const fullName = meta.full_name || email.split('@')[0];
 
-        const nameVal = email.split('@')[0];
-        setAuthenticated({
-          name: nameVal.charAt(0).toUpperCase() + nameVal.slice(1),
-          email: email,
-          provider: 'Local'
-        });
+          setAuthenticated({
+            id: user.id,
+            name: fullName.charAt(0).toUpperCase() + fullName.slice(1),
+            email: user.email || email,
+            provider: 'Supabase'
+          });
+        } else {
+          // REST API fallback
+          const res = await fetch(`${SR_SB_URL}/auth/v1/token?grant_type=password`, {
+            method: 'POST',
+            headers: { 'apikey': SR_SB_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          const resData = await res.json();
+          if (!res.ok) throw new Error(resData.error_description || resData.msg || 'Giriş yapılamadı.');
+
+          setAuthenticated({
+            id: resData.user?.id,
+            name: email.split('@')[0],
+            email: email,
+            provider: 'Supabase'
+          });
+        }
         getToast()('Giriş başarılı! Hoş geldiniz.', 'success');
         if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
-      }, 350);
+      } catch (err) {
+        console.warn('[SubRadar] Supabase login error:', err);
+        getToast()('Giriş başarısız: ' + (err.message || 'Hatalı e-posta veya şifre.'), 'error');
+      } finally {
+        if (loginSpinner) loginSpinner.classList.add('hidden');
+        if (loginSubmitLabel) loginSubmitLabel.textContent = 'GİRİŞ YAP';
+      }
     });
   }
 
-  // Sign-Up Form Submit
+  // Sign-Up Form Submit via Supabase
   if (registerForm) {
-    registerForm.addEventListener('submit', (e) => {
+    registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = (registerName && registerName.value.trim()) || 'Yeni Kullanıcı';
-      const email = (registerEmail && registerEmail.value.trim()) || 'kullanici@subradar.dev';
+      const email = (registerEmail && registerEmail.value.trim()) || '';
+      const password = (registerPwd && registerPwd.value) || '';
+
+      if (!email || !password) {
+        getToast()('Lütfen tüm alanları doldurun.', 'error');
+        return;
+      }
+      if (password.length < 8) {
+        getToast()('Şifreniz en az 8 karakter olmalıdır.', 'error');
+        return;
+      }
 
       if (registerSpinner) registerSpinner.classList.remove('hidden');
       if (registerSubmitLabel) registerSubmitLabel.textContent = 'KAYDEDİLİYOR...';
 
-      setTimeout(() => {
-        if (registerSpinner) registerSpinner.classList.add('hidden');
-        if (registerSubmitLabel) registerSubmitLabel.textContent = 'KAYIT OL';
+      try {
+        if (srSb) {
+          const { data, error } = await srSb.auth.signUp({
+            email,
+            password,
+            options: { data: { full_name: name } }
+          });
+          if (error) throw error;
+          const user = data.user;
 
-        setAuthenticated({
-          name: name,
-          email: email,
-          provider: 'Local'
-        });
+          setAuthenticated({
+            id: user?.id,
+            name: name,
+            email: email,
+            provider: 'Supabase'
+          });
+        } else {
+          // REST API fallback
+          const res = await fetch(`${SR_SB_URL}/auth/v1/signup`, {
+            method: 'POST',
+            headers: { 'apikey': SR_SB_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, data: { full_name: name } })
+          });
+          const resData = await res.json();
+          if (!res.ok) throw new Error(resData.msg || resData.error_description || 'Kayıt başarısız.');
+
+          setAuthenticated({
+            id: resData.id,
+            name: name,
+            email: email,
+            provider: 'Supabase'
+          });
+        }
         getToast()('Hesabınız başarıyla oluşturuldu! Hoş geldiniz.', 'success');
         if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
-      }, 350);
+      } catch (err) {
+        console.warn('[SubRadar] Supabase signup error:', err);
+        getToast()('Kayıt başarısız: ' + (err.message || 'Lütfen bilgilerinizi kontrol edin.'), 'error');
+      } finally {
+        if (registerSpinner) registerSpinner.classList.add('hidden');
+        if (registerSubmitLabel) registerSubmitLabel.textContent = 'KAYIT OL';
+      }
     });
   }
 
-  // Forgot password flow
+  // Forgot password flow via Supabase
   if (forgotLink) {
     forgotLink.addEventListener('click', () => {
       showForgotView();
@@ -8576,11 +8662,33 @@ function initAuthModal() {
     });
   }
   if (forgotForm) {
-    forgotForm.addEventListener('submit', (e) => {
+    forgotForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (forgotSuccess) forgotSuccess.classList.remove('hidden');
-      getToast()('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi!', 'success');
-      if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+      const email = (forgotEmail && forgotEmail.value.trim()) || (loginEmail && loginEmail.value.trim());
+      if (!email) {
+        getToast()('Lütfen e-posta adresinizi girin.', 'error');
+        return;
+      }
+      try {
+        if (srSb) {
+          const { error } = await srSb.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + window.location.pathname
+          });
+          if (error) throw error;
+        } else {
+          const res = await fetch(`${SR_SB_URL}/auth/v1/recover`, {
+            method: 'POST',
+            headers: { 'apikey': SR_SB_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          if (!res.ok) throw new Error('Sıfırlama bağlantısı gönderilemedi.');
+        }
+        if (forgotSuccess) forgotSuccess.classList.remove('hidden');
+        getToast()('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi!', 'success');
+        if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+      } catch (err) {
+        getToast()('İşlem başarısız: ' + (err.message || 'Lütfen tekrar deneyin.'), 'error');
+      }
     });
   }
 
@@ -8648,7 +8756,10 @@ function initAuthModal() {
   }
 
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        if (srSb) await srSb.auth.signOut();
+      } catch (e) {}
       clearAuthentication();
       getToast()('Oturum kapatıldı.', 'info');
       if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
@@ -8658,6 +8769,41 @@ function initAuthModal() {
   // Global API exposure
   window.srOpenAuthModal = openModal;
   window.srCloseAuthModal = closeModal;
+
+  // Supabase Auth Session Sync on Load
+  try {
+    if (srSb) {
+      srSb.auth.getSession().then(({ data: { session } }) => {
+        if (session && session.user) {
+          const u = session.user;
+          const meta = u.user_metadata || {};
+          const fullName = meta.full_name || (u.email ? u.email.split('@')[0] : 'Kullanıcı');
+          setAuthenticated({
+            id: u.id,
+            name: fullName.charAt(0).toUpperCase() + fullName.slice(1),
+            email: u.email,
+            provider: 'Supabase'
+          });
+        }
+      }).catch(() => {});
+
+      srSb.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN' && session && session.user) {
+          const u = session.user;
+          const meta = u.user_metadata || {};
+          const fullName = meta.full_name || (u.email ? u.email.split('@')[0] : 'Kullanıcı');
+          setAuthenticated({
+            id: u.id,
+            name: fullName.charAt(0).toUpperCase() + fullName.slice(1),
+            email: u.email,
+            provider: 'Supabase'
+          });
+        } else if (event === 'SIGNED_OUT') {
+          clearAuthentication();
+        }
+      });
+    }
+  } catch (e) {}
 
   // Initialize UI on load
   updateSessionUI();
@@ -8698,328 +8844,6 @@ if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', initAuthModal);
   } else {
     initAuthModal();
-  }
-}
-</script>
-
-<script id="sr-bundle-hero-radar-3d-js">
-/**
- * SubRadar — 3D Interactive Radar Globe (hero-radar-3d.js)
- * Powered by Three.js (mrdoob/three.js) • 100% Offline-First WebGL Engine
- * Apple Glass & Cyber-Radar Aesthetic: Orbiting Gimbal Rings, Sonar Beam, Detected SaaS Nodes
- */
-function initHeroRadar3D() {
-  const container = document.getElementById('hero-radar-3d-wrapper');
-  const canvas = document.getElementById('hero-radar-3d-canvas');
-  if (!container || !canvas || typeof THREE === 'undefined') return null;
-
-  // Scene, Camera, Renderer
-  const scene = new THREE.Scene();
-  
-  const width = container.clientWidth || 800;
-  const height = container.clientHeight || 420;
-  
-  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-  camera.position.set(0, 0, 7.8);
-
-  const renderer = new THREE.WebGLRenderer({
-    canvas: canvas,
-    alpha: true,
-    antialias: true,
-    powerPreference: 'high-performance'
-  });
-  renderer.setSize(width, height, false);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-  // Main Group for interactive rotation
-  const radarGroup = new THREE.Group();
-  scene.add(radarGroup);
-
-  // 1. Theme-aware color palette
-  const isLight = () => document.documentElement.classList.contains('light');
-  
-  function getPalette() {
-    const light = isLight();
-    return {
-      sphereWire: light ? 0x059669 : 0x10b981,
-      sphereOpacity: light ? 0.22 : 0.16,
-      corePoints: light ? 0x047857 : 0x34d399,
-      coreOpacity: light ? 0.45 : 0.35,
-      ringOuter: light ? 0x0f172a : 0xffffff,
-      ringOuterOpacity: light ? 0.25 : 0.18,
-      ringRadar: light ? 0x059669 : 0x10b981,
-      ringRadarOpacity: light ? 0.55 : 0.45,
-      sweepColor: light ? 0x059669 : 0x34d399,
-      sweepOpacity: light ? 0.22 : 0.16,
-      nodeGlow: light ? 0x047857 : 0x34d399
-    };
-  }
-
-  let palette = getPalette();
-
-  // 2. Wireframe Outer Radar Globe (Geodesic Sphere)
-  const sphereGeo = new THREE.IcosahedronGeometry(2.35, 3);
-  const sphereMat = new THREE.MeshBasicMaterial({
-    color: palette.sphereWire,
-    wireframe: true,
-    transparent: true,
-    opacity: palette.sphereOpacity
-  });
-  const wireSphere = new THREE.Mesh(sphereGeo, sphereMat);
-  radarGroup.add(wireSphere);
-
-  // 3. Inner Point Cloud Core (Matrix of detected data points)
-  const pointCount = 180;
-  const pointPositions = new Float32Array(pointCount * 3);
-  for (let i = 0; i < pointCount; i++) {
-    const u = Math.random();
-    const v = Math.random();
-    const theta = u * 2.0 * Math.PI;
-    const phi = Math.acos(2.0 * v - 1.0);
-    const r = 1.45 + Math.random() * 0.75;
-    const sinPhi = Math.sin(phi);
-    pointPositions[i * 3] = r * sinPhi * Math.cos(theta);
-    pointPositions[i * 3 + 1] = r * sinPhi * Math.sin(theta);
-    pointPositions[i * 3 + 2] = r * Math.cos(phi);
-  }
-  const pointGeo = new THREE.BufferGeometry();
-  pointGeo.setAttribute('position', new THREE.BufferAttribute(pointPositions, 3));
-  const pointMat = new THREE.PointsMaterial({
-    color: palette.corePoints,
-    size: 0.05,
-    transparent: true,
-    opacity: palette.coreOpacity
-  });
-  const innerPoints = new THREE.Points(pointGeo, pointMat);
-  radarGroup.add(innerPoints);
-
-  // 4. Concentric Gimbal Radar Rings
-  const rings = [];
-
-  // Equatorial Primary Ring
-  const eqRingGeo = new THREE.TorusGeometry(2.72, 0.015, 16, 90);
-  const eqRingMat = new THREE.MeshBasicMaterial({
-    color: palette.ringRadar,
-    transparent: true,
-    opacity: palette.ringRadarOpacity
-  });
-  const eqRing = new THREE.Mesh(eqRingGeo, eqRingMat);
-  eqRing.rotation.x = Math.PI / 2.2;
-  radarGroup.add(eqRing);
-  rings.push({ mesh: eqRing, speedY: 0.003, speedX: 0.001 });
-
-  // Polar Ring
-  const polarRingGeo = new THREE.TorusGeometry(2.95, 0.012, 16, 90);
-  const polarRingMat = new THREE.MeshBasicMaterial({
-    color: palette.ringOuter,
-    transparent: true,
-    opacity: palette.ringOuterOpacity
-  });
-  const polarRing = new THREE.Mesh(polarRingGeo, polarRingMat);
-  polarRing.rotation.y = Math.PI / 3;
-  radarGroup.add(polarRing);
-  rings.push({ mesh: polarRing, speedY: -0.002, speedZ: 0.0015 });
-
-  // Outer Precision Latitude Ring with dashed feel
-  const outerRingGeo = new THREE.TorusGeometry(3.18, 0.008, 16, 80);
-  const outerRingMat = new THREE.MeshBasicMaterial({
-    color: palette.ringRadar,
-    transparent: true,
-    opacity: palette.ringOuterOpacity * 0.8
-  });
-  const outerRing = new THREE.Mesh(outerRingGeo, outerRingMat);
-  outerRing.rotation.x = Math.PI / 3.5;
-  outerRing.rotation.z = Math.PI / 6;
-  radarGroup.add(outerRing);
-  rings.push({ mesh: outerRing, speedX: -0.001, speedY: 0.002 });
-
-  // 5. Rotating Sonar Radar Sweep Fan
-  const sweepGeo = new THREE.CircleGeometry(2.65, 48, 0, Math.PI / 3.2);
-  const sweepMat = new THREE.MeshBasicMaterial({
-    color: palette.sweepColor,
-    transparent: true,
-    opacity: palette.sweepOpacity,
-    side: THREE.DoubleSide
-  });
-  const radarSweep = new THREE.Mesh(sweepGeo, sweepMat);
-  radarSweep.rotation.x = Math.PI / 2.2;
-  radarGroup.add(radarSweep);
-
-  // 6. Detected SaaS Nodes (Floating Subscription Satellites)
-  const saasNodes = [
-    { name: 'Netflix', color: 0xef4444, pos: [1.8, 1.2, 1.1], price: '$15.99' },
-    { name: 'Adobe CC', color: 0xf43f5e, pos: [-1.9, 0.9, -1.0], price: '$54.99' },
-    { name: 'Spotify', color: 0x10b981, pos: [0.8, -1.9, 1.3], price: '$10.99' },
-    { name: 'ChatGPT Plus', color: 0x14b8a6, pos: [-1.2, -1.4, 1.6], price: '$20.00' },
-    { name: 'Figma Pro', color: 0xa855f7, pos: [1.5, -0.8, -1.7], price: '$12.00' },
-    { name: 'GitHub Copilot', color: 0x38bdf8, pos: [-1.6, 1.5, 1.2], price: '$10.00' },
-    { name: 'AWS Cloud', color: 0xf59e0b, pos: [0.5, 2.0, -1.4], price: '$64.20' }
-  ];
-
-  const nodeMeshes = [];
-  const pingHalos = [];
-
-  const nodeSphereGeo = new THREE.SphereGeometry(0.08, 16, 16);
-  const haloRingGeo = new THREE.RingGeometry(0.1, 0.22, 24);
-
-  saasNodes.forEach((node) => {
-    const nodeMat = new THREE.MeshBasicMaterial({ color: node.color });
-    const mesh = new THREE.Mesh(nodeSphereGeo, nodeMat);
-    mesh.position.set(node.pos[0], node.pos[1], node.pos[2]);
-    radarGroup.add(mesh);
-
-    // Pulsing Radar Halo Ring
-    const haloMat = new THREE.MeshBasicMaterial({
-      color: node.color,
-      transparent: true,
-      opacity: 0.7,
-      side: THREE.DoubleSide
-    });
-    const halo = new THREE.Mesh(haloRingGeo, haloMat);
-    halo.position.copy(mesh.position);
-    halo.lookAt(0, 0, 0);
-    radarGroup.add(halo);
-
-    nodeMeshes.push({ mesh, data: node });
-    pingHalos.push({ halo, baseScale: 1, phase: Math.random() * Math.PI * 2 });
-  });
-
-  // 7. Interactive Mouse / Touch Orbit Controls
-  let isDragging = false;
-  let previousMousePos = { x: 0, y: 0 };
-  let targetRotation = { x: 0.15, y: 0 };
-  let targetTilt = { x: 0, y: 0 };
-
-  const onPointerDown = (e) => {
-    isDragging = true;
-    previousMousePos = { x: e.clientX, y: e.clientY };
-  };
-
-  const onPointerMove = (e) => {
-    if (isDragging) {
-      const deltaX = e.clientX - previousMousePos.x;
-      const deltaY = e.clientY - previousMousePos.y;
-      targetRotation.y += deltaX * 0.006;
-      targetRotation.x += deltaY * 0.006;
-      previousMousePos = { x: e.clientX, y: e.clientY };
-    } else {
-      // Subtle parallax tilt when hovering
-      const rect = container.getBoundingClientRect();
-      const normX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const normY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-      targetTilt.y = normX * 0.35;
-      targetTilt.x = normY * 0.25;
-    }
-  };
-
-  const onPointerUp = () => {
-    isDragging = false;
-  };
-
-  canvas.addEventListener('pointerdown', onPointerDown);
-  window.addEventListener('pointermove', onPointerMove, { passive: true });
-  window.addEventListener('pointerup', onPointerUp);
-
-  // 8. Theme change listener
-  function updateThemeColors() {
-    palette = getPalette();
-    sphereMat.color.setHex(palette.sphereWire);
-    sphereMat.opacity = palette.sphereOpacity;
-    pointMat.color.setHex(palette.corePoints);
-    pointMat.opacity = palette.coreOpacity;
-    eqRingMat.color.setHex(palette.ringRadar);
-    eqRingMat.opacity = palette.ringRadarOpacity;
-    polarRingMat.color.setHex(palette.ringOuter);
-    polarRingMat.opacity = palette.ringOuterOpacity;
-    outerRingMat.color.setHex(palette.ringRadar);
-    sweepMat.color.setHex(palette.sweepColor);
-    sweepMat.opacity = palette.sweepOpacity;
-  }
-
-  const themeObserver = new MutationObserver(() => updateThemeColors());
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
-  // 9. Resize Handling
-  function handleResize() {
-    if (!container || !canvas) return;
-    const w = container.clientWidth;
-    const h = container.clientHeight;
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, h, false);
-  }
-  window.addEventListener('resize', handleResize, { passive: true });
-
-  // 10. Animation Loop & Visibility Caching (Zero overhead when scrolled out)
-  let isVisible = true;
-  const visibilityObserver = new IntersectionObserver((entries) => {
-    isVisible = entries[0].isIntersecting;
-  }, { threshold: 0.05 });
-  visibilityObserver.observe(container);
-
-  let animationFrameId;
-  let clock = new THREE.Clock();
-
-  function animate() {
-    animationFrameId = requestAnimationFrame(animate);
-    if (!isVisible) return;
-
-    const delta = clock.getDelta();
-    const elapsedTime = clock.getElapsedTime();
-
-    // Constant smooth background rotation
-    targetRotation.y += 0.0035;
-
-    // Smooth lerp damping
-    radarGroup.rotation.x += (targetRotation.x + targetTilt.x - radarGroup.rotation.x) * 0.08;
-    radarGroup.rotation.y += (targetRotation.y + targetTilt.y - radarGroup.rotation.y) * 0.08;
-
-    // Rotate Sonar Sweep Fan continuously
-    radarSweep.rotation.z -= 0.024;
-
-    // Pulse Inner Points
-    innerPoints.rotation.y += 0.0015;
-    innerPoints.rotation.x -= 0.001;
-
-    // Rotate concentric rings
-    rings.forEach((ring) => {
-      if (ring.speedX) ring.mesh.rotation.x += ring.speedX;
-      if (ring.speedY) ring.mesh.rotation.y += ring.speedY;
-      if (ring.speedZ) ring.mesh.rotation.z += ring.speedZ;
-    });
-
-    // Pulse halos around detected SaaS nodes
-    pingHalos.forEach((p, idx) => {
-      const scale = 1 + Math.sin(elapsedTime * 3.5 + p.phase) * 0.45;
-      const opacity = 0.8 - (scale - 1) * 1.5;
-      p.halo.scale.set(scale, scale, scale);
-      p.halo.material.opacity = Math.max(0.05, opacity);
-    });
-
-    renderer.render(scene, camera);
-  }
-
-  animate();
-
-  return {
-    destroy: () => {
-      cancelAnimationFrame(animationFrameId);
-      themeObserver.disconnect();
-      visibilityObserver.disconnect();
-      window.removeEventListener('resize', handleResize);
-      canvas.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      renderer.dispose();
-    }
-  };
-}
-
-if (typeof document !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHeroRadar3D);
-  } else {
-    initHeroRadar3D();
   }
 }
 </script>

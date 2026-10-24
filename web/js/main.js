@@ -13,7 +13,6 @@ import { initCommandPalette } from './modals/command-palette.js';
 import { initEnterpriseModal } from './modals/enterprise-modal.js';
 import { initReclaimModal } from './modals/reclaim-modal.js';
 import { initAuthModal } from './modals/auth-modal.js';
-import { initHeroRadar3D } from './hero-radar-3d.js';
 import './analytics.js';
 import './cookie-banner.js';
 import './mobile-cta.js';
@@ -24,13 +23,13 @@ import './hash-verifier.js';
 import './social-export.js';
 import './modals/shortcuts-modal.js';
 import './modals/legal-gen.js';
+import './supabase.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize modules
   initTheme();
   initFx();
   initScrollMotion();
-  initHeroRadar3D();
   const heroModule = initHeroWindow();
   const calcModule = initCalculator();
   initDownloadModal();

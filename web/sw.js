@@ -26,10 +26,8 @@ const ASSETS_TO_CACHE = [
   './js/cursor-glow.js',
   './js/hash-verifier.js',
   './js/social-export.js',
-  './js/hero-radar-3d.js',
-  './js/main.js',
-  './vendor/three/three.min.js',
-  './vendor/three/three.module.js'
+  './js/supabase.js',
+  './js/main.js'
 ];
 
 self.addEventListener('install', (event) => {

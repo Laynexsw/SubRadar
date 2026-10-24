@@ -79,11 +79,9 @@ SubRadar/
 │       └── renderer/            # Apple Glass arayüzü
 │           ├── index.html       # Çerçevesiz ana pencere, 6 modül görünümü & kasa şifre kapısı
 │           ├── styles/          # app.css, components.css
-│           └── scripts/         # app.js, presets.js, crypto-fallback.js, three.min.js
+│           └── scripts/         # app.js, presets.js, crypto-fallback.js
 │
 └── web/                         # WEB VİTRİNİ VE İNTERAKTİF SİMÜLATÖR
-    ├── vendor/                  # %100 Çevrimdışı Üçüncü Parti Kütüphaneler
-    │   └── three/               # Three.js (mrdoob/three.js) yerel bağımsız paket (three.min.js, three.module.js)
     ├── code.html                # Canlı çalışan tekil vitrin (GitHub Pages'ın sunduğu ana dosya)
     ├── index.html               # web/ içi hızlı yönlendirici -> code.html
     ├── 404.html                 # Alt dizin 404 hata sayfası
@@ -132,12 +130,12 @@ SubRadar/
     │
     ├── js/
     │   ├── config.js            # Kurlar (USD, EUR, TRY), para birimi yöneticisi, localStorage cache
+    │   ├── supabase.js          # Supabase Client, Auth (Email, OAuth, Reset) ve Bulut Veritabanı entegrasyonu
     │   ├── theme.js             # Koyu / Açık tema geçişi (`html.light`, `html.dark`)
     │   ├── fx.js                # Canlı döviz kurları çekici (open.er-api / frankfurter, 12h TTL)
     │   ├── toast.js             # Apple Glass kayan bildirim balonu (`srShowToast`)
     │   ├── audio-fx.js          # Web Audio API sıfır-dosya matematiksel dokunsal ses motoru (`srAudio`)
     │   ├── cursor-glow.js       # Dinamik imleç takipçi cam aydınlatma ve ışıma motoru
-    │   ├── hero-radar-3d.js     # Three.js WebGL 3D radar küresi motoru (geodesic küre, gimbal halkalar, SaaS uyduları)
     │   ├── statement-lab.js     # İstemci taraflı ekstre ayrıştırıcı ve kaçak analizörü
     │   ├── hash-verifier.js     # WebCrypto API donanım ivmeli SHA-256 doğrulayıcı
     │   ├── social-export.js     # HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı
@@ -187,9 +185,7 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
 * **Tema & Dil & Kur:**
   * `#theme-toggle`, `#theme-toggle-icon`, `#theme-toggle-label`
   * `.lang-btn` (`data-lang="EN|DE|TR"`), `.currency-btn` (`data-currency="USD|EUR|TRY"`)
-* **Hero macOS Simülasyonu & 3D WebGL Radar:**
-  * `#hero-radar-3d-wrapper`: Three.js 3D interaktif siber radar küresi konteyneri
-  * `#hero-radar-3d-canvas`: Three.js WebGL canvas (yörünge sürükleme, 360° sonar taraması, tema adaptasyonu, görünürlük tasarrufu)
+* **Hero macOS Simülasyonu:**
   * `#hero-mock-window`: Simüle edilen pencere konteyneri
   * `#hero-win-close`, `#hero-win-min`, `#hero-win-zoom`: Trafik ışıkları
   * `#hero-win-restore-bar`, `#hero-win-restore`: Kapatılan pencereyi geri getirme çubuğu

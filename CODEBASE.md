@@ -58,7 +58,7 @@ Depo şu anda **üç ana katmandan** oluşur:
   * `cookie-banner.html`: Minimal Apple Glass çerez ve canlı kullanıcı etkileşimi bildirim kartı (`#sr-privacy-banner`), canlı saniye sayacı rozeti (`#sr-active-seconds-badge`).
   * `mobile-sticky-cta.html`: Mobilde altta sabit kalan hızlı indirme çubuğu (`#sr-mobile-sticky-cta`).
 * **`sections/`**:
-  * `hero.html`: Ana manşet, işletim sistemi indirme butonları (macOS / Windows), Three.js WebGL 3D interaktif radar küresi (`#hero-radar-3d-wrapper`, `#hero-radar-3d-canvas`) ve interaktif macOS simülasyon penceresi (`#hero-mock-window`).
+  * `hero.html`: Ana manşet, işletim sistemi indirme butonları (macOS / Windows), interaktif macOS simülasyon penceresi (`#hero-mock-window`).
   * `problem.html`: Gizli abonelik kayıpları, 4.2 dakikalık iptal atlama süresi ve sektör istatistikleri.
   * `statement-lab.html`: Canlı hava boşluğu (Air-Gap) banka ekstresi ve sızıntı tarayıcısı laboratuvarı (`FileReader API`, sıfır bulut).
   * `calculator.html`: İsraf hesaplama kaydırıcıları, hızlı kullanıcı profilleri, 1/5 yıllık tasarruf projeksiyonu, PNG "Abonelik Röntgeni" kart ihracı (`#calc-export-png-btn`) ve X paylaşımı.
@@ -78,22 +78,21 @@ Depo şu anda **üç ana katmandan** oluşur:
   * `legal-generator-modal.html`: Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı (canlı önizleme, pano kopyalama ve `.txt` dosya indirme).
   * `auth-modal.html`: İkili kayan panelli (Double-Slider Sliding Overlay) Apple Glass Monokrom modalı: Saf siyah-beyaz ve uzay grafiti/obsidyen marka katmanı (`.auth-overlay`), buzlu geometrik cam şekiller, parlak beyaz ve ghost outline hap butonlar ("GİRİŞ YAP" / "KAYIT OL"), dairesel monokrom sosyal butonlar (Google, GitHub, Apple), tek tıkla VIP demo, monokrom şifre güvenlik göstergesi ve aktif profil yönetim paneli.
 
-### 2.4 Web Stilleri (`web/css/`) & Çevrimdışı Kütüphaneler (`web/vendor/`)
+### 2.4 Web Stilleri (`web/css/`)
 * [`base.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/base.css): SF Pro font ailesi, `html.light` ve `html.dark` değişkenleri, skip-link, scroll-behavior, metin seçimi renkleri.
 * [`components.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/components.css): `.apple-glass` arka plan bluru, `.apple-card` kalkış ve imleç takipçi dinamik ışıma efekti (`--mouse-x`, `--mouse-y`), `.custom-scroll` cam kaydırma çubuğu, ses göstergesi animasyonları (`@keyframes soundPulse`), form hata animasyonları (`.shake-anim`), mobil sabit CTA ve çerez banner'ı stilleri.
 * [`main.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/main.css): `base.css` ve `components.css` modüllerini içe aktarır.
-* [`vendor/three/`](file:///c:/Users/arday/Desktop/SubRadar/web/vendor/three/): Three.js (`mrdoob/three.js`) %100 yerel ve çevrimdışı 3D grafik motoru paketleri (`three.min.js`, `three.module.js`).
 
 ### 2.5 Web Betikleri (`web/js/`) & PWA
 * [`manifest.json`](file:///c:/Users/arday/Desktop/SubRadar/web/manifest.json): PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği).
 * [`sw.js`](file:///c:/Users/arday/Desktop/SubRadar/web/sw.js): Çevrimdışı Service Worker önbellekleme motoru.
 * [`config.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/config.js): Kurlar (`USD: 1`, `EUR: 0.86`, `TRY: 48.35`), `srCurrency`, `setCurrency(cur)`, `srConvert(usd)`.
+* [`supabase.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/supabase.js): Supabase v2 JS SDK istemcisi, Auth (E-posta, OAuth, Şifre Sıfırlama) ve PostgreSQL REST tabloları (`profiles`, `licenses`, `enterprise_inquiries`, `user_vault_backups`) köprüsü.
 * [`theme.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/theme.js): Açık/koyu mod mantığı (`#theme-toggle`, `localStorage: sr-theme`).
 * [`fx.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/fx.js): Canlı döviz kurlarını `open.er-api.com` veya `api.frankfurter.app` üzerinden çeker (12 saat TTL önbellek).
 * [`toast.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/toast.js): Apple Glass bildirim balonu (`srShowToast(message)`).
 * [`audio-fx.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/audio-fx.js): Web Audio API sıfır-dosya matematiksel osilatörlü dokunsal ses motoru (`playClick`, `playToggle`, `playSuccess`, `toggle`).
 * [`cursor-glow.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/cursor-glow.js): Dinamik imleç takipçi cam aydınlatma motoru (`--mouse-x`, `--mouse-y`).
-* [`hero-radar-3d.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/hero-radar-3d.js): Three.js WebGL 3D radar küresi motoru (`initHeroRadar3D()`), geodesic tel kafes küre, 3 eksenli gimbal halkaları, dönen sonar radar fanı, 7 adet yüzen SaaS uydu düğümü, fareyle sürükle-döndür ve paralaks eğimi, `IntersectionObserver` ile sıfır işlemci yükü ve dinamik açık/koyu tema adaptasyonu.
 * [`statement-lab.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/statement-lab.js): İstemci taraflı Air-Gap ekstre ve kaçak sızıntı analizörü (`FileReader API`).
 * [`hash-verifier.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/hash-verifier.js): WebCrypto donanım ivmeli SHA-256 kurulum paketi bütünlük doğrulayıcısı.
 * [`social-export.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/social-export.js): HTML5 Canvas 1200x630 Retina "Abonelik Röntgeni" kart üretici, PNG indirici ve X/LinkedIn paylaşım köprüsü.
@@ -115,7 +114,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 22 bileşenin bütünlüğünü doğrulayan test betiği.
 
 ### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/`)
-* [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 ve Three.js (^0.186.1) bağımlılıkları, test scriptleri.
+* [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 bağımlılığı ve `start`, `dev`, `test`, `test:vault`, `test:parser` komutları.
 * [`main.js`](file:///c:/Users/arday/Desktop/SubRadar/app/main.js): Electron ana süreci (`frame: false`, `titleBarStyle: 'hidden'`, pencere kontrolleri, güvenli IPC kanalları, dosya iletişim kutuları, pano köprüsü, harici URL açma).
 * [`preload.js`](file:///c:/Users/arday/Desktop/SubRadar/app/preload.js): `contextIsolation: true` güvenlikli köprü; renderer sürecine `window.subradarAPI` (`vault`, `subscriptions`, `preferences`, `legalNotice`, `statement`, `system`) nesnesini sunar.
 * [`src/main/vault.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/vault.js): Node.js yerel `crypto` motoru (`aes-256-cbc`, `scryptSync`, timing-safe `HMAC-SHA256`).
@@ -127,7 +126,6 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`src/renderer/index.html`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/index.html): Çerçevesiz Apple Glass ana pencere, ana şifre kilit ekranı (Gate Screen), KPI kartları, 6 modül görünümü (Genel Bakış, Abonelikler, Risk Radarı, Kill Switch, Ekstre Tarayıcı, Kasa Ayarları), ⌘K Komut Paleti ve modallar.
 * [`src/renderer/styles/app.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/app.css): Frameless pencere sürükleme kuralları, sidebar gezinimi, radar animasyonları, renk tokenları.
 * [`src/renderer/styles/components.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/components.css): Apple Glass kartlar, kilit ekranı modalı, KPI ızgarası, veri tablosu, ekstre yükleme sürükle-bırak alanı ve form kontrolleri.
-* [`src/renderer/scripts/three.min.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/three.min.js): Masaüstü arayüzü için yerel çevrimdışı 3D grafik motoru (`mrdoob/three.js`).
 * [`src/renderer/scripts/app.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/app.js): Renderer reaktif kontrolcüsü (sekme geçişleri, kasa kilidi açma, CRUD, anlık arama, risk radarı hesaplama, ekstre ayrıştırma ve ⌘K komut paleti orkestrasyonu).
 * [`src/renderer/scripts/presets.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/presets.js): 16+ popüler SaaS servisi için tek tıkla doğrudan iptal URL'leri, kategoriler ve varsayılan fiyatlar.
 * [`src/renderer/scripts/crypto-fallback.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/crypto-fallback.js): Tarayıcı geliştirme ortamları için WebCrypto (`SubtleCrypto`) tabanlı yerel kasa ve ekstre tarayıcı taklidi.
@@ -174,8 +172,6 @@ Depo şu anda **üç ana katmandan** oluşur:
 | `.lang-btn` | `layout/header.html` | Dil seçim butonları (`data-lang="EN|DE|TR"`) |
 | `.currency-btn` | `layout/header.html` | Para birimi butonları (`data-currency="USD|EUR|TRY"`) |
 | `#nav-cmd-trigger` | `layout/header.html` | ⌘K paletini açan üst çubuk butonu |
-| `#hero-radar-3d-wrapper`| `sections/hero.html` | Three.js 3D interaktif siber radar küresi konteyneri |
-| `#hero-radar-3d-canvas` | `sections/hero.html` | Three.js WebGL canvas (yörünge sürükleme, 360° sonar taraması, tema adaptasyonu) |
 | `#hero-mock-window` | `sections/hero.html` | Simüle edilen masaüstü penceresi |
 | `#hero-win-close` | `sections/hero.html` | Kırmızı macOS trafik ışığı (pencereyi gizler) |
 | `#hero-win-min` | `sections/hero.html` | Sarı macOS trafik ışığı (içeriği daraltır) |

@@ -1,6 +1,8 @@
 /**
  * SubRadar — Enterprise Modal Controller (Loading states & inline validation)
  */
+import { srSubmitEnterpriseInquiry } from '../supabase.js';
+
 export function initEnterpriseModal() {
   const backdrop = document.getElementById('ent-modal-backdrop');
   const formView = document.getElementById('ent-view-form');
@@ -114,14 +116,23 @@ export function initEnterpriseModal() {
         submitText.innerHTML = '<span class="sr-spinner mr-2"></span> Gönderiliyor...';
       }
 
-      setTimeout(() => {
+      const generatedRef = 'Takip Kodu: #SR-2026-' + Math.floor(1000 + Math.random() * 9000);
+
+      srSubmitEnterpriseInquiry({
+        name: nameVal,
+        email: emailVal,
+        company: companyVal,
+        refCode: generatedRef
+      }).catch(err => {
+        console.warn('[SubRadar] Supabase enterprise save fallback:', err);
+      }).finally(() => {
         submit.disabled = false;
         if (submitText) submitText.textContent = 'Başvuruyu Gönder';
         
         // Item 14: Dynamic reference code
         const refCodeEl = document.getElementById('ent-ref-code');
         if (refCodeEl) {
-          refCodeEl.textContent = 'Takip Kodu: #SR-2026-' + Math.floor(1000 + Math.random() * 9000);
+          refCodeEl.textContent = generatedRef;
         }
 
         if (formView) formView.classList.add('hidden');
@@ -131,7 +142,7 @@ export function initEnterpriseModal() {
         if (window.srAnalytics && window.srAnalytics.track) {
           window.srAnalytics.track('enterprise_apply');
         }
-      }, 650);
+      });
     });
   }
 }

@@ -66,10 +66,9 @@ SubRadar/
 │   └── src/renderer/                     # Apple Glassmorphism Arayüzü (SF Pro & Inter)
 │       ├── index.html                    # Çerçevesiz ana pencere, 6 modül görünümü, ⌘K paleti & kilit kapısı
 │       ├── styles/                       # app.css (pencere & düzen), components.css (kartlar & modallar)
-│       └── scripts/                      # app.js (arayüz), presets.js (16+ SaaS şablonu), crypto-fallback.js, three.min.js
+│       └── scripts/                      # app.js (arayüz), presets.js (16+ SaaS şablonu), crypto-fallback.js
 │
 └── 🌐 web/                               # WEB TANITIM VİTRİNİ & MODÜLER BİLEŞENLER
-    ├── vendor/three/                     # Three.js (mrdoob/three.js) %100 yerel çevrimdışı 3D motoru
     ├── code.html                         # Entegre canlı vitrin uygulaması ve interaktif masaüstü simülatörü
     ├── index.html                        # web/ içi hızlı yönlendirici
     ├── 404.html                          # Alt dizin 404 hata sayfası
@@ -117,13 +116,13 @@ SubRadar/
     │
     ├── js/                               # Web JavaScript Modülleri
     │   ├── config.js                     # Sabitler, kurlar ve global yapılandırma ayarları
+    │   ├── supabase.js                   # Supabase v2 JS SDK istemcisi, Auth ve Bulut Veritabanı entegrasyonu
     │   ├── i18n.js                       # Çoklu dil sözlüğü (Türkçe, İngilizce, Almanca) ve çevirici
     │   ├── theme.js                      # Açık / Koyu tema geçiş yöneticisi
     │   ├── fx.js                         # Canlı döviz kuru çekici ve önbellekleme
     │   ├── toast.js                      # Kayan Apple Glass bildirim balonu sistemi
     │   ├── audio-fx.js                   # Web Audio API sıfır-dosya osilatörlü dokunsal ses motoru
     │   ├── cursor-glow.js                # Dinamik imleç takipçi cam aydınlatma ve ışıma motoru
-    │   ├── hero-radar-3d.js              # Three.js WebGL 3D radar küresi motoru (geodesic küre, gimbal halkalar, SaaS uyduları)
     │   ├── statement-lab.js              # İstemci taraflı Air-Gap ekstre ve kaçak sızıntı analizörü
     │   ├── hash-verifier.js              # WebCrypto API donanım ivmeli SHA-256 doğrulayıcı
     │   ├── social-export.js              # HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı

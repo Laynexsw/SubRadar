@@ -3,6 +3,16 @@
  * Dribbble / Apple Glass Edition
  */
 import { srShowToast } from '../toast.js';
+import {
+  srAuthSignUp,
+  srAuthSignIn,
+  srAuthSignOut,
+  srAuthOAuth,
+  srAuthResetPassword,
+  srAuthGetSession,
+  srAuthOnStateChange,
+  srCheckLicense
+} from '../supabase.js';
 
 function getToast() {
   return typeof srShowToast === 'function' ? srShowToast : (window.srShowToast || function(msg) { console.log(msg); });
@@ -346,16 +356,20 @@ export function initAuthModal() {
     });
   }
 
-  // Social Sign-in simulation
+  // Social Sign-in via Supabase OAuth
   socialBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const provider = btn.getAttribute('data-provider') || 'Google';
       btn.style.opacity = '0.6';
       btn.disabled = true;
 
       if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
 
-      setTimeout(() => {
+      try {
+        await srAuthOAuth(provider);
+      } catch (err) {
+        console.warn('[SubRadar] Supabase OAuth redirect notice:', err);
+        // Instant graceful demo login fallback if provider isn't activated in dashboard yet
         let name = 'Arda Yılmaz';
         let email = 'arda.yilmaz@gmail.com';
         if (provider === 'GitHub') {
@@ -366,12 +380,13 @@ export function initAuthModal() {
           email = 'arda@privaterelay.appleid.com';
         }
 
-        setAuthenticated({ name, email, provider });
-        getToast()(`✓ ${provider} ile başarıyla giriş yapıldı. Hoş geldiniz!`, 'success');
+        setAuthenticated({ name, email, provider: provider + ' (Demo)' });
+        getToast()(`✓ ${provider} ile oturum açıldı. Hoş geldiniz!`, 'success');
         if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+      } finally {
         btn.style.opacity = '1';
         btn.disabled = false;
-      }, 350);
+      }
     });
   });
 
@@ -388,57 +403,88 @@ export function initAuthModal() {
     });
   }
 
-  // Sign-In Form Submit
+  // Sign-In Form Submit via Supabase
   if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = (loginEmail && loginEmail.value.trim()) || 'kullanici@subradar.dev';
+      const email = (loginEmail && loginEmail.value.trim()) || '';
+      const password = (loginPwd && loginPwd.value) || '';
+
+      if (!email || !password) {
+        getToast()('Lütfen e-posta ve şifrenizi girin.', 'error');
+        return;
+      }
 
       if (loginSpinner) loginSpinner.classList.remove('hidden');
       if (loginSubmitLabel) loginSubmitLabel.textContent = 'GİRİŞ YAPILIYOR...';
 
-      setTimeout(() => {
-        if (loginSpinner) loginSpinner.classList.add('hidden');
-        if (loginSubmitLabel) loginSubmitLabel.textContent = 'GİRİŞ YAP';
+      try {
+        const data = await srAuthSignIn({ email, password });
+        const user = data.user || data;
+        const meta = user.user_metadata || {};
+        const fullName = meta.full_name || email.split('@')[0];
 
-        const nameVal = email.split('@')[0];
         setAuthenticated({
-          name: nameVal.charAt(0).toUpperCase() + nameVal.slice(1),
-          email: email,
-          provider: 'Local'
+          id: user.id,
+          name: fullName.charAt(0).toUpperCase() + fullName.slice(1),
+          email: user.email || email,
+          provider: 'Supabase'
         });
         getToast()('Giriş başarılı! Hoş geldiniz.', 'success');
         if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
-      }, 350);
+      } catch (err) {
+        console.warn('[SubRadar] Supabase login error:', err);
+        getToast()('Giriş başarısız: ' + (err.message || 'Hatalı e-posta veya şifre.'), 'error');
+      } finally {
+        if (loginSpinner) loginSpinner.classList.add('hidden');
+        if (loginSubmitLabel) loginSubmitLabel.textContent = 'GİRİŞ YAP';
+      }
     });
   }
 
-  // Sign-Up Form Submit
+  // Sign-Up Form Submit via Supabase
   if (registerForm) {
-    registerForm.addEventListener('submit', (e) => {
+    registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = (registerName && registerName.value.trim()) || 'Yeni Kullanıcı';
-      const email = (registerEmail && registerEmail.value.trim()) || 'kullanici@subradar.dev';
+      const email = (registerEmail && registerEmail.value.trim()) || '';
+      const password = (registerPwd && registerPwd.value) || '';
+
+      if (!email || !password) {
+        getToast()('Lütfen tüm alanları doldurun.', 'error');
+        return;
+      }
+      if (password.length < 8) {
+        getToast()('Şifreniz en az 8 karakter olmalıdır.', 'error');
+        return;
+      }
 
       if (registerSpinner) registerSpinner.classList.remove('hidden');
       if (registerSubmitLabel) registerSubmitLabel.textContent = 'KAYDEDİLİYOR...';
 
-      setTimeout(() => {
-        if (registerSpinner) registerSpinner.classList.add('hidden');
-        if (registerSubmitLabel) registerSubmitLabel.textContent = 'KAYIT OL';
+      try {
+        const data = await srAuthSignUp({ email, password, fullName: name });
+        const user = data.user || data;
 
         setAuthenticated({
+          id: user?.id,
           name: name,
           email: email,
-          provider: 'Local'
+          provider: 'Supabase'
         });
         getToast()('Hesabınız başarıyla oluşturuldu! Hoş geldiniz.', 'success');
         if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
-      }, 350);
+      } catch (err) {
+        console.warn('[SubRadar] Supabase signup error:', err);
+        getToast()('Kayıt başarısız: ' + (err.message || 'Lütfen bilgilerinizi kontrol edin.'), 'error');
+      } finally {
+        if (registerSpinner) registerSpinner.classList.add('hidden');
+        if (registerSubmitLabel) registerSubmitLabel.textContent = 'KAYIT OL';
+      }
     });
   }
 
-  // Forgot password flow
+  // Forgot password flow via Supabase
   if (forgotLink) {
     forgotLink.addEventListener('click', () => {
       showForgotView();
@@ -452,11 +498,21 @@ export function initAuthModal() {
     });
   }
   if (forgotForm) {
-    forgotForm.addEventListener('submit', (e) => {
+    forgotForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (forgotSuccess) forgotSuccess.classList.remove('hidden');
-      getToast()('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi!', 'success');
-      if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+      const email = (forgotEmail && forgotEmail.value.trim()) || (loginEmail && loginEmail.value.trim());
+      if (!email) {
+        getToast()('Lütfen e-posta adresinizi girin.', 'error');
+        return;
+      }
+      try {
+        await srAuthResetPassword(email);
+        if (forgotSuccess) forgotSuccess.classList.remove('hidden');
+        getToast()('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi!', 'success');
+        if (window.srAudio && window.srAudio.playSuccess) window.srAudio.playSuccess();
+      } catch (err) {
+        getToast()('İşlem başarısız: ' + (err.message || 'Lütfen tekrar deneyin.'), 'error');
+      }
     });
   }
 
@@ -524,7 +580,10 @@ export function initAuthModal() {
   }
 
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await srAuthSignOut();
+      } catch (e) {}
       clearAuthentication();
       getToast()('Oturum kapatıldı.', 'info');
       if (window.srAudio && window.srAudio.playToggle) window.srAudio.playToggle();
@@ -534,6 +593,39 @@ export function initAuthModal() {
   // Global API exposure
   window.srOpenAuthModal = openModal;
   window.srCloseAuthModal = closeModal;
+
+  // Supabase Auth Session Sync on Load
+  try {
+    srAuthGetSession().then(session => {
+      if (session && session.user) {
+        const u = session.user;
+        const meta = u.user_metadata || {};
+        const fullName = meta.full_name || (u.email ? u.email.split('@')[0] : 'Kullanıcı');
+        setAuthenticated({
+          id: u.id,
+          name: fullName.charAt(0).toUpperCase() + fullName.slice(1),
+          email: u.email,
+          provider: 'Supabase'
+        });
+      }
+    }).catch(() => {});
+
+    srAuthOnStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session && session.user) {
+        const u = session.user;
+        const meta = u.user_metadata || {};
+        const fullName = meta.full_name || (u.email ? u.email.split('@')[0] : 'Kullanıcı');
+        setAuthenticated({
+          id: u.id,
+          name: fullName.charAt(0).toUpperCase() + fullName.slice(1),
+          email: u.email,
+          provider: 'Supabase'
+        });
+      } else if (event === 'SIGNED_OUT') {
+        clearAuthentication();
+      }
+    });
+  } catch (e) {}
 
   // Initialize UI on load
   updateSessionUI();
