@@ -66,9 +66,10 @@ SubRadar/
 │   └── src/renderer/                     # Apple Glassmorphism Arayüzü (SF Pro & Inter)
 │       ├── index.html                    # Çerçevesiz ana pencere, 6 modül görünümü, ⌘K paleti & kilit kapısı
 │       ├── styles/                       # app.css (pencere & düzen), components.css (kartlar & modallar)
-│       └── scripts/                      # app.js (arayüz), presets.js (16+ SaaS şablonu), crypto-fallback.js
+│       └── scripts/                      # app.js (arayüz), presets.js (16+ SaaS şablonu), crypto-fallback.js, three.min.js
 │
 └── 🌐 web/                               # WEB TANITIM VİTRİNİ & MODÜLER BİLEŞENLER
+    ├── vendor/three/                     # Three.js (mrdoob/three.js) %100 yerel çevrimdışı 3D motoru
     ├── code.html                         # Entegre canlı vitrin uygulaması ve interaktif masaüstü simülatörü
     ├── index.html                        # web/ içi hızlı yönlendirici
     ├── 404.html                          # Alt dizin 404 hata sayfası

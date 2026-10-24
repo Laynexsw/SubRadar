@@ -26,7 +26,8 @@ const ASSETS_TO_CACHE = [
   './js/cursor-glow.js',
   './js/hash-verifier.js',
   './js/social-export.js',
-  './js/main.js'
+  './js/main.js',
+  './vendor/three/three.min.js'
 ];
 
 self.addEventListener('install', (event) => {

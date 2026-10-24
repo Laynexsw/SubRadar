@@ -78,10 +78,11 @@ Depo şu anda **üç ana katmandan** oluşur:
   * `legal-generator-modal.html`: Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı (canlı önizleme, pano kopyalama ve `.txt` dosya indirme).
   * `auth-modal.html`: İkili kayan panelli (Double-Slider Sliding Overlay) Apple Glass Monokrom modalı: Saf siyah-beyaz ve uzay grafiti/obsidyen marka katmanı (`.auth-overlay`), buzlu geometrik cam şekiller, parlak beyaz ve ghost outline hap butonlar ("GİRİŞ YAP" / "KAYIT OL"), dairesel monokrom sosyal butonlar (Google, GitHub, Apple), tek tıkla VIP demo, monokrom şifre güvenlik göstergesi ve aktif profil yönetim paneli.
 
-### 2.4 Web Stilleri (`web/css/`)
+### 2.4 Web Stilleri (`web/css/`) & Çevrimdışı Kütüphaneler (`web/vendor/`)
 * [`base.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/base.css): SF Pro font ailesi, `html.light` ve `html.dark` değişkenleri, skip-link, scroll-behavior, metin seçimi renkleri.
 * [`components.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/components.css): `.apple-glass` arka plan bluru, `.apple-card` kalkış ve imleç takipçi dinamik ışıma efekti (`--mouse-x`, `--mouse-y`), `.custom-scroll` cam kaydırma çubuğu, ses göstergesi animasyonları (`@keyframes soundPulse`), form hata animasyonları (`.shake-anim`), mobil sabit CTA ve çerez banner'ı stilleri.
 * [`main.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/main.css): `base.css` ve `components.css` modüllerini içe aktarır.
+* [`vendor/three/`](file:///c:/Users/arday/Desktop/SubRadar/web/vendor/three/): Three.js (`mrdoob/three.js`) %100 yerel ve çevrimdışı 3D grafik motoru paketleri (`three.min.js`, `three.module.js`).
 
 ### 2.5 Web Betikleri (`web/js/`) & PWA
 * [`manifest.json`](file:///c:/Users/arday/Desktop/SubRadar/web/manifest.json): PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği).
@@ -113,7 +114,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 22 bileşenin bütünlüğünü doğrulayan test betiği.
 
 ### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/`)
-* [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 bağımlılığı ve `start`, `dev`, `test`, `test:vault`, `test:parser` komutları.
+* [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 ve Three.js (^0.186.1) bağımlılıkları, test scriptleri.
 * [`main.js`](file:///c:/Users/arday/Desktop/SubRadar/app/main.js): Electron ana süreci (`frame: false`, `titleBarStyle: 'hidden'`, pencere kontrolleri, güvenli IPC kanalları, dosya iletişim kutuları, pano köprüsü, harici URL açma).
 * [`preload.js`](file:///c:/Users/arday/Desktop/SubRadar/app/preload.js): `contextIsolation: true` güvenlikli köprü; renderer sürecine `window.subradarAPI` (`vault`, `subscriptions`, `preferences`, `legalNotice`, `statement`, `system`) nesnesini sunar.
 * [`src/main/vault.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/vault.js): Node.js yerel `crypto` motoru (`aes-256-cbc`, `scryptSync`, timing-safe `HMAC-SHA256`).
@@ -125,6 +126,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`src/renderer/index.html`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/index.html): Çerçevesiz Apple Glass ana pencere, ana şifre kilit ekranı (Gate Screen), KPI kartları, 6 modül görünümü (Genel Bakış, Abonelikler, Risk Radarı, Kill Switch, Ekstre Tarayıcı, Kasa Ayarları), ⌘K Komut Paleti ve modallar.
 * [`src/renderer/styles/app.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/app.css): Frameless pencere sürükleme kuralları, sidebar gezinimi, radar animasyonları, renk tokenları.
 * [`src/renderer/styles/components.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/components.css): Apple Glass kartlar, kilit ekranı modalı, KPI ızgarası, veri tablosu, ekstre yükleme sürükle-bırak alanı ve form kontrolleri.
+* [`src/renderer/scripts/three.min.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/three.min.js): Masaüstü arayüzü için yerel çevrimdışı 3D grafik motoru (`mrdoob/three.js`).
 * [`src/renderer/scripts/app.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/app.js): Renderer reaktif kontrolcüsü (sekme geçişleri, kasa kilidi açma, CRUD, anlık arama, risk radarı hesaplama, ekstre ayrıştırma ve ⌘K komut paleti orkestrasyonu).
 * [`src/renderer/scripts/presets.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/presets.js): 16+ popüler SaaS servisi için tek tıkla doğrudan iptal URL'leri, kategoriler ve varsayılan fiyatlar.
 * [`src/renderer/scripts/crypto-fallback.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/crypto-fallback.js): Tarayıcı geliştirme ortamları için WebCrypto (`SubtleCrypto`) tabanlı yerel kasa ve ekstre tarayıcı taklidi.

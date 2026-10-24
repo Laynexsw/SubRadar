@@ -79,9 +79,11 @@ SubRadar/
 │       └── renderer/            # Apple Glass arayüzü
 │           ├── index.html       # Çerçevesiz ana pencere, 6 modül görünümü & kasa şifre kapısı
 │           ├── styles/          # app.css, components.css
-│           └── scripts/         # app.js, presets.js, crypto-fallback.js
+│           └── scripts/         # app.js, presets.js, crypto-fallback.js, three.min.js
 │
 └── web/                         # WEB VİTRİNİ VE İNTERAKTİF SİMÜLATÖR
+    ├── vendor/                  # %100 Çevrimdışı Üçüncü Parti Kütüphaneler
+    │   └── three/               # Three.js (mrdoob/three.js) yerel bağımsız paket (three.min.js, three.module.js)
     ├── code.html                # Canlı çalışan tekil vitrin (GitHub Pages'ın sunduğu ana dosya)
     ├── index.html               # web/ içi hızlı yönlendirici -> code.html
     ├── 404.html                 # Alt dizin 404 hata sayfası
