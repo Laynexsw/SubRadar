@@ -50,13 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.initVectorWordmark) {
     window.initVectorWordmark({
       container: '#sr-vector-wordmark',
-      text: 'SUBRADAR',
-      fontSize: 230,
-      reach: 290,
+      text: 'SUB-RADAR',
+      reach: 270,
       speed: 45,
       damping: 60,
-      handleSize: 80,
-      handleSpread: 26,
+      handleSize: 76,
+      handleSpread: 25,
       showLabels: true
     });
   }

@@ -4,13 +4,14 @@
  * 
  * Features:
  * - Runtime dual-channel 2D atlas baking (Red = Solid fill, Green = Dotted vector stroke)
+ * - Auto-fitting responsive font scaling (guarantees zero left/right clipping on all screens)
  * - Fullscreen WebGL fragment shader with cubed smoothstep pointer falloff
+ * - Ghost silhouette retention in light mode for crystal-clear readability & high contrast
  * - Multi-tap radial ring blur with jittered sample offsets
  * - Drifting 3-handle rig snapping to 2nd-4th nearest lattice cells around cursor
  * - Real-time DOM coordinate telemetry chips ([X, Y]) tracked at 60/120fps
  * - Automatic simulated sweep when idle, seamless handoff to real pointer
- * - Premultiplied alpha composite with pow(y, 0.7) foot fade
- * - Theme-adaptive color palettes (Dark Obsidian / Light Silver with Emerald accents)
+ * - Theme-adaptive color palettes (Dark Obsidian / Light High-Contrast Charcoal with Emerald accents)
  */
 
 (function () {
@@ -38,6 +39,7 @@ uniform vec2 uV0;
 uniform vec2 uV1;
 uniform vec2 uV2;
 uniform float uHalf;    // handle half-side, in y-normalised units
+uniform float uIsLight; // 1.0 = light mode, 0.0 = dark mode
 
 varying vec2 vUv;
 
@@ -98,13 +100,18 @@ void main() {
     float d = length((vUv - uPtr) / vec2(1.0, aspect));
     float k = 1.0 - pow(smoothstep(0.0, max(uReach, 1e-4), d), 3.0);
 
-    float mask = mix(soft.r, sharp.g, k) * inside;
+    // In light mode: retain a 30% ghost silhouette so the letters remain crisp and never look faint or washed out!
+    // In dark mode: retain 12% ghost silhouette for deep glowing aesthetic.
+    float ghost = uIsLight > 0.5 ? 0.30 : 0.12;
+    float vectorLayer = max(sharp.g, soft.r * ghost);
+    float mask = mix(soft.r, vectorLayer, k) * inside;
+
     vec3 fill = mix(uShade, uText, smoothstep(0.0, 1.0, E.y));
 
     // Rig space: x scaled by aspect so a cell and a handle stay square.
     vec2 P = vec2(vUv.x * aspect, vUv.y);
     float px = 1.0 / uRes.y;
-    float lw = px * 0.2;
+    float lw = px * 0.22;
     float lines = max(
         max(dashedLine(P, uV0, uV1, lw, px), dashedLine(P, uV1, uV2, lw, px)),
         dashedLine(P, uV2, uV0, lw, px)
@@ -119,13 +126,17 @@ void main() {
     vec4 card = vec4(fill * mask, mask);
     vec4 comp = vec4(uAccent.rgb * A, A) + card * (1.0 - A);
 
-    // Foot fade on pow(y, 0.7) melts the wordmark into the dark background
-    gl_FragColor = comp * pow(clamp(E.y, 0.0, 1.0), 0.7);
+    // Fade: In dark mode, smooth pow(y, 0.7) foot melt into dark background.
+    // In light mode, preserve at least 58% baseline opacity so the bottom never vanishes into white!
+    float fade = uIsLight > 0.5
+        ? mix(0.58, 1.0, pow(clamp(E.y, 0.0, 1.0), 0.6))
+        : pow(clamp(E.y, 0.0, 1.0), 0.7);
+
+    gl_FragColor = comp * fade;
 }
 `;
 
   const MAX_DPR = 2;
-  const REF_WIDTH = 1200;
   const MAX_TEX = 4096;
   const NUM_HANDLES = 3;
   const LATTICE_ASPECT = 0.6;
@@ -138,9 +149,9 @@ void main() {
   const AUTO_RESET_INTERVAL = 0.2;
   const DAMP_RATE = 20;
   const SPEED_SCALE = 50;
-  const LABEL_OPACITY = 0.65;
-  const STROKE_WIDTH_RATIO = 4 / 440;
-  const STROKE_DASH_RATIO = 12 / 440;
+  const LABEL_OPACITY = 0.75;
+  const STROKE_WIDTH_RATIO = 7 / 440;
+  const STROKE_DASH_RATIO = 14 / 440;
 
   const clamp = (n, min, max) => (n < min ? min : n > max ? max : n);
   const fract = (n) => n - Math.floor(n);
@@ -250,13 +261,13 @@ void main() {
     ctx.fillStyle = '#ff0000';
     ctx.fillText(text, pad, pad + m.asc);
 
-    // Green channel: Dotted vector outline
+    // Green channel: Dotted vector outline with enhanced crispness
     const totalH = m.asc + m.desc;
     ctx.strokeStyle = '#00ff00';
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.lineWidth = Math.max(1, totalH * STROKE_WIDTH_RATIO);
-    ctx.setLineDash([0, Math.max(2, totalH * STROKE_DASH_RATIO)]);
+    ctx.lineWidth = Math.max(1.5, totalH * STROKE_WIDTH_RATIO);
+    ctx.setLineDash([0, Math.max(3, totalH * STROKE_DASH_RATIO)]);
     ctx.strokeText(text, pad, pad + m.asc);
 
     const cssScale = fontSize / renderSize;
@@ -303,7 +314,6 @@ void main() {
       lbl.style.pointerEvents = 'none';
       lbl.style.whiteSpace = 'nowrap';
       lbl.style.opacity = '0';
-      lbl.style.color = 'rgb(52, 211, 153)';
       labelsWrap.appendChild(lbl);
       labelNodes.push(lbl);
     }
@@ -335,6 +345,7 @@ void main() {
       v1: gl.getUniformLocation(program, 'uV1'),
       v2: gl.getUniformLocation(program, 'uV2'),
       half: gl.getUniformLocation(program, 'uHalf'),
+      isLight: gl.getUniformLocation(program, 'uIsLight'),
     };
 
     const quadBuf = gl.createBuffer();
@@ -352,13 +363,14 @@ void main() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
-    const text = opts.text || 'SUBRADAR';
+    // Exact user requested text: SUB-RADAR
+    const text = opts.text || 'SUB-RADAR';
     const fontSpec = {
       family: opts.fontFamily || 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       weight: opts.fontWeight || '900',
       style: opts.fontStyle || 'normal',
-      size: opts.fontSize || 230,
-      letterSpacing: opts.letterSpacing || '-0.04em',
+      size: opts.fontSize || 220,
+      letterSpacing: opts.letterSpacing || '-0.035em',
     };
 
     const handleConfig = {
@@ -378,7 +390,25 @@ void main() {
     let atlasNormH = 1;
     let bakedSig = '';
 
-    const getScaledFontSize = () => fontSpec.size * (width / REF_WIDTH);
+    // Auto-fit font size to guarantee text fits within available container with zero clipping on left/right
+    const getScaledFontSize = () => {
+      const dummy = document.createElement('canvas').getContext('2d');
+      if (!dummy) return 160;
+      dummy.font = formatFont(fontSpec, 100);
+      const m = dummy.measureText(text);
+      const textWidthAt100 = Math.max(1, m.width);
+      const textHeightAt100 = 85;
+
+      // Allow maximum 88% width so safe margins remain on left and right
+      const maxW = width * 0.88;
+      const maxH = height * 0.75;
+
+      const sizeByWidth = (maxW / textWidthAt100) * 100;
+      const sizeByHeight = (maxH / textHeightAt100) * 100;
+
+      const fittedSize = Math.min(sizeByWidth, sizeByHeight);
+      return Math.max(18, Math.min(230, fittedSize));
+    };
 
     const updateSize = () => {
       width = Math.max(1, root.offsetWidth);
@@ -472,7 +502,7 @@ void main() {
         needsResize = false;
         updateSize();
       }
-      const curFontSize = Math.ceil(Math.max(8, getScaledFontSize()) / 64);
+      const curFontSize = Math.ceil(Math.max(8, getScaledFontSize()) / 4);
       const sig = [text, fontSpec.family, fontSpec.weight, fontSpec.style, fontSpec.letterSpacing, dpr, curFontSize].join('|');
       if (sig !== bakedSig) {
         bakedSig = sig;
@@ -522,6 +552,7 @@ void main() {
     };
 
     const updateLabels = () => {
+      const isLight = document.documentElement.classList.contains('light');
       const aspect = width / height;
       const halfSize = handleConfig.size / 2;
 
@@ -534,17 +565,21 @@ void main() {
         const py = Math.round(clamp(sy * 100, 0, 100));
         node.style.transform = `translate(${sx * width - halfSize}px, ${(1.0 - sy) * height - halfSize}px)`;
         node.style.opacity = String(LABEL_OPACITY);
+        node.style.color = isLight ? '#047857' : '#34d399';
         node.textContent = `${px}, ${py}`;
       }
     };
 
     const renderGL = () => {
       const isLight = document.documentElement.classList.contains('light');
-      const textColor = parseColor(isLight ? (opts.lightTextColor || '#09090b') : (opts.darkTextColor || '#FFFFFF'), [1, 1, 1, 1]);
-      const shadeColor = parseColor(isLight ? (opts.lightShade || '#d4d4d8') : (opts.darkShade || '#18181b'), [0.08, 0.08, 0.09, 1]);
+
+      // Light mode: High-contrast pure jet black to charcoal gradient with dark emerald accent
+      // Dark mode: Crisp white to obsidian gradient with bright neon emerald accent
+      const textColor = parseColor(isLight ? (opts.lightTextColor || '#000000') : (opts.darkTextColor || '#FFFFFF'), [1, 1, 1, 1]);
+      const shadeColor = parseColor(isLight ? (opts.lightShade || '#27272a') : (opts.darkShade || '#141416'), [0.08, 0.08, 0.09, 1]);
       const accentRGBA = parseColor(
-        opts.accent || (isLight ? 'rgba(16, 185, 129, 0.75)' : 'rgba(52, 211, 153, 0.65)'),
-        [0.2, 0.83, 0.6, 0.65]
+        opts.accent || (isLight ? 'rgba(4, 120, 87, 0.95)' : 'rgba(52, 211, 153, 0.75)'),
+        [0.2, 0.83, 0.6, 0.75]
       );
 
       gl.viewport(0, 0, pxWidth, pxHeight);
@@ -557,7 +592,7 @@ void main() {
       const curSz = Math.max(8, getScaledFontSize());
       gl.uniform2f(locs.atlas, atlasNormW * curSz, atlasNormH * curSz);
       gl.uniform2f(locs.ptr, easedPointer.x, easedPointer.y);
-      const reach = opts.reach !== undefined ? opts.reach : 280;
+      const reach = opts.reach !== undefined ? opts.reach : 270;
       gl.uniform1f(locs.reach, Math.max(1, reach) / width);
       gl.uniform3f(locs.text, textColor[0], textColor[1], textColor[2]);
       gl.uniform3f(locs.shade, shadeColor[0], shadeColor[1], shadeColor[2]);
@@ -566,6 +601,7 @@ void main() {
       gl.uniform2f(locs.v1, handlePositions[1].x, handlePositions[1].y);
       gl.uniform2f(locs.v2, handlePositions[2].x, handlePositions[2].y);
       gl.uniform1f(locs.half, handleConfig.size / 2 / height);
+      gl.uniform1f(locs.isLight, isLight ? 1.0 : 0.0);
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };

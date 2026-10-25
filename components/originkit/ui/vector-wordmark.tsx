@@ -51,6 +51,7 @@ uniform vec2 uV0;
 uniform vec2 uV1;
 uniform vec2 uV2;
 uniform float uHalf;    // handle half-side, in y-normalised units
+uniform float uIsLight; // 1.0 = light mode, 0.0 = dark mode
 
 varying vec2 vUv;
 
@@ -58,7 +59,7 @@ float hash(vec2 p) {
     return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
-// The source's blur: taps on a ring at even angles, each pushed out by a
+// Multi-tap ring blur: taps on a ring at even angles, each pushed out by a
 // random amount, so six taps read as a soft disc rather than a hexagon.
 vec2 blurRG(vec2 uv, float e) {
     vec4 sum = vec4(0.0);
@@ -72,7 +73,7 @@ vec2 blurRG(vec2 uv, float e) {
     return (sum / 6.0).rg;
 }
 
-// Perpendicular distance to a segment, plus the parameter along it
+// Perpendicular distance to a segment, plus parameter along it for dash pattern
 vec2 segment(vec2 p, vec2 a, vec2 b) {
     vec2 ab = b - a;
     vec2 ap = p - a;
@@ -111,13 +112,18 @@ void main() {
     float d = length((vUv - uPtr) / vec2(1.0, aspect));
     float k = 1.0 - pow(smoothstep(0.0, max(uReach, 1e-4), d), 3.0);
 
-    float mask = mix(soft.r, sharp.g, k) * inside;
+    // In light mode: retain a 30% ghost silhouette so the letters remain crisp and never look faint or washed out!
+    // In dark mode: retain 12% ghost silhouette for deep glowing aesthetic.
+    float ghost = uIsLight > 0.5 ? 0.30 : 0.12;
+    float vectorLayer = max(sharp.g, soft.r * ghost);
+    float mask = mix(soft.r, vectorLayer, k) * inside;
+
     vec3 fill = mix(uShade, uText, smoothstep(0.0, 1.0, E.y));
 
     // Rig space: x scaled by aspect so a cell and a handle stay square.
     vec2 P = vec2(vUv.x * aspect, vUv.y);
     float px = 1.0 / uRes.y;
-    float lw = px * 0.2;
+    float lw = px * 0.22;
     float lines = max(
         max(dashedLine(P, uV0, uV1, lw, px), dashedLine(P, uV1, uV2, lw, px)),
         dashedLine(P, uV2, uV0, lw, px)
@@ -132,12 +138,15 @@ void main() {
     vec4 card = vec4(fill * mask, mask);
     vec4 comp = vec4(uAccent.rgb * A, A) + card * (1.0 - A);
 
-    gl_FragColor = comp * pow(clamp(E.y, 0.0, 1.0), 0.7);
+    float fade = uIsLight > 0.5
+        ? mix(0.58, 1.0, pow(clamp(E.y, 0.0, 1.0), 0.6))
+        : pow(clamp(E.y, 0.0, 1.0), 0.7);
+
+    gl_FragColor = comp * fade;
 }
 `
 
 const MAX_DPR = 2
-const REF_WIDTH = 1200
 const MAX_TEX = 4096
 const NUM_HANDLES = 3
 const LATTICE_ASPECT = 0.6
@@ -145,14 +154,14 @@ const JITTER_X = 0.08
 const JITTER_Y = 0.04
 const ROT_X = 1.3
 const ROT_Y = 1.3 * 1.3
-const AUTO_SWEEP_X = 0.5
+const AUTO_SWEEP_X = 0.45
 const AUTO_SWEEP_Y = 0.28
 const AUTO_RESET_INTERVAL = 0.2
 const DAMP_RATE = 20
 const SPEED_SCALE = 50
-const LABEL_OPACITY = 0.6
-const STROKE_WIDTH_RATIO = 4 / 440
-const STROKE_DASH_RATIO = 12 / 440
+const LABEL_OPACITY = 0.75
+const STROKE_WIDTH_RATIO = 7 / 440
+const STROKE_DASH_RATIO = 14 / 440
 
 const clamp = (n: number, min: number, max: number) => n < min ? min : n > max ? max : n
 const fract = (n: number) => n - Math.floor(n)
@@ -174,9 +183,9 @@ function parseColor(colorStr?: string, fallback = [1, 1, 1, 1]): number[] {
       parseInt(hex.slice(6, 8), 16) / 255
     ]
   }
-  const match = s.match(/^rgba?\(([^)]+)\)$/i)
+  const match = s.match(/^rgba?\\(([^)]+)\\)$/i)
   if (match) {
-    const parts = match[1].split(/[\s,/]+/).filter(Boolean)
+    const parts = match[1].split(/[\\s,/]+/).filter(Boolean)
     if (parts.length >= 3) {
       return [
         parseFloat(parts[0]) / 255,
@@ -265,8 +274,8 @@ function bakeAtlas(text: string, fontSpec: any, fontSize: number, dpr: number) {
   ctx.strokeStyle = '#00ff00'
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
-  ctx.lineWidth = Math.max(1, totalH * STROKE_WIDTH_RATIO)
-  ctx.setLineDash([0, Math.max(2, totalH * STROKE_DASH_RATIO)])
+  ctx.lineWidth = Math.max(1.5, totalH * STROKE_WIDTH_RATIO)
+  ctx.setLineDash([0, Math.max(3, totalH * STROKE_DASH_RATIO)])
   ctx.strokeText(text, pad, pad + m.asc)
 
   const cssScale = fontSize / renderSize
@@ -274,14 +283,14 @@ function bakeAtlas(text: string, fontSpec: any, fontSize: number, dpr: number) {
 }
 
 export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
-  text = "SUBRADAR",
+  text = "SUB-RADAR",
   font,
   background = "transparent",
   textColor = "#FFFFFF",
-  shade = "#1a1a1a",
-  accent = "rgba(52, 211, 153, 0.65)",
-  reach = 290,
-  speed = 50,
+  shade = "#141416",
+  accent = "rgba(52, 211, 153, 0.75)",
+  reach = 270,
+  speed = 45,
   damping = 60,
   handles,
   style,
@@ -292,21 +301,20 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
   const labelRefs = useRef<(HTMLDivElement | null)[]>([null, null, null])
 
   const handleConfig = {
-    size: handles?.size ?? 70,
+    size: handles?.size ?? 76,
     spread: handles?.spread ?? 25,
     labels: handles?.labels ?? true
   }
 
   const fontSpec = {
     family: font?.family || 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    weight: String(font?.weight ?? 800),
+    weight: String(font?.weight ?? 900),
     style: font?.style || 'normal',
     size: Math.max(8, typeof font?.size === 'number' ? font.size : parseFloat(String(font?.size ?? 220)) || 220),
-    letterSpacing: font?.letterSpacing || '-0.03em'
+    letterSpacing: font?.letterSpacing || '-0.035em'
   }
 
-  const accentRGBA = parseColor(accent, [0.2, 0.83, 0.6, 0.65])
-  const labelColor = `rgb(${Math.round(accentRGBA[0] * 255)}, ${Math.round(accentRGBA[1] * 255)}, ${Math.round(accentRGBA[2] * 255)})`
+  const accentRGBA = parseColor(accent, [0.2, 0.83, 0.6, 0.75])
 
   const stateRef = useRef({
     text,
@@ -365,7 +373,8 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
       v0: gl.getUniformLocation(program, 'uV0'),
       v1: gl.getUniformLocation(program, 'uV1'),
       v2: gl.getUniformLocation(program, 'uV2'),
-      half: gl.getUniformLocation(program, 'uHalf')
+      half: gl.getUniformLocation(program, 'uHalf'),
+      isLight: gl.getUniformLocation(program, 'uIsLight')
     }
 
     const quadBuf = gl.createBuffer()
@@ -394,7 +403,23 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
     let atlasNormH = 1
     let bakedSig = ''
 
-    const getScaledFontSize = () => stateRef.current.fontSpec.size * (width / REF_WIDTH)
+    const getScaledFontSize = () => {
+      const dummy = document.createElement('canvas').getContext('2d')
+      if (!dummy) return 160
+      dummy.font = formatFont(fontSpec, 100)
+      const m = dummy.measureText(stateRef.current.text || 'SUB-RADAR')
+      const textWidthAt100 = Math.max(1, m.width)
+      const textHeightAt100 = 85
+
+      const maxW = width * 0.88
+      const maxH = height * 0.75
+
+      const sizeByWidth = (maxW / textWidthAt100) * 100
+      const sizeByHeight = (maxH / textHeightAt100) * 100
+
+      const fittedSize = Math.min(sizeByWidth, sizeByHeight)
+      return Math.max(18, Math.min(230, fittedSize))
+    }
 
     const updateSize = () => {
       width = Math.max(1, root.offsetWidth)
@@ -460,7 +485,6 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
         }
       }
       cand.sort((a, b) => a.d - b.d)
-      // Pick 2nd, 3rd, 4th nearest to frame the pointer
       for (let m = 0; m < NUM_HANDLES; m++) {
         targetHandles[m].x = cand[m + 1].x
         targetHandles[m].y = cand[m + 1].y
@@ -475,19 +499,24 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
       rawPointer.y = 1.0 - (e.clientY - rect.top) / rect.height
     }
 
-    root.addEventListener('pointermove', onPointerMove)
+    const onPointerLeave = () => {
+      hasRealPointer = false
+    }
+
+    root.addEventListener('pointermove', onPointerMove, { passive: true })
+    root.addEventListener('pointerleave', onPointerLeave, { passive: true })
 
     let rafId = 0
     let lastTime = 0
 
     const syncState = () => {
-      const state = stateRef.current
       if (needsResize) {
         needsResize = false
         updateSize()
       }
-      const font = state.fontSpec
-      const sig = [state.text, font.family, font.weight, font.style, font.letterSpacing, dpr, Math.ceil(Math.max(8, getScaledFontSize()) / 64)].join('|')
+      const font = stateRef.current.fontSpec
+      const curFontSize = Math.ceil(Math.max(8, getScaledFontSize()) / 4)
+      const sig = [stateRef.current.text, font.family, font.weight, font.style, font.letterSpacing, dpr, curFontSize].join('|')
       if (sig !== bakedSig) {
         bakedSig = sig
         rebake()
@@ -535,9 +564,9 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
     }
 
     const updateLabels = () => {
-      const state = stateRef.current
+      const isLight = document.documentElement.classList.contains('light')
       const aspect = width / height
-      const halfSize = state.handleConfig.size / 2
+      const halfSize = stateRef.current.handleConfig.size / 2
 
       for (let h = 0; h < NUM_HANDLES; h++) {
         const node = labelRefs.current[h]
@@ -548,15 +577,20 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
         const py = Math.round(clamp(sy * 100, 0, 100))
         node.style.transform = `translate(${sx * width - halfSize}px, ${(1.0 - sy) * height - halfSize}px)`
         node.style.opacity = String(LABEL_OPACITY)
+        node.style.color = isLight ? '#047857' : '#34d399'
         node.textContent = `${px}, ${py}`
       }
     }
 
     const renderGL = () => {
+      const isLight = document.documentElement.classList.contains('light')
       const state = stateRef.current
-      const textColor = parseColor(state.textColor, [0.859, 0.918, 0.992, 1])
-      const shadeColor = parseColor(state.shade, [0.035, 0.063, 0.102, 1])
-      const accentRGBA = state.accentRGBA
+      const textColor = parseColor(isLight ? '#000000' : state.textColor, [1, 1, 1, 1])
+      const shadeColor = parseColor(isLight ? '#27272a' : state.shade, [0.08, 0.08, 0.09, 1])
+      const accentRGBA = parseColor(
+        isLight ? 'rgba(4, 120, 87, 0.95)' : state.accent,
+        [0.2, 0.83, 0.6, 0.75]
+      )
 
       gl.viewport(0, 0, pxWidth, pxHeight)
       gl.useProgram(program)
@@ -576,6 +610,7 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
       gl.uniform2f(locs.v1, handlePositions[1].x, handlePositions[1].y)
       gl.uniform2f(locs.v2, handlePositions[2].x, handlePositions[2].y)
       gl.uniform1f(locs.half, state.handleConfig.size / 2 / height)
+      gl.uniform1f(locs.isLight, isLight ? 1.0 : 0.0)
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
@@ -619,6 +654,7 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
       if (rafId) cancelAnimationFrame(rafId)
       ro.disconnect()
       root.removeEventListener('pointermove', onPointerMove)
+      root.removeEventListener('pointerleave', onPointerLeave)
       document.removeEventListener('visibilitychange', onVisibility)
     }
   }, [])
@@ -633,7 +669,7 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
         background,
         width: '100%',
         height: '100%',
-        minHeight: 280,
+        minHeight: 220,
         ...style
       }}
     >
@@ -661,7 +697,7 @@ export const VectorWordmark: React.FC<VectorWordmarkProps> = ({
             fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
             fontSize: 10,
             letterSpacing: '0.08em',
-            color: labelColor,
+            color: 'rgb(52, 211, 153)',
             userSelect: 'none'
           }}
         />
