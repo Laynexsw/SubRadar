@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=web/code.html">
+  <meta http-equiv="refresh" content="0; url=web/code.html?v=1.6.2">
   <title>SubRadar</title>
   <style>html,body{background:#000000;margin:0;padding:0;overflow:hidden;}</style>
   <script>
-    window.location.replace("web/code.html" + window.location.search + window.location.hash);
+    var q = window.location.search ? window.location.search + "&v=1.6.2" : "?v=1.6.2";
+    window.location.replace("web/code.html" + q + window.location.hash);
   </script>
 </head>
 <body style="background:#000000;"></body>

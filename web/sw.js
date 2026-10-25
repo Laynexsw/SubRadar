@@ -2,7 +2,7 @@
    SubRadar — Offline-First Progressive Web App Service Worker
    ========================================================================= */
 
-const CACHE_NAME = 'subradar-v1.6.1-cache';
+const CACHE_NAME = 'subradar-v1.6.2-cache';
 const ASSETS_TO_CACHE = [
   './code.html',
   './favicon.svg',
@@ -56,38 +56,20 @@ self.addEventListener('fetch', (event) => {
   // Only handle GET requests
   if (event.request.method !== 'GET') return;
 
-  // Network-First for HTML documents to ensure instant updates
-  if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
-    event.respondWith(
-      fetch(event.request).then((networkResponse) => {
+  // Universal Network-First: Always attempt fresh network fetch first; fall back to cache when offline
+  event.respondWith(
+    fetch(event.request)
+      .then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
           const clone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return networkResponse;
-      }).catch(() => caches.match(event.request).then((cached) => cached || caches.match('./code.html')))
-    );
-    return;
-  }
-
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) return cachedResponse;
-      return fetch(event.request).then((networkResponse) => {
-        // Cache successful response if same origin
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      }).catch(() => {
-        // Fallback for HTML documents
-        if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
-          return caches.match('./code.html');
-        }
-      });
-    })
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cached) => {
+          return cached || caches.match('./code.html');
+        });
+      })
   );
 });

@@ -10022,9 +10022,15 @@ document.addEventListener('DOMContentLoaded', () => {
 <script id="sr-pwa-sw">
 if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
   window.addEventListener('load', function () {
-    navigator.serviceWorker.register('sw.js').then(function (reg) {
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      for (var i = 0; i < registrations.length; i++) {
+        registrations[i].update();
+      }
+    }).catch(function () {});
+
+    navigator.serviceWorker.register('sw.js?v=1.6.2').then(function (reg) {
       reg.update();
-      console.log('SubRadar Offline Service Worker Registered:', reg.scope);
+      console.log('SubRadar v1.6.2 Service Worker Registered:', reg.scope);
     }).catch(function (err) {
       console.warn('SubRadar SW registration failed:', err);
     });
