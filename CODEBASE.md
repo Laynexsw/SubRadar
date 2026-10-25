@@ -98,7 +98,9 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`social-export.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/social-export.js): HTML5 Canvas 1200x630 Retina "Abonelik Röntgeni" kart üretici, PNG indirici ve X/LinkedIn paylaşım köprüsü.
 * [`calculator.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/calculator.js): Kaydırıcı dinleyicileri, profil butonları (`.calc-preset-btn`), formül hesaplama: `(subs * 32 + trials * 78) * 12`.
 * [`hero-window.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/hero-window.js): Hero macOS penceresi mantığı; pencere kontrolleri, iptal butonları, bellek sayacı, sekmeler ve canlı gecikme.
-* [`scroll-motion.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/scroll-motion.js): Tepe ilerleme çizgisi (`#sr-progress`), `[data-rv]` animasyon tetikleyicileri, hero paralaks kayması.
+* [`scroll-motion.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/scroll-motion.js): Tepe ilerleme çizgisi (`#sr-progress`), yüzen bölüm gezinme adası (`#sr-scrollspy`), `#site-header` ada geçişi.
+* [`ascii-reveal-core.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/ascii-reveal-core.js): Bağımsız ve sıfır-bağımlılık ASCII reveal, dither ve karakter dönüşüm çekirdek motoru (`quanhoangindex/ascii-reveal`).
+* [`ascii-reveal-loader.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/ascii-reveal-loader.js): Sayfa açılışında bileşenlere hibrit `dither + decode` (yoğun blok `░▒▓█` ve alfanumerik deşifre) animasyonu uygulayan açılış orkestratörü.
 * [`i18n.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/i18n.js): TR/EN/DE sözlükleri, DOM TreeWalker ile metin düğümlerini dinamik olarak çeviren `t()` fonksiyonu.
 * [`analytics.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/analytics.js): Gerçek zamanlı saniye sayacı, tıklama koordinatları, kaydırma derinliği ve kullanıcı etkileşim telemetri motoru (`srAnalytics`).
 * [`cookie-banner.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/cookie-banner.js): Minimal Apple Glass çerez kartı, sayfa açılışında otomatik belirme (500ms), onay kaydı ve Web Audio ses efektleri kontrolcüsü.
@@ -112,6 +114,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`modals/legal-gen.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/legal-gen.js): Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme.
 * [`modals/auth-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/auth-modal.js): Çift yönlü kayan panel animasyonu (`.auth-right-panel-active`), dairesel sosyal butonlar, tek tıkla demo, şifre doğrulama ve profil paneli kontrolcüsü (`initAuthModal`).
 * [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 22 bileşenin bütünlüğünü doğrulayan test betiği.
+* [`scripts/embed_ascii_reveal.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/embed_ascii_reveal.py): `ascii-reveal` motorunu ve dither+decode orkestratörünü tekil üretim dosyası `web/code.html` içerisine derleyip enjekte eden betik.
 
 ### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/`)
 * [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 bağımlılığı ve `start`, `dev`, `test`, `test:vault`, `test:parser` komutları.

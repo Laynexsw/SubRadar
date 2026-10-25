@@ -13,19 +13,8 @@ export function initScrollMotion() {
     document.body.appendChild(bar);
   }
 
-  const els = document.querySelectorAll('[data-rv]');
-  if (!reduce && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(en => {
-        if (!en.isIntersecting) return;
-        en.target.classList.add('in');
-        io.unobserve(en.target);
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-    els.forEach(el => io.observe(el));
-  } else {
-    els.forEach(el => el.classList.add('in'));
-  }
+  // Scroll reveal animasyonları kaldırıldı: tüm öğeler anında görünür
+  document.querySelectorAll('[data-rv]').forEach(el => el.classList.add('in'));
 
   // Floating Minimalist Scrollspy Island (Alt Gezinme Adası)
   let spyNav = document.getElementById('sr-scrollspy');
@@ -88,16 +77,7 @@ export function initScrollMotion() {
         }
       });
 
-      if (!reduce) {
-        const hero = document.querySelector('[data-od-id="hero"]');
-        if (hero && y < 1000) {
-          hero.style.transform = y === 0 ? '' : 'translateY(' + Math.round(y * 0.1) + 'px)';
-          hero.style.opacity = y === 0 ? '' : String(Math.max(0.3, 1 - y / 1200));
-        } else if (hero && y >= 1000 && hero.style.transform) {
-          hero.style.transform = '';
-          hero.style.opacity = '';
-        }
-      }
+      // Hero scroll parallax kaldırıldı, hero sabit kalır
     });
   }
   window.addEventListener('scroll', onScroll, { passive: true });

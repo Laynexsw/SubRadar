@@ -141,7 +141,9 @@ SubRadar/
     │   ├── social-export.js     # HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı
     │   ├── calculator.js        # Kaydırıcı formülü ($32/araç + $78/deneme) ve hazır profiller
     │   ├── hero-window.js       # macOS pencere simülasyonu: trafik ışıkları, iptal, arama, sekmeler
-    │   ├── scroll-motion.js     # İlerleme çizgisi (`#sr-progress`), scrollspy ve hero paralaksı
+    │   ├── ascii-reveal-core.js  # Standalone ASCII reveal & dither motoru (quanhoangindex/ascii-reveal çekirdeği)
+    │   ├── ascii-reveal-loader.js# Sayfa yüklenişinde bileşenlere dither+decode animasyonu uygulayıcı orkestratör
+    │   ├── scroll-motion.js     # İlerleme çizgisi (`#sr-progress`), alt gezinme adası (`#sr-scrollspy`)
     │   ├── i18n.js              # TR/EN/DE sözlükleri, DOM metin düğümü çevirici (`t()`)
     │   ├── analytics.js         # Canlı saniye sayacı, tıklama, kaydırma ve kullanıcı telemetri motoru (`srAnalytics`)
     │   ├── cookie-banner.js     # Minimal Apple Glass çerez kartı, otomatik açılış ve onay kontrolcüsü
@@ -158,7 +160,8 @@ SubRadar/
     │       └── auth-modal.js      # İkili kayan panel animasyonu (sliding overlay cubic-bezier), dairesel sosyal girişler, tek tıkla demo oturumu, şifre gücü ve profil yönetimi kontrolcüsü
     │
     └── scripts/
-        └── build.py             # 22 modüler bileşeni doğrulayan test betiği
+        ├── build.py             # 22 modüler bileşeni doğrulayan test betiği
+        └── embed_ascii_reveal.py# ascii-reveal motorunu code.html içine derleyip gömen betik
 ```
 
 ---

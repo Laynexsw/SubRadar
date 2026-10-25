@@ -18,6 +18,10 @@ app/data/
 *.subradar
 
 
+# Python bytecode
+__pycache__/
+*.pyc
+
 # Logs & temp
 *.log
 scratch/

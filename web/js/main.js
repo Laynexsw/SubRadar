@@ -24,6 +24,7 @@ import './social-export.js';
 import './modals/shortcuts-modal.js';
 import './modals/legal-gen.js';
 import './supabase.js';
+import { initAsciiRevealLoader } from './ascii-reveal-loader.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize modules
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initEnterpriseModal();
   initReclaimModal();
   initAuthModal();
+  initAsciiRevealLoader();
 
   // Mobile menu toggle
   const menuBtn = document.getElementById('mobile-menu-btn');

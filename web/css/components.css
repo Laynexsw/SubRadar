@@ -129,24 +129,20 @@ html.light #sr-progress {
   background: #0071e3;
 }
 
-/* ── Scroll reveal efektleri ── */
-[data-rv] {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity .65s cubic-bezier(.16,1,.3,1), transform .65s cubic-bezier(.16,1,.3,1);
-  transition-delay: var(--d, 0s);
-  will-change: opacity, transform;
-}
+/* ── Scroll reveal animasyonları kaldırıldı: tüm bileşenler anında tam opaklıkta ve yerinde ── */
+[data-rv],
+[data-rv="scale"],
+[data-rv="left"],
+[data-rv="right"],
+[data-rv="fade-up"],
+[data-rv="fade-blur"],
+[data-rv="pop"],
 [data-rv].in {
-  opacity: 1;
-  transform: none;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
 }
-[data-rv="scale"] { transform: scale(.95) translateY(16px); }
-[data-rv="scale"].in { transform: none; }
-[data-rv="left"] { transform: translateX(-24px); }
-[data-rv="left"].in { transform: none; }
-[data-rv="right"] { transform: translateX(24px); }
-[data-rv="right"].in { transform: none; }
 
 /* ── 12. Micro Loading Spinner ── */
 @keyframes srSpin {
