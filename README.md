@@ -1,7 +1,7 @@
 <div align="center">
 
 # ⚡ SubRadar
-### Masaüstü Abonelik Zekâsı, Tek Tıkla İptal ve %100 Yerel AES-256 Kasa
+### Masaüstü Abonelik Zekâsı, Tek Tıkla Yasal İptal ve %100 Yerel AES-256 Kasa
 
 [![GitHub Pages](https://img.shields.io/badge/Live-GitHub%20Pages-6366f1?style=for-the-badge&logo=github)](https://laynexsw.github.io/SubRadar/)
 [![Desktop App](https://img.shields.io/badge/Desktop-v1.5.0%20Aktif-10b981?style=for-the-badge&logo=electron)](https://github.com/Laynexsw/SubRadar/tree/main/app)
@@ -11,7 +11,7 @@
 <br/>
 
 **SubRadar**, unutulan deneme üyeliklerini, gizli fiyat artışlarını ve aylarca açılmayan yazılım aboneliklerini tespit eden;  
-verilerinizi asla buluta göndermeden **%100 yerel ve çevrimdışı** çalışan masaüstü abonelik asistanıdır.
+karanlık desenleri tek tıkla aşarak verilerinizi asla buluta göndermeden **%100 yerel ve çevrimdışı** çalışan yeni nesil masaüstü abonelik zekâsıdır.
 
 [🌐 Canlı Web Sitesi](https://laynexsw.github.io/SubRadar/) &bull; [💻 Masaüstü Uygulaması (v1.5.0)](https://github.com/Laynexsw/SubRadar/tree/main/app) &bull; [📑 Modüler Bileşenler](https://github.com/Laynexsw/SubRadar/tree/main/web) &bull; [🧠 Mimari & Kod Kataloğu](CODEBASE.md)
 
