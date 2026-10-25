@@ -232,8 +232,8 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
   * `#reclaim-modal-backdrop`: Geri kazanım & CLI modalı
   * `#auth-modal-backdrop`: İkili kayan panelli (Double-Slider Sliding Overlay) giriş/kayıt modalı, uzay grafiti/obsidyen marka katmanı (`.auth-overlay`), ghost outline butonlar ve profil paneli (`#auth-modal-btn`)
   * `#sr-toast`: Apple Glass bildirim balonu
-* **Originkit Tiles Loader & Açılış:**
-  * `#sr-tiles-loader`: Sayfa açılışında tüm ekranı kaplayan, %0 -> %100 edRand karo mürekkepleşme taşıyıcı alanı
+* **Originkit Tiles Loader & Geçişler:**
+  * `#sr-tiles-loader`: Sayfa açılışında ve tema / dil / para birimi geçişlerinde araya giren Originkit edRand karo mürekkepleşme ve perdelenen ekran taşıyıcı alanı (`srTransitionWithLoader`)
   * `#tiles-loader-btn`: Üst bardaki grid ikonu (Animasyonu anında baştan oynatma tetikleyicisi, kısayol: `R` / `replay-tiles`)
 * **Originkit Vector Wordmark:**
   * `#sr-vector-wordmark`: Alt bilgi (footer) alanında yer alan, imleç hareketine duyarlı WebGL 2.0 noktasal vektör dönüşüm alanı ve 3-düğümlü telemetri çipleri (`.sr-vector-chip`)

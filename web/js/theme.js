@@ -18,12 +18,20 @@ export function initTheme() {
 
   if (themeBtn) {
     themeBtn.addEventListener('click', () => {
-      const root = document.documentElement;
-      const light = !root.classList.contains('light');
-      root.classList.toggle('light', light);
-      root.classList.toggle('dark', !light);
-      try { localStorage.setItem('sr-theme', light ? 'light' : 'dark'); } catch (e) {}
-      paintThemeButton();
+      const executeThemeToggle = () => {
+        const root = document.documentElement;
+        const light = !root.classList.contains('light');
+        root.classList.toggle('light', light);
+        root.classList.toggle('dark', !light);
+        try { localStorage.setItem('sr-theme', light ? 'light' : 'dark'); } catch (e) {}
+        paintThemeButton();
+      };
+
+      if (window.srTransitionWithLoader) {
+        window.srTransitionWithLoader(executeThemeToggle, { minTime: 0.60, revealS: 0.45 });
+      } else {
+        executeThemeToggle();
+      }
     });
     paintThemeButton();
   }

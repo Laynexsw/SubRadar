@@ -1632,6 +1632,11 @@ function initTilesLoader(options = {}) {
     innerHeight: window.innerHeight
   });
 
+  if (root._srActiveRafId) {
+    cancelAnimationFrame(root._srActiveRafId);
+    root._srActiveRafId = 0;
+  }
+
   window.srTilesLoaderDone = false;
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('subradar:tiles-loader-start'));
@@ -1806,6 +1811,7 @@ function initTilesLoader(options = {}) {
       console.log('[Tiles Loader] Reveal finished at t =', t, 'Total duration:', t);
       finished = true;
       cancelAnimationFrame(rafId);
+      root._srActiveRafId = 0;
       window.removeEventListener('resize', updateDimensions);
       root.removeEventListener('click', skipHandler);
       window.removeEventListener('keydown', skipHandler);
@@ -1830,12 +1836,14 @@ function initTilesLoader(options = {}) {
     }
 
     rafId = requestAnimationFrame(tick);
+    root._srActiveRafId = rafId;
   }
 
   // Lock scroll while loader is active
   document.body.classList.add('sr-loading-lock');
   renderFrame(0);
   rafId = requestAnimationFrame(tick);
+  root._srActiveRafId = rafId;
 }
 
 function playTilesLoader(options = {}) {
@@ -1852,10 +1860,44 @@ function playTilesLoader(options = {}) {
   });
 }
 
+function transitionWithLoader(actionFn, options = {}) {
+  const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) {
+    if (typeof actionFn === 'function') actionFn();
+    return;
+  }
+
+  const root = document.getElementById('sr-tiles-loader');
+  if (!root) {
+    if (typeof actionFn === 'function') actionFn();
+    return;
+  }
+
+  // Pre-cover the screen immediately
+  root.style.display = 'block';
+  root.style.opacity = '1';
+  root.style.pointerEvents = 'auto';
+  root.removeAttribute('aria-hidden');
+
+  if (typeof actionFn === 'function') {
+    actionFn();
+  }
+
+  const minTime = options.minTime !== undefined ? options.minTime : 0.60;
+  const revealS = options.revealS !== undefined ? options.revealS : 0.45;
+
+  playTilesLoader({
+    minTime,
+    revealS,
+    ...options
+  });
+}
+
 // Global exposure
 if (typeof window !== 'undefined') {
   window.srInitTilesLoader = initTilesLoader;
   window.srPlayTilesLoader = playTilesLoader;
+  window.srTransitionWithLoader = transitionWithLoader;
 }
 
   // Auto-start loader immediately upon encounter
@@ -6820,12 +6862,20 @@ Rapor Üretici: https://subradar.dev
     }
     if (themeBtn) {
       themeBtn.addEventListener('click', () => {
-        const root = document.documentElement;
-        const light = !root.classList.contains('light');
-        root.classList.toggle('light', light);
-        root.classList.toggle('dark', !light);
-        try { localStorage.setItem('sr-theme', light ? 'light' : 'dark'); } catch (e) {}
-        paintThemeButton();
+        const executeThemeToggle = () => {
+          const root = document.documentElement;
+          const light = !root.classList.contains('light');
+          root.classList.toggle('light', light);
+          root.classList.toggle('dark', !light);
+          try { localStorage.setItem('sr-theme', light ? 'light' : 'dark'); } catch (e) {}
+          paintThemeButton();
+        };
+
+        if (window.srTransitionWithLoader) {
+          window.srTransitionWithLoader(executeThemeToggle, { minTime: 0.60, revealS: 0.45 });
+        } else {
+          executeThemeToggle();
+        }
       });
       paintThemeButton();
     }
@@ -6833,12 +6883,22 @@ Rapor Üretici: https://subradar.dev
     /* Para birimi seçici: tüm fiyat widget'larını yeniden boyar */
     document.querySelectorAll('.currency-btn').forEach(b => {
       b.addEventListener('click', () => {
-        if (!SR_RATES[b.dataset.currency]) return;
-        srCurrency = b.dataset.currency;
-        try { localStorage.setItem('sr-currency', srCurrency); } catch (e) {}
-        srPaintCurrencyButtons();
-        srPaintStatics();
-        repaintMoneyWidgets();
+        const cur = b.dataset.currency;
+        if (!SR_RATES[cur]) return;
+        if (cur === srCurrency) return;
+        const executeCurrencyChange = () => {
+          srCurrency = cur;
+          try { localStorage.setItem('sr-currency', srCurrency); } catch (e) {}
+          srPaintCurrencyButtons();
+          srPaintStatics();
+          repaintMoneyWidgets();
+        };
+
+        if (window.srTransitionWithLoader) {
+          window.srTransitionWithLoader(executeCurrencyChange, { minTime: 0.60, revealS: 0.45 });
+        } else {
+          executeCurrencyChange();
+        }
       });
     });
     /* İndirme kartlarındaki boyutları dile göre boyar */
@@ -6864,7 +6924,7 @@ Rapor Üretici: https://subradar.dev
         }
       });
     })();
-    /* Dil seçici: tüm arayüzü TR/EN/DE arasında yumuşak perdeyle geçirir */
+    /* Dil seçici: tüm arayüzü TR/EN/DE arasında Tiles Loader perdesiyle geçirir */
     function srSwapLang(v) {
       srLang = v;
       try { localStorage.setItem('sr-lang', srLang); } catch (e) {}
@@ -6881,17 +6941,15 @@ Rapor Üretici: https://subradar.dev
         const v = (b.dataset.lang || '').toLowerCase();
         if (v !== 'tr' && v !== 'en' && v !== 'de') return;
         if (v === srLang) return;
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const regions = [document.getElementById('icerik'), document.querySelector('header'), document.querySelector('footer')].filter(Boolean);
-        if (reduce || !regions.length) {
+        const executeLangSwap = () => {
           srSwapLang(v);
-          return;
+        };
+
+        if (window.srTransitionWithLoader) {
+          window.srTransitionWithLoader(executeLangSwap, { minTime: 0.60, revealS: 0.45 });
+        } else {
+          executeLangSwap();
         }
-        regions.forEach(el => { el.style.transition = 'opacity 160ms ease'; el.style.opacity = '0'; });
-        setTimeout(() => {
-          srSwapLang(v);
-          regions.forEach(el => { el.style.opacity = '1'; });
-        }, 170);
       });
     });
     srPaintLangButtons();

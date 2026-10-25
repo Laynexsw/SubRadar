@@ -208,7 +208,7 @@ Depo şu anda **beş kurumsal katmandan** oluşur:
 | `#cli-copy-btn` | `modals/reclaim-modal.html`| `curl` komutunu kopyalayan buton |
 | `#auth-modal-btn` | `layout/header.html` | Üst ada sağında yer alan Giriş Yap / Kayıt Ol butonu |
 | `#auth-modal-backdrop`| `modals/auth-modal.html` | İkili kayan panelli (Double-Slider Sliding Overlay) giriş/kayıt modalı |
-| `#sr-tiles-loader` | `layout/tiles-loader.html` | Sayfa açılışında beliren tam ekran Originkit edRand karo yükleyici |
+| `#sr-tiles-loader` | `layout/tiles-loader.html` | Sayfa açılışında ve tema/dil/para birimi geçişlerinde devreye giren Originkit edRand karo yükleyici (`srTransitionWithLoader`) |
 | `#tiles-loader-btn`| `layout/header.html` | Üst bardaki grid ikonu (Animasyonu anında baştan oynatma tetikleyicisi, kısayol: R) |
 | `#sr-progress` | `scroll-motion.js` | Sayfa üstündeki akıcı okuma ilerleme çizgisi |
 | `#sr-scrollspy` | `scroll-motion.js` | Alt merkezde sabit yüzen minimalist bölüm gezinti adası |

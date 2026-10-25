@@ -79,17 +79,48 @@ document.addEventListener('DOMContentLoaded', () => {
     b.addEventListener('click', () => {
       const cur = b.dataset.currency;
       if (!SR_RATES[cur]) return;
-      setCurrency(cur);
-      document.querySelectorAll('.currency-btn').forEach(btn => {
-        const active = btn.dataset.currency === cur;
-        btn.setAttribute('aria-pressed', String(active));
-        btn.classList.toggle('bg-white/15', active);
-        btn.classList.toggle('text-white', active);
-        btn.classList.toggle('text-white/50', !active);
-      });
-      if (typeof srPaintStatics === 'function') srPaintStatics();
-      if (heroModule) heroModule.renderHero();
-      if (calcModule) calcModule.updateCalculator();
+      if (cur === srCurrency) return;
+
+      const executeCurrencyChange = () => {
+        setCurrency(cur);
+        document.querySelectorAll('.currency-btn').forEach(btn => {
+          const active = btn.dataset.currency === cur;
+          btn.setAttribute('aria-pressed', String(active));
+          btn.classList.toggle('bg-white/15', active);
+          btn.classList.toggle('text-white', active);
+          btn.classList.toggle('text-white/50', !active);
+        });
+        if (typeof srPaintStatics === 'function') srPaintStatics();
+        if (heroModule) heroModule.renderHero();
+        if (calcModule) calcModule.updateCalculator();
+      };
+
+      if (window.srTransitionWithLoader) {
+        window.srTransitionWithLoader(executeCurrencyChange, { minTime: 0.60, revealS: 0.45 });
+      } else {
+        executeCurrencyChange();
+      }
+    });
+  });
+
+  // Language switchers
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      const v = (b.dataset.lang || '').toLowerCase();
+      if (v !== 'tr' && v !== 'en' && v !== 'de') return;
+      if (typeof window.srLang !== 'undefined' && v === window.srLang) return;
+
+      const executeLangChange = () => {
+        if (typeof window.srSwapLang === 'function') {
+          window.srSwapLang(v);
+        }
+      };
+
+      if (window.srTransitionWithLoader) {
+        window.srTransitionWithLoader(executeLangChange, { minTime: 0.60, revealS: 0.45 });
+      } else {
+        executeLangChange();
+      }
     });
   });
 

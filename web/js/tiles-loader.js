@@ -79,14 +79,19 @@ export function initTilesLoader(options = {}) {
     innerHeight: window.innerHeight
   });
 
+  if (root._srActiveRafId) {
+    cancelAnimationFrame(root._srActiveRafId);
+    root._srActiveRafId = 0;
+  }
+
   window.srTilesLoaderDone = false;
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('subradar:tiles-loader-start'));
   }
 
   const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const minTime = reduced ? 0.8 : (options.minTime !== undefined ? options.minTime : 2.0);
-  const revealS = reduced ? 0.6 : (options.revealS !== undefined ? options.revealS : 1.4);
+  const minTime = reduced ? 0.4 : (options.minTime !== undefined ? options.minTime : 2.0);
+  const revealS = reduced ? 0.3 : (options.revealS !== undefined ? options.revealS : 1.4);
 
   let isDark = false;
   try {
@@ -253,6 +258,7 @@ export function initTilesLoader(options = {}) {
       console.log('[Tiles Loader] Reveal finished at t =', t, 'Total duration:', t);
       finished = true;
       cancelAnimationFrame(rafId);
+      root._srActiveRafId = 0;
       window.removeEventListener('resize', updateDimensions);
       root.removeEventListener('click', skipHandler);
       window.removeEventListener('keydown', skipHandler);
@@ -277,12 +283,14 @@ export function initTilesLoader(options = {}) {
     }
 
     rafId = requestAnimationFrame(tick);
+    root._srActiveRafId = rafId;
   }
 
   // Lock scroll while loader is active
   document.body.classList.add('sr-loading-lock');
   renderFrame(0);
   rafId = requestAnimationFrame(tick);
+  root._srActiveRafId = rafId;
 }
 
 export function playTilesLoader(options = {}) {
@@ -299,9 +307,43 @@ export function playTilesLoader(options = {}) {
   });
 }
 
+export function transitionWithLoader(actionFn, options = {}) {
+  const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) {
+    if (typeof actionFn === 'function') actionFn();
+    return;
+  }
+
+  const root = document.getElementById('sr-tiles-loader');
+  if (!root) {
+    if (typeof actionFn === 'function') actionFn();
+    return;
+  }
+
+  const minTime = options.minTime !== undefined ? options.minTime : 0.60;
+  const revealS = options.revealS !== undefined ? options.revealS : 0.45;
+
+  // Pre-cover the screen immediately
+  root.style.display = 'block';
+  root.style.opacity = '1';
+  root.style.pointerEvents = 'auto';
+  root.removeAttribute('aria-hidden');
+
+  if (typeof actionFn === 'function') {
+    actionFn();
+  }
+
+  playTilesLoader({
+    minTime,
+    revealS,
+    ...options
+  });
+}
+
 // Global exposure
 if (typeof window !== 'undefined') {
   window.srInitTilesLoader = initTilesLoader;
   window.srPlayTilesLoader = playTilesLoader;
+  window.srTransitionWithLoader = transitionWithLoader;
 }
 
