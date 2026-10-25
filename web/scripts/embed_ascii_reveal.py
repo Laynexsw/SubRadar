@@ -44,74 +44,29 @@ def embed():
 }})();
 </script>"""
 
+    # Read Ascii Reveal Core & Loader
+    LOADER_JS = os.path.join(WEB_DIR, 'js', 'ascii-reveal-loader.js')
+    with open(LOADER_JS, 'r', encoding='utf-8') as f:
+        loader_code = f.read()
+
+    loader_code = re.sub(r'import\s+.*?from\s+[\'"].*?[\'"];?\n?', '', loader_code)
+    loader_code = loader_code.replace('export function AsciiSkeleton', 'function AsciiSkeleton')
+    loader_code = loader_code.replace('export function AsciiReveal', 'function AsciiReveal')
+    loader_code = loader_code.replace('export function initAsciiRevealLoader', 'function initAsciiRevealLoader')
+    loader_code = loader_code.replace('export ', '')
+
     reveal_bundle = f"""<script id="sr-bundle-ascii-reveal-js">
 /* =========================================================================
-   SubRadar — Ascii Reveal Dither + Decode Engine
+   SubRadar — Ascii Reveal & Ascii Skeleton Engine
    Direct Port of quanhoangindex/ascii-reveal
    ========================================================================= */
 (function () {{
 {core_code}
 
-  var ditherDecodePreset = {{
-    ramp: " ░▒▓█.:-=+*#%@",
-    scramble: "░▒▓█0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&*+=?/",
-    mode: "ramp",
-    color: "mono",
-    cells: [20, 14, 10, 7, 5],
-    tick: 55
-  }};
-
-  window.srDitherDecodePreset = ditherDecodePreset;
-
-  function initPageAsciiReveal() {{
-    var revealFn = window.createAsciiReveal;
-    if (typeof revealFn !== 'function') return;
-
-    var targets = [
-      {{ sel: '#site-header .header-island-inner', origin: 'center', delay: 0, speed: 1.3 }},
-      {{ sel: '[data-od-id="hero"] > div:not(.relative)', origin: 'top-left', delay: 0, speed: 1.2 }},
-      {{ sel: '#hero-mock-window', origin: 'top-left', delay: 70, speed: 1.15 }},
-      {{ sel: '[data-od-id="sorun"]', origin: 'center', delay: 130, speed: 1.15 }},
-      {{ sel: '#ekstre-laboratuvari', origin: 'center', delay: 180, speed: 1.15 }},
-      {{ sel: '#hesaplayici', origin: 'center', delay: 240, speed: 1.15 }},
-      {{ sel: '#karsilastirma', origin: 'center', delay: 300, speed: 1.15 }},
-      {{ sel: '#ozellikler', origin: 'center', delay: 360, speed: 1.15 }},
-      {{ sel: '#isletim-sistemleri', origin: 'center', delay: 420, speed: 1.15 }},
-      {{ sel: '#fiyatlandirma', origin: 'center', delay: 480, speed: 1.15 }},
-      {{ sel: '#faq', origin: 'center', delay: 540, speed: 1.15 }}
-    ];
-
-    targets.forEach(function (item) {{
-      var els = document.querySelectorAll(item.sel);
-      els.forEach(function (el) {{
-        if (!el || el.closest('.hidden')) return;
-        setTimeout(function () {{
-          try {{
-            var ctrl = revealFn(el, {{
-              preset: ditherDecodePreset,
-              duration: 'fast',
-              speed: item.speed || 1.15,
-              origin: item.origin || 'center'
-            }});
-            ctrl.reveal().catch(function () {{}});
-          }} catch (err) {{
-            console.warn('[Ascii Reveal on load]', item.sel, err);
-          }}
-        }}, item.delay);
-      }});
-    }});
-  }}
-
-  window.srInitAsciiRevealLoader = initPageAsciiReveal;
+{loader_code}
 
   function launchSiteEntrance() {{
-    if (window.srTilesLoaderDone) {{
-      initPageAsciiReveal();
-    }} else {{
-      window.addEventListener('subradar:tiles-loader-complete', function () {{
-        initPageAsciiReveal();
-      }}, {{ once: true }});
-    }}
+    initAsciiRevealLoader();
   }}
 
   if (document.readyState === 'loading') {{

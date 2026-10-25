@@ -136,7 +136,7 @@ SubRadar/
     │   ├── hero-window.js                # Hero masaüstü simülasyonu, trafik ışıkları ve iptal senaryoları
     │   ├── tiles-loader.js               # Originkit "Tiles Loader" saf JS motoru (hücre ızgarası, edRand mürekkepleşme, % sayacı, çapraz dalga)
     │   ├── ascii-reveal-core.js          # Standalone ASCII reveal & dither motoru (quanhoangindex/ascii-reveal)
-    │   ├── ascii-reveal-loader.js        # Sayfa yüklenişinde bileşenlere dither+decode animasyonu uygulayıcı orkestratör
+    │   ├── ascii-reveal-loader.js        # AsciiReveal (preset="decode") ve AsciiSkeleton (variant="dither") yükleme/deşifre orkestratörü
     │   ├── scroll-motion.js              # Sayfa okuma ilerleme çizgisi (`#sr-progress`) ve yüzen bölüm gezinme adası (`#sr-scrollspy`)
     │   ├── analytics.js                  # Canlı saniye sayacı, tıklama, kaydırma ve kullanıcı telemetri motoru (`srAnalytics`)
     │   ├── cookie-banner.js              # Minimal Apple Glass çerez kartı, otomatik açılış ve onay kontrolcüsü

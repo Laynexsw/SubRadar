@@ -1545,6 +1545,11 @@ function initTilesLoader(options = {}) {
     innerHeight: window.innerHeight
   });
 
+  window.srTilesLoaderDone = false;
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('subradar:tiles-loader-start'));
+  }
+
   const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const minTime = reduced ? 0.8 : (options.minTime !== undefined ? options.minTime : 2.0);
   const revealS = reduced ? 0.6 : (options.revealS !== undefined ? options.revealS : 1.4);
@@ -9185,7 +9190,7 @@ if (typeof document !== 'undefined') {
 
 <script id="sr-bundle-ascii-reveal-js">
 /* =========================================================================
-   SubRadar — Ascii Reveal Dither + Decode Engine
+   SubRadar — Ascii Reveal & Ascii Skeleton Engine
    Direct Port of quanhoangindex/ascii-reveal
    ========================================================================= */
 (function () {
@@ -9208,68 +9213,382 @@ var Te={decode:{ramp:" .:-=+*#%@",scramble:"ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%
 .ars-scan{--ars-base:.28;--ars-wave:.95;--ars-band:38%}
 .ars-terminal{--ars-base:.16;--ars-wave:1;--ars-band:35%;--ars-speed:1.5s;--ars-wave-color:var(--ascii-accent,currentColor)}`,qe=120,Ge=96;function Le(e,t,r=se.scan.base,n=.08,a=1.6){let o="";for(let i=0;i<t;i++)o+=q(i,e,17)<n?" ":r[Math.floor(Math.pow(q(i,e,29),a)*r.length)];return o}function At(e,t,r,n){let a=se[e]||se.dither;return Array.from({length:r},(o,i)=>Le(t+i,n,a.base,a.gap,a.bias)).join(`
 `)}var Pt=["100%","94%","72%","88%","60%"],It=e=>typeof e=="number"?`${e}px`:e;function Nt(e={}){let{variant:t="dither",lines:r=3,widths:n=Pt,rows:a,seed:o=1,css:i=!0,animate:s=!0}=e,l=y=>y.replace(/&/g,"&amp;").replace(/</g,"&lt;"),h=(y,p,c,m)=>{let f=At(t,o*97+y*13,m,a?Ge:qe);return`<span class="${p}" style="${c}"><span class="ars-base">${l(f)}</span></span>`},u=a?h(0,"ars-block","",a):Array.from({length:r},(y,p)=>h(p,"ars-line",`width:${It(n[p%n.length])};`,1)).join("");return`${i?`<style>${at}</style>`:""}<span class="ars ars-${t}" data-ascii-skeleton${s?` data-ars-animate="${o}"`:""} aria-hidden="true">${u}</span>`}var Ft=33,Ot=120,Ht=90,Ae=16,pe=new Set,Pe=new WeakMap,Ke=0,lt=0,je=0,Xe=0,Ie=null,$t=(()=>{let e=new Float32Array(257);for(let t=0;t<=256;t++){let r=t/256,n=0,a=1,o=r;for(let i=0;i<28;i++)o=(n+a)/2,3*(1-o)**2*o*.45+3*(1-o)*o*o*.55+o**3<r?n=o:a=o;e[t]=3*(1-o)**2*o*.05+3*(1-o)*o*o*.95+o**3}return t=>e[Math.round(t*256)]})(),Dt=e=>Object.keys(se).find(t=>e.classList.contains("ars-"+t))||"dither";function Bt(e){e.dirty=!1;let t=e.root,r=t.getBoundingClientRect();e.mw=r.width,e.mh=r.height;let n=Math.min(2,window.devicePixelRatio||1),a=getComputedStyle(t);e.band=(parseFloat(a.getPropertyValue("--ars-band"))||45)/100,e.opacity=parseFloat(a.getPropertyValue("--ars-wave"))||.9,e.speed=(parseFloat(a.getPropertyValue("--ars-speed"))||1.8)*1e3;let o=Dt(t),i=Number(t.getAttribute("data-ars-animate"))||1,s=a.getPropertyValue("--ars-wave-color").trim();for(let l of e.rows)Y(l.img);return e.rows=Array.from(t.querySelectorAll(".ars-line,.ars-block")).map((l,h)=>{let u=l.getBoundingClientRect(),y=l.querySelector(".ars-base")||l,p=getComputedStyle(y),c=getComputedStyle(l),m=l.classList.contains("ars-block"),f=(y.textContent||"").split(`
-`).length,b=parseFloat(c.lineHeight)||u.height/f,x=!s||/currentcolor/i.test(s)?p.color:s,C=Math.max(1,Math.ceil(u.width*n)),T=Math.max(1,Math.ceil(u.height*n)),I=document.createElement("canvas");I.width=C,I.height=T*2;let B=I.getContext("2d");B.font=`${p.fontStyle} ${p.fontWeight} ${p.fontSize} ${p.fontFamily}`,B.fillStyle=x,B.textBaseline="middle";let O=parseFloat(p.letterSpacing)||0,k=B.measureText("M").width+O,W=Math.min(m?Ge:qe,Math.ceil(u.width/Math.max(1,k))+1),D=!O||typeof B.letterSpacing=="string";O&&D&&(B.letterSpacing=O+"px");let U=se[o],S=i*97+h*13;for(let d=0;d<2;d++){B.setTransform(n,0,0,n,0,d*T);for(let M=0;M<f;M++){let P=Le(S+M+300*(d+1),W,U.wave,U.gap,U.bias),R=M*b+b/2;if(D)B.fillText(P,0,R);else for(let L=0;L<W;L++)P[L]!==" "&&B.fillText(P[L],L*k,R)}}let w=c.borderTopLeftRadius,X=w.endsWith("%")?parseFloat(w)/100*Math.min(u.width,u.height):parseFloat(w)||0;return{i:h,x:u.left-r.left,y:u.top-r.top,w:u.width,h:u.height,radius:Math.min(X,Math.min(u.width,u.height)/2),img:I,fh:T}}),()=>{e.canvas.width=Math.max(1,Math.ceil(r.width*n)),e.canvas.height=Math.max(1,Math.ceil(r.height*n)),e.canvas.style.width=r.width+"px",e.canvas.style.height=r.height+"px"}}function Wt(e,t){let{ctx:r,canvas:n}=e,a=n.width/Math.max(1,parseFloat(n.style.width)||1);r.setTransform(1,0,0,1,0,0),r.clearRect(0,0,n.width,n.height),r.setTransform(a,0,0,a,0,0);let o=Math.floor(t/Ot)%2;for(let i of e.rows){let s=((t-i.i*Ht)%e.speed+e.speed)%e.speed/e.speed,l=i.w*e.band,h=(i.w-l)*(-1.2+3.4*$t(s)),u=Math.max(0,h),y=Math.min(i.w,h+l);if(!(y<=u)){r.save(),r.beginPath(),i.radius>0&&r.roundRect?r.roundRect(i.x,i.y,i.w,i.h,i.radius):r.rect(i.x,i.y,i.w,i.h),r.clip();for(let p=0;p<Ae;p++){let c=h+l*p/Ae,m=h+l*(p+1)/Ae,f=Math.max(u,c),b=Math.min(y,m);if(b<=f)continue;let x=(p+.5)/Ae;r.globalAlpha=(x<.45?x/.45:x>.55?(1-x)/.45:1)*e.opacity,r.drawImage(i.img,f*a,o*i.fh,(b-f)*a,i.h*a,i.x+f,i.y,b-f,i.h)}r.restore()}}}function ht(e){if(Ke=pe.size?requestAnimationFrame(ht):0,Xe++,document.hidden||e-lt<Ft)return;lt=e;let t=e-je,r=6,n=[];for(let a of pe){if(!a.dirty||!a.visible||!a.root.isConnected||r<=0||Xe-a.born<2)continue;let o=performance.now();n.push(Bt(a)),r-=performance.now()-o}n.forEach(a=>a());for(let a of pe)!a.dirty&&a.visible&&a.root.isConnected&&Wt(a,t)}function ut(e){if(!Z()||ae())return()=>{};let t=Pe.get(e);if(t)return()=>ct(t);let r=document.createElement("canvas");r.setAttribute("aria-hidden","true"),e.appendChild(r);let n={root:e,canvas:r,ctx:r.getContext("2d"),rows:[],dirty:!0,visible:!0,band:.45,opacity:.9,speed:1800,ro:null,mw:-1,mh:-1,born:Xe};return typeof ResizeObserver<"u"&&(n.ro=new ResizeObserver(()=>{let a=e.getBoundingClientRect();(a.width!==n.mw||a.height!==n.mh)&&(n.dirty=!0)}),n.ro.observe(e)),!Ie&&typeof IntersectionObserver<"u"&&(Ie=new IntersectionObserver(a=>{for(let o of a){let i=Pe.get(o.target);i&&(i.visible=o.isIntersecting,i.visible||i.ctx.clearRect(0,0,i.canvas.width,i.canvas.height))}})),Ie?.observe(e),pe.add(n),Pe.set(e,n),document.fonts&&document.fonts.status!=="loaded"&&document.fonts.ready.then(()=>{n.dirty=!0}),je||(je=performance.now()),Ke||(Ke=requestAnimationFrame(ht)),()=>ct(n)}function ct(e){if(pe.has(e)){pe.delete(e),Pe.delete(e.root),e.ro?.disconnect(),Ie?.unobserve(e.root),Y(e.canvas);for(let t of e.rows)Y(t.img);e.rows=[]}}function _t(e=document){if(!Z())return()=>{};let t=Array.from(e.querySelectorAll("[data-ars-animate]")).map(ut);return()=>t.forEach(r=>r())}if(typeof window<"u"){window.createAsciiReveal=Lt;window.asciiPresets=Te;window.resolvePreset=be;}
+`).length,b=parseFloat(c.lineHeight)||u.height/f,x=!s||/currentcolor/i.test(s)?p.color:s,C=Math.max(1,Math.ceil(u.width*n)),T=Math.max(1,Math.ceil(u.height*n)),I=document.createElement("canvas");I.width=C,I.height=T*2;let B=I.getContext("2d");B.font=`${p.fontStyle} ${p.fontWeight} ${p.fontSize} ${p.fontFamily}`,B.fillStyle=x,B.textBaseline="middle";let O=parseFloat(p.letterSpacing)||0,k=B.measureText("M").width+O,W=Math.min(m?Ge:qe,Math.ceil(u.width/Math.max(1,k))+1),D=!O||typeof B.letterSpacing=="string";O&&D&&(B.letterSpacing=O+"px");let U=se[o],S=i*97+h*13;for(let d=0;d<2;d++){B.setTransform(n,0,0,n,0,d*T);for(let M=0;M<f;M++){let P=Le(S+M+300*(d+1),W,U.wave,U.gap,U.bias),R=M*b+b/2;if(D)B.fillText(P,0,R);else for(let L=0;L<W;L++)P[L]!==" "&&B.fillText(P[L],L*k,R)}}let w=c.borderTopLeftRadius,X=w.endsWith("%")?parseFloat(w)/100*Math.min(u.width,u.height):parseFloat(w)||0;return{i:h,x:u.left-r.left,y:u.top-r.top,w:u.width,h:u.height,radius:Math.min(X,Math.min(u.width,u.height)/2),img:I,fh:T}}),()=>{e.canvas.width=Math.max(1,Math.ceil(r.width*n)),e.canvas.height=Math.max(1,Math.ceil(r.height*n)),e.canvas.style.width=r.width+"px",e.canvas.style.height=r.height+"px"}}function Wt(e,t){let{ctx:r,canvas:n}=e,a=n.width/Math.max(1,parseFloat(n.style.width)||1);r.setTransform(1,0,0,1,0,0),r.clearRect(0,0,n.width,n.height),r.setTransform(a,0,0,a,0,0);let o=Math.floor(t/Ot)%2;for(let i of e.rows){let s=((t-i.i*Ht)%e.speed+e.speed)%e.speed/e.speed,l=i.w*e.band,h=(i.w-l)*(-1.2+3.4*$t(s)),u=Math.max(0,h),y=Math.min(i.w,h+l);if(!(y<=u)){r.save(),r.beginPath(),i.radius>0&&r.roundRect?r.roundRect(i.x,i.y,i.w,i.h,i.radius):r.rect(i.x,i.y,i.w,i.h),r.clip();for(let p=0;p<Ae;p++){let c=h+l*p/Ae,m=h+l*(p+1)/Ae,f=Math.max(u,c),b=Math.min(y,m);if(b<=f)continue;let x=(p+.5)/Ae;r.globalAlpha=(x<.45?x/.45:x>.55?(1-x)/.45:1)*e.opacity,r.drawImage(i.img,f*a,o*i.fh,(b-f)*a,i.h*a,i.x+f,i.y,b-f,i.h)}r.restore()}}}function ht(e){if(Ke=pe.size?requestAnimationFrame(ht):0,Xe++,document.hidden||e-lt<Ft)return;lt=e;let t=e-je,r=6,n=[];for(let a of pe){if(!a.dirty||!a.visible||!a.root.isConnected||r<=0||Xe-a.born<2)continue;let o=performance.now();n.push(Bt(a)),r-=performance.now()-o}n.forEach(a=>a());for(let a of pe)!a.dirty&&a.visible&&a.root.isConnected&&Wt(a,t)}function ut(e){if(!Z()||ae())return()=>{};let t=Pe.get(e);if(t)return()=>ct(t);let r=document.createElement("canvas");r.setAttribute("aria-hidden","true"),e.appendChild(r);let n={root:e,canvas:r,ctx:r.getContext("2d"),rows:[],dirty:!0,visible:!0,band:.45,opacity:.9,speed:1800,ro:null,mw:-1,mh:-1,born:Xe};return typeof ResizeObserver<"u"&&(n.ro=new ResizeObserver(()=>{let a=e.getBoundingClientRect();(a.width!==n.mw||a.height!==n.mh)&&(n.dirty=!0)}),n.ro.observe(e)),!Ie&&typeof IntersectionObserver<"u"&&(Ie=new IntersectionObserver(a=>{for(let o of a){let i=Pe.get(o.target);i&&(i.visible=o.isIntersecting,i.visible||i.ctx.clearRect(0,0,i.canvas.width,i.canvas.height))}})),Ie?.observe(e),pe.add(n),Pe.set(e,n),document.fonts&&document.fonts.status!=="loaded"&&document.fonts.ready.then(()=>{n.dirty=!0}),je||(je=performance.now()),Ke||(Ke=requestAnimationFrame(ht)),()=>ct(n)}function ct(e){if(pe.has(e)){pe.delete(e),Pe.delete(e.root),e.ro?.disconnect(),Ie?.unobserve(e.root),Y(e.canvas);for(let t of e.rows)Y(t.img);e.rows=[]}}function _t(e=document){if(!Z())return()=>{};let t=Array.from(e.querySelectorAll("[data-ars-animate]")).map(ut);return()=>t.forEach(r=>r())}if(typeof window<"u"){window.createAsciiReveal=Lt;window.asciiPresets=Te;window.resolvePreset=be;window.asciiSkeletonHTML=Nt;window.animateSkeleton=ut;window.animateSkeletons=_t;window.ASCII_SKELETON_CSS=at;window.ASCII_SKELETON_VARIANTS=se;}
 
-  var ditherDecodePreset = {
-    ramp: " ░▒▓█.:-=+*#%@",
-    scramble: "░▒▓█0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&*+=?/",
-    mode: "ramp",
-    color: "mono",
-    cells: [20, 14, 10, 7, 5],
-    tick: 55
+/**
+ * SubRadar — Ascii Reveal & Ascii Skeleton Engine
+ * Powered by ascii-reveal (quanhoangindex/ascii-reveal)
+ * 
+ * Implements the component lifecycle:
+ * <AsciiReveal loading={!data} preset="decode">
+ *   {data ? <Profile data={data} /> : <AsciiSkeleton variant="dither" />}
+ * </AsciiReveal>
+ *
+ * 1. Initial / Loading Phase (!data):
+ *    All elements across the site show an animated ASCII Skeleton (variant="dither"),
+ *    rendering soft block patterns (░▒▓█) with an animated sweeping wave.
+ * 2. Data / Complete Phase (data = true):
+ *    Elements transition from <AsciiSkeleton variant="dither" /> to live UI,
+ *    decoding text, metrics, and card surfaces via preset="decode" in an orchestrated cascade.
+ */
+
+
+let skeletonCssInjected = false;
+function ensureSkeletonCSS() {
+  if (skeletonCssInjected || typeof document === 'undefined') return;
+  skeletonCssInjected = true;
+
+  const styleId = 'sr-ascii-skeleton-css';
+  if (document.getElementById(styleId)) return;
+
+  const style = document.createElement('style');
+  style.id = styleId;
+  style.textContent = `
+    ${typeof SKELETON_CSS !== 'undefined' ? SKELETON_CSS : (window.ASCII_SKELETON_CSS || '')}
+
+    /* AsciiReveal Overlay & Loading State */
+    .ar-skeleton-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 25;
+      pointer-events: none;
+      border-radius: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.25rem;
+      overflow: hidden;
+      background: rgba(9, 9, 11, 0.84);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.32s ease;
+    }
+
+    html.light .ar-skeleton-overlay {
+      background: rgba(245, 245, 247, 0.88);
+    }
+
+    [data-ar-loading="true"] {
+      position: relative !important;
+    }
+
+    [data-ar-loading="true"] > *:not(.ar-skeleton-overlay):not(.ar-overlay) {
+      opacity: 0.12 !important;
+      filter: blur(1.5px) !important;
+      pointer-events: none !important;
+      transition: opacity 0.3s ease, filter 0.3s ease;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+/**
+ * AsciiSkeleton Component
+ * Generates and mounts an animated ASCII Skeleton with variant='dither'
+ */
+function AsciiSkeleton(options = {}) {
+  const {
+    variant = 'dither',
+    lines = 3,
+    widths = ['100%', '92%', '68%'],
+    rows,
+    width,
+    height,
+    circle = false,
+    animate = true,
+    seed = Math.floor(Math.random() * 1000)
+  } = options;
+
+  ensureSkeletonCSS();
+
+  const getHTMLFn = () => {
+    if (typeof asciiSkeletonHTML === 'function') return asciiSkeletonHTML;
+    if (typeof window !== 'undefined' && typeof window.asciiSkeletonHTML === 'function') return window.asciiSkeletonHTML;
+    return null;
   };
 
-  window.srDitherDecodePreset = ditherDecodePreset;
+  const htmlFn = getHTMLFn();
+  if (!htmlFn) return document.createElement('div');
 
-  function initPageAsciiReveal() {
-    var revealFn = window.createAsciiReveal;
+  const rawHTML = htmlFn({
+    variant,
+    lines,
+    widths,
+    rows,
+    animate,
+    seed,
+    css: false
+  });
+
+  const wrap = document.createElement('div');
+  wrap.className = 'ar-skeleton-item w-full';
+  if (width) wrap.style.width = typeof width === 'number' ? `${width}px` : width;
+  if (height) wrap.style.height = typeof height === 'number' ? `${height}px` : height;
+  if (circle) wrap.style.borderRadius = '9999px';
+  wrap.innerHTML = rawHTML;
+
+  const skeletonSpan = wrap.querySelector('[data-ars-animate]');
+  if (skeletonSpan && animate) {
+    setTimeout(() => {
+      const animFn = window.animateSkeleton || animateSkeleton;
+      if (typeof animFn === 'function') {
+        try { animFn(skeletonSpan); } catch (_) {}
+      }
+    }, 0);
+  }
+
+  return wrap;
+}
+
+/**
+ * AsciiReveal Component Controller
+ * Coordinates between <AsciiSkeleton variant="dither" /> and preset="decode"
+ */
+function AsciiReveal(target, options = {}) {
+  const el = typeof target === 'string' ? document.querySelector(target) : target;
+  if (!el) return null;
+
+  ensureSkeletonCSS();
+
+  const state = {
+    loading: options.loading !== undefined ? options.loading : true,
+    preset: options.preset || 'decode',
+    variant: options.variant || 'dither',
+    lines: options.lines || 3,
+    rows: options.rows || null,
+    widths: options.widths || ['100%', '90%', '70%'],
+    speed: options.speed || 1.2,
+    origin: options.origin || 'center',
+    surface: !!options.surface,
+    ctrl: null,
+    overlay: null
+  };
+
+  if (state.surface && !el.hasAttribute('data-ascii')) {
+    el.setAttribute('data-ascii', 'surface');
+  }
+
+  function renderSkeleton() {
+    if (state.overlay && state.overlay.isConnected) return;
+
+    if (getComputedStyle(el).position === 'static') {
+      el.style.position = 'relative';
+    }
+
+    const overlay = document.createElement('div');
+    overlay.className = 'ar-skeleton-overlay';
+    overlay.setAttribute('data-ascii-skeleton-overlay', 'true');
+    overlay.setAttribute('aria-hidden', 'true');
+
+    const skeletonNode = AsciiSkeleton({
+      variant: state.variant,
+      lines: state.lines,
+      widths: state.widths,
+      rows: state.rows,
+      animate: true
+    });
+
+    overlay.appendChild(skeletonNode);
+    el.appendChild(overlay);
+    state.overlay = overlay;
+
+    el.setAttribute('data-ar-loading', 'true');
+  }
+
+  function removeSkeleton() {
+    el.removeAttribute('data-ar-loading');
+    if (!state.overlay) return;
+    const ov = state.overlay;
+    state.overlay = null;
+    ov.style.transition = 'opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1)';
+    ov.style.opacity = '0';
+    setTimeout(() => {
+      if (ov.isConnected) ov.remove();
+    }, 300);
+  }
+
+  function decodeIn() {
+    removeSkeleton();
+    const revealFn = window.createAsciiReveal || createAsciiReveal;
     if (typeof revealFn !== 'function') return;
 
-    var targets = [
-      { sel: '#site-header .header-island-inner', origin: 'center', delay: 0, speed: 1.3 },
-      { sel: '[data-od-id="hero"] > div:not(.relative)', origin: 'top-left', delay: 0, speed: 1.2 },
-      { sel: '#hero-mock-window', origin: 'top-left', delay: 70, speed: 1.15 },
-      { sel: '[data-od-id="sorun"]', origin: 'center', delay: 130, speed: 1.15 },
-      { sel: '#ekstre-laboratuvari', origin: 'center', delay: 180, speed: 1.15 },
-      { sel: '#hesaplayici', origin: 'center', delay: 240, speed: 1.15 },
-      { sel: '#karsilastirma', origin: 'center', delay: 300, speed: 1.15 },
-      { sel: '#ozellikler', origin: 'center', delay: 360, speed: 1.15 },
-      { sel: '#isletim-sistemleri', origin: 'center', delay: 420, speed: 1.15 },
-      { sel: '#fiyatlandirma', origin: 'center', delay: 480, speed: 1.15 },
-      { sel: '#faq', origin: 'center', delay: 540, speed: 1.15 }
-    ];
+    try {
+      if (!state.ctrl) {
+        state.ctrl = revealFn(el, {
+          preset: state.preset,
+          duration: 'fast',
+          speed: state.speed,
+          origin: state.origin
+        });
+      }
+      state.ctrl.reveal().catch(() => {});
+    } catch (err) {
+      console.warn('[AsciiReveal Decode]', el, err);
+    }
+  }
 
-    targets.forEach(function (item) {
-      var els = document.querySelectorAll(item.sel);
-      els.forEach(function (el) {
-        if (!el || el.closest('.hidden')) return;
-        setTimeout(function () {
-          try {
-            var ctrl = revealFn(el, {
-              preset: ditherDecodePreset,
-              duration: 'fast',
-              speed: item.speed || 1.15,
-              origin: item.origin || 'center'
-            });
-            ctrl.reveal().catch(function () {});
-          } catch (err) {
-            console.warn('[Ascii Reveal on load]', item.sel, err);
-          }
-        }, item.delay);
+  function setLoading(loadingState) {
+    state.loading = !!loadingState;
+    if (state.loading) {
+      renderSkeleton();
+    } else {
+      decodeIn();
+    }
+  }
+
+  if (state.loading) {
+    renderSkeleton();
+  } else {
+    decodeIn();
+  }
+
+  return {
+    element: el,
+    setLoading,
+    reveal: () => decodeIn(),
+    destroy: () => {
+      removeSkeleton();
+      if (state.ctrl) state.ctrl.destroy();
+    }
+  };
+}
+
+// Global registry of active AsciiReveal instances
+const activeRevealInstances = [];
+
+/**
+ * Initializes AsciiReveal with dither skeleton on all elements across the entire website
+ */
+function initAsciiRevealLoader() {
+  ensureSkeletonCSS();
+
+  // Selected component specifications across the entire site
+  const siteTargets = [
+    { sel: '#site-header .header-island-inner', origin: 'center', lines: 1, delay: 0, speed: 1.3 },
+    { sel: '[data-od-id="hero"] .hero-headline-wrap, [data-od-id="hero"] h1', origin: 'top-left', lines: 2, delay: 40, speed: 1.2 },
+    { sel: '[data-od-id="hero"] p', origin: 'top-left', lines: 2, delay: 80, speed: 1.2 },
+    { sel: '#hero-mock-window', origin: 'top-left', rows: 8, surface: true, delay: 120, speed: 1.15 },
+    { sel: '#hero-mock-window .kpi-card', origin: 'center', rows: 3, surface: true, delay: 160, speed: 1.2 },
+    { sel: '[data-od-id="sorun"] .apple-card', origin: 'center', rows: 4, surface: true, delay: 200, speed: 1.15 },
+    { sel: '#ekstre-laboratuvari .apple-card', origin: 'center', rows: 6, surface: true, delay: 240, speed: 1.15 },
+    { sel: '#hesaplayici .apple-card', origin: 'center', rows: 6, surface: true, delay: 280, speed: 1.15 },
+    { sel: '#karsilastirma .apple-card', origin: 'center', rows: 6, surface: true, delay: 320, speed: 1.15 },
+    { sel: '#ozellikler .apple-card', origin: 'center', rows: 5, surface: true, delay: 360, speed: 1.15 },
+    { sel: '[data-od-id="mimari"] .apple-card, #mimari .apple-card', origin: 'center', rows: 5, surface: true, delay: 400, speed: 1.15 },
+    { sel: '#isletim-sistemleri .apple-card', origin: 'center', rows: 5, surface: true, delay: 440, speed: 1.15 },
+    { sel: '#hash-verifier .apple-card', origin: 'center', rows: 4, surface: true, delay: 480, speed: 1.15 },
+    { sel: '#fiyatlandirma .apple-card', origin: 'center', rows: 6, surface: true, delay: 520, speed: 1.15 },
+    { sel: '#faq .apple-card, #faq details', origin: 'center', lines: 2, surface: true, delay: 560, speed: 1.15 },
+    { sel: '#sr-scrollspy', origin: 'center', lines: 1, delay: 600, speed: 1.25 },
+    { sel: '#site-footer', origin: 'center', lines: 2, delay: 640, speed: 1.15 }
+  ];
+
+  // Mark all numeric KPIs with data-ascii-digits
+  const digitSelectors = [
+    '#hero-monthly-burn',
+    '#hero-detected-leaks',
+    '#hero-annual-waste',
+    '#out-1yr',
+    '#out-5yr',
+    '.stat-number',
+    '[data-digits]'
+  ];
+  digitSelectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      if (el) el.setAttribute('data-ascii-digits', 'true');
+    });
+  });
+
+  // Mark interactive buttons and icons with data-ascii="fade"
+  const fadeSelectors = [
+    '.lang-btn',
+    '.currency-btn',
+    '#theme-toggle',
+    '.direct-kill-btn',
+    '.calc-preset-btn',
+    '#hero-demo-reset',
+    '#tiles-loader-btn'
+  ];
+  fadeSelectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      if (el && !el.hasAttribute('data-ascii')) el.setAttribute('data-ascii', 'fade');
+    });
+  });
+
+  // Reset instances if re-initializing
+  while (activeRevealInstances.length) {
+    const item = activeRevealInstances.pop();
+    if (item && item.instance && typeof item.instance.destroy === 'function') {
+      item.instance.destroy();
+    }
+  }
+
+  // 1. Initial State: loading = true (!data) -> render <AsciiSkeleton variant="dither" />
+  const isLoaded = !!window.srTilesLoaderDone;
+  siteTargets.forEach(spec => {
+    const els = document.querySelectorAll(spec.sel);
+    els.forEach(el => {
+      if (!el || el.closest('.hidden')) return;
+      const instance = AsciiReveal(el, {
+        loading: !isLoaded,
+        preset: 'decode',
+        variant: 'dither',
+        lines: spec.lines || 3,
+        rows: spec.rows || null,
+        surface: !!spec.surface,
+        speed: spec.speed || 1.2,
+        origin: spec.origin || 'center'
       });
+      if (instance) {
+        activeRevealInstances.push({ instance, delay: spec.delay || 0 });
+      }
+    });
+  });
+
+  // Start skeleton scan canvas animation
+  const startSkeletonAnim = window.animateSkeletons || animateSkeletons;
+  if (typeof startSkeletonAnim === 'function') {
+    try { startSkeletonAnim(document); } catch (_) {}
+  }
+
+  // 2. Data Ready: Transition from <AsciiSkeleton variant="dither" /> to live UI with preset="decode"
+  function triggerDecodeCascade() {
+    activeRevealInstances.forEach(({ instance, delay }) => {
+      setTimeout(() => {
+        instance.setLoading(false); // data ready: replaces skeleton with real UI and triggers decode scramble
+      }, delay);
     });
   }
 
-  window.srInitAsciiRevealLoader = initPageAsciiReveal;
+  if (isLoaded) {
+    triggerDecodeCascade();
+  } else {
+    window.addEventListener('subradar:tiles-loader-complete', triggerDecodeCascade, { once: true });
+  }
+
+  // Replay handler: Re-engages loading state (!data) with dither skeletons, then decodes again
+  window.addEventListener('subradar:tiles-loader-start', () => {
+    activeRevealInstances.forEach(({ instance }) => {
+      instance.setLoading(true); // reset to <AsciiSkeleton variant="dither" />
+    });
+    const restartAnim = window.animateSkeletons || animateSkeletons;
+    if (typeof restartAnim === 'function') {
+      try { restartAnim(document); } catch (_) {}
+    }
+    window.addEventListener('subradar:tiles-loader-complete', triggerDecodeCascade, { once: true });
+  });
+}
+
+// Global exposure for non-module usage
+if (typeof window !== 'undefined') {
+  window.AsciiSkeleton = AsciiSkeleton;
+  window.AsciiReveal = AsciiReveal;
+  window.srInitAsciiRevealLoader = initAsciiRevealLoader;
+}
+
 
   function launchSiteEntrance() {
-    if (window.srTilesLoaderDone) {
-      initPageAsciiReveal();
-    } else {
-      window.addEventListener('subradar:tiles-loader-complete', function () {
-        initPageAsciiReveal();
-      }, { once: true });
-    }
+    initAsciiRevealLoader();
   }
 
   if (document.readyState === 'loading') {

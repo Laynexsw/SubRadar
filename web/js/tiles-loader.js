@@ -79,6 +79,11 @@ export function initTilesLoader(options = {}) {
     innerHeight: window.innerHeight
   });
 
+  window.srTilesLoaderDone = false;
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('subradar:tiles-loader-start'));
+  }
+
   const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const minTime = reduced ? 0.8 : (options.minTime !== undefined ? options.minTime : 2.0);
   const revealS = reduced ? 0.6 : (options.revealS !== undefined ? options.revealS : 1.4);
