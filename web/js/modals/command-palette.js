@@ -100,7 +100,9 @@ export function initCommandPalette() {
       const cmd = item.dataset.cmd;
       closeCommandPalette();
 
-      if (cmd === 'kill-adobe') {
+      if (cmd === 'tiles-loader') {
+        if (window.srPlayTilesLoader) window.srPlayTilesLoader();
+      } else if (cmd === 'kill-adobe') {
         const adobeBtn = document.querySelector('.direct-kill-btn[data-service="Adobe Creative Cloud"]');
         if (adobeBtn && !adobeBtn.disabled) adobeBtn.click();
       } else if (cmd === 'vault-audit') {

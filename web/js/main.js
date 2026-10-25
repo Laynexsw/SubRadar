@@ -25,6 +25,7 @@ import './modals/shortcuts-modal.js';
 import './modals/legal-gen.js';
 import './supabase.js';
 import { initAsciiRevealLoader } from './ascii-reveal-loader.js';
+import './tiles-loader.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize modules

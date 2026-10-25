@@ -53,10 +53,14 @@ Depo şu anda **üç ana katmandan** oluşur:
 
 ### 2.3 Web Modüler Bileşenleri (`web/components/`)
 * **`layout/`**:
-  * `header.html`: Atmospheric glow efekti, marka logosu, masaüstü/mobil menü, ⌘K butonu, Web Audio ses açma/kapama (`#sound-toggle-btn`), Power-User kısayol rehberi (`#shortcuts-help-btn`), tema butonu, dil (EN/DE/TR) ve kur ($/€/₺) butonları, "Bilgisayara İndir" ana aksiyonu.
+  * `header.html`: Atmospheric glow efekti, marka logosu, masaüstü/mobil menü, ⌘K butonu, Web Audio ses açma/kapama (`#sound-toggle-btn`), Originkit Tiles Loader butonu (`#tiles-loader-trigger-btn`), Power-User kısayol rehberi (`#shortcuts-help-btn`), tema butonu, dil (EN/DE/TR) ve kur ($/€/₺) butonları, "Bilgisayara İndir" ana aksiyonu.
   * `footer.html`: Canlı motor gecikme göstergesi (`#footer-engine-ping`), telif hakları, iletişim bilgileri (`iletisim@subradar.dev`), hızlı bağlantılar ve yerel güvenlik taahhütleri.
   * `cookie-banner.html`: Minimal Apple Glass çerez ve canlı kullanıcı etkileşimi bildirim kartı (`#sr-privacy-banner`), canlı saniye sayacı rozeti (`#sr-active-seconds-badge`).
   * `mobile-sticky-cta.html`: Mobilde altta sabit kalan hızlı indirme çubuğu (`#sr-mobile-sticky-cta`).
+  * `tiles-loader.html`: Originkit Tiles Loader tam ekran editoryal karo yükleme ve küçülme dalgası overlay konteyneri (`#sr-tiles-loader-overlay`).
+* **`originkit/`**:
+  * `tiles-loader.tsx`: Originkit Tiles Loader React/TypeScript kaynak bileşeni (32-bit PRNG karo mürekkepleme eşiği, `edInOutCubic` diyagonal küçülme dalgası ve `difference` blend modlu tabular-nums sayaç).
+  * `react-shim.d.ts`: React & JSX ambient tip tanımları (`react`, `react/jsx-runtime`, `JSX.IntrinsicElements`).
 * **`sections/`**:
   * `hero.html`: Ana manşet, işletim sistemi indirme butonları (macOS / Windows), interaktif macOS simülasyon penceresi (`#hero-mock-window`).
   * `problem.html`: Gizli abonelik kayıpları, 4.2 dakikalık iptal atlama süresi ve sektör istatistikleri.
@@ -70,11 +74,11 @@ Depo şu anda **üç ana katmandan** oluşur:
   * `pricing.html`: Free ($0), Pro ($79 tek seferlik ömür boyu lisans) ve Enterprise (özel kurumsal lisans) modelleri; aboneliksiz tek seferlik ödeme mimarisi.
   * `faq.html`: Sıkça sorulan sorular akordeonu.
 * **`modals/`**:
-  * `command-palette.html`: ⌘K / Ctrl+K arama paleti, klavye ok tuşları ile gezinim.
+  * `command-palette.html`: ⌘K / Ctrl+K arama paleti, klavye ok tuşları ile gezinim ve Tiles Loader eylemi.
   * `download-modal.html`: Mimari seçimi (Apple Silicon vs Intel, Windows x64 vs ARM64), simüle edilen hız ve ilerleme çubuğu, SHA256 göstergesi.
   * `enterprise-modal.html`: Kurumsal teklif formu (Ad, Şirket E-postası, Şirket Adı, inline hata doğrulaması ve loading spinner).
   * `reclaim-modal.html`: CLI indirme komutu kopyalama (`curl -sSL subradar.dev/cli | sh`) ve 3 adımlı kurtarma rehberi.
-  * `shortcuts-modal.html`: Raycast/Linear stili Power-User klavye kısayolları modalı (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`).
+  * `shortcuts-modal.html`: Raycast/Linear stili Power-User klavye kısayolları modalı (`?`, `T`, `S`, `O`, `C`, `L`, `D`, `ESC`).
   * `legal-generator-modal.html`: Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı (canlı önizleme, pano kopyalama ve `.txt` dosya indirme).
   * `auth-modal.html`: İkili kayan panelli (Double-Slider Sliding Overlay) Apple Glass Monokrom modalı: Saf siyah-beyaz ve uzay grafiti/obsidyen marka katmanı (`.auth-overlay`), buzlu geometrik cam şekiller, parlak beyaz ve ghost outline hap butonlar ("GİRİŞ YAP" / "KAYIT OL"), dairesel monokrom sosyal butonlar (Google, GitHub, Apple), tek tıkla VIP demo, monokrom şifre güvenlik göstergesi ve aktif profil yönetim paneli.
 
@@ -101,19 +105,20 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`scroll-motion.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/scroll-motion.js): Tepe ilerleme çizgisi (`#sr-progress`), yüzen bölüm gezinme adası (`#sr-scrollspy`), `#site-header` ada geçişi.
 * [`ascii-reveal-core.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/ascii-reveal-core.js): Bağımsız ve sıfır-bağımlılık ASCII reveal, dither ve karakter dönüşüm çekirdek motoru (`quanhoangindex/ascii-reveal`).
 * [`ascii-reveal-loader.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/ascii-reveal-loader.js): Sayfa açılışında bileşenlere hibrit `dither + decode` (yoğun blok `░▒▓█` ve alfanumerik deşifre) animasyonu uygulayan açılış orkestratörü.
+* [`tiles-loader.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/tiles-loader.js): Originkit Tiles Loader tarayıcı motoru (PRNG, rastgele karo mürekkepleme, tabular nums difference sayacı ve editoryal diyagonal küçülme dalgası; `mountTilesLoader`, `playTilesLoader`).
 * [`i18n.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/i18n.js): TR/EN/DE sözlükleri, DOM TreeWalker ile metin düğümlerini dinamik olarak çeviren `t()` fonksiyonu.
 * [`analytics.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/analytics.js): Gerçek zamanlı saniye sayacı, tıklama koordinatları, kaydırma derinliği ve kullanıcı etkileşim telemetri motoru (`srAnalytics`).
 * [`cookie-banner.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/cookie-banner.js): Minimal Apple Glass çerez kartı, sayfa açılışında otomatik belirme (500ms), onay kaydı ve Web Audio ses efektleri kontrolcüsü.
 * [`mobile-cta.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/mobile-cta.js): Mobilde kaydırmaya bağlı beliren sabit indirme barı.
 * [`main.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/main.js): Tüm modülleri ve Service Worker'ı başlatan ana orkestrasyon dosyası.
-* [`modals/command-palette.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/command-palette.js): ⌘K / Ctrl+K arama, ok tuşlarıyla gezinme ve eylem tetikleme.
+* [`modals/command-palette.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/command-palette.js): ⌘K / Ctrl+K arama, ok tuşlarıyla gezinme, eylem tetikleme ve Originkit Tiles Loader çalıştırma.
 * [`modals/download-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/download-modal.js): İndirme simülasyonu, OS ve mimari seçimi, SHA-256 doğrulama.
 * [`modals/enterprise-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/enterprise-modal.js): Kurumsal form kontrolü, gerçek zamanlı hata denetimi ve loading spinner.
 * [`modals/reclaim-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/reclaim-modal.js): CLI kopyalama ve modal görünürlüğü.
-* [`modals/shortcuts-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/shortcuts-modal.js): Power-User kısayol dinleyici (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`).
+* [`modals/shortcuts-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/shortcuts-modal.js): Power-User kısayol dinleyici (`?`, `T`, `S`, `O`, `C`, `L`, `D`, `ESC`).
 * [`modals/legal-gen.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/legal-gen.js): Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme.
 * [`modals/auth-modal.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/modals/auth-modal.js): Çift yönlü kayan panel animasyonu (`.auth-right-panel-active`), dairesel sosyal butonlar, tek tıkla demo, şifre doğrulama ve profil paneli kontrolcüsü (`initAuthModal`).
-* [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 22 bileşenin bütünlüğünü doğrulayan test betiği.
+* [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 23 bileşenin bütünlüğünü doğrulayan test betiği.
 * [`scripts/embed_ascii_reveal.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/embed_ascii_reveal.py): `ascii-reveal` motorunu ve dither+decode orkestratörünü tekil üretim dosyası `web/code.html` içerisine derleyip enjekte eden betik.
 
 ### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/`)

@@ -80,12 +80,17 @@ SubRadar/
     ├── manifest.json                     # PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği)
     ├── sw.js                             # Çevrimdışı Service Worker önbellekleme motoru
     │
-    ├── components/                       # 22 Parçalı Modüler HTML Bileşenleri
+    ├── components/                       # 23 Parçalı Modüler HTML Bileşenleri
     │   ├── layout/
-    │   │   ├── header.html               # Üst gezinme çubuğu, ses, kısayol, dil, kur ve tema kontrolleri
+    │   │   ├── header.html               # Üst gezinme çubuğu, ses, tiles loader, kısayol, dil, kur ve tema kontrolleri
     │   │   ├── footer.html               # Alt bilgi çubuğu, iletişim bilgileri, bağlantılar ve yerel gecikme
     │   │   ├── cookie-banner.html        # Minimal Apple Glass çerez ve canlı kullanıcı etkileşim izleme kartı
-    │   │   └── mobile-sticky-cta.html    # Mobilde altta sabit kalan hızlı indirme çubuğu
+    │   │   ├── mobile-sticky-cta.html    # Mobilde altta sabit kalan hızlı indirme çubuğu
+    │   │   └── tiles-loader.html         # Originkit Tiles Loader tam ekran editoryal yükleme overlay konteyneri
+    │   │
+    │   ├── originkit/                    # Originkit Framer Bileşenleri
+    │   │   ├── tiles-loader.tsx          # Originkit Tiles Loader React/TypeScript kaynak bileşeni
+    │   │   └── react-shim.d.ts           # React & JSX ambient tip tanımları
     │   │
     │   ├── sections/
     │   │   ├── hero.html                 # Hero vitrin alanı, çift CTA ve interaktif pencere simülasyonu
@@ -102,10 +107,10 @@ SubRadar/
     │   │
     │   └── modals/
     │       ├── download-modal.html       # İndirme modalı (İlerleme çubuğu, işletim sistemi ve mimari seçimi)
-    │       ├── command-palette.html      # Cmd+K / Ctrl+K komut paleti arama penceresi
+    │       ├── command-palette.html      # Cmd+K / Ctrl+K komut paleti arama penceresi ve Tiles Loader eylemi
     │       ├── enterprise-modal.html     # Kurumsal talep formu (inline hata denetimi & spinner)
     │       ├── reclaim-modal.html        # Geri kazanım ve CLI kurulum adımları
-    │       ├── shortcuts-modal.html      # Raycast/Linear stili Power-User klavye kısayolları modalı
+    │       ├── shortcuts-modal.html      # Raycast/Linear stili Power-User klavye kısayolları modalı (? / O / T / S / C / L / D)
     │       ├── legal-generator-modal.html# Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı
     │       └── auth-modal.html           # İkili kayan panelli (Double-Slider Sliding Overlay) Apple Glass Monokrom modalı
     │
@@ -130,6 +135,7 @@ SubRadar/
     │   ├── hero-window.js                # Hero masaüstü simülasyonu, trafik ışıkları ve iptal senaryoları
     │   ├── ascii-reveal-core.js          # Standalone ASCII reveal & dither motoru (quanhoangindex/ascii-reveal)
     │   ├── ascii-reveal-loader.js        # Sayfa yüklenişinde bileşenlere dither+decode animasyonu uygulayıcı orkestratör
+    │   ├── tiles-loader.js               # Originkit Tiles Loader tarayıcı motoru (PRNG, rastgele karo inking, tabular nums difference sayacı ve editoryal küçülme dalgası)
     │   ├── scroll-motion.js              # Sayfa okuma ilerleme çizgisi (`#sr-progress`) ve yüzen bölüm gezinme adası (`#sr-scrollspy`)
     │   ├── analytics.js                  # Canlı saniye sayacı, tıklama, kaydırma ve kullanıcı telemetri motoru (`srAnalytics`)
     │   ├── cookie-banner.js              # Minimal Apple Glass çerez kartı, otomatik açılış ve onay kontrolcüsü
@@ -138,14 +144,14 @@ SubRadar/
     │   │
     │   └── modals/                       # Web Modal Kontrolcüleri
     │       ├── download-modal.js         # İndirme simülasyonu ve dosya indirme tetikleyicisi
-    │       ├── command-palette.js        # Komut paleti klavye gezinimi ve hızlı arama
+    │       ├── command-palette.js        # Komut paleti klavye gezinimi, hızlı arama ve Tiles Loader eylemi
     │       ├── enterprise-modal.js       # Kurumsal form doğrulama, spinner ve onay ekranı
     │       ├── reclaim-modal.js          # CLI komut kopyalama ve geri kazanım adımları
-    │       ├── shortcuts-modal.js        # Power-User kısayol dinleyici (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`)
+    │       ├── shortcuts-modal.js        # Power-User kısayol dinleyici (`?`, `T`, `S`, `O`, `C`, `L`, `D`, `ESC`)
     │       ├── legal-gen.js              # Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme
     │       └── auth-modal.js             # İkili kayan panel animasyonu (sliding overlay), sosyal/demo giriş ve profil kontrolcüsü
     └── scripts/
-        ├── build.py                      # 22 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
+        ├── build.py                      # 23 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
         └── embed_ascii_reveal.py         # ascii-reveal dither+decode motorunu code.html içine derleyip enjekte eden betik
 ```
 

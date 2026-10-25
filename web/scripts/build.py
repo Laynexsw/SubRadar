@@ -36,6 +36,7 @@ def build():
         'components/modals/auth-modal.html',
         'components/layout/cookie-banner.html',
         'components/layout/mobile-sticky-cta.html',
+        'components/layout/tiles-loader.html',
     ]
 
     for comp in components:
