@@ -17,15 +17,16 @@
 
 ## 1. Genel Bakış ve Katmanlar
 
-SubRadar, kullanıcıların abonelik israfını engelleyen, tek tıkla iptal bağlantıları sunan, %100 yerel ve çevrimdışı çalışan bir sistemdir.
+SubRadar Enterprise & Personal FinOps, organizasyonlarda ve bireysel iş akışlarında kontrolsüz abonelik israfını (SaaS Sprawl), terk edilmiş koltukları (Gölge IT) ve karanlık desenleri engelleyen; tek tıkla doğrudan iptal ve resmi fesih araçları sunan, %100 yerel ve çevrimdışı çalışan yeni nesil bir finansal zekâ platformudur.
 
-Depo şu anda **üç ana katmandan** oluşur:
-1. **Kök Katmanı (`/`):** Dağıtım yapılandırması (`index.html`, `.nojekyll`, `.gitignore`), lisanslar ve dokümantasyon (`README.md`, `PRODUCT.md`, `AGENTS.md`, `CODEBASE.md`).
-2. **Web Vitrini Katmanı (`web/`):**
-   * **Modüler Kaynak:** `components/` (23 HTML parçası), `css/` (3 dosya), `js/` (22 modül), `manifest.json`, `sw.js`, `scripts/build.py`.
-   * **Üretim / Canlı Yayın:** `code.html` (~340 KB, tüm stil, betik ve HTML'in birleştiği, GitHub Pages'ta yayınlanan monolitik dosya).
-3. **Masaüstü Katmanı (`app/`):** Electron, Node.js yerel AES-256 kasası, çerçevesiz Apple Glass UI ve güvenli IPC köprüsüne sahip tam fonksiyonel masaüstü istemcisi.
-4. **Harici UI Bileşenleri (`components/`):** Originkit CLI (`npx originkit@latest add tiles-loader`) tarafından yüklenen resmi React/TypeScript bileşenleri (`components/originkit/ui/tiles-loader.tsx`).
+Depo şu anda **beş kurumsal katmandan** oluşur:
+1. **Kök Yönetim Katmanı (`/`):** Dağıtım yapılandırması (`index.html`, `.nojekyll`, `.gitignore`), güvenlik politikaları (`privacy.html`, `terms.html`, `thanks.html`), SEO varlıkları (`robots.txt`, `sitemap.xml`) ve mimari dokümantasyon (`README.md`, `PRODUCT.md`, `AGENTS.md`, `CODEBASE.md`, `.agents/rules/`).
+2. **Kurumsal Lisans Çerçevesi (`licenses/`):** 9 alternatif lisans şablonu (MIT, Apache 2.0, GPL, AGPL, BSD, MPL, Unlicense, Proprietary) ve kurumsal seçim matrisi.
+3. **Masaüstü İşletim Çekirdeği (`app/`):** Electron v33, Node.js yerel AES-256 kasası, Air-Gap ekstre analizörü, 6502 SK & GDPR fesih motoru, çerçevesiz Apple Glass UI ve güvenli IPC köprüsüne sahip tam fonksiyonel masaüstü istemcisi.
+4. **Harici UI Bileşenleri (`components/`):** Originkit CLI (`components/originkit/ui/tiles-loader.tsx`, `components/originkit/ui/vector-wordmark.tsx`) resmi React/TypeScript tasarım sistemi bileşenleri.
+5. **Web Vitrini & Simülasyon Platformu (`web/`):**
+   * **Modüler Kaynak:** `components/` (23 HTML parçası + Originkit tip köprüsü), `css/` (3 dosya), `js/` (22 modül), `manifest.json`, `sw.js`, `scripts/build.py`, `scripts/embed_tiles_loader.py`.
+   * **Üretim / Canlı Yayın:** `code.html` (~340 KB, tüm stil, betik ve HTML'in birleştiği, GitHub Pages'ta yayınlanan monolitik tekil paket).
 
 ---
 
