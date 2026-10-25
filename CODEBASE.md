@@ -52,10 +52,14 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`licenses/README.md`](file:///c:/Users/arday/Desktop/SubRadar/licenses/README.md): Lisans seçim kılavuzu ve 9 popüler lisansın karşılaştırma tablosu.
 * [`licenses/*.txt`](file:///c:/Users/arday/Desktop/SubRadar/licenses/): MIT, Apache-2.0, BSD-3, BSD-2, GPL-3.0, AGPL-3.0, MPL-2.0, Unlicense ve Proprietary tam metinleri.
 
-### 2.3 Web Modüler Bileşenleri (`web/components/`)
+### 2.3 Harici UI Bileşenleri (`components/originkit/`)
+* [`components/originkit/ui/tiles-loader.tsx`](file:///c:/Users/arday/Desktop/SubRadar/components/originkit/ui/tiles-loader.tsx): Originkit CLI resmi React/TypeScript Tiles Loader bileşeni.
+* [`components/originkit/ui/vector-wordmark.tsx`](file:///c:/Users/arday/Desktop/SubRadar/components/originkit/ui/vector-wordmark.tsx): Originkit CLI resmi React/TypeScript Vector Wordmark bileşeni (2 kanallı WebGL atlası, kübik smoothstep imleç dönüşümü ve 3 düğümlü kafes takibi).
+
+### 2.4 Web Modüler Bileşenleri (`web/components/`)
 * **`layout/`**:
   * `header.html`: Atmospheric glow efekti, marka logosu, masaüstü/mobil menü, ⌘K butonu, Web Audio ses açma/kapama (`#sound-toggle-btn`), Power-User kısayol rehberi (`#shortcuts-help-btn`), tema butonu, dil (EN/DE/TR) ve kur ($/€/₺) butonları, "Bilgisayara İndir" ana aksiyonu.
-  * `footer.html`: Canlı motor gecikme göstergesi (`#footer-engine-ping`), telif hakları, iletişim bilgileri (`iletisim@subradar.dev`), hızlı bağlantılar ve yerel güvenlik taahhütleri.
+  * `footer.html`: Canlı motor gecikme göstergesi (`#footer-engine-ping`), Originkit Vector Wordmark etkileşimli WebGL 2.0 noktasal vektör dönüşüm alanı (`#sr-vector-wordmark`), telif hakları, iletişim bilgileri (`iletisim@subradar.dev`), hızlı bağlantılar ve yerel güvenlik taahhütleri.
   * `cookie-banner.html`: Minimal Apple Glass çerez ve canlı kullanıcı etkileşimi bildirim kartı (`#sr-privacy-banner`), canlı saniye sayacı rozeti (`#sr-active-seconds-badge`).
   * `mobile-sticky-cta.html`: Mobilde altta sabit kalan hızlı indirme çubuğu (`#sr-mobile-sticky-cta`).
   * `tiles-loader.html`: Originkit Tiles Loader editoryal karo yükleme ve yüzde sayacı taşıyıcı iskeleti (`#sr-tiles-loader`).
@@ -103,6 +107,7 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`hero-window.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/hero-window.js): Hero macOS penceresi mantığı; pencere kontrolleri, iptal butonları, bellek sayacı, sekmeler ve canlı gecikme.
 * [`scroll-motion.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/scroll-motion.js): Tepe ilerleme çizgisi (`#sr-progress`), yüzen bölüm gezinme adası (`#sr-scrollspy`), `#site-header` ada geçişi, `[data-rv]` scroll reveal geçişleri ve hero paralaks animasyonu.
 * [`tiles-loader.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/tiles-loader.js): Originkit "Tiles Loader" saf Vanilla JS motoru (SHORT_SIDE=7 hesaplamalı dinamik hücre ızgarası, edRand deterministik sözde-rastgele mürekkepleşme dalgası, difference blend modu ile 0% -> 100% sayacı ve çapraz küçülme dalgası `scale(1 - e)`).
+* [`vector-wordmark.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/vector-wordmark.js): Originkit "Vector Wordmark" WebGL 2.0 motoru (çalışma zamanında 2 kanallı atlas derleme: kırmızı = katı dolgu, yeşil = noktalı kontur; kübik smoothstep imleç yarıçapı, 3-düğümlü telemetri kafesi ve gerçek zamanlı DOM koordinat takibi).
 * [`i18n.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/i18n.js): TR/EN/DE sözlükleri, DOM TreeWalker ile metin düğümlerini dinamik olarak çeviren `t()` fonksiyonu.
 * [`analytics.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/analytics.js): Gerçek zamanlı saniye sayacı, tıklama koordinatları, kaydırma derinliği ve kullanıcı etkileşim telemetri motoru (`srAnalytics`).
 * [`cookie-banner.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/cookie-banner.js): Minimal Apple Glass çerez kartı, sayfa açılışında otomatik belirme (500ms), onay kaydı ve Web Audio ses efektleri kontrolcüsü.

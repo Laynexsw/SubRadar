@@ -70,7 +70,8 @@ SubRadar/
 ├── 🧩 components/                        # ORIGINKIT & HARİCİ UI BİLEŞENLERİ
 │   └── originkit/
 │       └── ui/
-│           └── tiles-loader.tsx              # Originkit CLI resmi React/TypeScript Tiles Loader bileşeni
+│           ├── tiles-loader.tsx              # Originkit CLI resmi React/TypeScript Tiles Loader bileşeni
+│           └── vector-wordmark.tsx           # Originkit CLI resmi React/TypeScript Vector Wordmark bileşeni
 │
 └── 🌐 web/                               # WEB TANITIM VİTRİNİ & MODÜLER BİLEŞENLER
     ├── code.html                         # Entegre canlı vitrin uygulaması ve interaktif masaüstü simülatörü
@@ -83,12 +84,12 @@ SubRadar/
     ├── favicon.svg                       # Web vitrini favicon vektörü
     ├── og-image.svg                      # Web vitrini 1200x630 Open Graph görseli
     ├── manifest.json                     # PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği)
-    ├── sw.js                             # Çevrimdışı Service Worker önbellekleme motoru (v1.6.0 Network-First HTML)
+    ├── sw.js                             # Çevrimdışı Service Worker önbellekleme motoru (v1.6.1 Network-First HTML)
     │
     ├── components/                       # 23 Parçalı Modüler HTML Bileşenleri
     │   ├── layout/
     │   │   ├── header.html               # Üst gezinme çubuğu, ses, kısayol, dil, kur ve tema kontrolleri
-    │   │   ├── footer.html               # Alt bilgi çubuğu, iletişim bilgileri, bağlantılar ve yerel gecikme
+    │   │   ├── footer.html               # Alt bilgi çubuğu, Originkit Vector Wordmark, bağlantılar ve yerel gecikme
     │   │   ├── cookie-banner.html        # Minimal Apple Glass çerez ve canlı kullanıcı etkileşim izleme kartı
     │   │   ├── mobile-sticky-cta.html    # Mobilde altta sabit kalan hızlı indirme çubuğu
     │   │   └── tiles-loader.html         # Originkit Tiles Loader editoryal karo yükleme ve yüzde sayacı taşıyıcı iskeleti
@@ -135,6 +136,7 @@ SubRadar/
     │   ├── calculator.js                 # İsraf hesaplama algoritmaları ve profil geçişleri
     │   ├── hero-window.js                # Hero masaüstü simülasyonu, trafik ışıkları ve iptal senaryoları
     │   ├── tiles-loader.js               # Originkit "Tiles Loader" saf JS motoru (hücre ızgarası, edRand mürekkepleşme, % sayacı, çapraz dalga)
+    │   ├── vector-wordmark.js            # Originkit "Vector Wordmark" saf WebGL 2.0 motoru (2 kanallı atlas, kübik smoothstep, 3 düğümlü kafes takibi)
     │   ├── scroll-motion.js              # Sayfa okuma ilerleme çizgisi (`#sr-progress`), yüzen bölüm gezinme adası (`#sr-scrollspy`), `[data-rv]` scroll reveal ve hero paralaks animasyonları
     │   ├── analytics.js                  # Canlı saniye sayacı, tıklama, kaydırma ve kullanıcı telemetri motoru (`srAnalytics`)
     │   ├── cookie-banner.js              # Minimal Apple Glass çerez kartı, otomatik açılış ve onay kontrolcüsü

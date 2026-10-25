@@ -84,7 +84,8 @@ SubRadar/
 ├── components/                  # ORIGINKIT & HARİCİ UI BİLEŞENLERİ
 │   └── originkit/
 │       └── ui/
-│           └── tiles-loader.tsx # Originkit CLI resmi React/TypeScript Tiles Loader bileşeni
+│           ├── tiles-loader.tsx    # Originkit CLI resmi React/TypeScript Tiles Loader bileşeni
+│           └── vector-wordmark.tsx # Originkit CLI resmi React/TypeScript Vector Wordmark bileşeni
 │
 └── web/                         # WEB VİTRİNİ VE İNTERAKTİF SİMÜLATÖR
     ├── code.html                # Canlı çalışan tekil vitrin (GitHub Pages'ın sunduğu ana dosya)
@@ -98,7 +99,7 @@ SubRadar/
     ├── og-image.svg             # Web vitrini 1200x630 Open Graph görseli
     │
     ├── manifest.json            # PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği)
-    ├── sw.js                    # Çevrimdışı Service Worker önbellekleme motoru (v1.6.0 Network-First HTML)
+    ├── sw.js                    # Çevrimdışı Service Worker önbellekleme motoru (v1.6.1 Network-First HTML)
     │
     ├── components/              # 23 Parçalı Modüler HTML Parçaları
     │   ├── layout/
@@ -149,6 +150,7 @@ SubRadar/
     │   ├── calculator.js        # Kaydırıcı formülü ($32/araç + $78/deneme) ve hazır profiller
     │   ├── hero-window.js       # macOS pencere simülasyonu: trafik ışıkları, iptal, arama, sekmeler
     │   ├── tiles-loader.js      # Originkit "Tiles Loader" saf JS motoru (SHORT_SIDE=7, edRand karo mürekkepleşme, % sayacı, çapraz dalga)
+    │   ├── vector-wordmark.js   # Originkit "Vector Wordmark" saf WebGL 2.0 motoru (2 kanallı atlas, kübik smoothstep, 3 düğümlü kafes takibi)
     │   ├── scroll-motion.js     # İlerleme çizgisi (`#sr-progress`), alt gezinme adası (`#sr-scrollspy`), `[data-rv]` scroll reveal ve hero paralaks animasyonları
     │   ├── i18n.js              # TR/EN/DE sözlükleri, DOM metin düğümü çevirici (`t()`)
     │   ├── analytics.js         # Canlı saniye sayacı, tıklama, kaydırma ve kullanıcı telemetri motoru (`srAnalytics`)
@@ -217,6 +219,8 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
 * **Originkit Tiles Loader & Açılış:**
   * `#sr-tiles-loader`: Sayfa açılışında tüm ekranı kaplayan, %0 -> %100 edRand karo mürekkepleşme taşıyıcı alanı
   * `#tiles-loader-btn`: Üst bardaki grid ikonu (Animasyonu anında baştan oynatma tetikleyicisi, kısayol: `R` / `replay-tiles`)
+* **Originkit Vector Wordmark:**
+  * `#sr-vector-wordmark`: Alt bilgi (footer) alanında yer alan, imleç hareketine duyarlı WebGL 2.0 noktasal vektör dönüşüm alanı ve 3-düğümlü telemetri çipleri (`.sr-vector-chip`)
 * **Gezinme & Yüzen Ada (Dock):**
   * `#sr-scrollspy`: Alt merkezde sabit yüzen minimalist bölüm gezinti adası (Ekstre Lab, İsraf Hesaplayıcı, Karşılaştırma, Özellikler, İşletim Sistemleri, Fiyatlandırma)
   * `#sr-progress`: Sayfa üstü minimalist kaydırma ilerleme çizgisi

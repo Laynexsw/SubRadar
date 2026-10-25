@@ -25,6 +25,7 @@ import './modals/shortcuts-modal.js';
 import './modals/legal-gen.js';
 import './supabase.js';
 import { initTilesLoader } from './tiles-loader.js';
+import './vector-wordmark.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize modules
@@ -44,6 +45,21 @@ document.addEventListener('DOMContentLoaded', () => {
     minTime: 1.8,
     revealS: 1.3
   });
+
+  // Originkit "Vector Wordmark": Interactive Cursor-Revealed Dotted Vector Wordmark in footer
+  if (window.initVectorWordmark) {
+    window.initVectorWordmark({
+      container: '#sr-vector-wordmark',
+      text: 'SUBRADAR',
+      fontSize: 230,
+      reach: 290,
+      speed: 45,
+      damping: 60,
+      handleSize: 80,
+      handleSpread: 26,
+      showLabels: true
+    });
+  }
 
   // Mobile menu toggle
   const menuBtn = document.getElementById('mobile-menu-btn');
