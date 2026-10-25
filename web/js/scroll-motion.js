@@ -13,8 +13,57 @@ export function initScrollMotion() {
     document.body.appendChild(bar);
   }
 
-  // Scroll reveal animasyonları kaldırıldı: tüm öğeler anında görünür
-  document.querySelectorAll('[data-rv]').forEach(el => el.classList.add('in'));
+  const els = document.querySelectorAll('[data-rv], [data-rv-stagger]');
+  
+  function initReveals() {
+    if (!reduce && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (!en.isIntersecting) return;
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      els.forEach(el => io.observe(el));
+    } else {
+      els.forEach(el => el.classList.add('in'));
+    }
+  }
+
+  // Initialize staggered delay counters on all [data-rv-stagger] children
+  document.querySelectorAll('[data-rv-stagger]').forEach(container => {
+    Array.from(container.children).forEach((child, idx) => {
+      child.style.setProperty('--stagger', idx);
+    });
+  });
+
+  // If Tiles Loader is currently active, wait until tiles reveal finishes so hero animations animate smoothly into view
+  const loaderEl = document.getElementById('sr-tiles-loader');
+  if (loaderEl && !window.srTilesLoaderDone && getComputedStyle(loaderEl).display !== 'none') {
+    window.addEventListener('subradar:tiles-loader-complete', () => {
+      initReveals();
+    }, { once: true });
+    // Safety fallback
+    setTimeout(() => {
+      if (!window.srTilesLoaderDone) initReveals();
+    }, 4500);
+  } else {
+    initReveals();
+  }
+
+  // On replay: reset above-the-fold elements and re-trigger on completion
+  window.addEventListener('subradar:tiles-loader-start', () => {
+    const vh = window.innerHeight;
+    els.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < vh && rect.bottom > 0) {
+        el.classList.remove('in');
+      }
+    });
+    window.addEventListener('subradar:tiles-loader-complete', () => {
+      initReveals();
+    }, { once: true });
+  });
 
   // Floating Minimalist Scrollspy Island (Alt Gezinme Adası)
   let spyNav = document.getElementById('sr-scrollspy');
@@ -77,7 +126,17 @@ export function initScrollMotion() {
         }
       });
 
-      // Hero scroll parallax kaldırıldı, hero sabit kalır
+      // Hero scroll parallax
+      if (!reduce) {
+        const hero = document.querySelector('[data-od-id="hero"]');
+        if (hero && y < 1000) {
+          hero.style.transform = y === 0 ? '' : 'translateY(' + Math.round(y * 0.1) + 'px)';
+          hero.style.opacity = y === 0 ? '' : String(Math.max(0.3, 1 - y / 1200));
+        } else if (hero && y >= 1000 && hero.style.transform) {
+          hero.style.transform = '';
+          hero.style.opacity = '';
+        }
+      }
     });
   }
   window.addEventListener('scroll', onScroll, { passive: true });

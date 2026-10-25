@@ -129,19 +129,40 @@ html.light #sr-progress {
   background: #0071e3;
 }
 
-/* ── Scroll reveal animasyonları kaldırıldı: tüm bileşenler anında tam opaklıkta ve yerinde ── */
-[data-rv],
-[data-rv="scale"],
-[data-rv="left"],
-[data-rv="right"],
-[data-rv="fade-up"],
-[data-rv="fade-blur"],
-[data-rv="pop"],
+/* ── Zenginleştirilmiş Scroll Reveal Çeşitleri ───────────────── */
+[data-rv] {
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(8px);
+  transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1), filter .8s cubic-bezier(.16,1,.3,1);
+  transition-delay: var(--d, 0s);
+  will-change: opacity, transform, filter;
+}
+[data-rv="left"] { transform: translateX(-48px); }
+[data-rv="right"] { transform: translateX(48px); }
+[data-rv="scale"] { transform: scale(.92) translateY(24px); }
+[data-rv="fade-blur"] { transform: translateY(12px); filter: blur(14px); }
+[data-rv="fade-up"] { transform: translateY(42px); filter: none; }
+[data-rv="pop"] { transform: scale(.88); filter: blur(4px); }
 [data-rv].in {
-  opacity: 1 !important;
-  transform: none !important;
-  filter: none !important;
-  transition: none !important;
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Kademeli (staggered) alt eleman açılışı */
+[data-rv-stagger] > * {
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(6px);
+  transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1), filter .7s cubic-bezier(.16,1,.3,1);
+  transition-delay: calc(var(--stagger, 0) * 0.08s);
+  will-change: opacity, transform, filter;
+}
+[data-rv-stagger].in > * {
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
 /* ── 12. Micro Loading Spinner ── */

@@ -135,7 +135,7 @@ SubRadar/
     │   ├── calculator.js                 # İsraf hesaplama algoritmaları ve profil geçişleri
     │   ├── hero-window.js                # Hero masaüstü simülasyonu, trafik ışıkları ve iptal senaryoları
     │   ├── tiles-loader.js               # Originkit "Tiles Loader" saf JS motoru (hücre ızgarası, edRand mürekkepleşme, % sayacı, çapraz dalga)
-    │   ├── scroll-motion.js              # Sayfa okuma ilerleme çizgisi (`#sr-progress`) ve yüzen bölüm gezinme adası (`#sr-scrollspy`)
+    │   ├── scroll-motion.js              # Sayfa okuma ilerleme çizgisi (`#sr-progress`), yüzen bölüm gezinme adası (`#sr-scrollspy`), `[data-rv]` scroll reveal ve hero paralaks animasyonları
     │   ├── analytics.js                  # Canlı saniye sayacı, tıklama, kaydırma ve kullanıcı telemetri motoru (`srAnalytics`)
     │   ├── cookie-banner.js              # Minimal Apple Glass çerez kartı, otomatik açılış ve onay kontrolcüsü
     │   ├── mobile-cta.js                 # Mobilde kaydırmaya bağlı beliren sabit indirme barı

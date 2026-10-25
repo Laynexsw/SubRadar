@@ -149,7 +149,7 @@ SubRadar/
     │   ├── calculator.js        # Kaydırıcı formülü ($32/araç + $78/deneme) ve hazır profiller
     │   ├── hero-window.js       # macOS pencere simülasyonu: trafik ışıkları, iptal, arama, sekmeler
     │   ├── tiles-loader.js      # Originkit "Tiles Loader" saf JS motoru (SHORT_SIDE=7, edRand karo mürekkepleşme, % sayacı, çapraz dalga)
-    │   ├── scroll-motion.js     # İlerleme çizgisi (`#sr-progress`), alt gezinme adası (`#sr-scrollspy`)
+    │   ├── scroll-motion.js     # İlerleme çizgisi (`#sr-progress`), alt gezinme adası (`#sr-scrollspy`), `[data-rv]` scroll reveal ve hero paralaks animasyonları
     │   ├── i18n.js              # TR/EN/DE sözlükleri, DOM metin düğümü çevirici (`t()`)
     │   ├── analytics.js         # Canlı saniye sayacı, tıklama, kaydırma ve kullanıcı telemetri motoru (`srAnalytics`)
     │   ├── cookie-banner.js     # Minimal Apple Glass çerez kartı, otomatik açılış ve onay kontrolcüsü
