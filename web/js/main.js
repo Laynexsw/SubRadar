@@ -24,7 +24,6 @@ import './social-export.js';
 import './modals/shortcuts-modal.js';
 import './modals/legal-gen.js';
 import './supabase.js';
-import { initAsciiRevealLoader } from './ascii-reveal-loader.js';
 import { initTilesLoader } from './tiles-loader.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,13 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initReclaimModal();
   initAuthModal();
 
-  // Originkit "Tiles Loader" Preloader: runs before site opens, then hands off to Ascii Reveal
+  // Originkit "Tiles Loader" Preloader: runs before site opens
   initTilesLoader({
     minTime: 1.8,
-    revealS: 1.3,
-    onComplete: () => {
-      initAsciiRevealLoader();
-    }
+    revealS: 1.3
   });
 
   // Mobile menu toggle

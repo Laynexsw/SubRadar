@@ -268,11 +268,9 @@ export function initTilesLoader(options = {}) {
         window.srTilesLoaderDone = true;
         window.dispatchEvent(new CustomEvent('subradar:tiles-loader-complete'));
 
-        // Trigger onComplete callback (e.g. SubRadar ASCII Reveal Engine)
+        // Trigger onComplete callback if provided
         if (typeof options.onComplete === 'function') {
           options.onComplete();
-        } else if (typeof window.srInitAsciiRevealLoader === 'function') {
-          window.srInitAsciiRevealLoader();
         }
       }, ED_FADE_S * 1000);
       return;

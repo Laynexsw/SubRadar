@@ -135,8 +135,6 @@ SubRadar/
     │   ├── calculator.js                 # İsraf hesaplama algoritmaları ve profil geçişleri
     │   ├── hero-window.js                # Hero masaüstü simülasyonu, trafik ışıkları ve iptal senaryoları
     │   ├── tiles-loader.js               # Originkit "Tiles Loader" saf JS motoru (hücre ızgarası, edRand mürekkepleşme, % sayacı, çapraz dalga)
-    │   ├── ascii-reveal-core.js          # Standalone ASCII reveal & dither motoru (quanhoangindex/ascii-reveal, 1.75s decode175 zamanlama profili)
-    │   ├── ascii-reveal-loader.js        # AsciiReveal (preset="decode", duration="decode175" 1.75s) ve AsciiSkeleton (variant="dither") tam site deşifre orkestratörü
     │   ├── scroll-motion.js              # Sayfa okuma ilerleme çizgisi (`#sr-progress`) ve yüzen bölüm gezinme adası (`#sr-scrollspy`)
     │   ├── analytics.js                  # Canlı saniye sayacı, tıklama, kaydırma ve kullanıcı telemetri motoru (`srAnalytics`)
     │   ├── cookie-banner.js              # Minimal Apple Glass çerez kartı, otomatik açılış ve onay kontrolcüsü
@@ -152,8 +150,8 @@ SubRadar/
     │       ├── legal-gen.js              # Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme
     │       └── auth-modal.js             # İkili kayan panel animasyonu (sliding overlay), sosyal/demo giriş ve profil kontrolcüsü
     └── scripts/
-        ├── build.py                      # 22 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
-        └── embed_ascii_reveal.py         # ascii-reveal dither+decode motorunu code.html içine derleyip enjekte eden betik
+        ├── build.py                      # 23 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
+        └── embed_tiles_loader.py         # Originkit Tiles Loader bileşenini code.html içine derleyip enjekte eden betik
 ```
 
 ---

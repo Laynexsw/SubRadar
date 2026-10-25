@@ -28,8 +28,6 @@ const ASSETS_TO_CACHE = [
   './js/social-export.js',
   './js/supabase.js',
   './js/tiles-loader.js',
-  './js/ascii-reveal-core.js',
-  './js/ascii-reveal-loader.js',
   './js/main.js'
 ];
 

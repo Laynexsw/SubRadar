@@ -1,25 +1,14 @@
 """
-SubRadar — Embed Ascii Reveal (Dither + Decode Engine) & Originkit Tiles Loader into code.html
+SubRadar — Embed Originkit Tiles Loader into code.html
 """
 import os
 import re
 
 WEB_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CORE_JS = os.path.join(WEB_DIR, 'js', 'ascii-reveal-core.js')
 TILES_JS = os.path.join(WEB_DIR, 'js', 'tiles-loader.js')
 CODE_HTML = os.path.join(WEB_DIR, 'code.html')
 
 def embed():
-    # Read Ascii Reveal Core
-    with open(CORE_JS, 'r', encoding='utf-8') as f:
-        core_code = f.read()
-
-    if 'export{' in core_code:
-        core_code = core_code.split('export{')[0].strip()
-    elif 'export {' in core_code:
-        core_code = core_code.split('export {')[0].strip()
-
-    # Read Tiles Loader Core
     with open(TILES_JS, 'r', encoding='utf-8') as f:
         tiles_code = f.read()
 
@@ -41,39 +30,6 @@ def embed():
     minTime: 2.0,
     revealS: 1.4
   }});
-}})();
-</script>"""
-
-    # Read Ascii Reveal Core & Loader
-    LOADER_JS = os.path.join(WEB_DIR, 'js', 'ascii-reveal-loader.js')
-    with open(LOADER_JS, 'r', encoding='utf-8') as f:
-        loader_code = f.read()
-
-    loader_code = re.sub(r'import\s+.*?from\s+[\'"].*?[\'"];?\n?', '', loader_code)
-    loader_code = loader_code.replace('export function AsciiSkeleton', 'function AsciiSkeleton')
-    loader_code = loader_code.replace('export function AsciiReveal', 'function AsciiReveal')
-    loader_code = loader_code.replace('export function initAsciiRevealLoader', 'function initAsciiRevealLoader')
-    loader_code = loader_code.replace('export ', '')
-
-    reveal_bundle = f"""<script id="sr-bundle-ascii-reveal-js">
-/* =========================================================================
-   SubRadar — Ascii Reveal & Ascii Skeleton Engine
-   Direct Port of quanhoangindex/ascii-reveal
-   ========================================================================= */
-(function () {{
-{core_code}
-
-{loader_code}
-
-  function launchSiteEntrance() {{
-    initAsciiRevealLoader();
-  }}
-
-  if (document.readyState === 'loading') {{
-    document.addEventListener('DOMContentLoaded', launchSiteEntrance);
-  }} else {{
-    launchSiteEntrance();
-  }}
 }})();
 </script>"""
 
@@ -122,33 +78,25 @@ def embed():
     if body_marker in code_html:
         code_html = code_html.replace(body_marker, body_marker + '\n' + loader_top_block)
     else:
-        # Fallback to <body
         body_idx = code_html.find('<body')
         if body_idx != -1:
             end_body_tag = code_html.find('>', body_idx) + 1
             code_html = code_html[:end_body_tag] + '\n' + loader_top_block + code_html[end_body_tag:]
 
-    # 4. Insert or update Ascii Reveal bundle near bottom
+    # 4. Completely remove ASCII Reveal bundle if present
     if '<script id="sr-bundle-ascii-reveal-js">' in code_html:
         start_tag = '<script id="sr-bundle-ascii-reveal-js">'
         end_tag = '</script>'
         start_idx = code_html.find(start_tag)
         end_idx = code_html.find(end_tag, start_idx) + len(end_tag)
-        code_html = code_html[:start_idx] + reveal_bundle + code_html[end_idx:]
-        print("Updated existing reveal bundle in code.html")
-    else:
-        marker = '<script id="sr-pwa-sw">'
-        if marker in code_html:
-            code_html = code_html.replace(marker, reveal_bundle + '\n\n' + marker)
-            print("Inserted reveal bundle before sr-pwa-sw")
-        else:
-            code_html = code_html.replace('</body>', reveal_bundle + '\n</body>')
-            print("Inserted reveal bundle before </body>")
+        code_html = code_html[:start_idx] + code_html[end_idx:]
+
+    code_html = re.sub(r'\n{3,}', '\n\n', code_html)
 
     with open(CODE_HTML, 'w', encoding='utf-8') as f:
         f.write(code_html)
 
-    print("Successfully embedded Originkit Tiles Loader & Ascii Reveal into code.html")
+    print("Successfully embedded Originkit Tiles Loader into code.html")
 
 if __name__ == '__main__':
     embed()

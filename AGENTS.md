@@ -149,8 +149,6 @@ SubRadar/
     │   ├── calculator.js        # Kaydırıcı formülü ($32/araç + $78/deneme) ve hazır profiller
     │   ├── hero-window.js       # macOS pencere simülasyonu: trafik ışıkları, iptal, arama, sekmeler
     │   ├── tiles-loader.js      # Originkit "Tiles Loader" saf JS motoru (SHORT_SIDE=7, edRand karo mürekkepleşme, % sayacı, çapraz dalga)
-    │   ├── ascii-reveal-core.js  # Standalone ASCII reveal & dither motoru (quanhoangindex/ascii-reveal çekirdeği, 1.75s decode175 zamanlama profili)
-    │   ├── ascii-reveal-loader.js# AsciiReveal (preset="decode", duration="decode175" 1.75s) ve AsciiSkeleton (variant="dither") yaşam döngüsünü uygulayan; yükleme esnasında dither iskelet gösterip tamamlanınca 1.3s duraklamanın ardından tüm metin ve bileşenlerde 1.75s deşifre animasyonu yürüten orkestratör
     │   ├── scroll-motion.js     # İlerleme çizgisi (`#sr-progress`), alt gezinme adası (`#sr-scrollspy`)
     │   ├── i18n.js              # TR/EN/DE sözlükleri, DOM metin düğümü çevirici (`t()`)
     │   ├── analytics.js         # Canlı saniye sayacı, tıklama, kaydırma ve kullanıcı telemetri motoru (`srAnalytics`)
@@ -168,8 +166,8 @@ SubRadar/
     │       └── auth-modal.js      # İkili kayan panel animasyonu (sliding overlay cubic-bezier), dairesel sosyal girişler, tek tıkla demo oturumu, şifre gücü ve profil yönetimi kontrolcüsü
     │
     └── scripts/
-        ├── build.py             # 22 modüler bileşeni doğrulayan test betiği
-        └── embed_ascii_reveal.py# ascii-reveal motorunu code.html içine derleyip gömen betik
+        ├── build.py             # 23 modüler bileşeni doğrulayan test betiği
+        └── embed_tiles_loader.py# Originkit Tiles Loader bileşenini code.html içine derleyip gömen betik
 ```
 
 ---
