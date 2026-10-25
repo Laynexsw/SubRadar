@@ -2,6 +2,7 @@
 SubRadar — Embed Ascii Reveal (Dither + Decode Engine) & Originkit Tiles Loader into code.html
 """
 import os
+import re
 
 WEB_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CORE_JS = os.path.join(WEB_DIR, 'js', 'ascii-reveal-core.js')
@@ -24,6 +25,7 @@ def embed():
 
     # Strip ES module exports for inline browser bundle
     tiles_code = tiles_code.replace('export function initTilesLoader', 'function initTilesLoader')
+    tiles_code = tiles_code.replace('export function playTilesLoader', 'function playTilesLoader')
     tiles_code = tiles_code.replace('export ', '')
 
     tiles_bundle = f"""<script id="sr-bundle-tiles-loader-js">
@@ -33,6 +35,12 @@ def embed():
    ========================================================================= */
 (function () {{
 {tiles_code}
+
+  // Auto-start loader immediately upon encounter
+  initTilesLoader({{
+    minTime: 2.0,
+    revealS: 1.4
+  }});
 }})();
 </script>"""
 
@@ -97,16 +105,12 @@ def embed():
   window.srInitAsciiRevealLoader = initPageAsciiReveal;
 
   function launchSiteEntrance() {{
-    if (typeof window.srInitTilesLoader === 'function') {{
-      window.srInitTilesLoader({{
-        minTime: 1.8,
-        revealS: 1.3,
-        onComplete: function () {{
-          initPageAsciiReveal();
-        }}
-      }});
-    }} else {{
+    if (window.srTilesLoaderDone) {{
       initPageAsciiReveal();
+    }} else {{
+      window.addEventListener('subradar:tiles-loader-complete', function () {{
+        initPageAsciiReveal();
+      }}, {{ once: true }});
     }}
   }}
 
@@ -133,13 +137,22 @@ def embed():
     if 'body.sr-loading-lock' not in code_html:
         code_html = code_html.replace('</style>', f'\n  /* Scroll lock while Originkit Tiles Loader is active */\n  {lock_css}\n</style>')
 
-    # 3. Ensure #sr-tiles-loader HTML container is at top of body
+    # 3. Clean up any existing #sr-tiles-loader or sr-bundle-tiles-loader-js
+    if '<script id="sr-bundle-tiles-loader-js">' in code_html:
+        start_idx = code_html.find('<script id="sr-bundle-tiles-loader-js">')
+        end_idx = code_html.find('</script>', start_idx) + len('</script>')
+        code_html = code_html[:start_idx] + code_html[end_idx:]
+
+    # Remove existing #sr-tiles-loader if present
+    code_html = re.sub(r'<!-- ===+ -->\s*<!-- ORIGINKIT TILES LOADER.*?-->\s*<div id="sr-tiles-loader".*?</div>\s*</div>\s*', '', code_html, flags=re.DOTALL)
+    code_html = re.sub(r'<div id="sr-tiles-loader".*?</div>\s*</div>\s*', '', code_html, flags=re.DOTALL)
+
     tiles_html = """<!-- ========================================================================= -->
 <!-- ORIGINKIT TILES LOADER (https://originkit.dev/components/tiles-loader)    -->
 <!-- ========================================================================= -->
-<div id="sr-tiles-loader" aria-label="Yükleniyor" role="status" style="position: fixed; inset: 0; z-index: 99999; width: 100vw; height: 100vh; overflow: hidden; isolation: isolate;">
+<div id="sr-tiles-loader" aria-label="Yükleniyor" role="status" style="position: fixed; inset: 0; z-index: 999999; width: 100vw; height: 100vh; overflow: hidden; isolation: isolate; background: #EEEAE3;">
   <div id="sr-tiles-grid" style="position: absolute; inset: 0; overflow: hidden;"></div>
-  <div id="sr-tiles-counter" aria-hidden="true" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; mix-blend-mode: difference; color: #ffffff; pointer-events: none; white-space: nowrap; font-family: 'Instrument Serif', 'Times New Roman', Times, serif; font-size: min(28vh, 36vw); font-variant-numeric: tabular-nums; opacity: 0; user-select: none;">
+  <div id="sr-tiles-counter" aria-hidden="true" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; mix-blend-mode: difference; color: #ffffff; pointer-events: none; white-space: nowrap; font-family: 'Instrument Serif', 'Times New Roman', Times, serif; font-size: min(28vh, 36vw); font-variant-numeric: tabular-nums; opacity: 0; user-select: none; z-index: 10;">
     <span style="display: inline-flex; align-items: flex-start;">
       <span id="sr-tiles-num">0</span>
       <span style="font-size: 0.3em; font-style: italic; margin-top: 0.9em; margin-left: 0.08em;">%</span>
@@ -147,34 +160,35 @@ def embed():
   </div>
 </div>"""
 
-    if 'id="sr-tiles-loader"' not in code_html:
-        body_marker = '<body class="bg-black text-white selection:bg-white selection:text-black antialiased overflow-x-hidden min-h-screen">'
-        if body_marker in code_html:
-            code_html = code_html.replace(body_marker, body_marker + '\n' + tiles_html)
+    loader_top_block = tiles_html + '\n' + tiles_bundle
 
-    # 4. Replace or embed scripts
-    full_script_bundle = tiles_bundle + '\n\n' + reveal_bundle
+    # Insert loader container AND loader script right at the top of <body>
+    body_marker = '<body class="bg-black text-white selection:bg-white selection:text-black antialiased overflow-x-hidden min-h-screen">'
+    if body_marker in code_html:
+        code_html = code_html.replace(body_marker, body_marker + '\n' + loader_top_block)
+    else:
+        # Fallback to <body
+        body_idx = code_html.find('<body')
+        if body_idx != -1:
+            end_body_tag = code_html.find('>', body_idx) + 1
+            code_html = code_html[:end_body_tag] + '\n' + loader_top_block + code_html[end_body_tag:]
 
-    if '<script id="sr-bundle-tiles-loader-js">' in code_html:
-        start_idx = code_html.find('<script id="sr-bundle-tiles-loader-js">')
-        end_idx = code_html.find('</script>', start_idx) + len('</script>')
-        code_html = code_html[:start_idx] + code_html[end_idx:]
-
+    # 4. Insert or update Ascii Reveal bundle near bottom
     if '<script id="sr-bundle-ascii-reveal-js">' in code_html:
         start_tag = '<script id="sr-bundle-ascii-reveal-js">'
         end_tag = '</script>'
         start_idx = code_html.find(start_tag)
         end_idx = code_html.find(end_tag, start_idx) + len(end_tag)
-        code_html = code_html[:start_idx] + full_script_bundle + code_html[end_idx:]
-        print("Updated existing script bundles in code.html")
+        code_html = code_html[:start_idx] + reveal_bundle + code_html[end_idx:]
+        print("Updated existing reveal bundle in code.html")
     else:
         marker = '<script id="sr-pwa-sw">'
         if marker in code_html:
-            code_html = code_html.replace(marker, full_script_bundle + '\n\n' + marker)
-            print("Inserted script bundles before sr-pwa-sw")
+            code_html = code_html.replace(marker, reveal_bundle + '\n\n' + marker)
+            print("Inserted reveal bundle before sr-pwa-sw")
         else:
-            code_html = code_html.replace('</body>', full_script_bundle + '\n</body>')
-            print("Inserted script bundles before </body>")
+            code_html = code_html.replace('</body>', reveal_bundle + '\n</body>')
+            print("Inserted reveal bundle before </body>")
 
     with open(CODE_HTML, 'w', encoding='utf-8') as f:
         f.write(code_html)

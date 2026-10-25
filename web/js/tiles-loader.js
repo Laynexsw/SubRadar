@@ -67,15 +67,34 @@ const edInOutCubic = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 
 
 export function initTilesLoader(options = {}) {
   const root = document.getElementById('sr-tiles-loader');
-  if (!root) return;
+  if (!root) {
+    console.error('[Tiles Loader] #sr-tiles-loader NOT FOUND in DOM!');
+    return;
+  }
+  console.log('[Tiles Loader] Starting initialization...', {
+    root,
+    offsetWidth: root.offsetWidth,
+    offsetHeight: root.offsetHeight,
+    innerWidth: window.innerWidth,
+    innerHeight: window.innerHeight
+  });
 
   const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const minTime = reduced ? 0.5 : (options.minTime || 1.25);
-  const revealS = reduced ? 0.35 : (options.revealS || REVEAL_S);
+  const minTime = reduced ? 0.8 : (options.minTime !== undefined ? options.minTime : 2.0);
+  const revealS = reduced ? 0.6 : (options.revealS !== undefined ? options.revealS : 1.4);
 
-  const isDark = document.documentElement.classList.contains('dark');
+  let isDark = false;
+  try {
+    isDark = document.documentElement.classList.contains('dark') || localStorage.getItem('sr-theme') === 'dark';
+  } catch (e) {}
+
   const background = options.background || (isDark ? '#09090b' : '#EEEAE3');
   const accent = options.accent || (isDark ? '#f4f4f5' : '#151412');
+  root.style.background = background;
+  root.style.display = 'block';
+  root.style.opacity = '1';
+  root.style.pointerEvents = 'auto';
+  root.removeAttribute('aria-hidden');
 
   let gridCols = 11;
   let gridRows = 7;
@@ -153,6 +172,11 @@ export function initTilesLoader(options = {}) {
   updateDimensions();
   window.addEventListener('resize', updateDimensions, { passive: true });
 
+  // Optional subtle radar sweep sound
+  if (window.srAudio && typeof window.srAudio.playRadarSweep === 'function') {
+    try { window.srAudio.playRadarSweep(); } catch (_) {}
+  }
+
   // Allow click/tap/key to fast-forward loader if user desires
   let fastForward = false;
   const skipHandler = (e) => {
@@ -213,6 +237,7 @@ export function initTilesLoader(options = {}) {
       if ((progress >= 1 && t >= loadS) || (fastForward && t >= 0.4)) {
         progress = 1;
         revealAt = t;
+        console.log('[Tiles Loader] Reveal triggered at t =', t, { fastForward, progress, loadS });
       }
     }
 
@@ -220,6 +245,7 @@ export function initTilesLoader(options = {}) {
 
     // End of reveal
     if (revealAt >= 0 && t - revealAt >= revealS) {
+      console.log('[Tiles Loader] Reveal finished at t =', t, 'Total duration:', t);
       finished = true;
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', updateDimensions);
@@ -234,6 +260,8 @@ export function initTilesLoader(options = {}) {
         root.style.display = 'none';
         root.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('sr-loading-lock');
+        window.srTilesLoaderDone = true;
+        window.dispatchEvent(new CustomEvent('subradar:tiles-loader-complete'));
 
         // Trigger onComplete callback (e.g. SubRadar ASCII Reveal Engine)
         if (typeof options.onComplete === 'function') {
@@ -262,8 +290,8 @@ export function playTilesLoader(options = {}) {
   root.style.pointerEvents = 'auto';
   root.removeAttribute('aria-hidden');
   initTilesLoader({
-    minTime: options.minTime || 1.8,
-    revealS: options.revealS || 1.3,
+    minTime: options.minTime || 2.0,
+    revealS: options.revealS || 1.4,
     ...options
   });
 }
@@ -273,3 +301,4 @@ if (typeof window !== 'undefined') {
   window.srInitTilesLoader = initTilesLoader;
   window.srPlayTilesLoader = playTilesLoader;
 }
+

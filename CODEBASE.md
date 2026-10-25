@@ -86,8 +86,9 @@ Depo şu anda **üç ana katmandan** oluşur:
 * [`main.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/main.css): `base.css` ve `components.css` modüllerini içe aktarır.
 
 ### 2.5 Web Betikleri (`web/js/`) & PWA
+* [`test-tiles.html`](file:///c:/Users/arday/Desktop/SubRadar/web/test-tiles.html): Originkit Tiles Loader bağımsız test ve demo sayfası.
 * [`manifest.json`](file:///c:/Users/arday/Desktop/SubRadar/web/manifest.json): PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği).
-* [`sw.js`](file:///c:/Users/arday/Desktop/SubRadar/web/sw.js): Çevrimdışı Service Worker önbellekleme motoru.
+* [`sw.js`](file:///c:/Users/arday/Desktop/SubRadar/web/sw.js): Çevrimdışı Service Worker önbellekleme motoru (`subradar-v1.6.0-cache`, HTML dökümanları için Network-First stratejisi).
 * [`config.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/config.js): Kurlar (`USD: 1`, `EUR: 0.86`, `TRY: 48.35`), `srCurrency`, `setCurrency(cur)`, `srConvert(usd)`.
 * [`supabase.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/supabase.js): Supabase v2 JS SDK istemcisi, Auth (E-posta, OAuth, Şifre Sıfırlama) ve PostgreSQL REST tabloları (`profiles`, `licenses`, `enterprise_inquiries`, `user_vault_backups`) köprüsü.
 * [`theme.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/theme.js): Açık/koyu mod mantığı (`#theme-toggle`, `localStorage: sr-theme`).
@@ -203,6 +204,8 @@ Depo şu anda **üç ana katmandan** oluşur:
 | `#cli-copy-btn` | `modals/reclaim-modal.html`| `curl` komutunu kopyalayan buton |
 | `#auth-modal-btn` | `layout/header.html` | Üst ada sağında yer alan Giriş Yap / Kayıt Ol butonu |
 | `#auth-modal-backdrop`| `modals/auth-modal.html` | İkili kayan panelli (Double-Slider Sliding Overlay) giriş/kayıt modalı |
+| `#sr-tiles-loader` | `layout/tiles-loader.html` | Sayfa açılışında beliren tam ekran Originkit edRand karo yükleyici |
+| `#tiles-loader-btn`| `layout/header.html` | Üst bardaki grid ikonu (Animasyonu anında baştan oynatma tetikleyicisi, kısayol: R) |
 | `#sr-progress` | `scroll-motion.js` | Sayfa üstündeki akıcı okuma ilerleme çizgisi |
 | `#sr-scrollspy` | `scroll-motion.js` | Alt merkezde sabit yüzen minimalist bölüm gezinti adası |
 | `#site-header` | `layout/header.html` | Kaydırmayla adaya dönüşen (`is-scrolled-island`) Apple Glass üst çubuğu |

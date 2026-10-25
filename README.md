@@ -79,10 +79,11 @@ SubRadar/
     ├── privacy.html                      # Alt dizin gizlilik politikası sayfası
     ├── terms.html                        # Alt dizin kullanım koşulları sayfası
     ├── thanks.html                       # Alt dizin teşekkür ve takip kodu sayfası
+    ├── test-tiles.html                   # Originkit Tiles Loader bağımsız test ve demo sayfası
     ├── favicon.svg                       # Web vitrini favicon vektörü
     ├── og-image.svg                      # Web vitrini 1200x630 Open Graph görseli
     ├── manifest.json                     # PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği)
-    ├── sw.js                             # Çevrimdışı Service Worker önbellekleme motoru
+    ├── sw.js                             # Çevrimdışı Service Worker önbellekleme motoru (v1.6.0 Network-First HTML)
     │
     ├── components/                       # 23 Parçalı Modüler HTML Bileşenleri
     │   ├── layout/

@@ -102,6 +102,14 @@
         if (dlBtn) dlBtn.click();
         return;
       }
+
+      // 'R' -> replay Originkit Tiles Loader
+      if (e.key === 'r' || e.key === 'R') {
+        if (typeof window.srPlayTilesLoader === 'function') {
+          window.srPlayTilesLoader();
+        }
+        return;
+      }
     });
   }
 

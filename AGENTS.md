@@ -93,11 +93,12 @@ SubRadar/
     ├── privacy.html             # Alt dizin gizlilik politikası sayfası
     ├── terms.html               # Alt dizin kullanım koşulları sayfası
     ├── thanks.html              # Alt dizin teşekkür ve onay sayfası
+    ├── test-tiles.html          # Originkit Tiles Loader bağımsız test ve demo sayfası
     ├── favicon.svg              # Web vitrini favicon vektörü
     ├── og-image.svg             # Web vitrini 1200x630 Open Graph görseli
     │
     ├── manifest.json            # PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği)
-    ├── sw.js                    # Çevrimdışı Service Worker önbellekleme motoru
+    ├── sw.js                    # Çevrimdışı Service Worker önbellekleme motoru (v1.6.0 Network-First HTML)
     │
     ├── components/              # 23 Parçalı Modüler HTML Parçaları
     │   ├── layout/
@@ -215,6 +216,9 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
   * `#reclaim-modal-backdrop`: Geri kazanım & CLI modalı
   * `#auth-modal-backdrop`: İkili kayan panelli (Double-Slider Sliding Overlay) giriş/kayıt modalı, uzay grafiti/obsidyen marka katmanı (`.auth-overlay`), ghost outline butonlar ve profil paneli (`#auth-modal-btn`)
   * `#sr-toast`: Apple Glass bildirim balonu
+* **Originkit Tiles Loader & Açılış:**
+  * `#sr-tiles-loader`: Sayfa açılışında tüm ekranı kaplayan, %0 -> %100 edRand karo mürekkepleşme taşıyıcı alanı
+  * `#tiles-loader-btn`: Üst bardaki grid ikonu (Animasyonu anında baştan oynatma tetikleyicisi, kısayol: `R` / `replay-tiles`)
 * **Gezinme & Yüzen Ada (Dock):**
   * `#sr-scrollspy`: Alt merkezde sabit yüzen minimalist bölüm gezinti adası (Ekstre Lab, İsraf Hesaplayıcı, Karşılaştırma, Özellikler, İşletim Sistemleri, Fiyatlandırma)
   * `#sr-progress`: Sayfa üstü minimalist kaydırma ilerleme çizgisi

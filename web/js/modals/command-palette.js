@@ -116,6 +116,10 @@ export function initCommandPalette() {
         document.body.appendChild(a);
         a.click();
         a.remove();
+      } else if (cmd === 'replay-tiles') {
+        if (typeof window.srPlayTilesLoader === 'function') {
+          window.srPlayTilesLoader();
+        }
       }
     });
   });

@@ -2,7 +2,7 @@
    SubRadar — Offline-First Progressive Web App Service Worker
    ========================================================================= */
 
-const CACHE_NAME = 'subradar-v1.5.0-cache';
+const CACHE_NAME = 'subradar-v1.6.0-cache';
 const ASSETS_TO_CACHE = [
   './code.html',
   './favicon.svg',
@@ -27,6 +27,9 @@ const ASSETS_TO_CACHE = [
   './js/hash-verifier.js',
   './js/social-export.js',
   './js/supabase.js',
+  './js/tiles-loader.js',
+  './js/ascii-reveal-core.js',
+  './js/ascii-reveal-loader.js',
   './js/main.js'
 ];
 
@@ -53,6 +56,20 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   // Only handle GET requests
   if (event.request.method !== 'GET') return;
+
+  // Network-First for HTML documents to ensure instant updates
+  if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
+    event.respondWith(
+      fetch(event.request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return networkResponse;
+      }).catch(() => caches.match(event.request).then((cached) => cached || caches.match('./code.html')))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
