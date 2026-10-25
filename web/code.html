@@ -31,6 +31,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@200..600,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Supabase JS SDK v2 -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
@@ -1418,8 +1421,14 @@ html.light #auth-mobile-tab-slider {
     50% { transform: scale(1.15); }
     100% { transform: scale(1); }
   }
+
+  /* Scroll lock while Originkit Tiles Loader is active */
+  body.sr-loading-lock { overflow: hidden !important; }
 </style>
-<noscript><style>[data-rv]{opacity:1 !important;transform:none !important}</style></noscript>
+<noscript><style>[data-rv]{opacity:1 !important;transform:none !important}
+  /* Scroll lock while Originkit Tiles Loader is active */
+  body.sr-loading-lock { overflow: hidden !important; }
+</style></noscript>
 <script>
   /* Tema: kayıpsız açılış (varsayılan: açık tema, kullanıcı seçimi varsa saygı duy) */
   (function () {
@@ -1437,6 +1446,18 @@ html.light #auth-mobile-tab-slider {
 </script>
 </head>
 <body class="bg-black text-white selection:bg-white selection:text-black antialiased overflow-x-hidden min-h-screen">
+<!-- ========================================================================= -->
+<!-- ORIGINKIT TILES LOADER (https://originkit.dev/components/tiles-loader)    -->
+<!-- ========================================================================= -->
+<div id="sr-tiles-loader" aria-label="Yükleniyor" role="status" style="position: fixed; inset: 0; z-index: 99999; width: 100vw; height: 100vh; overflow: hidden; isolation: isolate;">
+  <div id="sr-tiles-grid" style="position: absolute; inset: 0; overflow: hidden;"></div>
+  <div id="sr-tiles-counter" aria-hidden="true" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; mix-blend-mode: difference; color: #ffffff; pointer-events: none; white-space: nowrap; font-family: 'Instrument Serif', 'Times New Roman', Times, serif; font-size: min(28vh, 36vw); font-variant-numeric: tabular-nums; opacity: 0; user-select: none;">
+    <span style="display: inline-flex; align-items: flex-start;">
+      <span id="sr-tiles-num">0</span>
+      <span style="font-size: 0.3em; font-style: italic; margin-top: 0.9em; margin-left: 0.08em;">%</span>
+    </span>
+  </div>
+</div>
 <a class="skip-link" href="#icerik">İçeriğe atla</a>
 <!-- Atmospheric Background Radiance -->
 <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
@@ -1463,9 +1484,6 @@ html.light #auth-mobile-tab-slider {
 </button>
 <button type="button" class="flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] text-white/40 hover:text-white hover:border-white/20 transition-all cursor-pointer flex-shrink-0" id="sound-toggle-btn" aria-label="Ses efektlerini aç" title="Web Audio Dokunsal Sesler (S)">
 <span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_off</span>
-</button>
-<button type="button" class="hidden sm:flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] text-white/50 hover:text-white hover:border-white/20 transition-all cursor-pointer flex-shrink-0" id="tiles-loader-trigger-btn" aria-label="Originkit Tiles Loader'ı çalıştır" title="Originkit Tiles Loader (O)" onclick="window.srPlayTilesLoader ? window.srPlayTilesLoader() : null;">
-<span class="material-symbols-outlined text-[16px]" aria-hidden="true">grid_view</span>
 </button>
 <button type="button" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs text-white/70 hover:text-white hover:border-white/20 transition-all cursor-pointer h-8 whitespace-nowrap flex-shrink-0" id="theme-toggle" aria-pressed="false" aria-label="Açık temaya geç">
 <span class="material-symbols-outlined text-[15px]" id="theme-toggle-icon" aria-hidden="true">light_mode</span>
@@ -2872,16 +2890,6 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
 <!-- Commands List -->
 <div class="max-h-80 overflow-y-auto p-2 divide-y divide-white/[0.04]" id="cmd-palette-list" role="listbox" aria-label="Komutlar">
 <!-- Command Items -->
-<button type="button" class="cmd-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left hover:bg-white/10 transition-colors group cursor-pointer" data-cmd="tiles-loader">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-[18px] text-emerald-400 group-hover:text-emerald-300" aria-hidden="true">grid_view</span>
-<div>
-<div class="text-xs font-medium text-white">Originkit: Tiles Loader'ı Başlat</div>
-<div class="text-[11px] font-mono text-white/40">Framer editoryal karo yükleme ve çapraz küçülme dalgası</div>
-</div>
-</div>
-<span class="text-[10px] font-mono text-emerald-400/80 group-hover:text-emerald-300 border border-emerald-500/20 px-1.5 py-0.5 rounded">O / ↵</span>
-</button>
 <button type="button" class="cmd-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left hover:bg-white/10 transition-colors group cursor-pointer" data-cmd="kill-adobe">
 <div class="flex items-center gap-3">
 <span class="material-symbols-outlined text-[18px] text-white/70 group-hover:text-white" aria-hidden="true">block</span>
@@ -3379,13 +3387,6 @@ Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tü
         <span class="text-neutral-300">Web Audio Ses Efektlerini Aç / Kapat</span>
         <div class="flex items-center gap-1">
           <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">S</kbd>
-        </div>
-      </div>
-
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
-        <span class="text-neutral-300">Originkit Tiles Loader’ı Çalıştır</span>
-        <div class="flex items-center gap-1">
-          <kbd class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-[11px] text-white">O</kbd>
         </div>
       </div>
 
@@ -5177,9 +5178,7 @@ SubRadar yerel ekstre analiz motoru, düzenli kullanılmayan yüksek maliyetli l
         const cmd = item.dataset.cmd;
         closeCommandPalette();
 
-        if (cmd === 'tiles-loader') {
-          if (window.srPlayTilesLoader) window.srPlayTilesLoader();
-        } else if (cmd === 'kill-adobe') {
+        if (cmd === 'kill-adobe') {
           const adobeBtn = document.querySelector('.direct-kill-btn[data-service="Adobe Creative Cloud"]');
           if (adobeBtn && !adobeBtn.disabled) {
             adobeBtn.click();
@@ -7941,14 +7940,6 @@ Rapor Üretici: https://subradar.dev
         return;
       }
 
-      // 'O' -> Originkit Tiles Loader
-      if (e.key === 'o' || e.key === 'O') {
-        if (window.srPlayTilesLoader) {
-          window.srPlayTilesLoader();
-        }
-        return;
-      }
-
       // 'C' -> cycle currency
       if (e.key === 'c' || e.key === 'C') {
         var curOrder = ['USD', 'EUR', 'TRY'];
@@ -8851,6 +8842,295 @@ if (typeof document !== 'undefined') {
 }
 </script>
 
+
+
+
+
+<script id="sr-bundle-tiles-loader-js">
+/* =========================================================================
+   SubRadar — Originkit "Tiles Loader" Component
+   Direct Vanilla JS Port of Originkit Tiles Loader (@originkit/tiles-loader)
+   ========================================================================= */
+(function () {
+/**
+ * SubRadar — Originkit "Tiles Loader" Component
+ * Direct Vanilla JS Port of Originkit Tiles Loader (@originkit/tiles-loader)
+ * 
+ * Features:
+ * - Dynamic cell grid with SHORT_SIDE = 7 calculation
+ * - Seeded pseudo-random tile inking animation (edRand + edSeg + edLoadCurve)
+ * - Tabular numbers difference blend mode counter (0% -> 100%)
+ * - Diagonal distance reveal wipe (scale 1 - e)
+ * - Seamless handoff to SubRadar ASCII Reveal & Dither Engine
+ */
+
+const ED_FADE_S = 0.35;
+const REVEAL_S = 1.15;
+const SHORT_SIDE = 7;
+const INK_WINDOW = 0.04;
+
+function edRand(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function edLoadCurve(seed, loadS) {
+  const r = edRand(seed);
+  const k = Math.min(1, loadS / 4.4);
+  const chunks = [];
+  let total = 0;
+  for (let i = 0; i < 7; i++) {
+    const size = 0.4 + r() * 1.2;
+    chunks.push({ size, start: r() * 0.78 * loadS, len: (0.25 + r() * 0.9) * k });
+    total += size;
+  }
+  chunks.push({ size: total * 0.12, start: loadS - 0.45 * k, len: 0.45 * k });
+  total *= 1.12;
+  return (t) => {
+    if (t >= loadS) return 1;
+    let p = 0;
+    for (const c of chunks) {
+      const x = Math.min(1, Math.max(0, (t - c.start) / Math.max(1e-3, c.len)));
+      p += c.size * x * x * (3 - 2 * x);
+    }
+    return Math.min(0.999, p / total);
+  };
+}
+
+function edRealLoad() {
+  if (typeof document === 'undefined') return 1;
+  if (document.readyState === 'complete') return 1;
+  const imgs = document.images;
+  let done = 0;
+  for (let i = 0; i < imgs.length; i++) if (imgs[i].complete) done++;
+  const frac = imgs.length ? done / imgs.length : 1;
+  const fonts = document.fonts && document.fonts.status === 'loaded' ? 1 : 0;
+  return Math.min(0.95, 0.15 + 0.6 * frac + 0.2 * fonts);
+}
+
+const edClamp = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
+const edSeg = (x, a, b) => edClamp((x - a) / Math.max(1e-6, b - a));
+const edOutCubic = (x) => 1 - Math.pow(1 - x, 3);
+const edInOutCubic = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+
+function initTilesLoader(options = {}) {
+  const root = document.getElementById('sr-tiles-loader');
+  if (!root) return;
+
+  const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const minTime = reduced ? 0.5 : (options.minTime || 1.25);
+  const revealS = reduced ? 0.35 : (options.revealS || REVEAL_S);
+
+  const isDark = document.documentElement.classList.contains('dark');
+  const background = options.background || (isDark ? '#09090b' : '#EEEAE3');
+  const accent = options.accent || (isDark ? '#f4f4f5' : '#151412');
+
+  let gridCols = 11;
+  let gridRows = 7;
+  let count = gridCols * gridRows;
+  let order = [];
+  let tileEls = [];
+  let paperEls = [];
+
+  const countEl = document.getElementById('sr-tiles-counter');
+  const numEl = document.getElementById('sr-tiles-num');
+  const gridContainer = document.getElementById('sr-tiles-grid') || root;
+
+  function buildGrid(newCols, newRows) {
+    gridCols = newCols;
+    gridRows = newRows;
+    count = gridCols * gridRows;
+
+    // Seeded random order
+    const r = edRand(count * 7919 + 13);
+    order = Array.from({ length: count }, () => r() * (1 - INK_WINDOW));
+
+    // Clear and rebuild tiles
+    gridContainer.innerHTML = '';
+    tileEls = [];
+    paperEls = [];
+
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const c = i % gridCols;
+      const rIdx = Math.floor(i / gridCols);
+
+      const tile = document.createElement('div');
+      tile.className = 'sr-tile';
+      tile.style.cssText = `
+        position: absolute;
+        left: ${(c * 100) / gridCols}%;
+        top: ${(rIdx * 100) / gridRows}%;
+        width: calc(${100 / gridCols}% + 1px);
+        height: calc(${100 / gridRows}% + 1px);
+        background: ${accent};
+        transform-origin: center center;
+        will-change: transform;
+      `;
+
+      const paper = document.createElement('div');
+      paper.className = 'sr-tile-paper';
+      paper.style.cssText = `
+        position: absolute;
+        inset: 0;
+        background: ${background};
+        opacity: 1;
+        will-change: opacity;
+      `;
+
+      tile.appendChild(paper);
+      frag.appendChild(tile);
+      tileEls.push(tile);
+      paperEls.push(paper);
+    }
+    gridContainer.appendChild(frag);
+  }
+
+  function updateDimensions() {
+    const w = root.offsetWidth || window.innerWidth;
+    const h = root.offsetHeight || window.innerHeight;
+    if (!w || !h) return;
+    const cell = Math.min(w, h) / SHORT_SIDE;
+    const nextCols = Math.max(1, Math.round(w / cell));
+    const nextRows = Math.max(1, Math.round(h / cell));
+    if (nextCols !== gridCols || nextRows !== gridRows || tileEls.length === 0) {
+      buildGrid(nextCols, nextRows);
+    }
+  }
+
+  updateDimensions();
+  window.addEventListener('resize', updateDimensions, { passive: true });
+
+  // Allow click/tap/key to fast-forward loader if user desires
+  let fastForward = false;
+  const skipHandler = (e) => {
+    if (e.type === 'keydown' && e.key !== 'Escape' && e.key !== ' ' && e.key !== 'Enter') return;
+    fastForward = true;
+  };
+  root.addEventListener('click', skipHandler);
+  window.addEventListener('keydown', skipHandler);
+
+  let t = 0;
+  let progress = 0;
+  let revealAt = -1;
+  let finished = false;
+  let loadS = minTime;
+  let curve = edLoadCurve(7, loadS);
+  let lastTime = -1;
+  let rafId = 0;
+
+  function renderFrame(dt) {
+    const reveal = revealAt < 0 ? 0 : edClamp((t - revealAt) / revealS);
+
+    // Update each tile's inking and reveal scaling
+    for (let i = 0; i < count; i++) {
+      const paper = paperEls[i];
+      if (paper) {
+        paper.style.opacity = String(1 - edSeg(progress, order[i], order[i] + INK_WINDOW));
+      }
+
+      const tile = tileEls[i];
+      if (tile) {
+        const c = i % gridCols;
+        const rIdx = Math.floor(i / gridCols);
+        const d = 0.5 * (gridCols > 1 ? c / (gridCols - 1) : 0) + 0.5 * (gridRows > 1 ? (gridRows - 1 - rIdx) / (gridRows - 1) : 0);
+        const e = edInOutCubic(edSeg(reveal, d * 0.55, d * 0.55 + 0.45));
+        tile.style.transform = `scale(${1 - e})`;
+      }
+    }
+
+    // Update center counter
+    if (numEl) {
+      const digits = String(Math.round(progress * 100));
+      if (numEl.textContent !== digits) numEl.textContent = digits;
+    }
+    if (countEl) {
+      countEl.style.opacity = String(edOutCubic(edSeg(t, 0.08, 0.7)) * (1 - edSeg(reveal, 0, 0.15)));
+    }
+  }
+
+  function tick(now) {
+    if (finished) return;
+    const dt = lastTime < 0 ? 0 : Math.min(0.05, (now - lastTime) / 1000);
+    lastTime = now;
+    t += fastForward ? dt * 3.5 : dt;
+
+    if (revealAt < 0) {
+      const target = Math.min(curve(t), edRealLoad());
+      progress = target >= 1 ? 1 : Math.min(target, progress + (fastForward ? dt * 4 : dt * 1.5));
+      if ((progress >= 1 && t >= loadS) || (fastForward && t >= 0.4)) {
+        progress = 1;
+        revealAt = t;
+      }
+    }
+
+    renderFrame(dt);
+
+    // End of reveal
+    if (revealAt >= 0 && t - revealAt >= revealS) {
+      finished = true;
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', updateDimensions);
+      root.removeEventListener('click', skipHandler);
+      window.removeEventListener('keydown', skipHandler);
+
+      root.style.transition = `opacity ${ED_FADE_S}s ease`;
+      root.style.opacity = '0';
+      root.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        root.style.display = 'none';
+        root.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('sr-loading-lock');
+
+        // Trigger onComplete callback (e.g. SubRadar ASCII Reveal Engine)
+        if (typeof options.onComplete === 'function') {
+          options.onComplete();
+        } else if (typeof window.srInitAsciiRevealLoader === 'function') {
+          window.srInitAsciiRevealLoader();
+        }
+      }, ED_FADE_S * 1000);
+      return;
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  // Lock scroll while loader is active
+  document.body.classList.add('sr-loading-lock');
+  renderFrame(0);
+  rafId = requestAnimationFrame(tick);
+}
+
+function playTilesLoader(options = {}) {
+  const root = document.getElementById('sr-tiles-loader');
+  if (!root) return;
+  root.style.display = 'block';
+  root.style.opacity = '1';
+  root.style.pointerEvents = 'auto';
+  root.removeAttribute('aria-hidden');
+  initTilesLoader({
+    minTime: options.minTime || 1.8,
+    revealS: options.revealS || 1.3,
+    ...options
+  });
+}
+
+// Global exposure
+if (typeof window !== 'undefined') {
+  window.srInitTilesLoader = initTilesLoader;
+  window.srPlayTilesLoader = playTilesLoader;
+}
+
+})();
+</script>
+
 <script id="sr-bundle-ascii-reveal-js">
 /* =========================================================================
    SubRadar — Ascii Reveal Dither + Decode Engine
@@ -8930,327 +9210,25 @@ var Te={decode:{ramp:" .:-=+*#%@",scramble:"ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%
 
   window.srInitAsciiRevealLoader = initPageAsciiReveal;
 
+  function launchSiteEntrance() {
+    if (typeof window.srInitTilesLoader === 'function') {
+      window.srInitTilesLoader({
+        minTime: 1.8,
+        revealS: 1.3,
+        onComplete: function () {
+          initPageAsciiReveal();
+        }
+      });
+    } else {
+      initPageAsciiReveal();
+    }
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPageAsciiReveal);
+    document.addEventListener('DOMContentLoaded', launchSiteEntrance);
   } else {
-    initPageAsciiReveal();
+    launchSiteEntrance();
   }
-<!-- Originkit Tiles Loader Overlay -->
-<div id="sr-tiles-loader-overlay" class="sr-tiles-loader-overlay fixed inset-0 z-[999999] w-screen h-screen overflow-hidden hidden" aria-hidden="true" style="isolation: isolate;"></div>
-
-<script id="sr-bundle-tiles-loader-js">
-/* =========================================================================
-   SubRadar — Originkit Tiles Loader (Framer Editorial Component)
-   Direct Port with Seeded PRNG & Cubic Easing Diagonal Wave
-   ========================================================================= */
-(function () {
-  'use strict';
-
-  var ED_HOLD_S = 1.8;
-  var ED_FADE_S = 0.35;
-  var ED_SERIF = '"Instrument Serif", "Times New Roman", Times, serif';
-  var ED_SANS = '"Inter", "Helvetica Neue", Arial, sans-serif';
-  var REVEAL_S = 1.6;
-  var PAPER = "#EEEAE3";
-  var INK = "#151412";
-  var SHORT_SIDE = 7;
-  var INK_WINDOW = 0.04;
-
-  function edRand(seed) {
-    var a = seed >>> 0;
-    return function () {
-      a = (a + 0x6d2b79f5) >>> 0;
-      var t = a;
-      t = Math.imul(t ^ (t >>> 15), t | 1);
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-
-  function edLoadCurve(seed, loadS) {
-    var r = edRand(seed);
-    var k = Math.min(1, loadS / 4.4);
-    var chunks = [];
-    var total = 0;
-    for (var i = 0; i < 7; i++) {
-      var size = 0.4 + r() * 1.2;
-      chunks.push({ size: size, start: r() * 0.78 * loadS, len: (0.25 + r() * 0.9) * k });
-      total += size;
-    }
-    chunks.push({ size: total * 0.12, start: loadS - 0.45 * k, len: 0.45 * k });
-    total *= 1.12;
-    return function (t) {
-      if (t >= loadS) return 1;
-      var p = 0;
-      for (var c = 0; c < chunks.length; c++) {
-        var ch = chunks[c];
-        var x = Math.min(1, Math.max(0, (t - ch.start) / Math.max(1e-3, ch.len)));
-        p += ch.size * x * x * (3 - 2 * x);
-      }
-      return Math.min(0.999, p / total);
-    };
-  }
-
-  function edRealLoad() {
-    if (typeof document === 'undefined') return 1;
-    if (document.readyState === 'complete') return 1;
-    var imgs = document.images;
-    var done = 0;
-    for (var i = 0; i < imgs.length; i++) if (imgs[i].complete) done++;
-    var frac = imgs.length ? done / imgs.length : 1;
-    var fonts = document.fonts && document.fonts.status === 'loaded' ? 1 : 0;
-    return Math.min(0.95, 0.15 + 0.6 * frac + 0.2 * fonts);
-  }
-
-  var edClamp = function (x) { return x < 0 ? 0 : x > 1 ? 1 : x; };
-  var edSeg = function (x, a, b) { return edClamp((x - a) / Math.max(1e-6, b - a)); };
-  var edOutCubic = function (x) { return 1 - Math.pow(1 - x, 3); };
-  var edInOutCubic = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
-
-  function mountTilesLoader(container, options) {
-    if (!container) return null;
-    var opts = options || {};
-    var minTime = opts.minTime !== undefined ? opts.minTime : 2.4;
-    var background = opts.background || PAPER;
-    var accent = opts.accent || INK;
-    var fontFamily = opts.fontFamily || ED_SERIF;
-    var onComplete = opts.onComplete;
-    var autoStart = opts.autoStart !== false;
-
-    var reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    container.style.position = container.style.position || 'relative';
-    container.style.overflow = 'hidden';
-    container.style.isolation = 'isolate';
-    container.style.opacity = '1';
-    container.style.visibility = 'visible';
-    container.style.pointerEvents = 'auto';
-
-    var w = container.offsetWidth || window.innerWidth;
-    var h = container.offsetHeight || window.innerHeight;
-    var cell = Math.min(w, h) / SHORT_SIDE;
-    var cols = Math.max(1, Math.round(w / cell));
-    var rows = Math.max(1, Math.round(h / cell));
-    var count = cols * rows;
-
-    var tileEls = [];
-    var paperEls = [];
-    var countEl = null;
-    var numEl = null;
-    var rafId = 0;
-    var running = false;
-
-    container.innerHTML = '';
-
-    var gridWrap = document.createElement('div');
-    gridWrap.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;';
-
-    for (var i = 0; i < count; i++) {
-      var c = i % cols;
-      var r = Math.floor(i / cols);
-
-      var tile = document.createElement('div');
-      tile.style.cssText = [
-        'position:absolute',
-        'left:' + ((c * 100) / cols) + '%',
-        'top:' + ((r * 100) / rows) + '%',
-        'width:calc(' + (100 / cols) + '% + 1px)',
-        'height:calc(' + (100 / rows) + '% + 1px)',
-        'background:' + accent,
-        'will-change:transform'
-      ].join(';');
-
-      var paper = document.createElement('div');
-      paper.style.cssText = 'position:absolute;inset:0;background:' + background + ';will-change:opacity;';
-
-      tile.appendChild(paper);
-      gridWrap.appendChild(tile);
-
-      tileEls.push(tile);
-      paperEls.push(paper);
-    }
-    container.appendChild(gridWrap);
-
-    countEl = document.createElement('div');
-    countEl.setAttribute('aria-hidden', 'true');
-    countEl.style.cssText = [
-      'position:absolute',
-      'inset:0',
-      'display:flex',
-      'align-items:center',
-      'justify-content:center',
-      'mix-blend-mode:difference',
-      'color:#fff',
-      'pointer-events:none',
-      'white-space:nowrap',
-      'font-family:' + fontFamily,
-      'font-size:min(28cqh, 38cqw, 18vw)',
-      'font-variant-numeric:tabular-nums',
-      'opacity:0',
-      'z-index:2'
-    ].join(';');
-
-    var numWrap = document.createElement('span');
-    numWrap.style.cssText = 'display:inline-flex;align-items:flex-start;';
-
-    numEl = document.createElement('span');
-    numEl.textContent = '0';
-
-    var pctEl = document.createElement('span');
-    pctEl.style.cssText = 'font-size:0.32em;font-style:italic;margin-top:0.85em;margin-left:0.08em;opacity:0.9;';
-    pctEl.textContent = '%';
-
-    numWrap.appendChild(numEl);
-    numWrap.appendChild(pctEl);
-    countEl.appendChild(numWrap);
-    container.appendChild(countEl);
-
-    var rng = edRand(count * 7919 + 13);
-    var order = [];
-    for (var j = 0; j < count; j++) {
-      order.push(rng() * (1 - INK_WINDOW));
-    }
-
-    var t = 0;
-    var progress = 0;
-    var revealAt = -1;
-    var finished = false;
-    var loadS = reduced ? 0.6 : Math.max(0.5, minTime);
-    var curve = edLoadCurve(7, loadS);
-    var revealS = reduced ? 0.4 : REVEAL_S;
-    var last = -1;
-
-    function tick(now) {
-      if (!running) return;
-      var dt = last < 0 ? 0 : Math.min(0.05, (now - last) / 1000);
-      last = now;
-      t += dt;
-
-      if (revealAt < 0) {
-        var target = Math.min(curve(t), edRealLoad());
-        progress = target >= 1 ? 1 : Math.min(target, progress + dt * 1.5);
-        if (progress >= 1 && t >= loadS) {
-          revealAt = t;
-        }
-      }
-
-      var reveal = revealAt < 0 ? 0 : edClamp((t - revealAt) / revealS);
-
-      for (var k = 0; k < count; k++) {
-        var paperEl = paperEls[k];
-        if (paperEl) {
-          paperEl.style.opacity = String(1 - edSeg(progress, order[k], order[k] + INK_WINDOW));
-        }
-        var tileEl = tileEls[k];
-        if (!tileEl) continue;
-        var col = k % cols;
-        var row = Math.floor(k / cols);
-        var d = 0.5 * (cols > 1 ? col / (cols - 1) : 0) + 0.5 * (rows > 1 ? (rows - 1 - row) / (rows - 1) : 0);
-        var e = edInOutCubic(edSeg(reveal, d * 0.55, d * 0.55 + 0.45));
-        tileEl.style.transform = 'scale(' + (1 - e) + ')';
-      }
-
-      if (numEl) {
-        var digits = String(Math.round(progress * 100));
-        if (numEl.textContent !== digits) numEl.textContent = digits;
-      }
-      if (countEl) {
-        countEl.style.opacity = String(edOutCubic(edSeg(t, 0.1, 0.8)) * (1 - edSeg(reveal, 0, 0.15)));
-      }
-
-      if (revealAt >= 0 && t - revealAt >= revealS) {
-        finished = true;
-        running = false;
-        container.style.transition = 'opacity ' + ED_FADE_S + 's ease';
-        container.style.opacity = '0';
-        container.style.pointerEvents = 'none';
-        window.setTimeout(function () {
-          container.style.visibility = 'hidden';
-          container.style.display = 'none';
-          if (typeof onComplete === 'function') onComplete();
-        }, ED_FADE_S * 1000);
-        return;
-      }
-
-      rafId = requestAnimationFrame(tick);
-    }
-
-    function start() {
-      if (running) return;
-      running = true;
-      t = 0;
-      progress = 0;
-      revealAt = -1;
-      finished = false;
-      last = -1;
-      container.style.opacity = '1';
-      container.style.visibility = 'visible';
-      container.style.display = 'block';
-      rafId = requestAnimationFrame(tick);
-    }
-
-    function stop() {
-      running = false;
-      if (rafId) cancelAnimationFrame(rafId);
-    }
-
-    if (autoStart) start();
-
-    return { start: start, stop: stop, container: container };
-  }
-
-  function playTilesLoader(options) {
-    var opts = options || {};
-    var overlay = document.getElementById('sr-tiles-loader-overlay');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'sr-tiles-loader-overlay';
-      document.body.appendChild(overlay);
-    }
-
-    overlay.style.cssText = [
-      'position:fixed',
-      'inset:0',
-      'z-index:999999',
-      'width:100vw',
-      'height:100vh',
-      'overflow:hidden',
-      'isolation:isolate',
-      'display:block',
-      'opacity:1',
-      'visibility:visible'
-    ].join(';');
-
-    if (window.srAudio && window.srAudio.playRadarSweep) {
-      window.srAudio.playRadarSweep();
-    }
-
-    return mountTilesLoader(overlay, {
-      minTime: opts.minTime !== undefined ? opts.minTime : 2.2,
-      background: opts.background || '#EEEAE3',
-      accent: opts.accent || '#151412',
-      fontFamily: ED_SERIF,
-      onComplete: function () {
-        overlay.style.display = 'none';
-        if (opts.onComplete) opts.onComplete();
-      }
-    });
-  }
-
-  window.srTilesLoader = {
-    mount: mountTilesLoader,
-    play: playTilesLoader,
-    constants: {
-      REVEAL_S: REVEAL_S,
-      ED_HOLD_S: ED_HOLD_S,
-      ED_FADE_S: ED_FADE_S,
-      PAPER: PAPER,
-      INK: INK,
-      SHORT_SIDE: SHORT_SIDE,
-      INK_WINDOW: INK_WINDOW
-    }
-  };
-  window.srPlayTilesLoader = playTilesLoader;
 })();
 </script>
 

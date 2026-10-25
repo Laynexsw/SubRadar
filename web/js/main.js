@@ -25,7 +25,7 @@ import './modals/shortcuts-modal.js';
 import './modals/legal-gen.js';
 import './supabase.js';
 import { initAsciiRevealLoader } from './ascii-reveal-loader.js';
-import './tiles-loader.js';
+import { initTilesLoader } from './tiles-loader.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize modules
@@ -39,7 +39,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initEnterpriseModal();
   initReclaimModal();
   initAuthModal();
-  initAsciiRevealLoader();
+
+  // Originkit "Tiles Loader" Preloader: runs before site opens, then hands off to Ascii Reveal
+  initTilesLoader({
+    minTime: 1.8,
+    revealS: 1.3,
+    onComplete: () => {
+      initAsciiRevealLoader();
+    }
+  });
 
   // Mobile menu toggle
   const menuBtn = document.getElementById('mobile-menu-btn');

@@ -76,14 +76,6 @@
         return;
       }
 
-      // 'O' -> Originkit Tiles Loader
-      if (e.key === 'o' || e.key === 'O') {
-        if (window.srPlayTilesLoader) {
-          window.srPlayTilesLoader();
-        }
-        return;
-      }
-
       // 'C' -> cycle currency
       if (e.key === 'c' || e.key === 'C') {
         var curOrder = ['USD', 'EUR', 'TRY'];

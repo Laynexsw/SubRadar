@@ -67,6 +67,10 @@ SubRadar/
 │       ├── index.html                    # Çerçevesiz ana pencere, 6 modül görünümü, ⌘K paleti & kilit kapısı
 │       ├── styles/                       # app.css (pencere & düzen), components.css (kartlar & modallar)
 │       └── scripts/                      # app.js (arayüz), presets.js (16+ SaaS şablonu), crypto-fallback.js
+├── 🧩 components/                        # ORIGINKIT & HARİCİ UI BİLEŞENLERİ
+│   └── originkit/
+│       └── ui/
+│           └── tiles-loader.tsx              # Originkit CLI resmi React/TypeScript Tiles Loader bileşeni
 │
 └── 🌐 web/                               # WEB TANITIM VİTRİNİ & MODÜLER BİLEŞENLER
     ├── code.html                         # Entegre canlı vitrin uygulaması ve interaktif masaüstü simülatörü
@@ -82,15 +86,11 @@ SubRadar/
     │
     ├── components/                       # 23 Parçalı Modüler HTML Bileşenleri
     │   ├── layout/
-    │   │   ├── header.html               # Üst gezinme çubuğu, ses, tiles loader, kısayol, dil, kur ve tema kontrolleri
+    │   │   ├── header.html               # Üst gezinme çubuğu, ses, kısayol, dil, kur ve tema kontrolleri
     │   │   ├── footer.html               # Alt bilgi çubuğu, iletişim bilgileri, bağlantılar ve yerel gecikme
     │   │   ├── cookie-banner.html        # Minimal Apple Glass çerez ve canlı kullanıcı etkileşim izleme kartı
     │   │   ├── mobile-sticky-cta.html    # Mobilde altta sabit kalan hızlı indirme çubuğu
-    │   │   └── tiles-loader.html         # Originkit Tiles Loader tam ekran editoryal yükleme overlay konteyneri
-    │   │
-    │   ├── originkit/                    # Originkit Framer Bileşenleri
-    │   │   ├── tiles-loader.tsx          # Originkit Tiles Loader React/TypeScript kaynak bileşeni
-    │   │   └── react-shim.d.ts           # React & JSX ambient tip tanımları
+    │   │   └── tiles-loader.html         # Originkit Tiles Loader editoryal karo yükleme ve yüzde sayacı taşıyıcı iskeleti
     │   │
     │   ├── sections/
     │   │   ├── hero.html                 # Hero vitrin alanı, çift CTA ve interaktif pencere simülasyonu
@@ -107,10 +107,10 @@ SubRadar/
     │   │
     │   └── modals/
     │       ├── download-modal.html       # İndirme modalı (İlerleme çubuğu, işletim sistemi ve mimari seçimi)
-    │       ├── command-palette.html      # Cmd+K / Ctrl+K komut paleti arama penceresi ve Tiles Loader eylemi
+    │       ├── command-palette.html      # Cmd+K / Ctrl+K komut paleti arama penceresi
     │       ├── enterprise-modal.html     # Kurumsal talep formu (inline hata denetimi & spinner)
     │       ├── reclaim-modal.html        # Geri kazanım ve CLI kurulum adımları
-    │       ├── shortcuts-modal.html      # Raycast/Linear stili Power-User klavye kısayolları modalı (? / O / T / S / C / L / D)
+    │       ├── shortcuts-modal.html      # Raycast/Linear stili Power-User klavye kısayolları modalı
     │       ├── legal-generator-modal.html# Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı
     │       └── auth-modal.html           # İkili kayan panelli (Double-Slider Sliding Overlay) Apple Glass Monokrom modalı
     │
@@ -133,9 +133,9 @@ SubRadar/
     │   ├── social-export.js              # HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı
     │   ├── calculator.js                 # İsraf hesaplama algoritmaları ve profil geçişleri
     │   ├── hero-window.js                # Hero masaüstü simülasyonu, trafik ışıkları ve iptal senaryoları
+    │   ├── tiles-loader.js               # Originkit "Tiles Loader" saf JS motoru (hücre ızgarası, edRand mürekkepleşme, % sayacı, çapraz dalga)
     │   ├── ascii-reveal-core.js          # Standalone ASCII reveal & dither motoru (quanhoangindex/ascii-reveal)
     │   ├── ascii-reveal-loader.js        # Sayfa yüklenişinde bileşenlere dither+decode animasyonu uygulayıcı orkestratör
-    │   ├── tiles-loader.js               # Originkit Tiles Loader tarayıcı motoru (PRNG, rastgele karo inking, tabular nums difference sayacı ve editoryal küçülme dalgası)
     │   ├── scroll-motion.js              # Sayfa okuma ilerleme çizgisi (`#sr-progress`) ve yüzen bölüm gezinme adası (`#sr-scrollspy`)
     │   ├── analytics.js                  # Canlı saniye sayacı, tıklama, kaydırma ve kullanıcı telemetri motoru (`srAnalytics`)
     │   ├── cookie-banner.js              # Minimal Apple Glass çerez kartı, otomatik açılış ve onay kontrolcüsü
@@ -144,14 +144,14 @@ SubRadar/
     │   │
     │   └── modals/                       # Web Modal Kontrolcüleri
     │       ├── download-modal.js         # İndirme simülasyonu ve dosya indirme tetikleyicisi
-    │       ├── command-palette.js        # Komut paleti klavye gezinimi, hızlı arama ve Tiles Loader eylemi
+    │       ├── command-palette.js        # Komut paleti klavye gezinimi ve hızlı arama
     │       ├── enterprise-modal.js       # Kurumsal form doğrulama, spinner ve onay ekranı
     │       ├── reclaim-modal.js          # CLI komut kopyalama ve geri kazanım adımları
-    │       ├── shortcuts-modal.js        # Power-User kısayol dinleyici (`?`, `T`, `S`, `O`, `C`, `L`, `D`, `ESC`)
+    │       ├── shortcuts-modal.js        # Power-User kısayol dinleyici (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`)
     │       ├── legal-gen.js              # Canlı resmi ihtarname derleyici, pano kopyalama ve `.txt` indirme
     │       └── auth-modal.js             # İkili kayan panel animasyonu (sliding overlay), sosyal/demo giriş ve profil kontrolcüsü
     └── scripts/
-        ├── build.py                      # 23 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
+        ├── build.py                      # 22 modüler bileşeni doğrulayan ve test eden Python otomasyon betiği
         └── embed_ascii_reveal.py         # ascii-reveal dither+decode motorunu code.html içine derleyip enjekte eden betik
 ```
 

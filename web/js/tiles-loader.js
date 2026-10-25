@@ -1,21 +1,17 @@
 /**
- * Tiles Loader — Originkit (Port for SubRadar)
- *
- * Implements Originkit's Tiles Loader component with 100% mathematical fidelity:
- * - Pseudo-random seeded tile inking order via 32-bit PRNG
- * - Easing curves (edInOutCubic diagonal reveal wave)
- * - Difference blend mode counter with tabular numbers
- * - Dynamic grid scaling (SHORT_SIDE = 7)
- * - Container-aware sizing and resize observer
+ * SubRadar — Originkit "Tiles Loader" Component
+ * Direct Vanilla JS Port of Originkit Tiles Loader (@originkit/tiles-loader)
+ * 
+ * Features:
+ * - Dynamic cell grid with SHORT_SIDE = 7 calculation
+ * - Seeded pseudo-random tile inking animation (edRand + edSeg + edLoadCurve)
+ * - Tabular numbers difference blend mode counter (0% -> 100%)
+ * - Diagonal distance reveal wipe (scale 1 - e)
+ * - Seamless handoff to SubRadar ASCII Reveal & Dither Engine
  */
 
-const ED_HOLD_S = 1.8;
 const ED_FADE_S = 0.35;
-const ED_SERIF = '"Instrument Serif", "Times New Roman", Times, serif';
-const ED_SANS = '"Inter", "Helvetica Neue", Arial, sans-serif';
-const REVEAL_S = 1.6;
-const PAPER = "#EEEAE3";
-const INK = "#151412";
+const REVEAL_S = 1.15;
 const SHORT_SIDE = 7;
 const INK_WINDOW = 0.04;
 
@@ -42,7 +38,7 @@ function edLoadCurve(seed, loadS) {
   }
   chunks.push({ size: total * 0.12, start: loadS - 0.45 * k, len: 0.45 * k });
   total *= 1.12;
-  return function (t) {
+  return (t) => {
     if (t >= loadS) return 1;
     let p = 0;
     for (const c of chunks) {
@@ -66,188 +62,185 @@ function edRealLoad() {
 
 const edClamp = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
 const edSeg = (x, a, b) => edClamp((x - a) / Math.max(1e-6, b - a));
-const edLerp = (a, b, t) => a + (b - a) * t;
-const edOutExpo = (x) => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
 const edOutCubic = (x) => 1 - Math.pow(1 - x, 3);
-const edInCubic = (x) => x * x * x;
 const edInOutCubic = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
-const edInOutQuart = (x) => (x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2);
 
-/**
- * Mount and run an instance of Tiles Loader in target container
- */
-export function mountTilesLoader(container, options = {}) {
-  if (!container) return null;
-
-  const {
-    minTime = 2.4,
-    background = PAPER,
-    accent = INK,
-    fontFamily = ED_SERIF,
-    onComplete,
-    autoStart = true
-  } = options;
+export function initTilesLoader(options = {}) {
+  const root = document.getElementById('sr-tiles-loader');
+  if (!root) return;
 
   const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const minTime = reduced ? 0.5 : (options.minTime || 1.25);
+  const revealS = reduced ? 0.35 : (options.revealS || REVEAL_S);
 
-  // Root styling
-  container.style.position = container.style.position || 'relative';
-  container.style.overflow = 'hidden';
-  container.style.isolation = 'isolate';
-  container.style.opacity = '1';
-  container.style.visibility = 'visible';
-  container.style.pointerEvents = 'auto';
+  const isDark = document.documentElement.classList.contains('dark');
+  const background = options.background || (isDark ? '#09090b' : '#EEEAE3');
+  const accent = options.accent || (isDark ? '#f4f4f5' : '#151412');
 
-  let w = container.offsetWidth || window.innerWidth;
-  let h = container.offsetHeight || window.innerHeight;
-  let cell = Math.min(w, h) / SHORT_SIDE;
-  let cols = Math.max(1, Math.round(w / cell));
-  let rows = Math.max(1, Math.round(h / cell));
-  let count = cols * rows;
-
+  let gridCols = 11;
+  let gridRows = 7;
+  let count = gridCols * gridRows;
+  let order = [];
   let tileEls = [];
   let paperEls = [];
-  let countEl = null;
-  let numEl = null;
-  let rafId = 0;
-  let running = false;
 
-  function renderGrid() {
-    container.innerHTML = '';
+  const countEl = document.getElementById('sr-tiles-counter');
+  const numEl = document.getElementById('sr-tiles-num');
+  const gridContainer = document.getElementById('sr-tiles-grid') || root;
+
+  function buildGrid(newCols, newRows) {
+    gridCols = newCols;
+    gridRows = newRows;
+    count = gridCols * gridRows;
+
+    // Seeded random order
+    const r = edRand(count * 7919 + 13);
+    order = Array.from({ length: count }, () => r() * (1 - INK_WINDOW));
+
+    // Clear and rebuild tiles
+    gridContainer.innerHTML = '';
     tileEls = [];
     paperEls = [];
 
-    // Outer grid wrapper
-    const gridWrap = document.createElement('div');
-    gridWrap.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;';
-
+    const frag = document.createDocumentFragment();
     for (let i = 0; i < count; i++) {
-      const c = i % cols;
-      const r = Math.floor(i / cols);
+      const c = i % gridCols;
+      const rIdx = Math.floor(i / gridCols);
 
       const tile = document.createElement('div');
-      tile.style.cssText = [
-        'position:absolute',
-        `left:${(c * 100) / cols}%`,
-        `top:${(r * 100) / rows}%`,
-        `width:calc(${100 / cols}% + 1px)`,
-        `height:calc(${100 / rows}% + 1px)`,
-        `background:${accent}`,
-        'will-change:transform'
-      ].join(';');
+      tile.className = 'sr-tile';
+      tile.style.cssText = `
+        position: absolute;
+        left: ${(c * 100) / gridCols}%;
+        top: ${(rIdx * 100) / gridRows}%;
+        width: calc(${100 / gridCols}% + 1px);
+        height: calc(${100 / gridRows}% + 1px);
+        background: ${accent};
+        transform-origin: center center;
+        will-change: transform;
+      `;
 
       const paper = document.createElement('div');
-      paper.style.cssText = `position:absolute;inset:0;background:${background};will-change:opacity;`;
+      paper.className = 'sr-tile-paper';
+      paper.style.cssText = `
+        position: absolute;
+        inset: 0;
+        background: ${background};
+        opacity: 1;
+        will-change: opacity;
+      `;
 
       tile.appendChild(paper);
-      gridWrap.appendChild(tile);
-
+      frag.appendChild(tile);
       tileEls.push(tile);
       paperEls.push(paper);
     }
-    container.appendChild(gridWrap);
-
-    // Centered percentage difference counter
-    countEl = document.createElement('div');
-    countEl.setAttribute('aria-hidden', 'true');
-    countEl.style.cssText = [
-      'position:absolute',
-      'inset:0',
-      'display:flex',
-      'align-items:center',
-      'justify-content:center',
-      'mix-blend-mode:difference',
-      'color:#fff',
-      'pointer-events:none',
-      'white-space:nowrap',
-      `font-family:${fontFamily}`,
-      'font-size:min(28cqh, 38cqw, 18vw)',
-      'font-variant-numeric:tabular-nums',
-      'opacity:0',
-      'z-index:2'
-    ].join(';');
-
-    const numWrap = document.createElement('span');
-    numWrap.style.cssText = 'display:inline-flex;align-items:flex-start;';
-
-    numEl = document.createElement('span');
-    numEl.textContent = '0';
-
-    const pctEl = document.createElement('span');
-    pctEl.style.cssText = 'font-size:0.32em;font-style:italic;margin-top:0.85em;margin-left:0.08em;opacity:0.9;';
-    pctEl.textContent = '%';
-
-    numWrap.appendChild(numEl);
-    numWrap.appendChild(pctEl);
-    countEl.appendChild(numWrap);
-    container.appendChild(countEl);
+    gridContainer.appendChild(frag);
   }
 
-  renderGrid();
+  function updateDimensions() {
+    const w = root.offsetWidth || window.innerWidth;
+    const h = root.offsetHeight || window.innerHeight;
+    if (!w || !h) return;
+    const cell = Math.min(w, h) / SHORT_SIDE;
+    const nextCols = Math.max(1, Math.round(w / cell));
+    const nextRows = Math.max(1, Math.round(h / cell));
+    if (nextCols !== gridCols || nextRows !== gridRows || tileEls.length === 0) {
+      buildGrid(nextCols, nextRows);
+    }
+  }
 
-  // Pseudo-random inking order
-  const r = edRand(count * 7919 + 13);
-  const order = Array.from({ length: count }, () => r() * (1 - INK_WINDOW));
+  updateDimensions();
+  window.addEventListener('resize', updateDimensions, { passive: true });
+
+  // Allow click/tap/key to fast-forward loader if user desires
+  let fastForward = false;
+  const skipHandler = (e) => {
+    if (e.type === 'keydown' && e.key !== 'Escape' && e.key !== ' ' && e.key !== 'Enter') return;
+    fastForward = true;
+  };
+  root.addEventListener('click', skipHandler);
+  window.addEventListener('keydown', skipHandler);
 
   let t = 0;
   let progress = 0;
   let revealAt = -1;
   let finished = false;
-  let loadS = reduced ? 0.6 : Math.max(0.5, minTime);
+  let loadS = minTime;
   let curve = edLoadCurve(7, loadS);
-  let revealS = reduced ? 0.4 : REVEAL_S;
-  let last = -1;
+  let lastTime = -1;
+  let rafId = 0;
 
-  function tick(now) {
-    if (!running) return;
-    const dt = last < 0 ? 0 : Math.min(0.05, (now - last) / 1000);
-    last = now;
-    t += dt;
-
-    if (revealAt < 0) {
-      const target = Math.min(curve(t), edRealLoad());
-      progress = target >= 1 ? 1 : Math.min(target, progress + dt * 1.5);
-      if (progress >= 1 && t >= loadS) {
-        revealAt = t;
-      }
-    }
-
+  function renderFrame(dt) {
     const reveal = revealAt < 0 ? 0 : edClamp((t - revealAt) / revealS);
 
-    // Update tiles
+    // Update each tile's inking and reveal scaling
     for (let i = 0; i < count; i++) {
       const paper = paperEls[i];
       if (paper) {
         paper.style.opacity = String(1 - edSeg(progress, order[i], order[i] + INK_WINDOW));
       }
+
       const tile = tileEls[i];
-      if (!tile) continue;
-      const c = i % cols;
-      const r_idx = Math.floor(i / cols);
-      const d = 0.5 * (cols > 1 ? c / (cols - 1) : 0) + 0.5 * (rows > 1 ? (rows - 1 - r_idx) / (rows - 1) : 0);
-      const e = edInOutCubic(edSeg(reveal, d * 0.55, d * 0.55 + 0.45));
-      tile.style.transform = `scale(${1 - e})`;
+      if (tile) {
+        const c = i % gridCols;
+        const rIdx = Math.floor(i / gridCols);
+        const d = 0.5 * (gridCols > 1 ? c / (gridCols - 1) : 0) + 0.5 * (gridRows > 1 ? (gridRows - 1 - rIdx) / (gridRows - 1) : 0);
+        const e = edInOutCubic(edSeg(reveal, d * 0.55, d * 0.55 + 0.45));
+        tile.style.transform = `scale(${1 - e})`;
+      }
     }
 
-    // Update numbers
+    // Update center counter
     if (numEl) {
       const digits = String(Math.round(progress * 100));
       if (numEl.textContent !== digits) numEl.textContent = digits;
     }
     if (countEl) {
-      countEl.style.opacity = String(edOutCubic(edSeg(t, 0.1, 0.8)) * (1 - edSeg(reveal, 0, 0.15)));
+      countEl.style.opacity = String(edOutCubic(edSeg(t, 0.08, 0.7)) * (1 - edSeg(reveal, 0, 0.15)));
+    }
+  }
+
+  function tick(now) {
+    if (finished) return;
+    const dt = lastTime < 0 ? 0 : Math.min(0.05, (now - lastTime) / 1000);
+    lastTime = now;
+    t += fastForward ? dt * 3.5 : dt;
+
+    if (revealAt < 0) {
+      const target = Math.min(curve(t), edRealLoad());
+      progress = target >= 1 ? 1 : Math.min(target, progress + (fastForward ? dt * 4 : dt * 1.5));
+      if ((progress >= 1 && t >= loadS) || (fastForward && t >= 0.4)) {
+        progress = 1;
+        revealAt = t;
+      }
     }
 
+    renderFrame(dt);
+
+    // End of reveal
     if (revealAt >= 0 && t - revealAt >= revealS) {
       finished = true;
-      running = false;
-      container.style.transition = `opacity ${ED_FADE_S}s ease`;
-      container.style.opacity = '0';
-      container.style.pointerEvents = 'none';
-      window.setTimeout(() => {
-        container.style.visibility = 'hidden';
-        container.style.display = 'none';
-        if (typeof onComplete === 'function') onComplete();
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', updateDimensions);
+      root.removeEventListener('click', skipHandler);
+      window.removeEventListener('keydown', skipHandler);
+
+      root.style.transition = `opacity ${ED_FADE_S}s ease`;
+      root.style.opacity = '0';
+      root.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        root.style.display = 'none';
+        root.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('sr-loading-lock');
+
+        // Trigger onComplete callback (e.g. SubRadar ASCII Reveal Engine)
+        if (typeof options.onComplete === 'function') {
+          options.onComplete();
+        } else if (typeof window.srInitAsciiRevealLoader === 'function') {
+          window.srInitAsciiRevealLoader();
+        }
       }, ED_FADE_S * 1000);
       return;
     }
@@ -255,89 +248,28 @@ export function mountTilesLoader(container, options = {}) {
     rafId = requestAnimationFrame(tick);
   }
 
-  function start() {
-    if (running) return;
-    running = true;
-    t = 0;
-    progress = 0;
-    revealAt = -1;
-    finished = false;
-    last = -1;
-    container.style.opacity = '1';
-    container.style.visibility = 'visible';
-    container.style.display = 'block';
-    rafId = requestAnimationFrame(tick);
-  }
-
-  function stop() {
-    running = false;
-    if (rafId) cancelAnimationFrame(rafId);
-  }
-
-  if (autoStart) start();
-
-  return {
-    start,
-    stop,
-    container
-  };
+  // Lock scroll while loader is active
+  document.body.classList.add('sr-loading-lock');
+  renderFrame(0);
+  rafId = requestAnimationFrame(tick);
 }
 
-/**
- * Global helper: Play Tiles Loader in full viewport overlay
- */
 export function playTilesLoader(options = {}) {
-  let overlay = document.getElementById('sr-tiles-loader-overlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'sr-tiles-loader-overlay';
-    document.body.appendChild(overlay);
-  }
-
-  overlay.style.cssText = [
-    'position:fixed',
-    'inset:0',
-    'z-index:999999',
-    'width:100vw',
-    'height:100vh',
-    'overflow:hidden',
-    'isolation:isolate',
-    'display:block',
-    'opacity:1',
-    'visibility:visible'
-  ].join(';');
-
-  if (window.srAudio && window.srAudio.playRadarSweep) {
-    window.srAudio.playRadarSweep();
-  }
-
-  return mountTilesLoader(overlay, {
-    minTime: 2.2,
-    background: '#EEEAE3',
-    accent: '#151412',
-    fontFamily: ED_SERIF,
-    ...options,
-    onComplete: () => {
-      overlay.style.display = 'none';
-      if (options.onComplete) options.onComplete();
-    }
+  const root = document.getElementById('sr-tiles-loader');
+  if (!root) return;
+  root.style.display = 'block';
+  root.style.opacity = '1';
+  root.style.pointerEvents = 'auto';
+  root.removeAttribute('aria-hidden');
+  initTilesLoader({
+    minTime: options.minTime || 1.8,
+    revealS: options.revealS || 1.3,
+    ...options
   });
 }
 
-// Global window exposure
+// Global exposure
 if (typeof window !== 'undefined') {
-  window.srTilesLoader = {
-    mount: mountTilesLoader,
-    play: playTilesLoader,
-    constants: {
-      REVEAL_S,
-      ED_HOLD_S,
-      ED_FADE_S,
-      PAPER,
-      INK,
-      SHORT_SIDE,
-      INK_WINDOW
-    }
-  };
+  window.srInitTilesLoader = initTilesLoader;
   window.srPlayTilesLoader = playTilesLoader;
 }

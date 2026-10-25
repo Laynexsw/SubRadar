@@ -1,4 +1,12 @@
 <!-- ========================================================================= -->
-<!-- ORIGINKIT: TILES LOADER OVERLAY (EDİTORYAL KARO YÜKLEME & DİYAGONAL DALGA) -->
+<!-- ORIGINKIT TILES LOADER (https://originkit.dev/components/tiles-loader)    -->
 <!-- ========================================================================= -->
-<div id="sr-tiles-loader-overlay" class="sr-tiles-loader-overlay fixed inset-0 z-[999999] w-screen h-screen overflow-hidden hidden" aria-hidden="true" style="isolation: isolate;"></div>
+<div id="sr-tiles-loader" aria-label="Yükleniyor" role="status" style="position: fixed; inset: 0; z-index: 99999; width: 100vw; height: 100vh; overflow: hidden; isolation: isolate;">
+  <div id="sr-tiles-grid" style="position: absolute; inset: 0; overflow: hidden;"></div>
+  <div id="sr-tiles-counter" aria-hidden="true" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; mix-blend-mode: difference; color: #ffffff; pointer-events: none; white-space: nowrap; font-family: 'Instrument Serif', 'Times New Roman', Times, serif; font-size: min(28vh, 36vw); font-variant-numeric: tabular-nums; opacity: 0; user-select: none;">
+    <span style="display: inline-flex; align-items: flex-start;">
+      <span id="sr-tiles-num">0</span>
+      <span style="font-size: 0.3em; font-style: italic; margin-top: 0.9em; margin-left: 0.08em;">%</span>
+    </span>
+  </div>
+</div>
