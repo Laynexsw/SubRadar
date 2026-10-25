@@ -1,18 +1,17 @@
 /**
- * SubRadar — Ascii Reveal & Ascii Skeleton Engine (Refined & Polished)
+ * SubRadar — Ascii Reveal & Ascii Skeleton Engine (1.75s Full-Site Matrix Decode)
  * Powered by ascii-reveal (quanhoangindex/ascii-reveal)
  * 
- * Implements the component pattern:
- * <AsciiReveal loading={!data} preset="decode">
- *   {data ? <Profile data={data} /> : <AsciiSkeleton variant="dither" />}
+ * Component Pattern:
+ * <AsciiReveal loading={!data} preset="decode" duration="decode175">
+ *   {data ? <Component data={data} /> : <AsciiSkeleton variant="dither" />}
  * </AsciiReveal>
  *
- * Timing:
- * - Originkit Tiles Loader finishes.
- * - Deliberate aesthetic pause of 1.3 seconds (1-1.5s range) where the layout
- *   and dither skeletons settle.
- * - Then, high-tech text decoding animation (preset="decode") initiates in a smooth,
- *   staggered cascade with emerald lock-in flashes (--ascii-flash).
+ * Requirements:
+ * 1. Text loading/decode animation duration: exactly 1.75 seconds (1750ms).
+ * 2. Every single text element and component across the entire website participates in this animation.
+ * 3. Delicate 1.3-1.5s aesthetic pause after Originkit Tiles Loader finishes before decoding begins.
+ * 4. Staggered, non-overlapping canvas layers to eliminate text jitter and character duplication.
  */
 
 import { createAsciiReveal, asciiSkeletonHTML, animateSkeleton, animateSkeletons, SKELETON_CSS } from './ascii-reveal-core.js';
@@ -76,7 +75,7 @@ function ensureSkeletonCSS() {
     }
 
     [data-ar-loading="true"] > *:not(.ar-skeleton-overlay):not(.ar-overlay) {
-      opacity: 0.1 !important;
+      opacity: 0.12 !important;
       filter: blur(1px) !important;
       user-select: none !important;
       pointer-events: none !important;
@@ -159,6 +158,7 @@ export function AsciiSkeleton(options = {}) {
 /**
  * AsciiReveal Component Controller
  * Coordinates between <AsciiSkeleton variant="dither" /> and preset="decode"
+ * Runs for exactly 1.75 seconds with duration="decode175" and speed=1.0
  */
 export function AsciiReveal(target, options = {}) {
   const el = typeof target === 'string' ? document.querySelector(target) : target;
@@ -169,13 +169,15 @@ export function AsciiReveal(target, options = {}) {
   const state = {
     loading: options.loading !== undefined ? options.loading : true,
     preset: options.preset || 'decode',
+    duration: options.duration || 'decode175',
     variant: options.variant || 'dither',
     lines: options.lines || 3,
     rows: options.rows || null,
     widths: options.widths || ['100%', '88%', '65%'],
-    speed: options.speed || 1.15,
+    speed: options.speed || 1.0, // scale = 1.0 -> exactly 1.75s
     origin: options.origin || 'center',
     surface: !!options.surface,
+    showSkeleton: options.showSkeleton !== undefined ? !!options.showSkeleton : !!options.surface,
     ctrl: null,
     overlay: null
   };
@@ -185,6 +187,10 @@ export function AsciiReveal(target, options = {}) {
   }
 
   function renderSkeleton() {
+    if (!state.showSkeleton) {
+      el.setAttribute('data-ar-loading', 'true');
+      return;
+    }
     if (state.overlay && state.overlay.isConnected) return;
 
     if (getComputedStyle(el).position === 'static') {
@@ -232,12 +238,12 @@ export function AsciiReveal(target, options = {}) {
       if (!state.ctrl) {
         state.ctrl = revealFn(el, {
           preset: state.preset,
-          duration: 'fast',
-          speed: state.speed,
+          duration: 'decode175', // Exactly 1.75s animation profile
+          speed: 1.0,            // Guarantee 1.75s (1750ms) duration
           origin: state.origin
         });
       }
-      state.ctrl.reveal().catch(() => {});
+      state.ctrl.reveal({ duration: 'decode175', speed: 1.0 }).catch(() => {});
     } catch (err) {
       console.warn('[AsciiReveal Decode]', el, err);
     }
@@ -275,30 +281,68 @@ export function AsciiReveal(target, options = {}) {
 const activeRevealInstances = [];
 
 /**
- * Initializes AsciiReveal with dither skeleton on all elements across the entire website
+ * Initializes AsciiReveal on EVERY single text element and component across the entire website
+ * Duration: exactly 1.75 seconds
  */
 export function initAsciiRevealLoader() {
   ensureSkeletonCSS();
 
-  // Distinct, non-overlapping target specifications across the entire site
+  // Comprehensive, distinct, non-overlapping target specifications covering all text & components
   const siteTargets = [
-    { sel: '#site-header .header-island-inner', origin: 'center', lines: 1, delay: 0, speed: 1.3 },
-    { sel: '#hero-title', origin: 'top-left', lines: 2, delay: 60, speed: 1.2 },
-    { sel: '#hero-desc', origin: 'top-left', lines: 2, delay: 120, speed: 1.2 },
-    { sel: '#hero-cta-group', origin: 'top-left', lines: 1, delay: 180, speed: 1.2 },
-    { sel: '#hero-mock-window', origin: 'top-left', rows: 12, surface: true, delay: 240, speed: 1.15 },
-    { sel: '[data-od-id="sorun"] .grid > div', origin: 'center', rows: 4, surface: true, delay: 320, speed: 1.15 },
-    { sel: '#ekstre-laboratuvari .apple-card', origin: 'center', rows: 6, surface: true, delay: 400, speed: 1.15 },
-    { sel: '#hesaplayici .apple-card', origin: 'center', rows: 6, surface: true, delay: 480, speed: 1.15 },
-    { sel: '#karsilastirma .apple-card', origin: 'center', rows: 6, surface: true, delay: 560, speed: 1.15 },
-    { sel: '#ozellikler .apple-card', origin: 'center', rows: 5, surface: true, delay: 640, speed: 1.15 },
-    { sel: '[data-od-id="mimari"] .apple-card, #mimari .apple-card', origin: 'center', rows: 5, surface: true, delay: 720, speed: 1.15 },
-    { sel: '#isletim-sistemleri .apple-card', origin: 'center', rows: 5, surface: true, delay: 800, speed: 1.15 },
-    { sel: '#hash-verifier .apple-card', origin: 'center', rows: 4, surface: true, delay: 880, speed: 1.15 },
-    { sel: '#fiyatlandirma .apple-card', origin: 'center', rows: 6, surface: true, delay: 960, speed: 1.15 },
-    { sel: '#faq .apple-card, #faq details', origin: 'center', lines: 2, surface: true, delay: 1040, speed: 1.15 },
-    { sel: '#sr-scrollspy', origin: 'center', lines: 1, delay: 1100, speed: 1.25 },
-    { sel: '#site-footer', origin: 'center', lines: 2, delay: 1160, speed: 1.15 }
+    // 1. Header Island & Actions
+    { sel: '#site-header .header-island-inner', origin: 'center', lines: 1, delay: 0, showSkeleton: false },
+
+    // 2. Hero Elements (Badge, Headline, Description, Buttons, Trust Badges, App Window)
+    { sel: '#hero > div:first-child, [data-od-id="hero"] > div:first-child', origin: 'center', lines: 1, delay: 40, showSkeleton: false },
+    { sel: '#hero h1, [data-od-id="hero"] h1', origin: 'top-left', lines: 2, delay: 80, showSkeleton: false },
+    { sel: '#hero p, [data-od-id="hero"] p', origin: 'top-left', lines: 2, delay: 120, showSkeleton: false },
+    { sel: '#download', origin: 'center', lines: 1, delay: 160, showSkeleton: false },
+    { sel: '[data-od-id="hero"] .flex.items-center.justify-center.gap-4', origin: 'center', lines: 1, delay: 200, showSkeleton: false },
+    { sel: '#hero-mock-window', origin: 'top-left', rows: 12, surface: true, showSkeleton: true, delay: 240 },
+
+    // 3. Problem Section (Left Column Copy + Right Column Big Stat & Quote)
+    { sel: '[data-od-id="sorun"] [data-rv="left"]', origin: 'top-left', lines: 4, delay: 300, showSkeleton: false },
+    { sel: '[data-od-id="sorun"] [data-rv="right"]', origin: 'center', lines: 3, delay: 340, showSkeleton: false },
+
+    // 4. Statement Lab Section (Header + Interactive Lab Shell Card)
+    { sel: '#ekstre-laboratuvari > div:first-child', origin: 'center', lines: 2, delay: 400, showSkeleton: false },
+    { sel: '#ekstre-laboratuvari .apple-card', origin: 'center', rows: 6, surface: true, showSkeleton: true, delay: 440 },
+
+    // 5. Waste Calculator Section (Header + Interactive Card)
+    { sel: '#hesaplayici > header, #hesaplayici > div:first-child', origin: 'top-left', lines: 2, delay: 500, showSkeleton: false },
+    { sel: '#hesaplayici .apple-card', origin: 'center', rows: 6, surface: true, showSkeleton: true, delay: 540 },
+
+    // 6. Competitor Comparison Section (Header + Comparison Table Card)
+    { sel: '#karsilastirma > div:first-child', origin: 'center', lines: 2, delay: 600, showSkeleton: false },
+    { sel: '#karsilastirma .apple-card', origin: 'center', rows: 6, surface: true, showSkeleton: true, delay: 640 },
+
+    // 7. Core Features Section (Header + Radar Scanner Graphic + 4 Feature Cards)
+    { sel: '#ozellikler > div:first-child', origin: 'top-left', lines: 2, delay: 700, showSkeleton: false },
+    { sel: '#radar-scanner-section', origin: 'center', rows: 6, surface: true, showSkeleton: true, delay: 740 },
+    { sel: '#ozellikler .apple-card', origin: 'center', rows: 5, surface: true, showSkeleton: true, delay: 780 },
+
+    // 8. Command Palette & Architecture (Header + Interactive Preview Card)
+    { sel: '[data-od-id="komut-paleti"] > div:first-child, #komut-paleti > div:first-child', origin: 'center', lines: 2, delay: 840, showSkeleton: false },
+    { sel: '#cmd-preview-box', origin: 'center', rows: 4, surface: true, showSkeleton: true, delay: 880 },
+
+    // 9. OS Downloads Section (Header + macOS/Windows Cards + SHA-256 Verifier)
+    { sel: '#isletim-sistemleri > div:first-child', origin: 'top-left', lines: 2, delay: 940, showSkeleton: false },
+    { sel: '#isletim-sistemleri .apple-card:not(#hash-verifier-box)', origin: 'center', rows: 5, surface: true, showSkeleton: true, delay: 980 },
+    { sel: '#hash-verifier-box', origin: 'center', rows: 4, surface: true, showSkeleton: true, delay: 1020 },
+
+    // 10. Pricing Matrix (Header + Deal Pill + 3 Cards)
+    { sel: '#fiyatlandirma > div:nth-of-type(1)', origin: 'center', lines: 2, delay: 1080, showSkeleton: false },
+    { sel: '#fiyatlandirma > div:nth-of-type(2)', origin: 'center', lines: 1, delay: 1100, showSkeleton: false },
+    { sel: '#fiyatlandirma .apple-card', origin: 'center', rows: 6, surface: true, showSkeleton: true, delay: 1140 },
+
+    // 11. Final CTA / FAQ Section
+    { sel: '[data-od-id="indir"], #hakkimizda', origin: 'center', lines: 3, delay: 1200, showSkeleton: false },
+
+    // 12. Floating Scrollspy Dock
+    { sel: '#sr-scrollspy', origin: 'center', lines: 1, delay: 1240, showSkeleton: false },
+
+    // 13. Full Site Footer
+    { sel: 'footer#footer, [data-od-id="footer"], footer', origin: 'center', lines: 2, delay: 1280, showSkeleton: false }
   ];
 
   // Mark all numeric KPIs with data-ascii-digits for clean numeric scrambling
@@ -309,7 +353,12 @@ export function initAsciiRevealLoader() {
     '#out-1yr',
     '#out-5yr',
     '.stat-number',
-    '[data-digits]'
+    '[data-digits]',
+    '[data-usd]',
+    '[data-mb]',
+    '#radar-live-status',
+    '#live-latency-display',
+    '#footer-engine-ping'
   ];
   digitSelectors.forEach(sel => {
     document.querySelectorAll(sel).forEach(el => {
@@ -325,7 +374,8 @@ export function initAsciiRevealLoader() {
     '.direct-kill-btn',
     '.calc-preset-btn',
     '#hero-demo-reset',
-    '#tiles-loader-btn'
+    '#tiles-loader-btn',
+    '.download-trigger-btn'
   ];
   fadeSelectors.forEach(sel => {
     document.querySelectorAll(sel).forEach(el => {
@@ -346,26 +396,53 @@ export function initAsciiRevealLoader() {
     }
   }
 
+  // Set of attached elements to avoid duplicate registrations
+  const attachedElements = new Set();
+
   // 1. Initial State: loading = true (!data) -> render <AsciiSkeleton variant="dither" />
   const isLoaded = !!window.srTilesLoaderDone;
   siteTargets.forEach(spec => {
     const els = document.querySelectorAll(spec.sel);
     els.forEach(el => {
-      if (!el || el.closest('.hidden')) return;
+      if (!el || el.closest('.hidden') || attachedElements.has(el)) return;
+      attachedElements.add(el);
       const instance = AsciiReveal(el, {
         loading: !isLoaded,
         preset: 'decode',
+        duration: 'decode175', // Exactly 1.75 seconds
+        speed: 1.0,
         variant: 'dither',
         lines: spec.lines || 3,
         rows: spec.rows || null,
         surface: !!spec.surface,
-        speed: spec.speed || 1.15,
+        showSkeleton: spec.showSkeleton !== undefined ? spec.showSkeleton : !!spec.surface,
         origin: spec.origin || 'center'
       });
       if (instance) {
         activeRevealInstances.push({ instance, delay: spec.delay || 0, decoded: false });
       }
     });
+  });
+
+  // Dynamic discovery: ensure ANY remaining .apple-card or section card has AsciiReveal
+  document.querySelectorAll('.apple-card').forEach((card, idx) => {
+    if (!attachedElements.has(card) && !card.closest('#hero-mock-window') && !card.closest('.hidden')) {
+      attachedElements.add(card);
+      const instance = AsciiReveal(card, {
+        loading: !isLoaded,
+        preset: 'decode',
+        duration: 'decode175',
+        speed: 1.0,
+        variant: 'dither',
+        rows: 5,
+        surface: true,
+        showSkeleton: true,
+        origin: 'center'
+      });
+      if (instance) {
+        activeRevealInstances.push({ instance, delay: 600 + (idx * 40), decoded: false });
+      }
+    }
   });
 
   // Start skeleton scan canvas animation
@@ -381,7 +458,7 @@ export function initAsciiRevealLoader() {
     item.instance.setLoading(false);
   }
 
-  // 2. Data Ready: Delay 1.3 seconds (1-1.5s as requested) after Tiles Loader finishes
+  // 2. Data Ready: Delay 1.3 seconds (1-1.5s range) after Tiles Loader finishes
   const POST_LOADER_DELAY_MS = 1300;
 
   function triggerDecodeCascade() {
@@ -396,7 +473,7 @@ export function initAsciiRevealLoader() {
           decodeTarget(item);
         }, item.delay);
       } else {
-        // Below the fold: reveal gracefully when scrolled into view
+        // Below the fold: reveal with 1.75s matrix scramble when scrolled into view
         if ('IntersectionObserver' in window) {
           const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
@@ -425,7 +502,7 @@ export function initAsciiRevealLoader() {
   } else {
     // Wait for Tiles Loader completion event, then wait 1.3 seconds before decoding
     window.addEventListener('subradar:tiles-loader-complete', () => {
-      console.log('[AsciiReveal] Tiles loader complete. Waiting 1.3s before starting decode animation...');
+      console.log('[AsciiReveal] Tiles loader complete. Waiting 1.3s before starting 1.75s decode animation...');
       setTimeout(triggerDecodeCascade, POST_LOADER_DELAY_MS);
     }, { once: true });
   }
