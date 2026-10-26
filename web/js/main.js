@@ -135,6 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Register Offline PWA Service Worker
   if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-    navigator.serviceWorker.register('sw.js?v=1.6.2').catch(function () {});
+    navigator.serviceWorker.register('sw.js?v=1.6.3').catch(function () {});
   }
 });

@@ -113,6 +113,9 @@ SubRadar/
     ├── manifest.json                     # Progressive Web App (PWA) manifesti (çevrimdışı ve tam ekran desteği)
     ├── sw.js                             # Çevrimdışı Service Worker önbellekleme motoru (v1.6.1 Network-First HTML)
     │
+    ├── assets/                           # Web Varlık ve Medya Klasörü
+    │   └── cursors/                      # Windows 11 Tailless Cursors (Jepri Creations) 32x32 RGBA imleç varlıkları (Dark / Light)
+    │
     ├── components/                       # 23 Parçalı Modüler HTML UI Bileşenleri
     │   ├── layout/                       # Çerçeve & Genel Düzen Bileşenleri
     │   │   ├── header.html               # Üst cam çubuk, logo, ⌘K, ses, kısayol, dil, kur ve tema kontrolleri
@@ -150,6 +153,7 @@ SubRadar/
     ├── css/                              # Web Stil Sistemi (Apple Glassmorphism)
     │   ├── base.css                      # Renk token'ları, SF Pro/Inter tipografi hiyerarşisi, açık/koyu tema sınıfları
     │   ├── components.css                # Cam efektleri, range slider, imleç ışığı, ses dalgası ve modal animasyonları
+    │   ├── cursors.css                   # Windows 11 Tailless imleç CSS motoru ve Base64 veri URI kuralları
     │   └── main.css                      # Tüm CSS modüllerini derleyen ana stil orkestrasyonu
     │
     ├── js/                               # Web İstemci Zekâsı & Modüler Betikler

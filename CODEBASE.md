@@ -88,7 +88,8 @@ Depo şu anda **beş kurumsal katmandan** oluşur:
 ### 2.4 Web Stilleri (`web/css/`)
 * [`base.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/base.css): SF Pro font ailesi, `html.light` ve `html.dark` değişkenleri, skip-link, scroll-behavior, metin seçimi renkleri.
 * [`components.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/components.css): `.apple-glass` arka plan bluru, `.apple-card` kalkış ve imleç takipçi dinamik ışıma efekti (`--mouse-x`, `--mouse-y`), `.custom-scroll` cam kaydırma çubuğu, ses göstergesi animasyonları (`@keyframes soundPulse`), form hata animasyonları (`.shake-anim`), mobil sabit CTA ve çerez banner'ı stilleri.
-* [`main.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/main.css): `base.css` ve `components.css` modüllerini içe aktarır.
+* [`cursors.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/cursors.css): Windows 11 Tailless Cursors (Jepri Creations) imleç motoru. `dark_arrow`, `dark_hand`, `dark_ibeam`, `dark_no` ve açık tema varyantlarını hem Base64 Data URI hem de `assets/cursors/` yoluyla sıfır gecikmeyle sisteme bağlar.
+* [`main.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/main.css): `base.css`, `components.css` ve `cursors.css` modüllerini içe aktarır.
 
 ### 2.5 Web Betikleri (`web/js/`) & PWA
 * [`test-tiles.html`](file:///c:/Users/arday/Desktop/SubRadar/web/test-tiles.html): Originkit Tiles Loader bağımsız test ve demo sayfası.

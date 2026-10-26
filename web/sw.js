@@ -2,13 +2,14 @@
    SubRadar — Offline-First Progressive Web App Service Worker
    ========================================================================= */
 
-const CACHE_NAME = 'subradar-v1.6.2-cache';
+const CACHE_NAME = 'subradar-v1.6.3-cache';
 const ASSETS_TO_CACHE = [
   './code.html',
   './favicon.svg',
   './og-image.svg',
   './css/base.css',
   './css/components.css',
+  './css/cursors.css',
   './css/main.css',
   './js/config.js',
   './js/theme.js',
