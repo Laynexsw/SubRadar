@@ -9,7 +9,11 @@
 Thumbs.db
 desktop.ini
 
-# Node & Electron dependencies
+# Rust / Cargo build artifacts & dependencies
+target/
+app/target/
+app/subradar.exe
+*.pdb
 node_modules/
 dist/
 out/

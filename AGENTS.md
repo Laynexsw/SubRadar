@@ -12,7 +12,7 @@
 * **Lisans Modeli:** Resmi Ticari Yazılım Lisansı (`LICENSE` — Commercial License v1.0)
 * **Temel Prensipler:**
   1. **%100 Yerel ve Çevrimdışı (Zero Knowledge, Offline First):** Hiçbir banka şifresi veya API anahtarı istenmez. Finansal veriler asla bulut sunucularına çıkmaz.
-  2. **Yerel Kriptografik Kasa:** AES-256-CBC + scrypt (CPU/Memory-hard KDF) + HMAC-SHA256 bütünlük doğrulaması ile veriler yerel diskte şifreli SQLite dosyasında (`encrypted_sqlite_aes256.subradar`) saklanır.
+  2. **Yerel Kriptografik Kasa (Saf Rust):** `AES-256-CBC` + `PBKDF2-HMAC-SHA256` (60.000 iterasyon) + `HMAC-SHA256` bütünlük doğrulaması ile veriler yerel diskte şifreli `.subradar` dosyasında saklanır (`app/src/vault.rs`).
   3. **Tek Tıkla İptal & Hukuki Fesih:** Kullanıcıyı karmaşık iptal adımlarından kurtarır; doğrudan servis iptal portallarına ulaştırır ve 6502 SK & GDPR Madde 17 resmi fesih dilekçesi metinleri üretir.
   4. **Apple Glassmorphism UI & Originkit WebGL 2.0:** Koyu taban (`#000000`, `#09090b`), cam efektleri (`backdrop-filter: blur(24px)`), SF Pro tipografisi, Raycast/Linear ergonomisi ve donanım ivmeli görsel zekâ.
 
@@ -60,33 +60,19 @@ SubRadar/
 │       ├── agents/                       # 5 Departman / 21 Kalıcı Uzman Alt Ajan (Subagent) tanım dosyaları (*/agent.md)
 │       └── skills/                       # 14 Yerel Skill Paketi (impeccable, ui-ux-pro-max, design-system, ui-styling, brand, banner-design, design, slides, ponytail, ponytail-review, ponytail-audit, ponytail-debt, ponytail-gain, ponytail-help)
 │
-├── 💻 2. MASAÜSTÜ İŞLETİM SİSTEMİ ÇEKİRDEĞİ (DESKTOP RUNTIME CORE - app/ v1.0)
-│   ├── package.json                      # Desktop bağımlılıkları ve çalıştırma scriptleri (start, dev, test, test:vault, test:parser)
-│   ├── main.js                           # Electron ana süreci (çerçevesiz Apple Glass pencere, güvenli IPC denetleyicisi)
-│   ├── preload.js                        # contextIsolation güvenli IPC köprüsü (Renderer -> Node.js subradarAPI)
-│   ├── README.md                         # Masaüstü uygulaması teknik mimari, test ve çalıştırma el kitabı
-│   │
-│   ├── src/main/                         # Node.js Çekirdek & Kriptografik Güvenlik Katmanı
-│   │   ├── vault.js                      # AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa kripto motoru
-│   │   ├── vault.test.js                 # Sıfır-bağımlılık kriptografik doğrulama ve bozulma birim testleri
-│   │   ├── store.js                      # Şifreli yerel disk deposu yöneticisi (encrypted_sqlite_aes256.subradar)
-│   │   ├── legal-notice.js               # 6502 SK & GDPR Madde 17 resmi cayma/fesih bildirim derleyicisi
-│   │   ├── statement-parser.js           # %100 Çevrimdışı banka ekstresi & CSV tarayıcısı (18+ abonelik kalıbı)
-│   │   └── parser.test.js                # Ekstre ayrıştırıcı ve yasal bildirim derleyici birim testleri
-│   │
-│   └── src/renderer/                     # Apple Glassmorphism Masaüstü Arayüzü (SF Pro & Inter)
-│       ├── .gitkeep                      # Dizin bütünlük koruyucusu
-│       ├── index.html                    # Çerçevesiz ana masaüstü penceresi, 6 modül görünümü, ⌘K paleti & kasa kilit kapısı
-│       ├── styles/                       # Masaüstü Stil Katmanı
-│       │   ├── .gitkeep                  # Dizin koruyucu
-│       │   ├── app.css                   # Çerçevesiz pencere gövdesi, trafik ışıkları, drag-region ve ızgara düzeni
-│       │   └── components.css            # Cam kartlar, durum rozetleri, modallar ve kaydırıcı bileşenleri
-│       └── scripts/                      # Masaüstü Arayüz Mantığı & Kütüphaneleri
-│           ├── .gitkeep                  # Dizin koruyucu
-│           ├── app.js                    # Masaüstü durum yönetimi, modül geçişleri, arama ve IPC dinleyicileri
-│           ├── presets.js                # 16+ popüler dijital servis ve abonelik ön ayar veritabanı
-│           ├── crypto-fallback.js        # WebCrypto ve Node.js crypto arasındaki güvenli yedek köprü
-│           └── three.min.js              # Masaüstü donanım ivmeli 3D arka plan efekt motoru
+├── 💻 2. MASAÜSTÜ İŞLETİM SİSTEMİ ÇEKİRDEĞİ (NATIVE RUST DESKTOP CORE - app/ v1.0)
+│   ├── Cargo.toml                        # Saf Rust paket, kriptografi ve eframe/egui Native GUI bağımlılıkları (v1.0.0)
+│   ├── Cargo.lock                        # Deterministik Rust bağımlılık kilit dosyası
+│   ├── README.md                         # Saf Rust masaüstü uygulaması mimari, derleme ve test kılavuzu
+│   └── src/                              # %100 Saf Rust Kaynak Kodları (~2.94 MB Tekil Native .exe)
+│       ├── main.rs                       # Konsolsuz yerel Windows GUI pencere başlatıcısı (eframe::run_native)
+│       ├── theme.rs                      # Minimalist Apple / Raycast / Linear koyu ve açık tema motoru
+│       ├── models.rs                     # Abonelik, durum, para birimi (TRY/USD/EUR) ve bütçe sağlık puanı veri modelleri
+│       ├── presets.rs                    # 18+ popüler dijital servis şablonu ve doğrudan resmi iptal bağlantıları
+│       ├── vault.rs                      # Saf Rust AES-256-CBC + PBKDF2-HMAC-SHA256 + HMAC-SHA256 yerel şifreli kasa motoru ve birim testleri
+│       ├── parser.rs                     # %100 çevrimdışı banka ekstresi ve harcama metni tarayıcısı ve birim testleri
+│       ├── legal.rs                      # 6502 SK & GDPR Madde 17 resmi iptal dilekçesi üreticisi ve birim testleri
+│       └── ui.rs                         # Tek ekranda net özet, Ctrl+K hızlı arama, tek tıkla iptal ve hızlı ekleme arayüzü
 │
 ├── 🧩 3. ORIGINKIT & HARİCİ UI BİLEŞENLERİ (DESIGN SYSTEM RIG - components/)
 │   └── originkit/
@@ -285,15 +271,15 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
    13. `supabase-auth-specialist`: Supabase v2 SDK (`supabase.js`), Double-Slider Apple Glass Auth modalı (`auth-modal.js`) ve kurumsal başvuru (`enterprise-modal.js`) uzmanı.
 
    #### D. Masaüstü Çekirdeği, Kriptografi & Hukuk Departmanı
-   14. `desktop-core-engineer`: `app/` v1.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
-   15. `security-crypto-auditor`: AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa (`vault.js`, `store.js`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
-   16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
+   14. `desktop-core-engineer`: `app/` v1.0 %100 Saf Rust Native GUI (`eframe` / `egui`, ~2.94 MB tekil `.exe`, `main.rs`, `ui.rs`, `theme.rs`, `models.rs`, `presets.rs`) çekirdek mühendisi.
+   15. `security-crypto-auditor`: Saf Rust `AES-256-CBC` + `PBKDF2-HMAC-SHA256` + `HMAC-SHA256` yerel kasa (`app/src/vault.rs`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
+   16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`app/src/legal.rs`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
 
    #### E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı
    17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
    18. `github-platform-manager`: GitHub platform ve vitrin yöneticisi (`gh repo edit`, depo adı, açıklama, homepage URL, topics/etiketler, Releases ve GitHub Pages ayarları).
    19. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
-   20. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
+   20. `test-automation-runner`: Rust birim testleri (`cargo test` -> `vault.rs`, `parser.rs`, `legal.rs`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
    21. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
 
 ---
@@ -315,7 +301,7 @@ Bu bilgiler her yeni sohbette yapay zekânın doğrudan bilmesi için kaydedilmi
   * Yetkili Hesap: `Laynexsw` (Aktif oturum açık, `repo`, `gist`, `read:org` izinleri tanımlı)
   * Canlı Açıklama (Description): `"⚡ SubRadar v1.0 — Akıllı Masaüstü Abonelik Takibi, Tek Tıkla İptal ve %100 Yerel AES-256 Şifreli Kasa. Unutulan abonelikleri ve deneme sürelerini internetsiz ekstre analizi ve resmi fesih dilekçesiyle sonlandırın. Tek seferlik ticari lisans."`
   * Canlı Ana Sayfa (Homepage): `https://laynexsw.github.io/SubRadar/`
-  * Canlı Konular (Topics): `apple-design`, `desktop-app`, `electron`, `offline-first`, `privacy-first`, `subscription-tracker`, `commercial-software`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`, `gdpr`, `lifetime-deal`, `lifetime-license`, `originkit`, `webgl`, `vector-wordmark`
+  * Canlı Konular (Topics): `apple-design`, `desktop-app`, `rust`, `egui`, `eframe`, `offline-first`, `privacy-first`, `subscription-tracker`, `commercial-software`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`, `gdpr`, `lifetime-deal`, `lifetime-license`, `originkit`, `webgl`, `vector-wordmark`
   * Hızlı Meta Veri Güncelleme Komutu:
     ```powershell
     gh repo edit Laynexsw/SubRadar -d "⚡ SubRadar v1.0 — Akıllı Masaüstü Abonelik Takibi, Tek Tıkla İptal ve %100 Yerel AES-256 Şifreli Kasa. Unutulan abonelikleri ve deneme sürelerini internetsiz ekstre analizi ve resmi fesih dilekçesiyle sonlandırın. Tek seferlik ticari lisans." -h "https://laynexsw.github.io/SubRadar/"

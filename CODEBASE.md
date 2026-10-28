@@ -21,7 +21,7 @@ SubRadar v1.0, bireysel kullanıcıların ve şirketlerin unutulan aboneliklerin
 
 Depo şu anda **dört ana katmandan** oluşur:
 1. **Kök Yönetim Katmanı (`/`):** Dağıtım yapılandırması (`index.html`, `.nojekyll`, `.gitignore`, `tsconfig.json`), güvenlik ve ticari lisans politikaları (`LICENSE` v1.0, `privacy.html`, `terms.html`, `thanks.html`), SEO varlıkları (`robots.txt`, `sitemap.xml`) ve mimari dokümantasyon (`README.md`, `PRODUCT.md`, `AGENTS.md`, `CODEBASE.md`, `.agents/rules/`, `.agents/agents/`, `.agents/skills/`).
-2. **Masaüstü İşletim Çekirdeği (`app/ v1.0`):** Electron v33, Node.js yerel AES-256 kasası, çevrimdışı ekstre analizörü, 6502 SK & GDPR fesih motoru, çerçevesiz Apple Glass UI ve güvenli IPC köprüsüne sahip tam fonksiyonel masaüstü istemcisi.
+2. **Masaüstü İşletim Çekirdeği (`app/ v1.0`):** %100 Saf Rust (`eframe` / `egui`) ile geliştirilmiş, ~2.94 MB boyutunda tekil native `.exe` masaüstü istemcisi; yerel `AES-256-CBC` + `PBKDF2-HMAC-SHA256` + `HMAC-SHA256` kasası (`vault.rs`), çevrimdışı ekstre analizörü (`parser.rs`), 6502 SK & GDPR fesih dilekçesi motoru (`legal.rs`) ve minimalist koyu/açık tema arayüzü (`ui.rs`, `theme.rs`).
 3. **Harici UI Bileşenleri (`components/`):** Originkit CLI (`components/originkit/ui/tiles-loader.tsx`, `components/originkit/ui/vector-wordmark.tsx`) resmi React/TypeScript tasarım sistemi bileşenleri.
 4. **Web Vitrini & Simülasyon Platformu (`web/`):**
    * **Modüler Kaynak:** `components/` (23 HTML parçası + Originkit tip köprüsü), `css/` (4 dosya), `js/` (27 modül), `assets/cursors/`, `vendor/three/`, `manifest.json`, `sw.js`, `scripts/build.py`, `scripts/embed_tiles_loader.py`.
@@ -126,22 +126,18 @@ Depo şu anda **dört ana katmandan** oluşur:
 * [`scripts/build.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/build.py): 23 bileşenin bütünlüğünü doğrulayan test betiği.
 * [`scripts/embed_tiles_loader.py`](file:///c:/Users/arday/Desktop/SubRadar/web/scripts/embed_tiles_loader.py): Originkit Tiles Loader bileşenini tekil üretim dosyası `web/code.html` içerisine derleyip enjekte eden betik.
 
-### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/`)
-* [`package.json`](file:///c:/Users/arday/Desktop/SubRadar/app/package.json): Electron v33 bağımlılığı ve `start`, `dev`, `test`, `test:vault`, `test:parser` komutları.
-* [`main.js`](file:///c:/Users/arday/Desktop/SubRadar/app/main.js): Electron ana süreci (`frame: false`, `titleBarStyle: 'hidden'`, pencere kontrolleri, güvenli IPC kanalları, dosya iletişim kutuları, pano köprüsü, harici URL açma).
-* [`preload.js`](file:///c:/Users/arday/Desktop/SubRadar/app/preload.js): `contextIsolation: true` güvenlikli köprü; renderer sürecine `window.subradarAPI` (`vault`, `subscriptions`, `preferences`, `legalNotice`, `statement`, `system`) nesnesini sunar.
-* [`src/main/vault.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/vault.js): Node.js yerel `crypto` motoru (`aes-256-cbc`, `scryptSync`, timing-safe `HMAC-SHA256`).
-* [`src/main/vault.test.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/vault.test.js): Sıfır-bağımlılık kriptografik kasa testleri (şifreleme, çözme, yanlış parola reddi, zararlı zarf tahrifat kontrolü).
-* [`src/main/store.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/store.js): Yerel diskte `encrypted_sqlite_aes256.subradar` dosyasını saklayan, bellek önbelleği ve şifreli yedek dışa/içe aktarma yöneticisi.
-* [`src/main/legal-notice.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/legal-notice.js): 6502 sayılı Tüketicinin Korunması Kanunu ve GDPR Madde 17 resmi fesih metni oluşturucu motor.
-* [`src/main/statement-parser.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/statement-parser.js): %100 çevrimdışı, bellek içi banka ekstresi ve CSV tarayıcısı (18+ SaaS regex kalıbı ve para birimi tanıma).
-* [`src/main/parser.test.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main/parser.test.js): Ekstre tarayıcı ve yasal fesih mektubu üretim birim testleri.
-* [`src/renderer/index.html`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/index.html): Çerçevesiz Apple Glass ana pencere, ana şifre kilit ekranı (Gate Screen), KPI kartları, 6 modül görünümü (Genel Bakış, Abonelikler, Risk Radarı, Kill Switch, Ekstre Tarayıcı, Kasa Ayarları), ⌘K Komut Paleti ve modallar.
-* [`src/renderer/styles/app.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/app.css): Frameless pencere sürükleme kuralları, sidebar gezinimi, radar animasyonları, renk tokenları.
-* [`src/renderer/styles/components.css`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/styles/components.css): Apple Glass kartlar, kilit ekranı modalı, KPI ızgarası, veri tablosu, ekstre yükleme sürükle-bırak alanı ve form kontrolleri.
-* [`src/renderer/scripts/app.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/app.js): Renderer reaktif kontrolcüsü (sekme geçişleri, kasa kilidi açma, CRUD, anlık arama, risk radarı hesaplama, ekstre ayrıştırma ve ⌘K komut paleti orkestrasyonu).
-* [`src/renderer/scripts/presets.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/presets.js): 16+ popüler SaaS servisi için tek tıkla doğrudan iptal URL'leri, kategoriler ve varsayılan fiyatlar.
-* [`src/renderer/scripts/crypto-fallback.js`](file:///c:/Users/arday/Desktop/SubRadar/app/src/renderer/scripts/crypto-fallback.js): Tarayıcı geliştirme ortamları için WebCrypto (`SubtleCrypto`) tabanlı yerel kasa ve ekstre tarayıcı taklidi.
+### 2.6 Masaüstü Uygulaması Dosya Kataloğu (`app/ v1.0` — %100 Saf Rust Native GUI)
+* [`Cargo.toml`](file:///c:/Users/arday/Desktop/SubRadar/app/Cargo.toml): Saf Rust paket yapılandırması, kriptografi (`aes`, `cbc`, `pbkdf2`, `hmac`, `sha2`, `rand`) ve `eframe`/`egui` Native GUI bağımlılıkları (`v1.0.0`).
+* [`Cargo.lock`](file:///c:/Users/arday/Desktop/SubRadar/app/Cargo.lock): Deterministik Rust bağımlılık kilit dosyası.
+* [`README.md`](file:///c:/Users/arday/Desktop/SubRadar/app/README.md): Saf Rust masaüstü uygulaması mimari, derleme (`cargo build --release`) ve test (`cargo test`) kılavuzu.
+* [`src/main.rs`](file:///c:/Users/arday/Desktop/SubRadar/app/src/main.rs): Konsolsuz yerel Windows GUI pencere başlatıcısı (`#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]`, `eframe::run_native`).
+* [`src/theme.rs`](file:///c:/Users/arday/Desktop/SubRadar/app/src/theme.rs): Minimalist Apple / Raycast / Linear koyu ve açık tema motoru.
+* [`src/models.rs`](file:///c:/Users/arday/Desktop/SubRadar/app/src/models.rs): Abonelik, durum, para birimi (`TRY`/`USD`/`EUR`) ve bütçe sağlık puanı veri modelleri.
+* [`src/presets.rs`](file:///c:/Users/arday/Desktop/SubRadar/app/src/presets.rs): 18+ popüler dijital servis şablonu ve doğrudan resmi iptal bağlantıları.
+* [`src/vault.rs`](file:///c:/Users/arday/Desktop/SubRadar/app/src/vault.rs): Saf Rust `AES-256-CBC` + `PBKDF2-HMAC-SHA256` (60.000 iterasyon) + `HMAC-SHA256` yerel şifreli kasa motoru ve birim testleri.
+* [`src/parser.rs`](file:///c:/Users/arday/Desktop/SubRadar/app/src/parser.rs): %100 çevrimdışı banka ekstresi ve harcama metni tarayıcısı ve birim testleri.
+* [`src/legal.rs`](file:///c:/Users/arday/Desktop/SubRadar/app/src/legal.rs): 6502 SK & GDPR Madde 17 resmi iptal dilekçesi üreticisi ve birim testleri.
+* [`src/ui.rs`](file:///c:/Users/arday/Desktop/SubRadar/app/src/ui.rs): Tek ekranda net özet, `Ctrl+K` hızlı arama, tek tıkla iptal ve hızlı ekleme arayüzü.
 
 ---
 
@@ -236,15 +232,14 @@ Depo şu anda **dört ana katmandan** oluşur:
 
 ---
 
-## 6. Masaüstü Uygulaması Mimarisi & Çalışma Mantığı (`app/`)
+## 6. Masaüstü Uygulaması Mimarisi & Çalışma Mantığı (`app/ v1.0` — %100 Saf Rust Native GUI)
 
-`app/` dizini aktif ve çalışan Electron masaüstü istemcisidir:
-* **Güvenlik Çekirdeği (`src/main/vault.js`):** Node.js `crypto` ile `AES-256-CBC` algoritması, `scryptSync` KDF (N=16384, r=8, p=1, 64 bayt türetilmiş anahtar) ve timing-safe `HMAC-SHA256` bütünlük doğrulaması.
-* **Yerel Şifreli Depo (`src/main/store.js`):** `encrypted_sqlite_aes256.subradar` dosyasını yerel diskte tutar. Parola doğrulanmadan veri asla çözülmez. `.subradar` yedeğini dışa/içe aktarma fonksiyonlarına sahiptir.
-* **İzole IPC Köprüsü (`preload.js`):** `contextIsolation: true` ve `sandbox: false` ile `window.subradarAPI` nesnesini sunar.
-* **Doğrudan İptal & Fesih Sihirbazı (`src/main/legal-notice.js`):** 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve GDPR Madde 17 standartlarına uygun resmi fesih mektuplarını anında oluşturur.
-* **Apple Glass Arayüzü (`src/renderer/`):** Çerçevesiz macOS penceresi, Master Parola Kilit Ekranı (Gate Screen), Dashboard, Tüm Abonelikler, Risk Radarı, Tek Tıkla İptal ve Kasa Ayarları sekmeleri.
-* **Test Motoru (`src/main/vault.test.js`):** `npm run test:vault` ile sıfır dış bağımlılıkla çalışan kripto doğrulama testleri.
+`app/` dizini hantal bir web sarmalayıcısı (Electron/Node.js) kullanmayan, **%100 Saf Rust (`eframe` / `egui`)** ile yazılmış ~2.94 MB boyutunda ultra hafif native masaüstü istemcisidir:
+* **Güvenlik Çekirdeği (`src/vault.rs`):** Saf Rust kriptografi küfeleriyle `AES-256-CBC` şifreleme, `PBKDF2-HMAC-SHA256` (60.000 iterasyon) anahtar türetme ve sabit zamanlı `HMAC-SHA256` bütünlük doğrulaması.
+* **Çevrimdışı Ekstre Tarayıcı (`src/parser.rs`):** Banka ve kredi kartı ekstrelerini internet bağlantısı olmadan yerel bellekte tarayan deterministik ayrıştırıcı.
+* **Doğrudan İptal & Fesih Sihirbazı (`src/legal.rs`, `src/presets.rs`):** 18+ popüler servis için doğrudan iptal bağlantıları ve 6502 sayılı Tüketicinin Korunması Hakkında Kanun / GDPR Madde 17 standartlarına uygun resmi fesih dilekçesi üreticisi.
+* **Native GUI Arayüzü (`src/ui.rs`, `src/theme.rs`, `src/models.rs`):** Minimalist Apple / Raycast / Linear koyu ve açık tema motoru, ana parola kilit ekranı, bütçe sağlık puanı, `Ctrl+K` hızlı arama, tek tıkla iptal ve hızlı abonelik ekleme arayüzü.
+* **Birim Test Motoru (`cargo test`):** `vault.rs`, `parser.rs` ve `legal.rs` modüllerindeki gömülü Rust birim testleri.
 
 ---
 
@@ -286,15 +281,15 @@ Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** 
 13. `supabase-auth-specialist`: Supabase v2 SDK (`supabase.js`), Double-Slider Apple Glass Auth modalı (`auth-modal.js`) ve kurumsal başvuru (`enterprise-modal.js`) uzmanı.
 
 #### D. Masaüstü Çekirdeği, Kriptografi & Hukuk Departmanı
-14. `desktop-core-engineer`: `app/` v1.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
-15. `security-crypto-auditor`: AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa (`vault.js`, `store.js`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
-16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
+14. `desktop-core-engineer`: `app/` v1.0 %100 Saf Rust Native GUI (`eframe` / `egui`, ~2.94 MB tekil `.exe`, `main.rs`, `ui.rs`, `theme.rs`, `models.rs`, `presets.rs`) çekirdek mühendisi.
+15. `security-crypto-auditor`: Saf Rust `AES-256-CBC` + `PBKDF2-HMAC-SHA256` + `HMAC-SHA256` yerel kasa (`app/src/vault.rs`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
+16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`app/src/legal.rs`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
 
 #### E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı
 17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
 18. `github-platform-manager`: GitHub platform ve vitrin yöneticisi (`gh repo edit`, depo adı, açıklama, homepage URL, topics/etiketler, Releases ve GitHub Pages ayarları).
 19. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
-20. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
+20. `test-automation-runner`: Rust birim testleri (`cargo test` -> `vault.rs`, `parser.rs`, `legal.rs`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
 21. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
 
 ### 7.4 Git, GitHub ve Canlı Dağıtım (Production) Detayları
@@ -310,7 +305,7 @@ Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** 
 * **GitHub CLI (`gh`):**
   * Yetkili kullanıcı oturumu açık (`Laynexsw`).
   * Güncel Açıklama: `"⚡ SubRadar v1.0 — Akıllı Masaüstü Abonelik Takibi, Tek Tıkla İptal ve %100 Yerel AES-256 Şifreli Kasa. Unutulan abonelikleri ve deneme sürelerini internetsiz ekstre analizi ve resmi fesih dilekçesiyle sonlandırın. Tek seferlik ticari lisans."`
-  * Güncel Konular (Topics): `apple-design`, `desktop-app`, `electron`, `offline-first`, `privacy-first`, `subscription-tracker`, `commercial-software`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`.
+  * Güncel Konular (Topics): `apple-design`, `desktop-app`, `rust`, `egui`, `eframe`, `offline-first`, `privacy-first`, `subscription-tracker`, `commercial-software`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`.
   * Canlı Bilgileri Güncelleme Komutu:
     ```powershell
     gh repo edit Laynexsw/SubRadar -d "<açıklama>" -h "https://laynexsw.github.io/SubRadar/" --add-topic "<etiket1,etiket2>"

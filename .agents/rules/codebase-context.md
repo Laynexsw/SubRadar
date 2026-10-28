@@ -20,9 +20,9 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
   - `CODEBASE.md`: Derinlemesine fonksiyon, DOM ID ve durum modelleri rehberi.
   - `.agents/`: `rules/codebase-context.md` (kurallar), `agents/` (21 kalıcı uzman alt ajan `*/agent.md`) ve `skills/` (14 yerel skill paketi: `impeccable`, `ui-ux-pro-max`, `design-system`, `ui-styling`, `brand`, `banner-design`, `design`, `slides`, `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`, `ponytail-gain`, `ponytail-help`).
 
-- **Masaüstü Uygulaması (`app/` - v1.0 Aktif):**
-  - Mimari: Electron çerçevesiz Apple Glass pencere (`main.js`), context-isolated IPC (`preload.js`), yerel kriptografik kasa (`vault.js` - AES-256-CBC + scrypt + HMAC-SHA256), şifreli yerel depo (`store.js`), çevrimdışı ekstre ayrıştırıcı (`statement-parser.js`) ve 6502 SK / GDPR Madde 17 yasal fesih derleyicisi (`legal-notice.js`).
-  - Dizin: `app/src/main/` ve `app/src/renderer/` (`scripts/`, `styles/`, `index.html`).
+- **Masaüstü Uygulaması (`app/` - v1.0 %100 Saf Rust Native GUI):**
+  - Mimari: `eframe` / `egui` tabanlı ~2.94 MB tekil `.exe` (`src/main.rs`, `src/ui.rs`, `src/theme.rs`, `src/models.rs`, `src/presets.rs`), yerel şifreli kasa (`src/vault.rs` - AES-256-CBC + PBKDF2-HMAC-SHA256 + HMAC-SHA256), çevrimdışı ekstre ayrıştırıcı (`src/parser.rs`) ve 6502 SK / GDPR Madde 17 yasal fesih derleyicisi (`src/legal.rs`).
+  - Dizin: `app/Cargo.toml`, `app/Cargo.lock`, `app/README.md` ve `app/src/`.
 
 - **Web Vitrini (`web/`):**
   - `code.html`: Canlı üretim sürümü (monolitik, tüm modüller birleştirilmiş, GitHub Pages'ta çalışan ana dosya).
@@ -59,14 +59,14 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
      12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), abonelik tasarruf hesaplayıcı (`calculator.js`) ve çevrimdışı ekstre analizörü (`statement-lab.js`) uzmanı.
      13. `supabase-auth-specialist`: Supabase v2 SDK (`supabase.js`), Double-Slider Apple Glass Auth modalı (`auth-modal.js`) ve kurumsal başvuru (`enterprise-modal.js`) uzmanı.
    - **D. Masaüstü Çekirdeği, Kriptografi & Hukuk Departmanı:**
-     14. `desktop-core-engineer`: `app/` v1.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
-     15. `security-crypto-auditor`: AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa (`vault.js`, `store.js`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
-     16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
+     14. `desktop-core-engineer`: `app/` v1.0 %100 Saf Rust Native GUI (`eframe` / `egui`, ~2.94 MB tekil `.exe`, `main.rs`, `ui.rs`, `theme.rs`, `models.rs`, `presets.rs`) çekirdek mühendisi.
+     15. `security-crypto-auditor`: Saf Rust `AES-256-CBC` + `PBKDF2-HMAC-SHA256` + `HMAC-SHA256` yerel kasa (`app/src/vault.rs`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
+     16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`app/src/legal.rs`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
    - **E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı:**
      17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
      18. `github-platform-manager`: GitHub platform ve vitrin yöneticisi (`gh repo edit`, depo adı, açıklama, homepage URL, topics/etiketler, Releases ve GitHub Pages ayarları).
      19. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
-     20. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
+     20. `test-automation-runner`: Rust birim testleri (`cargo test` -> `vault.rs`, `parser.rs`, `legal.rs`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
      21. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
 
 ## 3. GİT & GİTHUB YAPILANDIRMASI

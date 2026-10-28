@@ -5,8 +5,8 @@
 # SubRadar v1.0
 ### Akıllı Abonelik Takibi, Tek Tıkla İptal ve %100 Yerel Şifreli Kasa
 
-[![Sürüm](https://img.shields.io/badge/S%C3%BCr%C3%BCm-v1.0-6366f1?style=for-the-badge&logo=semanticrelease&logoColor=white)](https://github.com/Laynexsw/SubRadar/tree/main/app)
-[![Güvenlik](https://img.shields.io/badge/G%C3%BCvenlik-AES--256%20Yerel%20%C5%9Eifreleme-10b981?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/Laynexsw/SubRadar/tree/main/app/src/main)
+[![Sürüm](https://img.shields.io/badge/S%C3%BCr%C3%BCm-v1.0%20Native%20Rust-6366f1?style=for-the-badge&logo=rust&logoColor=white)](https://github.com/Laynexsw/SubRadar/tree/main/app)
+[![Güvenlik](https://img.shields.io/badge/G%C3%BCvenlik-AES--256%20Yerel%20%C5%9Eifreleme-10b981?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/Laynexsw/SubRadar/tree/main/app/src)
 [![Çevrimdışı Mimari](https://img.shields.io/badge/%C3%87al%C4%B1%C5%9Fma%20Modu-100%25%20%C3%87evrimd%C4%B1%C5%9F%C4%B1%20%26%20Yerel-0ea5e9?style=for-the-badge&logo=lock&logoColor=white)](privacy.html)
 [![Yasal Haklar](https://img.shields.io/badge/Yasal%20Koruma-6502%20SK%20%7C%20KVKK%20%7C%20GDPR-f59e0b?style=for-the-badge&logo=scales&logoColor=white)](terms.html)
 [![Platform Desteği](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows%20%7C%20Linux-18181b?style=for-the-badge&logo=apple&logoColor=white)](https://laynexsw.github.io/SubRadar/#os-downloads)
@@ -79,33 +79,19 @@ SubRadar/
 │       ├── agents/                       # 5 Departman / 21 Kalıcı Uzman Alt Ajan (Subagent) tanım dosyaları (*/agent.md)
 │       └── skills/                       # 14 Yerel Skill Paketi (impeccable, ui-ux-pro-max, design-system, ui-styling, brand, banner-design, design, slides, ponytail, ponytail-review, ponytail-audit, ponytail-debt, ponytail-gain, ponytail-help)
 │
-├── 💻 2. MASAÜSTÜ İŞLETİM SİSTEMİ ÇEKİRDEĞİ (DESKTOP RUNTIME CORE - app/ v1.0)
-│   ├── package.json                      # Desktop bağımlılıkları ve çalıştırma scriptleri (start, dev, test, test:vault, test:parser)
-│   ├── main.js                           # Electron ana süreci (çerçevesiz Apple Glass pencere, güvenli IPC denetleyicisi)
-│   ├── preload.js                        # contextIsolation güvenli IPC köprüsü (Renderer -> Node.js subradarAPI)
-│   ├── README.md                         # Masaüstü uygulaması teknik mimari, test ve çalıştırma el kitabı
-│   │
-│   ├── src/main/                         # Node.js Çekirdek & Güvenlik Katmanı
-│   │   ├── vault.js                      # AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa şifreleme motoru
-│   │   ├── vault.test.js                 # Sıfır-bağımlılık şifreleme doğrulama ve bütünlük birim testleri
-│   │   ├── store.js                      # Şifreli yerel disk deposu yöneticisi (encrypted_sqlite_aes256.subradar)
-│   │   ├── legal-notice.js               # 6502 SK & GDPR Madde 17 resmi cayma/fesih bildirim derleyicisi
-│   │   ├── statement-parser.js           # %100 Çevrimdışı banka ekstresi & CSV tarayıcısı (18+ abonelik kalıbı)
-│   │   └── parser.test.js                # Ekstre ayrıştırıcı ve yasal bildirim derleyici birim testleri
-│   │
-│   └── src/renderer/                     # Apple Glassmorphism Masaüstü Arayüzü (SF Pro & Inter)
-│       ├── .gitkeep                      # Dizin bütünlük koruyucusu
-│       ├── index.html                    # Çerçevesiz ana masaüstü penceresi, 6 modül görünümü, ⌘K paleti & kasa kilit kapısı
-│       ├── styles/                       # Masaüstü Stil Katmanı
-│       │   ├── .gitkeep                  # Dizin koruyucu
-│       │   ├── app.css                   # Çerçevesiz pencere gövdesi, trafik ışıkları, drag-region ve ızgara düzeni
-│       │   └── components.css            # Cam kartlar, durum rozetleri, modallar ve kaydırıcı bileşenleri
-│       └── scripts/                      # Masaüstü Arayüz Mantığı & Kütüphaneleri
-│           ├── .gitkeep                  # Dizin koruyucu
-│           ├── app.js                    # Masaüstü durum yönetimi, modül geçişleri, arama ve IPC dinleyicileri
-│           ├── presets.js                # 16+ popüler dijital servis ve abonelik ön ayar veritabanı
-│           ├── crypto-fallback.js        # WebCrypto ve Node.js crypto arasındaki güvenli yedek köprü
-│           └── three.min.js              # Masaüstü donanım ivmeli 3D arka plan efekt motoru
+├── 💻 2. MASAÜSTÜ İŞLETİM SİSTEMİ ÇEKİRDEĞİ (NATIVE RUST DESKTOP CORE - app/ v1.0)
+│   ├── Cargo.toml                        # Saf Rust paket, kriptografi ve eframe/egui Native GUI bağımlılıkları (v1.0.0)
+│   ├── Cargo.lock                        # Deterministik Rust bağımlılık kilit dosyası
+│   ├── README.md                         # Saf Rust masaüstü uygulaması mimari, derleme ve test kılavuzu
+│   └── src/                              # %100 Saf Rust Kaynak Kodları (~2.94 MB Tekil Native .exe)
+│       ├── main.rs                       # Konsolsuz yerel Windows GUI pencere başlatıcısı (eframe::run_native)
+│       ├── theme.rs                      # Minimalist Apple / Raycast / Linear koyu ve açık tema motoru
+│       ├── models.rs                     # Abonelik, durum, para birimi (TRY/USD/EUR) ve bütçe sağlık puanı veri modelleri
+│       ├── presets.rs                    # 18+ popüler dijital servis şablonu ve doğrudan resmi iptal bağlantıları
+│       ├── vault.rs                      # Saf Rust AES-256-CBC + PBKDF2-HMAC-SHA256 + HMAC-SHA256 yerel şifreli kasa motoru ve birim testleri
+│       ├── parser.rs                     # %100 çevrimdışı banka ekstresi ve harcama metni tarayıcısı ve birim testleri
+│       ├── legal.rs                      # 6502 SK & GDPR Madde 17 resmi iptal dilekçesi üreticisi ve birim testleri
+│       └── ui.rs                         # Tek ekranda net özet, Ctrl+K hızlı arama, tek tıkla iptal ve hızlı ekleme arayüzü
 │
 ├── 🧩 3. ORIGINKIT & HARİCİ UI BİLEŞENLERİ (DESIGN SYSTEM RIG - components/)
 │   └── originkit/
@@ -229,8 +215,8 @@ SubRadar/
 SubRadar v1.0, hem bireysel kullanıcıların kişisel bütçe mahremiyetini hem de şirketlerin ticari veri güvenliğini korumak için şu ilkelerle çalışır:
 
 1. **Verileriniz Bilgisayarınızdan Çıkmaz:** SubRadar'a eklediğiniz hiçbir abonelik, tutar veya ekstre bilgisi internete gönderilmez.
-2. **Parola Korumalı AES-256 Kasa (`app/src/main/vault.js`):** Verileriniz bilgisayarınızda askeri düzeyde `AES-256` standardıyla şifrelenir. Uygulama açılışında belirlediğiniz ana parola olmadan hiç kimse verilerinizi okuyamaz.
-3. **Güvenli Masaüstü Mimarisi:** Uygulama, işletim sisteminizde izole ve güvenli bir pencerede çalışır; arka planda izinsiz veri toplama veya takip (telemetri) yapmaz.
+2. **Parola Korumalı AES-256 Kasa (`app/src/vault.rs`):** Verileriniz bilgisayarınızda `AES-256-CBC` + `PBKDF2-HMAC-SHA256` (60.000 iterasyon) + `HMAC-SHA256` bütünlük imzası ile şifrelenir. Uygulama açılışında belirlediğiniz ana parola olmadan hiç kimse verilerinizi okuyamaz.
+3. **%100 Saf Rust Native Masaüstü Mimarisi (~2.94 MB):** Uygulama hantal bir tarayıcı sarmalayıcısı (Electron/Chromium) kullanmaz; doğrudan işletim sistemi üzerinde çalışan ultra hafif, bellek güvenli **Saf Rust (`eframe` / `egui`)** yerli masaüstü uygulamasıdır. Arka planda izinsiz veri toplama veya takip (telemetri) yapmaz.
 4. **Dosya Doğrulama (SHA-256):** İndirdiğiniz kurulum dosyasının orijinal ve güvenli olduğunu web sitesindeki doğrulama aracıyla tek tıkla kontrol edebilirsiniz.
 
 ---
@@ -251,19 +237,17 @@ SubRadar, **Ticari Yazılım Lisansı ([`LICENSE`](LICENSE))** kapsamında sunul
 
 ## 🚀 Kurulum ve Çalıştırma Rehberi
 
-### 1. Masaüstü Uygulamasını Çalıştırma (`app/ v1.0`)
-Masaüstü uygulamasını kendi bilgisayarınızda başlatmak ve test etmek için:
+### 1. Saf Rust Masaüstü Uygulamasını Çalıştırma ve Test Etme (`app/ v1.0`)
+%100 Saf Rust ile yazılmış masaüstü uygulamasını derlemek, birim testlerini yürütmek ve başlatmak için:
 
 ```powershell
 cd app
-npm install
 
-# Şifreli kasa ve çevrimdışı ekstre tarayıcı testlerini çalıştırın
-npm run test:vault
-npm run test:parser
+# Şifreli kasa (vault), çevrimdışı ekstre tarayıcı (parser) ve yasal dilekçe (legal) birim testlerini çalıştırın
+cargo test
 
-# SubRadar v1.0 masaüstü uygulamasını başlatın
-npm start
+# SubRadar v1.0 Saf Rust Native GUI masaüstü uygulamasını başlatın (~2.94 MB tekil .exe)
+cargo run --release
 ```
 
 ### 2. Web Vitrinini ve Canlı Simülatörü Çalıştırma (`web/`)

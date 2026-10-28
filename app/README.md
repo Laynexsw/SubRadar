@@ -1,87 +1,64 @@
-# ⚡ SubRadar Desktop App (v1.0)
+# ⚡ SubRadar v1.0 — Saf Rust Masaüstü Uygulaması
 
-> **%100 Çevrimdışı, İnternetsiz ve Yerel Masaüstü Abonelik Yönetimi & Tek Tıkla İptal Merkezi**
+> **%100 Saf Rust (`eframe` / `egui`), Çevrimdışı ve Şifreli Yerel Masaüstü Abonelik Yöneticisi**
 
-SubRadar Masaüstü Uygulaması (**v1.0**), abonelik ve harcama verilerinizi hiçbir bulut sunucusuna göndermeyen, tamamen bilgisayarınızda çevrimdışı çalışan ve verilerinizi **AES-256** standardıyla şifreleyerek koruyan modern bir masaüstü uygulamasıdır.
+SubRadar Masaüstü Uygulaması (**v1.0**), ağır tarayıcı veya Electron altyapısı kullanmadan doğrudan **%100 Saf Rust** ve GPU hızlandırmalı yerel arayüz (`eframe` / `egui`) ile geliştirilmiştir. Tüm verileriniz çevrimdışı olarak yalnızca kendi bilgisayarınızda **AES-256-CBC + HMAC-SHA256** standardıyla şifrelenerek saklanır.
 
 ---
 
 ## 🚀 Hızlı Başlangıç
 
 ### Gereksinimler
-* Node.js v18+ (Node.js v24 önerilir)
-* npm veya pnpm
+* Rust (`rustc` & `cargo` 1.80+)
 
-### Kurulum ve Çalıştırma
+### Test ve Derleme Komutları
 
 ```powershell
 # 1. Masaüstü dizinine geçin
 cd app
 
-# 2. Bağımlılıkları yükleyin
-npm install
+# 2. Birim testlerini çalıştırın (Kasa, Ekstre Tarayıcı ve Resmi Dilekçe)
+cargo test
 
-# 3. Güvenlik ve Ekstre Tarayıcı Testlerini Çalıştırın
-npm test
+# 3. Uygulamayı doğrudan başlatın
+cargo run --release
 
-# 4. Masaüstü Uygulamasını Başlatın
-npm start
+# 4. Tekil taşınabilir .exe dosyasını üretin
+cargo build --release
+# Üretilen dosya: target\release\subradar.exe
 ```
 
 ---
 
-## 🏗️ Uygulama Yapısı
+## 🏗️ Modüler Rust Mimarisi (`app/`)
 
 ```text
 app/
-├── package.json                   # Sürüm (1.0.0), Ticari Lisans (UNLICENSED) ve çalışma komutları
-├── main.js                        # Electron Ana Süreci (Çerçevesiz Pencere ve Yerel İşlemler)
-├── preload.js                     # Güvenli Arayüz Köprüsü
-├── README.md                      # Bu kılavuz
-│
-├── src/
-│   ├── main/                      # Çekirdek Güvenlik ve Yerel Veri Modülleri
-│   │   ├── vault.js               # AES-256 Şifreleme ve Anahtar Koruma Motoru
-│   │   ├── vault.test.js          # Kasa Güvenlik Birim Testleri
-│   │   ├── store.js               # Yerel Şifreli Kasa Deposu (.subradar)
-│   │   ├── legal-notice.js        # 6502 Sayılı Kanun & KVKK/GDPR Resmi İptal Dilekçesi Üreticisi
-│   │   ├── statement-parser.js    # %100 Çevrimdışı Banka Ekstresi ve Harcama Tarayıcısı
-│   │   └── parser.test.js         # Ekstre Tarayıcı ve İptal Dilekçesi Birim Testleri
-│   │
-│   └── renderer/                  # Kullanıcı Arayüzü (HTML / CSS / JS)
-│       ├── index.html             # Ana Ekran, 6 Yönetim Modülü ve Şifreli Kasa Girişi
-│       ├── styles/
-│       │   ├── app.css            # Pencere düzeni, tema ve renk değişkenleri
-│       │   └── components.css     # Kartlar, tablolar, butonlar ve pencereler
-│       └── scripts/
-│           ├── app.js             # Arayüz Yönetimi ve Otomatik Bütçe Hesaplamaları
-│           ├── presets.js         # 16+ Popüler Servis Şablonu (Doğrudan İptal Bağlantılı)
-│           └── crypto-fallback.js # Tarayıcı Önizleme Uyumluluk Katmanı
+├── Cargo.toml           # Sürüm 1.0.0, Ticari Lisans ve Saf Rust bağımlılıkları
+├── README.md            # Mimari ve kullanım kılavuzu
+└── src/
+    ├── main.rs          # Native pencere başlatıcısı (1180x760, konsolsuz Windows modu)
+    ├── theme.rs         # Minimalist Apple / Raycast / Linear koyu ve açık tema sistemi
+    ├── models.rs        # Abonelik, Para Birimi (TRY/USD/EUR) ve Bütçe Sağlık Puanı modelleri
+    ├── presets.rs       # 18+ popüler abonelik şablonu ve doğrudan resmi iptal bağlantıları
+    ├── vault.rs         # AES-256-CBC + PBKDF2 + HMAC-SHA256 yerel şifreli kasa motoru (+ birim testleri)
+    ├── parser.rs        # %100 çevrimdışı banka ekstresi ve harcama tarayıcısı (+ birim testleri)
+    ├── legal.rs         # 6502 Sayılı Kanun, KVKK ve GDPR Madde 17 resmi iptal dilekçesi üreticisi (+ birim testleri)
+    └── ui.rs            # Tek ekranda 3 özet kartı, hızlı arama (Ctrl+K) ve 4 sekmeli sade arayüz
 ```
 
 ---
 
-## 🛡️ Gizlilik ve Güvenlik Özellikleri
+## ✨ Temel Özellikler
 
-* **Güçlü Yerel Şifreleme (AES-256):** Tüm abonelik bilgileriniz bilgisayarınızda şifreli olarak saklanır. Ana şifreniz olmadan verileriniz okunamaz.
-* **Şifre ve Veri Koruması:** Ana şifreniz `scrypt` ve `HMAC-SHA256` güvenlik standartlarıyla korunur; yanlış şifre girildiğinde verileriniz zarar görmez.
-* **%100 Çevrimdışı Çalışma (Veri Paylaşımı Yok):** Uygulama içinde reklam takipçisi, analitik aracı veya dış sunuculara veri gönderen hiçbir bileşen bulunmaz.
-
----
-
-## ⚡ Temel Özellikler
-
-1. **Şifreli Kasa Kilit Ekranı:** Uygulama açılışında yalnızca sizin bildiğiniz ana şifre ile kasanız açılır.
-2. **Modern ve Sade Arayüz:** Göz yormayan koyu tema, anlaşılır özet kartları ve akıcı masaüstü pencere tasarımı.
-3. **16+ Hazır Popüler Servis Şablonu:** Netflix, Spotify, Adobe, ChatGPT, YouTube Premium, Figma ve benzeri servisleri tek tıkla hızlıca ekleyebilme.
-4. **Risk ve Deneme Süresi Uyarıları:** Uzun süredir kullanmadığınız veya ücretsiz deneme süresi bitmek üzere olan abonelikleri tespit ederek yıllık tasarruf tutarınızı hesaplar.
-5. **Tek Tıkla İptal Merkezi ve Resmi İptal Dilekçesi:** Servislerin doğrudan abonelik iptal sayfalarını açar ve Tüketicinin Korunması Hakkında Kanun'a uygun resmi iptal metnini tek tıkla hazırlar.
-6. **Çevrimdışı Banka Ekstresi Tarayıcısı:** Banka ekstresi veya kredi kartı hareketlerinizi internet bağlantısı gerekmeden bilgisayarınızda tarar, aboneliklerinizi otomatik bulup listeye ekler.
-7. **⌘K / Ctrl+K Hızlı Arama ve Komut Menüsü:** Klavyeden tüm ekranlara ve aboneliklere anında ulaşım.
-8. **Şifreli Yedekleme (`.subradar`):** Verilerinizi tek bir şifreli dosya olarak yedekleyebilir ve istediğiniz zaman geri yükleyebilirsiniz.
+1. **Minimalist Apple / Raycast / Linear Tasarımı:** Göz yormayan koyu yüzeyler (`#09090b`, `#121215`), zümrüt yeşili (`#10b981`) vurgu, açık/koyu tema geçişi ve `Ctrl+K` hızlı arama.
+2. **3 Net Özet Kartı:** Aylık Toplam Gider, Boşa Ödenen / Deneme Süresi Abonelikleri ve Yıllık Tasarruf Fırsatı & Bütçe Sağlık Puanı (`A+`, `B+`, `C-`).
+3. **18+ Hazır Popüler Servis:** Netflix, Spotify, YouTube Premium, Apple iCloud+, ChatGPT Plus, Adobe Creative Cloud, Amazon Prime, Disney+, Xbox Game Pass, BluTV / Max, Exxen, TOD, GitHub Copilot, Canva Pro, Microsoft 365, Notion, Zoom ve PlayStation Plus için tek tıkla ekleme ve doğrudan iptal sayfası açma.
+4. **Çevrimdışı Ekstre Tarayıcı:** Kredi kartı ekstresi veya hesap hareketlerini internet bağlantısı olmadan tarar ve abonelikleri otomatik ayıklar.
+5. **Resmi İptal Dilekçesi & AES-256 Kasa:** 6502 Sayılı Kanun ve GDPR Madde 17 uyumlu resmi iptal dilekçesi oluşturur; tüm verileri `encrypted_sqlite_aes256.subradar` dosyasında şifreli olarak saklar.
 
 ---
 
 ## 📄 Lisans
 
-Bu yazılım **Ticari Lisans (`UNLICENSED`)** kapsamındadır. Tüm hakları saklıdır.
+Bu yazılım **Ticari Lisans (`LicenseRef-SubRadar-Commercial-1.0`)** kapsamındadır. Tüm hakları saklıdır.
