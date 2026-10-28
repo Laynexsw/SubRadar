@@ -12,7 +12,7 @@ use crate::legal::{generate_legal_notice, NoticeLanguage};
 use crate::models::{
     BillingCycle, Currency, SpendingCategory, SubStatus, Subscription, SummaryStats, VaultPayload,
 };
-use crate::parser::{parse_statement, SAMPLE_STATEMENT};
+use crate::parser::{detect_price_hike, parse_statement, SAMPLE_STATEMENT};
 use crate::presets::SERVICE_PRESETS;
 use crate::theme::{apply_theme, ThemePalette};
 use crate::vault::{default_vault_path, load_vault_from_file, save_vault_to_file, VAULT_FILENAME};
@@ -34,6 +34,16 @@ pub enum OverviewFilter {
     Cancelled,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PresetCategoryFilter {
+    All,
+    AI,
+    Media,
+    Dev,
+    Cloud,
+    Lifestyle,
+}
+
 pub struct SubRadarApp {
     pub payload: VaultPayload,
     pub is_locked: bool,
@@ -42,6 +52,7 @@ pub struct SubRadarApp {
     pub unlock_input: String,
     pub active_tab: WorkspaceTab,
     pub overview_filter: OverviewFilter,
+    pub preset_category_filter: PresetCategoryFilter,
     pub search_query: String,
     pub focus_search_next_frame: bool,
 
@@ -106,6 +117,7 @@ impl Default for SubRadarApp {
             unlock_input: String::new(),
             active_tab: WorkspaceTab::Overview,
             overview_filter: OverviewFilter::All,
+            preset_category_filter: PresetCategoryFilter::All,
             search_query: String::new(),
             focus_search_next_frame: false,
             expanded_sub_id: None,
@@ -1071,6 +1083,34 @@ impl SubRadarApp {
                         pal.text_primary,
                     );
 
+                    // Price Hike Warning Badge: ⚠ ZAM TESPİT EDİLDİ (+%35)
+                    if sub.price_hike_detected {
+                        let hike_pct = sub.price_hike_percentage.unwrap_or(0.0);
+                        let hike_text = format!("⚠ ZAM TESPİT EDİLDİ (+%{:.0})", hike_pct);
+                        let hike_galley = ui.painter().layout_no_wrap(
+                            hike_text,
+                            FontId::new(9.5, FontFamily::Monospace),
+                            pal.accent_rose,
+                        );
+                        let hike_w = hike_galley.size().x + 14.0;
+                        let hike_rect = Rect::from_min_size(
+                            Pos2::new(badge_rect.right() + 8.0, row_rect.top() + 13.0),
+                            Vec2::new(hike_w, 19.0),
+                        );
+                        ui.painter().rect(
+                            hike_rect,
+                            CornerRadius::same(4),
+                            Color32::from_rgb(45, 18, 22),
+                            Stroke::new(1.0_f32, pal.accent_rose),
+                            egui::StrokeKind::Inside,
+                        );
+                        ui.painter().galley(
+                            Pos2::new(hike_rect.left() + 7.0, hike_rect.top() + 3.5),
+                            hike_galley,
+                            pal.accent_rose,
+                        );
+                    }
+
                     // Subtitle below title
                     ui.painter().text(
                         Pos2::new(text_left, row_rect.top() + 39.0),
@@ -1235,6 +1275,43 @@ impl SubRadarApp {
                             .corner_radius(CornerRadius::same(8))
                             .inner_margin(Margin::symmetric(14, 10))
                             .show(ui, |ui| {
+                                if sub.price_hike_detected {
+                                    let prev_str = sub
+                                        .previous_price
+                                        .map(|p| pref_curr.format_from_usd(p))
+                                        .unwrap_or_else(|| "Bilinmiyor".to_string());
+                                    let hike_str = sub
+                                        .price_hike_percentage
+                                        .map(|pct| format!("+%{:.0}", pct))
+                                        .unwrap_or_else(|| "+%0".to_string());
+                                    egui::Frame::new()
+                                        .fill(Color32::from_rgb(45, 18, 22))
+                                        .stroke(Stroke::new(1.0_f32, pal.accent_rose))
+                                        .corner_radius(CornerRadius::same(6))
+                                        .inner_margin(Margin::symmetric(10, 6))
+                                        .show(ui, |ui| {
+                                            ui.horizontal(|ui| {
+                                                ui.label(
+                                                    RichText::new("⚠ GİZLİ ZAM TESPİT EDİLDİ:")
+                                                        .font(FontId::new(11.0, FontFamily::Monospace))
+                                                        .strong()
+                                                        .color(pal.accent_rose),
+                                                );
+                                                ui.label(
+                                                    RichText::new(format!(
+                                                        "Önceki fiyat: {} • Yeni fiyat: {} ({})",
+                                                        prev_str,
+                                                        pref_curr.format_from_usd(sub.monthly_cost_usd()),
+                                                        hike_str
+                                                    ))
+                                                    .font(FontId::new(11.5, FontFamily::Proportional))
+                                                    .color(pal.text_primary),
+                                                );
+                                            });
+                                        });
+                                    ui.add_space(6.0);
+                                }
+
                                 ui.horizontal_wrapped(|ui| {
                                     if sub.status != SubStatus::Cancelled {
                                         if ui
@@ -1517,7 +1594,7 @@ impl SubRadarApp {
 
         ui.horizontal(|ui| {
             ui.label(
-                RichText::new("Popüler Servislerden 3 Saniyede Abonelik Ekle (18+ Hazır Şablon)")
+                RichText::new("Popüler Servislerden 3 Saniyede Abonelik Ekle (36+ Hazır Şablon)")
                     .size(15.0)
                     .strong(),
             );
@@ -1536,18 +1613,53 @@ impl SubRadarApp {
         );
         ui.add_space(6.0);
 
-        // 18+ Preset Grid (3 columns)
+        // Category Filter Tabs for 36+ Presets
+        ui.horizontal(|ui| {
+            for (f, label) in [
+                (PresetCategoryFilter::All, "Tümü (36+)"),
+                (PresetCategoryFilter::AI, "🤖 Yapay Zekâ"),
+                (PresetCategoryFilter::Media, "🎬 Medya & Müzik"),
+                (PresetCategoryFilter::Dev, "💻 Yazılım & Araçlar"),
+                (PresetCategoryFilter::Cloud, "☁ Bulut & Depolama"),
+                (PresetCategoryFilter::Lifestyle, "🎮 Yaşam & Oyun"),
+            ] {
+                if ui
+                    .selectable_label(
+                        self.preset_category_filter == f,
+                        RichText::new(label).size(11.5),
+                    )
+                    .clicked()
+                {
+                    self.preset_category_filter = f;
+                }
+            }
+        });
+        ui.add_space(6.0);
+
+        // 36+ Preset Grid (3 columns)
         let mut quick_added_name: Option<String> = None;
+        let filtered_presets: Vec<&crate::presets::ServicePreset> = SERVICE_PRESETS
+            .iter()
+            .filter(|p| match self.preset_category_filter {
+                PresetCategoryFilter::All => true,
+                PresetCategoryFilter::AI => p.category == "Yapay Zekâ",
+                PresetCategoryFilter::Media => p.category == "Medya & Müzik",
+                PresetCategoryFilter::Dev => p.category == "Yazılım & Araçlar",
+                PresetCategoryFilter::Cloud => p.category == "Bulut & Depolama",
+                PresetCategoryFilter::Lifestyle => p.category == "Yaşam & Oyun",
+            })
+            .collect();
+
         egui::ScrollArea::vertical()
             .id_salt("presets_grid_scroll")
-            .max_height(175.0)
+            .max_height(180.0)
             .show(ui, |ui| {
                 egui::Grid::new("popular_presets_grid")
                     .num_columns(3)
                     .spacing([10.0, 8.0])
                     .show(ui, |ui| {
-                        for (i, preset) in SERVICE_PRESETS.iter().enumerate() {
-                            let usd_price = (preset.default_price / 48.35 * 100.0).round() / 100.0;
+                        for (i, preset) in filtered_presets.iter().enumerate() {
+                            let usd_price = preset.default_price_usd;
                             egui::Frame::new()
                                 .fill(pal.bg_surface)
                                 .stroke(Stroke::new(1.0_f32, pal.border_subtle))
@@ -1579,7 +1691,7 @@ impl SubRadarApp {
                                             Layout::right_to_left(Align::Center),
                                             |ui| {
                                                 if ui
-                                                    .small_button("+ Listeme Ekle")
+                                                    .small_button("+ Ekle")
                                                     .on_hover_text("Tek tıkla doğrudan listeye ekle")
                                                     .clicked()
                                                 {
@@ -1670,6 +1782,9 @@ impl SubRadarApp {
                                     plan: self.form_plan.trim().to_string(),
                                     category: self.form_category.trim().to_string(),
                                     price,
+                                    previous_price: None,
+                                    price_hike_detected: false,
+                                    price_hike_percentage: None,
                                     currency: Currency::USD,
                                     billing_cycle: BillingCycle::Monthly,
                                     next_renewal: "OTOMATİK ÖDEME".to_string(),
@@ -1795,12 +1910,74 @@ impl SubRadarApp {
                     );
                     ui.checkbox(
                         &mut self.rule_notify_price_hike,
-                        "Fiyat artışı tespit edildiğinde bildir",
+                        "Fiyat artışı tespit edildiğinde bildir (Gizli Zam Kalkanı)",
                     );
                     ui.checkbox(
                         &mut self.rule_auto_refund_notice,
                         "İptal edilen abonelikten tekrar çekim olursa iade dilekçesi hazırla",
                     );
+
+                    // Active Shield Card for Gizli Zam & Fiyat Artışı Kalkanı
+                    if self.rule_notify_price_hike {
+                        ui.add_space(8.0);
+                        let hike_count = self
+                            .payload
+                            .subscriptions
+                            .iter()
+                            .filter(|s| s.price_hike_detected)
+                            .count();
+                        egui::Frame::new()
+                            .fill(pal.bg_elevated)
+                            .stroke(Stroke::new(1.0_f32, pal.accent_rose.gamma_multiply(0.5)))
+                            .corner_radius(CornerRadius::same(6))
+                            .inner_margin(Margin::symmetric(10, 8))
+                            .show(ui, |ui| {
+                                ui.horizontal(|ui| {
+                                    let (dot, _) =
+                                        ui.allocate_exact_size(Vec2::splat(6.0), Sense::hover());
+                                    ui.painter().circle_filled(dot.center(), 3.0, pal.accent_rose);
+                                    ui.label(
+                                        RichText::new("🛡 Gizli Zam & Fiyat Artışı Kalkanı: ETKİN")
+                                            .font(FontId::new(10.5, FontFamily::Monospace))
+                                            .strong()
+                                            .color(pal.accent_rose),
+                                    );
+                                    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                                        ui.label(
+                                            RichText::new(format!("{} zamlı abonelik", hike_count))
+                                                .font(FontId::new(10.0, FontFamily::Monospace))
+                                                .color(pal.text_dim),
+                                        );
+                                    });
+                                });
+                                ui.add_space(6.0);
+                                if ui
+                                    .small_button("🔍 Ekstredeki Gizli Zamları Tara ve İşaretle")
+                                    .on_hover_text("Mevcut ekstre metnini tarayıp aboneliklerdeki fiyat artışlarını otomatik rozetle")
+                                    .clicked()
+                                {
+                                    let mut found_hikes = 0;
+                                    for sub in &mut self.payload.subscriptions {
+                                        let (hike, prev, pct) =
+                                            detect_price_hike(&sub.name, sub.price, &self.statement_input);
+                                        if hike {
+                                            sub.price_hike_detected = true;
+                                            sub.previous_price = prev;
+                                            sub.price_hike_percentage = pct;
+                                            found_hikes += 1;
+                                        }
+                                    }
+                                    self.persist_vault();
+                                    self.show_toast(
+                                        format!(
+                                            "✓ Ekstre tarandı: {} abonelikte gizli zam tespit edildi!",
+                                            found_hikes
+                                        ),
+                                        false,
+                                    );
+                                }
+                            });
+                    }
                 });
 
             cols[0].add_space(8.0);
@@ -1834,13 +2011,24 @@ impl SubRadarApp {
                         if ui.button("🔍 Ekstreyi Şimdi Tara").clicked() {
                             self.detected_subs =
                                 parse_statement(&self.statement_input, Currency::USD);
-                            self.show_toast(
+                            let hikes = self
+                                .detected_subs
+                                .iter()
+                                .filter(|s| s.price_hike_detected)
+                                .count();
+                            let msg = if hikes > 0 {
+                                format!(
+                                    "✓ Ekstrede {} abonelik ve {} gizli zam tespit edildi!",
+                                    self.detected_subs.len(),
+                                    hikes
+                                )
+                            } else {
                                 format!(
                                     "✓ Ekstrede {} adet abonelik tespit edildi.",
                                     self.detected_subs.len()
-                                ),
-                                false,
-                            );
+                                )
+                            };
+                            self.show_toast(msg, false);
                         }
                         if !self.detected_subs.is_empty()
                             && ui

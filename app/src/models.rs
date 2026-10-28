@@ -143,6 +143,12 @@ pub struct Subscription {
     pub status: SubStatus,
     pub cancel_url: String,
     pub notes: String,
+    #[serde(default)]
+    pub previous_price: Option<f64>,
+    #[serde(default)]
+    pub price_hike_detected: bool,
+    #[serde(default)]
+    pub price_hike_percentage: Option<f64>,
 }
 
 impl Subscription {
@@ -214,6 +220,10 @@ impl Subscription {
             || text.contains("docker")
             || text.contains("cursor")
             || text.contains("copilot")
+            || text.contains("1password")
+            || text.contains("bitwarden")
+            || text.contains("nordvpn")
+            || text.contains("surfshark")
         {
             SpendingCategory::SoftwareDev
         } else if text.contains("dizi")
@@ -231,6 +241,13 @@ impl Subscription {
             || text.contains("xbox")
             || text.contains("prime")
             || text.contains("playstation")
+            || text.contains("deezer")
+            || text.contains("tidal")
+            || text.contains("blutv")
+            || text.contains("max")
+            || text.contains("exxen")
+            || text.contains("tod")
+            || text.contains("bein")
         {
             SpendingCategory::Entertainment
         } else if text.contains("bulut")
@@ -245,7 +262,9 @@ impl Subscription {
             || text.contains("vercel")
             || text.contains("icloud")
             || text.contains("google drive")
+            || text.contains("google one")
             || text.contains("dropbox")
+            || text.contains("proton")
         {
             SpendingCategory::CloudServer
         } else if text.contains("üretkenlik")
@@ -259,9 +278,12 @@ impl Subscription {
             || text.contains("chatgpt")
             || text.contains("openai")
             || text.contains("claude")
+            || text.contains("perplexity")
+            || text.contains("midjourney")
             || text.contains("notion")
             || text.contains("office")
             || text.contains("linear")
+            || text.contains("zoom")
         {
             SpendingCategory::Productivity
         } else {
@@ -305,6 +327,9 @@ impl VaultPayload {
                 plan: "SIFIR HAREKET (51 GÜN)".to_string(),
                 category: "Tasarım".to_string(),
                 price: 59.99,
+                previous_price: None,
+                price_hike_detected: false,
+                price_hike_percentage: None,
                 currency: Currency::USD,
                 billing_cycle: BillingCycle::Monthly,
                 next_renewal: "28 MART'TA YENİLENİR".to_string(),
@@ -318,12 +343,15 @@ impl VaultPayload {
                 plan: "BOŞTA LİSANS".to_string(),
                 category: "Yazılım".to_string(),
                 price: 28.90,
+                previous_price: Some(21.40),
+                price_hike_detected: true,
+                price_hike_percentage: Some(35.0),
                 currency: Currency::USD,
                 billing_cycle: BillingCycle::Monthly,
                 next_renewal: "OTOMATİK ÖDEME".to_string(),
                 status: SubStatus::UnusedTrial,
                 cancel_url: "https://account.jetbrains.com/licenses".to_string(),
-                notes: "Son 45 gündür aktif kullanım tespit edilmedi.".to_string(),
+                notes: "Son ekstrede sessizce +%35 zam yapıldığı tespit edildi (Önceki: $21,40).".to_string(),
             },
             Subscription {
                 id: "sub-figma".to_string(),
@@ -331,6 +359,9 @@ impl VaultPayload {
                 plan: "HER GÜN AKTİF".to_string(),
                 category: "Tasarım".to_string(),
                 price: 15.00,
+                previous_price: None,
+                price_hike_detected: false,
+                price_hike_percentage: None,
                 currency: Currency::USD,
                 billing_cycle: BillingCycle::Monthly,
                 next_renewal: "TUTULUYOR".to_string(),
@@ -344,6 +375,9 @@ impl VaultPayload {
                 plan: "UNUTULAN ABONELİK".to_string(),
                 category: "Bulut & Altyapı".to_string(),
                 price: 82.40,
+                previous_price: None,
+                price_hike_detected: false,
+                price_hike_percentage: None,
                 currency: Currency::USD,
                 billing_cycle: BillingCycle::Monthly,
                 next_renewal: "KULLANILMAYAN ALTYAPI".to_string(),
