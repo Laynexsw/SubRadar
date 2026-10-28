@@ -1,46 +1,52 @@
 <div align="center">
 
-# ⚡ SubRadar Enterprise & Personal FinOps
-### Kurumsal & Bireysel Masaüstü Abonelik Zekâsı, Tek Tıkla Yasal İptal ve %100 Yerel AES-256 Kasa
+<img src="favicon.svg" width="76" height="76" alt="SubRadar Kurumsal Amblem" />
 
-[![FinOps Grade](https://img.shields.io/badge/FinOps-Enterprise%20%26%20Personal-6366f1?style=for-the-badge&logo=target)](https://laynexsw.github.io/SubRadar/)
-[![Security Level](https://img.shields.io/badge/Security-AES--256%20CBC%20%7C%20scrypt-10b981?style=for-the-badge&logo=shield)](https://github.com/Laynexsw/SubRadar)
-[![Air-Gap Engine](https://img.shields.io/badge/Air--Gap-100%25%20Client--Side-0ea5e9?style=for-the-badge&logo=safari)](https://laynexsw.github.io/SubRadar/)
-[![Desktop Engine](https://img.shields.io/badge/Desktop-Electron%20v33%20%7C%20v1.5.0-8b5cf6?style=for-the-badge&logo=electron)](https://github.com/Laynexsw/SubRadar/tree/main/app)
-[![Legal Compliance](https://img.shields.io/badge/Compliance-GDPR%20Art.%2017%20%7C%206502%20SK-f59e0b?style=for-the-badge&logo=scales)](privacy.html)
-[![License](https://img.shields.io/badge/License-MIT%20%26%20Commercial-blue?style=for-the-badge)](LICENSE)
+# SubRadar Enterprise & Personal FinOps
+### Kurumsal Yazılım Varlığı Denetimi, Hava Boşluklu (Air-Gap) Finansal Zekâ ve Yasal Fesih Otomasyonu
+
+[![Sürüm](https://img.shields.io/badge/Release-v1.5.0%20Enterprise%20LTS-6366f1?style=for-the-badge&logo=semanticrelease&logoColor=white)](https://github.com/Laynexsw/SubRadar/tree/main/app)
+[![Kriptografik Standart](https://img.shields.io/badge/Cryptography-AES--256--CBC%20%7C%20scrypt%20%7C%20HMAC--SHA256-10b981?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/Laynexsw/SubRadar/tree/main/app/src/main)
+[![Veri İzolasyonu](https://img.shields.io/badge/Data%20Governance-100%25%20Air--Gap%20%26%20Zero--Knowledge-0ea5e9?style=for-the-badge&logo=lock&logoColor=white)](privacy.html)
+[![Hukuki Uyumluluk](https://img.shields.io/badge/Compliance-GDPR%20Art.%2017%20%7C%20KVKK%20%7C%206502%20SK-f59e0b?style=for-the-badge&logo=scales&logoColor=white)](terms.html)
+[![Platform Desteği](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows%20%7C%20Linux-18181b?style=for-the-badge&logo=apple&logoColor=white)](https://laynexsw.github.io/SubRadar/#os-downloads)
+[![Ticari Lisans](https://img.shields.io/badge/Licensing-Perpetual%20Commercial%20%26%20MIT-2563eb?style=for-the-badge)](licenses/README.md)
 
 <br/>
 
-**SubRadar**, kurumsal ekiplerde ve bireysel iş akışlarında kontrolsüzce büyüyen yazılım harcamalarını (**SaaS Sprawl**),  
-unutulan lisansları (**Gölge IT / Shadow IT**) ve kasıtlı olarak labirente dönüştürülen iptal süreçlerini (**Karanlık Desenler**)  
-finansal verilerinizi hiçbir bulut sunucusuna göndermeksizin **%100 yerel, çevrimdışı ve sıfır-bilgi (Zero-Knowledge)** ile sonlandıran yeni nesil FinOps zekâsıdır.
+**SubRadar**; finans direktörleri (CFO), bilgi güvenliği yöneticileri (CISO), BT satın alma departmanları ve bağımsız profesyoneller için geliştirilmiş **sıfır-güven (Zero-Trust) tabanlı masaüstü FinOps ve abonelik yönetişim platformudur**.  
+Organizasyon genelindeki kayıt dışı yazılım aboneliklerini (**Gölge IT / Shadow IT**), atıl kullanıcı koltuklarını (**SaaS Sprawl**) ve iptal süreçlerini zorlaştıran manipülatif arayüzleri (**Dark Patterns**); finansal verilerinizi üçüncü taraf bulut sunucularına aktarmaksızın **%100 yerel donanım izolasyonu** altında tespit eder, denetler ve hukuki zeminde sonlandırır.
 
-[🌐 Canlı Web Vitrini](https://laynexsw.github.io/SubRadar/) &bull; [💻 Masaüstü Uygulaması (v1.5.0)](https://github.com/Laynexsw/SubRadar/tree/main/app) &bull; [📑 Modüler Web Bileşenleri](web/components/) &bull; [🧠 Mimari & Kod Kataloğu](CODEBASE.md) &bull; [🔒 Gizlilik ve Yasal Güvence](privacy.html)
+<br/>
 
----
+[**🌐 Resmi Ürün Portalı ve Canlı Simülatör**](https://laynexsw.github.io/SubRadar/) &nbsp;&bull;&nbsp; [**💻 Masaüstü Çekirdeği (v1.5.0)**](app/README.md) &nbsp;&bull;&nbsp; [**📜 Kurumsal Lisans Matrisi**](licenses/README.md) &nbsp;&bull;&nbsp; [**🔒 Veri Gizliliği Taahhütnamesi**](privacy.html) &nbsp;&bull;&nbsp; [**⚖️ Hizmet Şartları**](terms.html)
 
 </div>
 
-## 🏢 Yönetici Özeti (Executive Summary & Problem Statement)
+---
 
-Modern şirketlerin ve bağımsız profesyonellerin karşı karşıya olduğu en büyük gizli maliyet kalemi **yazılım aboneliği israfıdır**:
-* **Gölge IT & SaaS Sprawl:** Ekiplerden ayrılan çalışanların kapatılmayan koltukları (seats), departmanlar arası mükerrer araç kullanımları ve deneme sürümlerinin unutulması şirket bütçelerinin **%20 ila %30'unun** sessizce buharlaşmasına yol açar.
-* **Karanlık Desenler (Dark Patterns):** SaaS servisleri iptal butonlarını çok adımlı anketlerin, zorunlu canlı destek görüşmelerinin veya karmaşık telefon hatlarının arkasına gizler.
-* **Bulut Tabanlı Takipçilerin Güvenlik Riski:** Geleneksel finans takip araçları (Plaid/Yodlee entegrasyonlu bulut SaaS'ları), banka şifrelerinizi ve ekstrelerinizi kendi sunucularına depolayarak kabul edilemez bir **veri sızıntısı (Data Breach)** ve regülasyon (GDPR/KVKK) riski oluşturur.
+## 📊 Kurumsal Değer Önerisi ve Finansal Geri Kazanım (Executive Summary & ROI)
 
-**SubRadar Çözümü:** Finansal verilerinizi asla cihaz dışına çıkarmayan, internet bağlantısına ihtiyaç duymayan, tek seferlik ömür boyu lisans modeliyle abonelik tuzağına karşı duran kurumsal düzeyde çevrimdışı masaüstü yazılımı.
+Kurumsal yazılım ekosistemlerinde tekrarlayan lisans giderleri, donanım yatırımlarından sonraki en büyük operasyonel maliyet kalemini oluşturmaktadır. Bağımsız sektör denetimleri, orta ve büyük ölçekli işletmelerde **yıllık SaaS bütçesinin %24 ila %32'sinin** aktif kullanılmayan lisanslara, işten ayrılan personelin açık kalan hesaplarına ve otomatik yenilenen deneme paketlerine harcandığını ortaya koymaktadır.
+
+### Geleneksel Çözümlerin Operasyonel ve Hukuki Açmazı
+1. **Üçüncü Taraf Veri İhlali Riski (Plaid / Yodlee / Bulut Toplayıcıları):** Bulut tabanlı harcama takip yazılımları, kurumsal kredi kartı ekstrelerini ve açık bankacılık API anahtarlarını kendi uzak sunucularında işler. Bu mimari; KVKK, GDPR ve finansal regülasyonlar açısından yüksek **veri sızıntısı (Data Breach)** ve uyumluluk riski doğurur.
+2. **Karanlık Desen (Dark Pattern) Kaynaklı İşgücü Kaybı:** Kurumsal SaaS sağlayıcıları, abonelik iptal akışlarını çok aşamalı onay ekranları ve müşteri temsilcisi engelleriyle ortalama **4,2 ila 18 dakikalık** bürokratik süreçlere dönüştürür.
+3. **Abonelik Takibi İçin Tekrar Abonelik Satın Alma Çelişkisi:** Piyasadaki finansal yönetim araçları, maliyet düşürme vaadine rağmen aylık/yıllık yinelenen kira bedelleri talep ederek şirket bilançosuna yeni bir sabit gider ekler.
+
+### SubRadar Kurumsal Standardı
+SubRadar, **Hava Boşluklu (Air-Gapped) İstemci Mimarisi** ve **Tek Seferlik Ömür Boyu (Perpetual) Lisanslama** modeli ile finansal verilerin kurum sınırları dışına çıkmasını kriptografik olarak imkânsız kılar; ilk denetim döngüsünde lisans yatırım maliyetini (ROI) katbekat amorti eder.
 
 ---
 
-## 🏛️ Dört Kurumsal Çekirdek Sütun (Core Pillars)
+## 🏛️ Çekirdek Ürün Yetkinlikleri ve Kurumsal Mimari Sütunlar
 
-| Sütun | Kurumsal Çözüm & Teknoloji | Sağladığı Avantaj |
+| Kurumsal Modül | Teknik Altyapı ve Kriptografik Standart | Kurumsal Operasyonel Kazanım |
 | :--- | :--- | :--- |
-| 🛡️ **Zero-Knowledge Kasa** | `AES-256-CBC` + `scrypt` (N=16384, r=8, p=1) + `HMAC-SHA256` integrity. | Anahtar sadece sizin parolanızdan türetilir; veri diske yalnızca şifrelenmiş baytlar olarak yazılır. Sıfır sunucu, sıfır telemetri. |
-| ✈️ **Hava Boşluklu Ekstre Laboratuvarı** | %100 İstemci Taraflı WebCrypto API & Regex Parser (18+ kurumsal SaaS kalıbı). | Ekstreleriniz (PDF/CSV) sunucuya iletilmeden doğrudan tarayıcı veya yerel Electron belleğinde analiz edilir; kaçak abonelikler anında listelenir. |
-| ⚖️ **Karanlık Desen Baypası & Hukuki Fesih** | Doğrudan İptal Portalları + 6502 SK & GDPR Madde 17 Cayma/Fesih Sihirbazı. | Manipülatif iptal adımlarını atlayıp tek tıkla doğrudan fesih paneline ulaştırır veya yasal bağlayıcılığı olan resmi fesih ihtarnamesi üretir. |
-| 🍏 **Executive Glassmorphism & Originkit** | Apple Glass UI + WebGL 2.0 Originkit Vector Wordmark & Tiles Loader. | Raycast/Linear ergonomisinde ⌘K komut paleti, çift kayan panelli monokrom oturum kapısı ve donanım ivmeli görsel zekâ. |
+| 🛡️ **Yerel Şifreli Kasa (Zero-Knowledge Vault)** | `AES-256-CBC` şifreleme + `scrypt` (N=16384, r=8, p=1) anahtar türetme + `HMAC-SHA256` bütünlük imzası. | Veritabanı (`encrypted_sqlite_aes256.subradar`) yalnızca yerel diskte şifreli bloklar halinde tutulur. Şifreleme anahtarı RAM dışına çıkmaz; merkezi sunucu veya telemetri bulunmaz. |
+| ✈️ **Hava Boşluklu Ekstre Analizörü (Air-Gap Parser)** | %100 istemci taraflı deterministik ayrıştırıcı ve 18+ kurumsal SaaS imza kütüphanesi. | Banka ve kurumsal kredi kartı ekstreleri (CSV / metin) internet bağlantısı kesikken dahi yerel bellekte taranır; mükerrer lisanslar ve gizli fiyat artışları saniyeler içinde raporlanır. |
+| ⚖️ **Doğrudan Fesih & Resmi İhtarname Motoru** | Doğrudan İptal Protokolü + **6502 SK** ve **GDPR Madde 17 (Unutulma Hakkı)** şablon derleyicisi. | Karanlık desen labirentlerini baypas ederek doğrudan servis sağlayıcının fesih uç noktasına yönlendirir ve hukuk müşavirliği standartlarında resmi cayma/fesih ihtarnamesi üretir. |
+| 🖥️ **Executive Glassmorphism & Komut Ergonomisi** | Çerçevesiz Electron v33 masaüstü istemcisi, `⌘K` / `Ctrl+K` hızlı komut paleti ve WebGL 2.0 donanım ivmesi. | Finans ve BT ekiplerinin klavyeden elini kaldırmadan saniyeler içinde lisans denetimi, döviz kuru dönüşümü (`USD`/`EUR`/`TRY`) ve risk radarı analizi yapmasını sağlar. |
 
 ---
 
@@ -217,89 +223,86 @@ SubRadar/
 
 ---
 
-## ⚖️ Karşılaştırma Matrisi: SubRadar vs Geleneksel Bulut Finans Araçları
+## ⚖️ Kurumsal Karşılaştırma Matrisi: SubRadar vs. Geleneksel Bulut SaaS Araçları
 
-| Özellik / Kriter | SubRadar (Yerel & Hava Boşluklu) | Geleneksel Bulut Takipçileri (Plaid vb.) |
-| :--- | :--- | :--- |
-| **Banka Şifresi / Giriş İzni** | ❌ **Asla İstenmez** (%100 Güvenli) | ⚠️ **Zorunlu** (Üçüncü tarafa tam yetki) |
-| **Veri Barındırma** | 🔒 **Sadece Yerel Disk** (Cihazınızda) | ☁️ **Bulut Sunucuları** (Sızıntı riski) |
-| **Kriptografik Koruma** | 🛡️ **AES-256-CBC + scrypt + HMAC-SHA256** | 🔑 Servis sağlayıcının elindeki anahtarlar |
-| **İptal Desteği** | ⚡ **Doğrudan İptal Portalları & Hukuki İhtarname** | ❌ Yalnızca bildirim gösterir, iptal etmez |
-| **İnternetsiz Çalışma (Air-Gap)** | 🟢 **%100 Çevrimdışı Çalışır** | 🔴 İnternetsiz çalışmaz |
-| **Ödeme Modeli** | ♾️ **Tek Seferlik Ömür Boyu Lisans** | 💸 **Sürekli Aylık/Yıllık Abonelik** (İronik) |
-| **Regülasyon Uyumu** | 🇪🇺 **GDPR Madde 17 & 🇹🇷 6502 SK Entegre** | ⚖️ Sorumluluk kullanıcıya aittir |
-
----
-
-## 🔒 Güvenlik, Uyumluluk ve Zero-Trust Mimarisi
-
-1. **Sıfır Bilgi Güvencesi (Zero-Knowledge):** SubRadar sunucusu bulunmaz; uygulamanın geliştiricileri dahil hiç kimse kaydettiğiniz servisleri, harcama tutarlarınızı veya şifreli veritabanınızı göremez.
-2. **Kriptografik Bütünlük:** `app/src/main/vault.js`, `scrypt` algoritması (CPU/Memory-hard) ile parolanızdan 32 baytlık AES şifreleme anahtarı ve 32 baytlık HMAC doğrulama anahtarı türetir. Veritabanı diske yazılmadan önce HMAC imzası oluşturulur; diskteki baytlara yapılacak harici müdahaleler anında tespit edilir.
-3. **İzole Süreçler (Context Isolation IPC):** Electron ana süreci ile görsel arayüz (Renderer) arasında `contextIsolation: true` ve `nodeIntegration: false` uygulanmıştır. Renderer yalnızca `subradarAPI` beyaz listesindeki IPC çağrılarını yürütebilir.
-4. **Donanım İvmeli Kurulum Doğrulama:** İndirilen kurulum paketleri, web vitrinindeki WebCrypto motoru (`hash-verifier.js`) üzerinden SHA-256 sağlama toplamı ile anında doğrulanabilir.
+| Değerlendirme Kriteri | SubRadar Enterprise & Personal FinOps | Bulut Tabanlı Harcama Takipçileri (Plaid / SaaS) | Manuel Tablolama (Excel / Sheets) |
+| :--- | :--- | :--- | :--- |
+| **Banka / API Erişim Yetkisi** | ❌ **Talep Edilmez** (%100 İzole) | ⚠️ **Zorunlu** (Açık bankacılık / şifre paylaşımı) | ❌ Talep edilmez |
+| **Veri Barındırma & Egemenlik** | 🔒 **Yalnızca Kurum İçi Yerel Disk** | ☁️ **Üçüncü Taraf Bulut Sunucuları** | ☁️ Bulut / Yerel karışık |
+| **Kriptografik Koruma** | 🛡️ **AES-256-CBC + scrypt + HMAC-SHA256** | 🔑 Sağlayıcı kontrolündeki paylaşımlı anahtarlar | ❌ Şifresiz düz metin (Plaintext) |
+| **Otomatik Ekstre Ayrıştırma** | ⚡ **Yerel Bellek İçi Air-Gap Tarayıcı** | ☁️ Uzak sunucu üzerinde ayrıştırma | ❌ Tamamen manuel veri girişi |
+| **Yasal Fesih & İptal Otomasyonu** | ⚖️ **Tek Tıkla Portal Baypası + Resmi İhtarname** | ❌ Yalnızca pasif bildirim veya komisyonlu aracılık | ❌ Yok |
+| **Çevrimdışı (Air-Gap) Operasyon** | 🟢 **%100 Çevrimdışı Çalışır** | 🔴 Sürekli internet bağlantısı zorunludur | 🟡 Kısmi |
+| **Finansal Maliyet Modeli** | ♾️ **Tek Seferlik Ömür Boyu (Perpetual) Lisans** | 💸 **Sürekli Aylık / Yıllık Abonelik Kesintisi** | 💸 Office / Workspace abonelik maliyeti |
+| **KVKK & GDPR Madde 17 Uyumu** | 🇪🇺 **Tasarımdan İtibaren Tam Uyumlu (Privacy by Design)** | ⚠️ Veri işleyen sözleşmesi (DPA) ve sınır ötesi aktarım riski | ⚠️ Erişim kontrolü eksikliği |
 
 ---
 
-## 🚀 Hızlı Başlangıç & Kurulum Kılavuzu
+## 🔒 Bilgi Güvenliği, Kriptografik Mimari ve Regülasyon Uyumluluğu (CISO Özeti)
 
-### 🌐 1. Canlı Web Vitrinini ve Laboratuvarı Çalıştırma
-Web vitrinini yerel ortamınızda test etmek için yerel bir HTTP sunucusu başlatın:
-```bash
-python -m http.server 8765
-```
-Tarayıcınızda açın:
-* Canlı Tekil Paket: `http://localhost:8765/web/code.html` veya `http://localhost:8765/`
-* Resmi Dağıtım: [https://laynexsw.github.io/SubRadar/](https://laynexsw.github.io/SubRadar/)
+SubRadar, finans ve savunma standartlarındaki bilgi güvenliği gereksinimlerini karşılamak üzere **Sıfır-Güven (Zero-Trust)** prensibiyle tasarlanmıştır:
 
-Bileşen bütünlüğünü doğrulamak için:
-```bash
-python web/scripts/build.py
-```
+1. **Sıfır Bilgi Mimarisi (Zero-Knowledge Architecture):** Uygulama hiçbir harici analitik, telemetri veya bulut senkronizasyon servisine veri iletmez. Kaydedilen lisans envanteri ve finansal tutarlar yalnızca kullanıcının belirlediği parola ile yerel cihazda çözülür.
+2. **Endüstriyel Kriptografi (`app/src/main/vault.js`):** Kullanıcı parolası, kaba kuvvet (brute-force) ve ASIC donanım saldırılarına dayanıklı `scrypt` (CPU/Memory-hard KDF) fonksiyonundan geçirilerek 32 baytlık şifreleme anahtarı ve 32 baytlık doğrulama anahtarı üretir. Her kayıt işlemi benzersiz 16 baytlık başlatma vektörü (`IV`) ve zamanlama saldırılarına korumalı (`crypto.timingSafeEqual`) `HMAC-SHA256` bütünlük imzası ile mühürlenir.
+3. **Süreç İzolasyonu (Electron Context Isolation):** Masaüstü çalışma zamanında `contextIsolation: true` ve `nodeIntegration: false` politikaları zorunludur. Görsel katman (Renderer), işletim sistemi çekirdeğine yalnızca `preload.js` üzerindeki denetlenmiş `subradarAPI` arayüzü ile erişebilir.
+4. **Kurulum Paketi Bütünlük Doğrulaması (SHA-256):** Dağıtılan tüm kurulum imajları, istemci taraflı donanım ivmeli WebCrypto motoru (`hash-verifier.js`) üzerinden SHA-256 kriptografik özet kontrolüne tabidir.
 
-### 💻 2. Masaüstü Uygulamasını (v1.5.0) Başlatma
-Masaüstü istemcisini çalıştırmak ve yerel şifreleme testlerini yürütmek için:
+---
+
+## 💼 Ticari Paketler, Lisanslama ve Kurumsal Tedarik (Commercial Editions)
+
+SubRadar; bireysel uzmanlardan çok uluslu kurumsal yapılara kadar farklı ölçeklerdeki organizasyonlar için şeffaf, öngörülebilir ve **sürekli kira dayatmayan** bir ticari model sunar:
+
+| Paket / Lisans Tipi | Hedef Kitle ve Kapsam | Dağıtım ve Kurulum | Destek, Güncelleme ve SLA | Ticari Model |
+| :--- | :--- | :--- | :--- | :--- |
+| **Community Edition** | Bireysel geliştiriciler, açık kaynak denetçileri ve temel abonelik takibi. | Kaynak koddan yerel derleme / GitHub | Topluluk Desteği & Standart Sürümler | **Ücretsiz** ([MIT Lisansı](LICENSE)) |
+| **Pro Perpetual** | Bağımsız danışmanlar, profesyonel kullanıcılar ve küçük/orta ölçekli ekipler. Sınırsız lisans kaydı, Air-Gap ekstre tarama ve 6502 SK / GDPR fesih sihirbazı. | İmzalı macOS (`.dmg`), Windows (`.exe` / `.msi`), Linux (`.AppImage` / `.deb`) | **Ömür Boyu (v1.x–v2.x) Güncelleme** & E-posta Desteği | **$79** *(Tek Seferlik Ödeme)* |
+| **Enterprise Volume & SLA** | Kurumsal şirketler, finans/hukuk departmanları ve yüksek güvenlikli kurumlar. Çoklu koltuk yönetimi, özel SaaS regex tanımları ve şirket içi kapalı devre dağıtım. | Merkezi BT Dağıtımı (MDM, Jamf, Intune, Sessiz MSI/PKG) | **7/24 Öncelikli Kurumsal SLA**, Özel Entegrasyon & Fatura/Sözleşme | **Kurumsal Teklif** ([Başvuru Formu](https://laynexsw.github.io/SubRadar/)) |
+
+> 📜 **Kurumsal Hukuk ve Satın Alma Departmanları İçin Not:** Kurumunuzun iç denetim ve tedarik politikalarına uygun olarak MIT, Apache 2.0, BSD-3, MPL 2.0 veya Kapalı Kaynak Ticari Lisans (**Proprietary Commercial License**) seçenekleri mevcuttur. Tam karşılaştırma tablosu ve resmi sözleşme metinleri için [**`licenses/README.md`**](licenses/README.md) kılavuzunu inceleyebilirsiniz.
+
+---
+
+## 🚀 Kurulum, Doğrulama ve Dağıtım Protokolü
+
+### 1. Masaüstü İstemcisini Başlatma ve Kriptografik Birim Testleri (`app/ v1.5.0`)
+Kurumsal masaüstü istemcisini yerel ortamda derlemek, kriptografik kasa bütünlük testlerini yürütmek ve uygulamayı başlatmak için:
+
 ```powershell
 cd app
 npm install
 
-# Sıfır-bağımlılık yerel AES-256 kasa ve ekstre testlerini çalıştırın
+# AES-256-CBC kasa bütünlüğü ve Air-Gap ekstre ayrıştırıcı doğrulama testlerini çalıştırın
 npm run test:vault
 npm run test:parser
 
-# Çerçevesiz Apple Glass penceresini başlatın
+# Çerçevesiz masaüstü FinOps istemcisini başlatın
 npm start
 ```
 
----
+### 2. Web Platformu, Canlı Simülatör ve Bileşen Bütünlük Denetimi (`web/`)
+Web tabanlı interaktif ürün simülatörünü ve Air-Gap ekstre laboratuvarını yerel ağda sunmak için:
 
-## 🤖 Otonom AI Mühendislik Organizasyonu (Baş Orkestratör & 21 Uzman Alt Ajan)
+```bash
+# Yerel HTTP sunucusunu başlatın (Port: 8765)
+python -m http.server 8765
 
-SubRadar deposu, `.agents/agents/` ve `.agents/rules/` altında yapılandırılmış **Baş Orkestratör (Manager) + 5 Departman / 21 Uzman Alt Ajan (Subagent)** mimarisiyle yönetilir. Ana yapay zekâ asistanı yalnızca **Baş Orkestratör** rolündedir ve görevleri aşağıdaki uzman alt ajanlara delege ederek yürütür:
-
-| Departman | Uzman Alt Ajanlar (`define_subagent` / `.agents/agents/*/agent.md`) | Sorumluluk Alanı |
-| :--- | :--- | :--- |
-| **A. Araştırma, Debloat & Mimari Denetim** | `deep-code-researcher`, `ponytail-debloater`, `architecture-sync-guardian`, `performance-a11y-auditor` | Derin kod ve DOM analizi, `ponytail` ile ölü kod yıkımı, 23 modüler bileşen ↔ `web/code.html` 1:1 senkronizasyonu, 60FPS WebGL ve ARIA denetimi. |
-| **B. Tasarım, Marka & Görsel Sanatlar** | `ui-ux-glass-designer`, `brand-visual-artist`, `originkit-webgl-specialist`, `audio-haptics-engineer` | Apple Glassmorphism (`impeccable`, `ui-ux-pro-max`), SVG/Canvas varlıklar, Tailless imleçler, Originkit `Tiles Loader` & `Vector Wordmark` WebGL 2.0, Web Audio ses motoru. |
-| **C. Web Platformu & FinOps Mühendislik** | `web-ui-engineer`, `hero-simulator-engineer`, `interactive-modals-engineer`, `i18n-finops-specialist`, `supabase-auth-specialist` | Modüler web ön yüzü, macOS Hero simülatörü, `⌘K` Komut Paleti & modallar, TR/EN/DE çeviri, canlı döviz (`fx.js`), FinOps hesaplayıcı, Air-Gap ekstre lab, Supabase v2 & Double-Slider Auth. |
-| **D. Masaüstü Çekirdeği, Kriptografi & Hukuk** | `desktop-core-engineer`, `security-crypto-auditor`, `legal-compliance-counsel` | Electron v33 (`main.js`, `preload.js`), `AES-256-CBC` + `scrypt` + `HMAC-SHA256` yerel kasa, SHA-256 doğrulayıcı, 6502 SK & GDPR Madde 17 resmi ihtarname ve 10'lu lisans matrisi. |
-| **E. DevOps, Git/GitHub, QA & Dokümantasyon** | `git-ops-specialist`, `github-platform-manager`, `seo-pwa-release-engineer`, `test-automation-runner`, `qa-docs-specialist` | Yerel Git operasyonları (`status`, `diff`, `branch`, `commit`, `tag`, `push`), GitHub platform/vitrin yönetimi (`gh repo edit`, açıklama, etiketler/topics, Releases, Pages), PWA Service Worker (`sw.js`), SEO haritaları, birim/bileşen testleri ve zorunlu `README.md` / `CODEBASE.md` / `AGENTS.md` senkronizasyonu. |
-
----
-
-## 💼 Kurumsal Lisanslama & Dağıtım Seçenekleri
-
-Proje varsayılan olarak [MIT Açık Kaynak Lisansı](LICENSE) ile sunulmaktadır. Kurumsal dağıtımlar, kapalı kod modifikasyonları veya özel SLA garantileri için lisanslama yapısı:
-
-| Model | Kapsam | Dağıtım | Destek & SLA |
-| :--- | :--- | :--- | :--- |
-| **Topluluk (Free)** | Bireysel kullanım, temel SaaS tespiti, açık kaynak kod erişimi. | Yerel Derleme / GitHub | Topluluk Desteği |
-| **Pro ($79 - Tek Seferlik)** | Sınırsız abonelik, Air-Gap ekstre tarama, 6502 SK / GDPR fesih sihirbazı. | macOS / Windows / Linux | Ömür Boyu Güncellemeler |
-| **Enterprise (Çoklu Koltuk)** | Kurumsal ekipler, FinOps harcama denetimi, özel SaaS kalıpları, şirket içi hava boşluklu dağıtım. | Merkezi Dağıtım / MDM / MSI | Öncelikli Kurumsal Destek & SLA |
-
-> 📜 Tüm alternatif lisans metinleri ve karşılaştırmaları için [**`licenses/README.md`**](licenses/README.md) dosyasını inceleyebilirsiniz.
+# 23 modüler arayüz bileşeninin yapısal bütünlüğünü doğrulayın
+python web/scripts/build.py
+```
+* **Yerel Erişim Noktası:** `http://localhost:8765/web/code.html` veya `http://localhost:8765/`
+* **Canlı Küresel Yayın (Production):** [https://laynexsw.github.io/SubRadar/](https://laynexsw.github.io/SubRadar/)
 
 ---
+
+## 📞 Kurumsal İletişim, Güvenlik Bildirimi ve Yasal Kaynaklar
+
+* **Resmi Web Portalı & Canlı Demo:** [https://laynexsw.github.io/SubRadar/](https://laynexsw.github.io/SubRadar/)
+* **Kurumsal Satın Alma & Çoklu Koltuk Teklifi:** `iletisim@subradar.dev`
+* **Teknik Mimari ve Kod Kataloğu:** [`CODEBASE.md`](CODEBASE.md) & [`app/README.md`](app/README.md)
+* **Yasal Politikalar:** [Gizlilik Politikası (`privacy.html`)](privacy.html) &bull; [Kullanım Koşulları (`terms.html`)](terms.html) &bull; [Lisans Koleksiyonu (`licenses/`)](licenses/README.md)
 
 <div align="center">
-<sub>SubRadar © 2026 Laynexsw. Gizlilik, güvenlik ve sıfır-bilgi felsefesiyle yerel olarak inşa edildi.</sub>
+<br/>
+<sub><b>SubRadar Enterprise & Personal FinOps © 2026 Laynexsw. Tüm Hakları Saklıdır.</b><br/>Finansal veri egemenliği, kriptografik gizlilik ve sıfır-bilgi (Zero-Knowledge) standartlarıyla yerel olarak mühendislik edilmiştir.</sub>
 </div>
