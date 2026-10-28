@@ -1,8 +1,8 @@
-# ⚡ SubRadar Desktop App
+# ⚡ SubRadar Desktop App (v1.0)
 
-> **%100 Yerel, Sıfır Bilgi (Zero-Knowledge) ve Çevrimdışı Masaüstü Abonelik Zekâsı & Doğrudan İptal Merkezi**
+> **%100 Çevrimdışı, İnternetsiz ve Yerel Masaüstü Abonelik Yönetimi & Tek Tıkla İptal Merkezi**
 
-SubRadar Masaüstü İstemcisi, verilerinizi asla harici bir bulut sunucusuna göndermeyen, yerel diskte **AES-256-CBC + scrypt + HMAC-SHA256** ile şifrelenmiş kasa mimarisine sahip modern bir Electron uygulamasıdır.
+SubRadar Masaüstü Uygulaması (**v1.0**), abonelik ve harcama verilerinizi hiçbir bulut sunucusuna göndermeyen, tamamen bilgisayarınızda çevrimdışı çalışan ve verilerinizi **AES-256** standardıyla şifreleyerek koruyan modern bir masaüstü uygulamasıdır.
 
 ---
 
@@ -21,8 +21,8 @@ cd app
 # 2. Bağımlılıkları yükleyin
 npm install
 
-# 3. Kriptografik Kasa Testlerini Çalıştırın
-npm run test:vault
+# 3. Güvenlik ve Ekstre Tarayıcı Testlerini Çalıştırın
+npm test
 
 # 4. Masaüstü Uygulamasını Başlatın
 npm start
@@ -30,53 +30,58 @@ npm start
 
 ---
 
-## 🏗️ Mimari & Dosya Yapısı
+## 🏗️ Uygulama Yapısı
 
 ```text
 app/
-├── package.json                   # Bağımlılıklar, scriptler (start, dev, test, test:vault, test:parser)
-├── main.js                        # Electron Ana Süreci (Çerçevesiz Pencere, Güvenli IPC)
-├── preload.js                     # contextIsolation & sandbox IPC Köprüsü
+├── package.json                   # Sürüm (1.0.0), Ticari Lisans (UNLICENSED) ve çalışma komutları
+├── main.js                        # Electron Ana Süreci (Çerçevesiz Pencere ve Yerel İşlemler)
+├── preload.js                     # Güvenli Arayüz Köprüsü
 ├── README.md                      # Bu kılavuz
 │
 ├── src/
-│   ├── main/                      # Node.js Çekirdek & Güvenli Arka Plan
-│   │   ├── vault.js               # AES-256-CBC + scrypt + HMAC-SHA256 Şifreleme Motoru
-│   │   ├── vault.test.js          # Sıfır-bağımlılık Kripto Birim Testleri
-│   │   ├── store.js               # Şifreli Kasa Deposu (encrypted_sqlite_aes256.subradar)
-│   │   ├── legal-notice.js        # 6502 SK & GDPR Madde 17 Yasal İptal Metni Üreticisi
-│   │   ├── statement-parser.js    # 100% Çevrimdışı Banka Ekstresi / CSV Tarayıcı Motoru
-│   │   └── parser.test.js         # Ekstre ve Yasal Metin Birim Testleri
+│   ├── main/                      # Çekirdek Güvenlik ve Yerel Veri Modülleri
+│   │   ├── vault.js               # AES-256 Şifreleme ve Anahtar Koruma Motoru
+│   │   ├── vault.test.js          # Kasa Güvenlik Birim Testleri
+│   │   ├── store.js               # Yerel Şifreli Kasa Deposu (.subradar)
+│   │   ├── legal-notice.js        # 6502 Sayılı Kanun & KVKK/GDPR Resmi İptal Dilekçesi Üreticisi
+│   │   ├── statement-parser.js    # %100 Çevrimdışı Banka Ekstresi ve Harcama Tarayıcısı
+│   │   └── parser.test.js         # Ekstre Tarayıcı ve İptal Dilekçesi Birim Testleri
 │   │
-│   └── renderer/                  # Apple Glass Arayüzü (HTML / CSS / ES6)
-│       ├── index.html             # Çerçevesiz Ana Arayüz, 6 Modül Görünümü & Kasa Kilit Ekranı
+│   └── renderer/                  # Kullanıcı Arayüzü (HTML / CSS / JS)
+│       ├── index.html             # Ana Ekran, 6 Yönetim Modülü ve Şifreli Kasa Girişi
 │       ├── styles/
-│       │   ├── app.css            # Pencere sürükleme, temel düzen ve renk değişkenleri
-│       │   └── components.css     # Apple Glass, KPI kartları, veri tablosu ve modallar
+│       │   ├── app.css            # Pencere düzeni, tema ve renk değişkenleri
+│       │   └── components.css     # Kartlar, tablolar, butonlar ve pencereler
 │       └── scripts/
-│           ├── app.js             # Reaktif Arayüz Orkestratörü & Canlı Hesaplamalar
-│           ├── presets.js         # 16+ Hazır SaaS Şablonu (Doğrudan İptal Bağlantılı)
-│           └── crypto-fallback.js # WebCrypto (Tarayıcı önizleme uyumluluğu)
+│           ├── app.js             # Arayüz Yönetimi ve Otomatik Bütçe Hesaplamaları
+│           ├── presets.js         # 16+ Popüler Servis Şablonu (Doğrudan İptal Bağlantılı)
+│           └── crypto-fallback.js # Tarayıcı Önizleme Uyumluluk Katmanı
 ```
 
 ---
 
-## 🛡️ Güvenlik & Kriptografi Standartları
+## 🛡️ Gizlilik ve Güvenlik Özellikleri
 
-* **Kasa Algoritması:** AES-256-CBC
-* **Anahtar Türetme (KDF):** `scryptSync` (N=16384, r=8, p=1, 32-byte key + 32-byte HMAC key)
-* **Bütünlük Doğrulaması:** Timing-safe `HMAC-SHA256` doğrulaması. Yanlış parola girildiğinde şifreli veri asla bozulmaz veya çözülmez.
-* **Sıfır Telemetri:** Uygulama içinde Google Analytics, Mixpanel, Sentry veya harici herhangi bir izleme kodu bulunmaz.
+* **Güçlü Yerel Şifreleme (AES-256):** Tüm abonelik bilgileriniz bilgisayarınızda şifreli olarak saklanır. Ana şifreniz olmadan verileriniz okunamaz.
+* **Şifre ve Veri Koruması:** Ana şifreniz `scrypt` ve `HMAC-SHA256` güvenlik standartlarıyla korunur; yanlış şifre girildiğinde verileriniz zarar görmez.
+* **%100 Çevrimdışı Çalışma (Veri Paylaşımı Yok):** Uygulama içinde reklam takipçisi, analitik aracı veya dış sunuculara veri gönderen hiçbir bileşen bulunmaz.
 
 ---
 
 ## ⚡ Temel Özellikler
 
-1. **Master Password Kasa Kilit Kapısı:** Uygulama açılışında ana şifre belirlenir/doğrulanır.
-2. **Apple Glassmorphism UI:** Koyu taban (`#07090e`), cam kart efektleri (`backdrop-filter: blur(24px)`), SF Pro / Inter tipografisi ve çerçevesiz macOS pencere tasarımı.
-3. **16+ Popüler SaaS Şablonu:** Adobe CC, Figma, GitHub Copilot, ChatGPT Plus, Claude Pro, JetBrains, Netflix vb. tek tıkla form doldurma.
-4. **Risk & Deneme Radarı:** 30+ gündür açılmayan veya süresi dolmak üzere olan deneme sürümlerini tespit edip yıllık maliyet kaybını hesaplar.
-5. **Tek Tıkla İptal Sihirbazı & Resmi Fesih Mektubu:** Servislerin doğrudan iptal portallarına tek tıkla yönlendirir ve 6502 sayılı Kanun / GDPR Madde 17'ye uygun resmi fesih metnini panoya kopyalar.
-6. **%100 Çevrimdışı Ekstre / CSV Tarayıcısı:** Banka dekontu veya kredi kartı ekstresini yerel bellekte tarar, abonelikleri otomatik tespit edip kasaya aktarır.
-7. **⌘K / Ctrl+K Hızlı Komut Paleti:** Klavye odaklı gezinme ve anında filtreleme.
-8. **Yedek Dışa/İçe Aktar:** Kasanızı `.subradar` uzantılı yerel şifreli dosya olarak dışa aktarabilir ve dilediğiniz zaman geri yükleyebilirsiniz.
+1. **Şifreli Kasa Kilit Ekranı:** Uygulama açılışında yalnızca sizin bildiğiniz ana şifre ile kasanız açılır.
+2. **Modern ve Sade Arayüz:** Göz yormayan koyu tema, anlaşılır özet kartları ve akıcı masaüstü pencere tasarımı.
+3. **16+ Hazır Popüler Servis Şablonu:** Netflix, Spotify, Adobe, ChatGPT, YouTube Premium, Figma ve benzeri servisleri tek tıkla hızlıca ekleyebilme.
+4. **Risk ve Deneme Süresi Uyarıları:** Uzun süredir kullanmadığınız veya ücretsiz deneme süresi bitmek üzere olan abonelikleri tespit ederek yıllık tasarruf tutarınızı hesaplar.
+5. **Tek Tıkla İptal Merkezi ve Resmi İptal Dilekçesi:** Servislerin doğrudan abonelik iptal sayfalarını açar ve Tüketicinin Korunması Hakkında Kanun'a uygun resmi iptal metnini tek tıkla hazırlar.
+6. **Çevrimdışı Banka Ekstresi Tarayıcısı:** Banka ekstresi veya kredi kartı hareketlerinizi internet bağlantısı gerekmeden bilgisayarınızda tarar, aboneliklerinizi otomatik bulup listeye ekler.
+7. **⌘K / Ctrl+K Hızlı Arama ve Komut Menüsü:** Klavyeden tüm ekranlara ve aboneliklere anında ulaşım.
+8. **Şifreli Yedekleme (`.subradar`):** Verilerinizi tek bir şifreli dosya olarak yedekleyebilir ve istediğiniz zaman geri yükleyebilirsiniz.
+
+---
+
+## 📄 Lisans
+
+Bu yazılım **Ticari Lisans (`UNLICENSED`)** kapsamındadır. Tüm hakları saklıdır.

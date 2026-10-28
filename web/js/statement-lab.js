@@ -1,6 +1,6 @@
 /* =========================================================================
    SubRadar — Interactive Offline Statement Leak Scanner Lab
-   Air-gap client-side analysis with 0 bytes cloud leakage (FileReader API)
+   100% Offline client-side analysis with 0 bytes cloud leakage (FileReader API)
    ========================================================================= */
 
 (function () {
@@ -23,9 +23,9 @@
       category: 'Bulut Altyapı',
       cost: 34.50,
       currency: '$',
-      risk: 'Atıl Kaynak Sızıntısı',
+      risk: 'Unutulan Ek Paket',
       riskColor: 'amber',
-      desc: 'Unutulmuş test sunucusu ve DNS bölgesi son 4 aydır 0 trafik alıyor.',
+      desc: 'Unutulmuş bulut depolama ve ek servis paketi son 4 aydır hiç kullanılmadı.',
       cancelUrl: 'https://console.aws.amazon.com/billing',
       legalType: 'AWS Servis Kapatma'
     },
@@ -161,7 +161,7 @@
             currency: '$',
             risk: 'Ekstrede Tespit Edildi',
             riskColor: 'rose',
-            desc: 'Banka ekstresi satırlarından yerel regex ile doğrudan eşleştirildi.',
+            desc: 'Banka ekstresi satırlarından cihaz içinde otomatik olarak tespit edildi.',
             cancelUrl: 'https://www.google.com/search?q=' + encodeURIComponent(p.name + ' cancel subscription'),
             legalType: p.name + ' Fesih Metni'
           });

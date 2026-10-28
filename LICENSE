@@ -1,21 +1,61 @@
-MIT License
+SubRadar Ticari Yazılım Lisansı (Commercial Software License v1.0)
+==================================================================
 
-Copyright (c) 2026 Laynexsw
+Sürüm: v1.0
+Telif Hakkı (c) 2026 SubRadar (Laynexsw). Tüm Hakları Saklıdır.
+Copyright (c) 2026 SubRadar (Laynexsw). All Rights Reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+BU YAZILIMI İNDİREREK, KURARAK VEYA KULLANARAK AŞAĞIDAKİ LİSANS KOŞULLARINI
+KABUL ETMİŞ SAYILIRSINIZ.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. LİSANS VERİLMESİ VE KULLANIM KOŞULLARI
+-----------------------------------------
+SubRadar ("Yazılım"), satılmamakta olup yalnızca işbu Ticari Yazılım Lisansı
+("Lisans") kapsamında kullanımınıza sunulmaktadır:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+a) Kişisel Kullanım: Bireysel kullanıcılar, Yazılımı kendi kişisel aboneliklerini
+   ve harcamalarını takip etmek amacıyla kendi bilgisayarlarında çevrimdışı
+   (internetsiz) olarak kullanma hakkına sahiptir.
+b) Kurumsal Kullanım: Şirketler, ekipler ve ticari işletmeler, Yazılımı yalnızca
+   geçerli bir SubRadar Kurumsal Lisans anahtarı veya kurumsal abonelik sözleşmesi
+   kapsamında, belirlenen kullanıcı sayısı sınırları dahilinde kullanabilir.
+
+2. KISITLAMALAR VE YASAKLAR
+---------------------------
+SubRadar'ın yazılı izni olmaksızın aşağıdaki işlemler kesinlikle yasaktır:
+
+a) Yazılımın kaynak kodlarını veya derlenmiş dosyalarını kopyalamak, çoğaltmak,
+   üçüncü kişilere dağıtmak, kiralamak, alt lisanslamak veya satmak.
+b) Yazılım üzerinde tersine mühendislik (reverse engineering) yapmak, kaynak koda
+   dönüştürmek (decompile), parçalarına ayırmak (disassemble) veya şifreleme
+   mekanizmalarını devre dışı bırakmaya çalışmak.
+c) Yazılım içerisindeki telif hakkı, marka veya mülkiyet bildirimlerini kaldırmak
+   veya değiştirmek.
+d) Yazılımı yasa dışı amaçlarla veya üçüncü tarafların haklarını ihlal edecek
+   şekilde kullanmak.
+
+3. VERİ GİZLİLİĞİ VE ÇEVRİMDIŞI ÇALIŞMA
+---------------------------------------
+SubRadar, kullanıcı verilerini yalnızca kullanıcının kendi bilgisayarında şifreli
+olarak saklayacak şekilde tasarlanmıştır. Kullanıcının oluşturduğu kasa şifresinin
+ve yedek dosyalarının güvenliği tamamen kullanıcının kendi sorumluluğundadır.
+
+4. FİKRİ MÜLKİYET HAKLARI
+-------------------------
+Yazılımın, arayüz tasarımının, logoların, belgelerin ve algoritmaların tüm telif
+hakları ve fikri mülkiyet hakları münhasıran SubRadar'a aittir. İşbu Lisans,
+size Yazılım üzerinde herhangi bir mülkiyet hakkı devretmez.
+
+5. GARANTİ REDDİ VE SORUMLULUK SINIRI
+-------------------------------------
+Yazılım, yürürlükteki yasaların izin verdiği azami ölçüde "OLDUĞU GİBİ" (AS IS)
+sunulmaktadır. SubRadar, yazılımın kesintisiz veya hatasız çalışacağına dair
+herhangi bir açık veya dolaylı garanti vermez. Yazılımın kullanımından veya
+kullanılamamasından doğabilecek doğrudan ya da dolaylı zararlardan SubRadar
+sorumlu tutulamaz.
+
+6. YÜRÜRLÜK VE FESİH
+--------------------
+Bu Lisans, Yazılımı kullandığınız sürece yürürlükte kalır. Lisans maddelerinden
+herhangi birini ihlal etmeniz durumunda kullanım hakkınız kendiliğinden sona erer
+ve Yazılımın tüm kopyalarını cihazlarınızdan kaldırmanız gerekir.

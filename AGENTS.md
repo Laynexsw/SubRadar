@@ -6,13 +6,14 @@
 
 ## 📌 1. Proje Özeti & Temel Felsefe
 
-* **Proje Adı:** SubRadar Enterprise & Personal FinOps ("Masaüstü Abonelik Zekâsı, Tek Tıkla Yasal İptal ve %100 Yerel AES-256 Kasa")
+* **Proje Adı:** SubRadar v1.0 ("Akıllı Masaüstü Abonelik Takibi, Tek Tıkla Yasal İptal ve %100 Yerel AES-256 Kasa")
 * **Canlı Dağıtım (Production):** [https://laynexsw.github.io/SubRadar/](https://laynexsw.github.io/SubRadar/)
 * **Kaynak Depo:** `Laynexsw/SubRadar`
+* **Lisans Modeli:** Resmi Ticari Yazılım Lisansı (`LICENSE` — Commercial License v1.0)
 * **Temel Prensipler:**
-  1. **%100 Yerel ve Çevrimdışı (Zero Knowledge, Air-Gap First):** Hiçbir banka şifresi veya API anahtarı istenmez. Finansal veriler asla bulut sunucularına çıkmaz.
+  1. **%100 Yerel ve Çevrimdışı (Zero Knowledge, Offline First):** Hiçbir banka şifresi veya API anahtarı istenmez. Finansal veriler asla bulut sunucularına çıkmaz.
   2. **Yerel Kriptografik Kasa:** AES-256-CBC + scrypt (CPU/Memory-hard KDF) + HMAC-SHA256 bütünlük doğrulaması ile veriler yerel diskte şifreli SQLite dosyasında (`encrypted_sqlite_aes256.subradar`) saklanır.
-  3. **Karanlık Desensiz Tek Tıkla İptal & Hukuki Fesih:** Kullanıcıyı manipülatif iptal labirentlerinden kurtarır; doğrudan servis iptal portallarına ulaştırır ve 6502 SK & GDPR Madde 17 resmi fesih ihtarname metinleri üretir.
+  3. **Tek Tıkla İptal & Hukuki Fesih:** Kullanıcıyı karmaşık iptal adımlarından kurtarır; doğrudan servis iptal portallarına ulaştırır ve 6502 SK & GDPR Madde 17 resmi fesih dilekçesi metinleri üretir.
   4. **Apple Glassmorphism UI & Originkit WebGL 2.0:** Koyu taban (`#000000`, `#09090b`), cam efektleri (`backdrop-filter: blur(24px)`), SF Pro tipografisi, Raycast/Linear ergonomisi ve donanım ivmeli görsel zekâ.
 
 ---
@@ -48,7 +49,7 @@ SubRadar/
 │   ├── og-image.svg                      # 1200x630 Kurumsal sosyal medya (Open Graph & Twitter Card) önizleme görseli
 │   ├── .nojekyll                         # GitHub Pages Jekyll statik derleyici devre dışı bırakma bayrağı
 │   ├── .gitignore                        # Versiyon kontrolünden hariç tutulan sistem ve geçici dosyalar
-│   ├── LICENSE                           # Proje ana MIT Açık Kaynak Lisansı
+│   ├── LICENSE                           # SubRadar Resmi Ticari Yazılım Lisansı (Commercial License v1.0)
 │   ├── PRODUCT.md                        # Ürün vizyonu, hedef kitle, erişilebilirlik (WCAG) ve marka ilkeleri
 │   ├── tsconfig.json                     # TypeScript / React (Originkit TSX) derleyici ve tip kontrol yapılandırması
 │   ├── README.md                         # Kurumsal karşılama, mimari harita ve yönetim dokümantasyonu
@@ -59,19 +60,7 @@ SubRadar/
 │       ├── agents/                       # 5 Departman / 21 Kalıcı Uzman Alt Ajan (Subagent) tanım dosyaları (*/agent.md)
 │       └── skills/                       # 14 Yerel Skill Paketi (impeccable, ui-ux-pro-max, design-system, ui-styling, brand, banner-design, design, slides, ponytail, ponytail-review, ponytail-audit, ponytail-debt, ponytail-gain, ponytail-help)
 │
-├── 📜 2. KURUMSAL LİSANS ŞABLON KOLEKSİYONU & MATRİSİ (LICENSES FRAMEWORK - licenses/)
-│   ├── README.md                         # Lisans karşılaştırma matrisi, ticari haklar ve kurumsal seçim rehberi
-│   ├── MIT.txt                           # Varsayılan izin verici (Permissive) açık kaynak lisansı
-│   ├── APACHE-2.0.txt                    # Patent koruması içeren kurumsal izin verici lisans
-│   ├── BSD-3-CLAUSE.txt                  # Reklam ve isim kullanım kısıtlamalı izin verici lisans
-│   ├── BSD-2-CLAUSE.txt                  # Sadeleştirilmiş 2 maddeli FreeBSD açık kaynak lisansı
-│   ├── GPL-3.0.txt                       # Güçlü copyleft genel kamu lisansı
-│   ├── AGPL-3.0.txt                      # Bulut ve SaaS dağıtımları için ağ düzeyinde güçlü copyleft lisansı
-│   ├── MPL-2.0.txt                       # Dosya tabanlı zayıf copyleft kurumsal hibrit lisansı
-│   ├── UNLICENSE.txt                     # Kamu malı (Public Domain) sıfır-kısıtlama feragatnamesi
-│   └── PROPRIETARY.txt                   # Kapalı kaynak ticari lisans sözleşmesi metni
-│
-├── 💻 3. MASAÜSTÜ İŞLETİM SİSTEMİ ÇEKİRDEĞİ (DESKTOP RUNTIME CORE - app/ v1.5.0)
+├── 💻 2. MASAÜSTÜ İŞLETİM SİSTEMİ ÇEKİRDEĞİ (DESKTOP RUNTIME CORE - app/ v1.0)
 │   ├── package.json                      # Desktop bağımlılıkları ve çalıştırma scriptleri (start, dev, test, test:vault, test:parser)
 │   ├── main.js                           # Electron ana süreci (çerçevesiz Apple Glass pencere, güvenli IPC denetleyicisi)
 │   ├── preload.js                        # contextIsolation güvenli IPC köprüsü (Renderer -> Node.js subradarAPI)
@@ -82,7 +71,7 @@ SubRadar/
 │   │   ├── vault.test.js                 # Sıfır-bağımlılık kriptografik doğrulama ve bozulma birim testleri
 │   │   ├── store.js                      # Şifreli yerel disk deposu yöneticisi (encrypted_sqlite_aes256.subradar)
 │   │   ├── legal-notice.js               # 6502 SK & GDPR Madde 17 resmi cayma/fesih bildirim derleyicisi
-│   │   ├── statement-parser.js           # 100% Çevrimdışı banka ekstresi & CSV tarayıcısı (18+ kurumsal SaaS kalıbı)
+│   │   ├── statement-parser.js           # %100 Çevrimdışı banka ekstresi & CSV tarayıcısı (18+ abonelik kalıbı)
 │   │   └── parser.test.js                # Ekstre ayrıştırıcı ve yasal bildirim derleyici birim testleri
 │   │
 │   └── src/renderer/                     # Apple Glassmorphism Masaüstü Arayüzü (SF Pro & Inter)
@@ -95,17 +84,17 @@ SubRadar/
 │       └── scripts/                      # Masaüstü Arayüz Mantığı & Kütüphaneleri
 │           ├── .gitkeep                  # Dizin koruyucu
 │           ├── app.js                    # Masaüstü durum yönetimi, modül geçişleri, arama ve IPC dinleyicileri
-│           ├── presets.js                # 16+ kurumsal SaaS ve tüketici abonelik ön ayar veritabanı
+│           ├── presets.js                # 16+ popüler dijital servis ve abonelik ön ayar veritabanı
 │           ├── crypto-fallback.js        # WebCrypto ve Node.js crypto arasındaki güvenli yedek köprü
 │           └── three.min.js              # Masaüstü donanım ivmeli 3D arka plan efekt motoru
 │
-├── 🧩 4. ORIGINKIT & HARİCİ UI BİLEŞENLERİ (DESIGN SYSTEM RIG - components/)
+├── 🧩 3. ORIGINKIT & HARİCİ UI BİLEŞENLERİ (DESIGN SYSTEM RIG - components/)
 │   └── originkit/
 │       └── ui/
 │           ├── tiles-loader.tsx          # Originkit CLI resmi React/TypeScript Tiles Loader bileşeni
 │           └── vector-wordmark.tsx       # Originkit CLI resmi React/TypeScript Vector Wordmark bileşeni (WebGL 2.0)
 │
-└── 🌐 5. WEB TANITIM VİTRİNİ, SİMÜLATÖR & PWA PLATFORMU (WEB PLATFORM - web/)
+└── 🌐 4. WEB TANITIM VİTRİNİ, SİMÜLATÖR & PWA PLATFORMU (WEB PLATFORM - web/)
     ├── code.html                         # GitHub Pages'ın sunduğu tekil monolitik üretim paketi (Tüm bileşenler, CSS ve JS dahil)
     ├── index.html                        # web/ içi hızlı kök yönlendirici -> code.html
     ├── 404.html                          # Web alt dizin 404 hata sayfası
@@ -116,7 +105,7 @@ SubRadar/
     ├── favicon.svg                       # Web vitrini favicon vektörü
     ├── og-image.svg                      # Web vitrini 1200x630 Open Graph sosyal medya kartı
     ├── manifest.json                     # Progressive Web App (PWA) manifesti (çevrimdışı ve tam ekran desteği)
-    ├── sw.js                             # Çevrimdışı Service Worker önbellekleme motoru (v1.6.1 Network-First HTML)
+    ├── sw.js                             # Çevrimdışı Service Worker önbellekleme motoru (v1.0 Network-First HTML)
     │
     ├── assets/                           # Web Varlık ve Medya Klasörü
     │   └── cursors/                      # Windows 11 Tailless Cursors (Jepri Creations) 32x32 RGBA imleç varlıkları (Dark / Light)
@@ -133,16 +122,16 @@ SubRadar/
     │   │   └── tiles-loader.html         # Originkit Tiles Loader editoryal karo yükleme ve yüzde sayacı iskeleti
     │   │
     │   ├── sections/                     # Sayfa Bölümleri & İşlevsel Modüller
-    │   │   ├── hero.html                 # Hero vitrin alanı, çift kurumsal CTA ve interaktif macOS pencere simülasyonu
-    │   │   ├── problem.html              # Kurumsal abonelik israfı, sektör metrikleri ve karanlık desen teşhiri
-    │   │   ├── statement-lab.html        # Canlı hava boşluğu (Air-Gap) banka ekstresi ve kaçak lisans tarayıcısı
-    │   │   ├── calculator.html           # FinOps israf hesaplayıcı, kaydırıcılar, PNG röntgen ihracı ve X paylaşımı
-    │   │   ├── comparison.html           # Şeffaflık & güven rakip karşılaştırma matrisi (SubRadar vs Bulut Takipçileri)
-    │   │   ├── features.html             # Çekirdek 4 motor özelliği: Audit, Auto-Intercept, Bypass, Vault
-    │   │   ├── architecture.html         # Yerel AES-256 SQLite şifreleme ve zero-trust mimari diyagramı
-    │   │   ├── os-downloads.html         # macOS, Windows ve Linux platform indirme kartları ve sürüm bilgileri
-    │   │   ├── hash-verifier.html        # İstemci tarafı WebCrypto donanım ivmeli SHA-256 kurulum doğrulayıcı
-    │   │   ├── pricing.html              # Free, Pro ($79) ve Enterprise tek seferlik ömür boyu fiyatlandırma tablosu
+    │   │   ├── hero.html                 # Hero vitrin alanı, çift CTA ve interaktif macOS pencere simülasyonu
+    │   │   ├── problem.html              # Abonelik israfı, sektör metrikleri ve zorlaştırılmış iptal süreçleri
+    │   │   ├── statement-lab.html        # Canlı çevrimdışı banka ekstresi ve unutulan abonelik tarayıcısı
+    │   │   ├── calculator.html           # Abonelik tasarruf hesaplayıcı, kaydırıcılar, PNG röntgen ihracı ve X paylaşımı
+    │   │   ├── comparison.html           # Şeffaflık & güven karşılaştırma tablosu (SubRadar vs Bulut Uygulamaları)
+    │   │   ├── features.html             # Çekirdek 4 motor özelliği: Denetim, Otomatik Yakalama, Hızlı İptal, Yerel Kasa
+    │   │   ├── architecture.html         # Yerel AES-256 SQLite şifreleme ve çevrimdışı mimari diyagramı
+    │   │   ├── os-downloads.html         # macOS, Windows ve Linux platform indirme kartları ve v1.0 sürüm bilgileri
+    │   │   ├── hash-verifier.html        # İstemci tarafı WebCrypto SHA-256 kurulum doğrulayıcı
+    │   │   ├── pricing.html              # Bireysel, Pro ($79) ve Kurumsal tek seferlik ömür boyu fiyatlandırma tablosu
     │   │   └── faq.html                  # Sıkça sorulan sorular (SSS) akordeon bilgi paneli
     │   │
     │   ├── modals/                       # Etkileşimli Modallar & Kullanıcı Akışları
@@ -173,10 +162,10 @@ SubRadar/
     │   ├── toast.js                      # Apple Glass kayan bildirim balonu sistemi (`srShowToast`)
     │   ├── audio-fx.js                   # Web Audio API sıfır-dosya matematiksel osilatör dokunsal ses motoru (`srAudio`)
     │   ├── cursor-glow.js                # Dinamik imleç takipçi cam aydınlatma ve ışıma motoru
-    │   ├── statement-lab.js              # İstemci taraflı hava boşluklu ekstre analizörü ve kaçak abonelik dedektörü
-    │   ├── hash-verifier.js              # WebCrypto API donanım ivmeli SHA-256 kurulum doğrulama motoru
+    │   ├── statement-lab.js              # İstemci taraflı çevrimdışı ekstre analizörü ve abonelik dedektörü
+    │   ├── hash-verifier.js              # WebCrypto API SHA-256 kurulum doğrulama motoru
     │   ├── social-export.js              # HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı
-    │   ├── calculator.js                 # FinOps israf hesaplama algoritması ($32/araç + $78/deneme) ve profil geçişleri
+    │   ├── calculator.js                 # Abonelik tasarruf hesaplama algoritması ($32/araç + $78/deneme) ve profil geçişleri
     │   ├── hero-window.js                # macOS pencere simülasyonu: trafik ışıkları, canlı iptal, arama, sayaçlar
     │   ├── tiles-loader.js               # Originkit "Tiles Loader" saf JS motoru (hücre ızgarası, edRand, % sayacı)
     │   ├── vector-wordmark.js            # Originkit "Vector Wordmark" WebGL 2.0 motoru (2 kanallı atlas, 3 düğümlü kafes)
@@ -292,13 +281,13 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
    9. `web-ui-engineer`: Modüler `web/components/`, `web/css/`, `web/js/` ve `web/code.html` ön yüz geliştirme uzmanı.
    10. `hero-simulator-engineer`: Hero macOS pencere simülatörü (`hero-window.js`), trafik ışıkları, canlı iptal simülasyonu ve gerçek zamanlı sayaçlar mühendisi.
    11. `interactive-modals-engineer`: Raycast/Linear stili `⌘K` Komut Paleti (`command-palette.js`), kısayollar modalı (`shortcuts-modal.js`), indirme/reclaim modalları ve Toast mühendisi.
-   12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), FinOps israf hesaplayıcı (`calculator.js`) ve Air-Gap ekstre analizörü (`statement-lab.js`) uzmanı.
+   12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), abonelik tasarruf hesaplayıcı (`calculator.js`) ve çevrimdışı ekstre analizörü (`statement-lab.js`) uzmanı.
    13. `supabase-auth-specialist`: Supabase v2 SDK (`supabase.js`), Double-Slider Apple Glass Auth modalı (`auth-modal.js`) ve kurumsal başvuru (`enterprise-modal.js`) uzmanı.
 
    #### D. Masaüstü Çekirdeği, Kriptografi & Hukuk Departmanı
-   14. `desktop-core-engineer`: `app/` v1.5.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
+   14. `desktop-core-engineer`: `app/` v1.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
    15. `security-crypto-auditor`: AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa (`vault.js`, `store.js`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
-   16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve 10'lu `licenses/` matrisi hukuk uzmanı.
+   16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
 
    #### E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı
    17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
@@ -324,12 +313,12 @@ Bu bilgiler her yeni sohbette yapay zekânın doğrudan bilmesi için kaydedilmi
   * `.nojekyll`: GitHub Pages'ın Jekyll motorunu devre dışı bırakarak tüm klasörleri eksiksiz sunmasını sağlar.
 * **GitHub CLI (`gh`):**
   * Yetkili Hesap: `Laynexsw` (Aktif oturum açık, `repo`, `gist`, `read:org` izinleri tanımlı)
-  * Canlı Açıklama (Description): `"⚡ Kurumsal & Bireysel Masaüstü Abonelik FinOps Zekâsı: Gölge IT, SaaS sprawl ve karanlık desenleri durdurun. AES-256 yerel şifreli kasa, hava boşluklu ekstre analizi, tek tıkla yasal fesih ve Apple Glass UI. Sıfır bulut, tek seferlik ömür boyu lisans."`
+  * Canlı Açıklama (Description): `"⚡ SubRadar v1.0 — Akıllı Masaüstü Abonelik Takibi, Tek Tıkla İptal ve %100 Yerel AES-256 Şifreli Kasa. Unutulan abonelikleri ve deneme sürelerini internetsiz ekstre analizi ve resmi fesih dilekçesiyle sonlandırın. Tek seferlik ticari lisans."`
   * Canlı Ana Sayfa (Homepage): `https://laynexsw.github.io/SubRadar/`
-  * Canlı Konular (Topics): `apple-design`, `desktop-app`, `electron`, `offline-first`, `privacy-first`, `subscription-tracker`, `license-templates`, `open-source`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`, `gdpr`, `lifetime-deal`, `lifetime-license`, `originkit`, `webgl`, `vector-wordmark`
+  * Canlı Konular (Topics): `apple-design`, `desktop-app`, `electron`, `offline-first`, `privacy-first`, `subscription-tracker`, `commercial-software`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`, `gdpr`, `lifetime-deal`, `lifetime-license`, `originkit`, `webgl`, `vector-wordmark`
   * Hızlı Meta Veri Güncelleme Komutu:
     ```powershell
-    gh repo edit Laynexsw/SubRadar -d "⚡ Kurumsal & Bireysel Masaüstü Abonelik FinOps Zekâsı: Gölge IT, SaaS sprawl ve karanlık desenleri durdurun. AES-256 yerel şifreli kasa, hava boşluklu ekstre analizi, tek tıkla yasal fesih ve Apple Glass UI. Sıfır bulut, tek seferlik ömür boyu lisans." -h "https://laynexsw.github.io/SubRadar/"
+    gh repo edit Laynexsw/SubRadar -d "⚡ SubRadar v1.0 — Akıllı Masaüstü Abonelik Takibi, Tek Tıkla İptal ve %100 Yerel AES-256 Şifreli Kasa. Unutulan abonelikleri ve deneme sürelerini internetsiz ekstre analizi ve resmi fesih dilekçesiyle sonlandırın. Tek seferlik ticari lisans." -h "https://laynexsw.github.io/SubRadar/"
     ```
 * **Git İş Akışı & Windows PowerShell Notu:**
   * Windows PowerShell'de komut birleştirirken `&&` yerine `;` kullanılmalıdır.

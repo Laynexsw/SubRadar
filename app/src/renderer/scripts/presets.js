@@ -14,7 +14,7 @@ const SAAS_PRESETS = [
     directCancelUrl: 'https://account.adobe.com/plans',
     brandColor: '#ff0000',
     iconLetter: 'Ps',
-    notes: 'Kullanılmayan bulut depolama ve atıl Photoshop/Illustrator lisansı.'
+    notes: 'Tasarım ve fotoğraf düzenleme uygulamaları paketi.'
   },
   {
     id: 'figma-pro',
@@ -22,12 +22,12 @@ const SAAS_PRESETS = [
     category: 'Design',
     defaultPrice: 741.75,
     defaultCurrency: 'TRY',
-    defaultPlan: 'Professional Seat',
+    defaultPlan: 'Professional Paket',
     billingCycle: 'monthly',
     directCancelUrl: 'https://www.figma.com/settings',
     brandColor: '#0acf83',
     iconLetter: 'Fg',
-    notes: 'Geliştirici modu ve editör koltuğu ücretlendirmesi.'
+    notes: 'Arayüz tasarım ve ekip çalışma aboneliği.'
   },
   {
     id: 'canva-pro',
@@ -40,7 +40,7 @@ const SAAS_PRESETS = [
     directCancelUrl: 'https://www.canva.com/settings/billing-and-teams',
     brandColor: '#00c4cc',
     iconLetter: 'Cv',
-    notes: 'Unutulan şablon üyeliği.'
+    notes: 'Görsel tasarım ve hazır şablon üyeliği.'
   },
   {
     id: 'chatgpt-plus',
@@ -48,12 +48,12 @@ const SAAS_PRESETS = [
     category: 'AI & Productivity',
     defaultPrice: 967.00,
     defaultCurrency: 'TRY',
-    defaultPlan: 'Plus Tier (GPT-4o)',
+    defaultPlan: 'Plus Üyelik',
     billingCycle: 'monthly',
     directCancelUrl: 'https://chat.openai.com/#settings',
     brandColor: '#10a37f',
     iconLetter: 'AI',
-    notes: 'Aylık otomatik kart çekimi.'
+    notes: 'Yapay zekâ asistanı aylık üyeliği.'
   },
   {
     id: 'claude-pro',
@@ -61,12 +61,12 @@ const SAAS_PRESETS = [
     category: 'AI & Productivity',
     defaultPrice: 967.00,
     defaultCurrency: 'TRY',
-    defaultPlan: 'Anthropic Pro',
+    defaultPlan: 'Pro Üyelik',
     billingCycle: 'monthly',
     directCancelUrl: 'https://claude.ai/settings/billing',
     brandColor: '#d97706',
     iconLetter: 'Cl',
-    notes: 'Yüksek hacimli API veya web modeli üyeliği.'
+    notes: 'Gelişmiş yapay zekâ yazım ve analiz üyeliği.'
   },
   {
     id: 'cursor-pro',
@@ -74,12 +74,12 @@ const SAAS_PRESETS = [
     category: 'Development',
     defaultPrice: 967.00,
     defaultCurrency: 'TRY',
-    defaultPlan: 'Pro Member',
+    defaultPlan: 'Pro Paket',
     billingCycle: 'monthly',
     directCancelUrl: 'https://www.cursor.com/settings',
     brandColor: '#6366f1',
     iconLetter: 'Cr',
-    notes: 'Yapay zekâ destekli kod editörü planı.'
+    notes: 'Yapay zekâ destekli yazılım geliştirme aracı.'
   },
   {
     id: 'github-copilot',
@@ -87,12 +87,12 @@ const SAAS_PRESETS = [
     category: 'Development',
     defaultPrice: 483.50,
     defaultCurrency: 'TRY',
-    defaultPlan: 'Individual Plan',
+    defaultPlan: 'Bireysel Paket',
     billingCycle: 'monthly',
     directCancelUrl: 'https://github.com/settings/billing',
     brandColor: '#24292e',
     iconLetter: 'Gh',
-    notes: 'Geliştirici hesabı aylık çekimi.'
+    notes: 'Kodlama asistanı aylık aboneliği.'
   },
   {
     id: 'jetbrains-pack',
@@ -100,12 +100,12 @@ const SAAS_PRESETS = [
     category: 'Development',
     defaultPrice: 1429.11,
     defaultCurrency: 'TRY',
-    defaultPlan: 'All Products Pack',
+    defaultPlan: 'Tüm Ürünler Paketi',
     billingCycle: 'monthly',
     directCancelUrl: 'https://account.jetbrains.com/licenses',
     brandColor: '#000000',
     iconLetter: 'Jb',
-    notes: 'Birden çok IDE içeren kurumsal lisans paketi.'
+    notes: 'Profesyonel yazılım geliştirme araçları paketi.'
   },
   {
     id: 'midjourney-standard',
@@ -113,12 +113,12 @@ const SAAS_PRESETS = [
     category: 'AI & Productivity',
     defaultPrice: 1450.50,
     defaultCurrency: 'TRY',
-    defaultPlan: 'Standard Membership',
+    defaultPlan: 'Standart Üyelik',
     billingCycle: 'monthly',
     directCancelUrl: 'https://www.midjourney.com/account',
     brandColor: '#3b82f6',
     iconLetter: 'Mj',
-    notes: 'Discord üzerinden yinelenen görsel üretim planı.'
+    notes: 'Yapay zekâ ile görsel oluşturma aboneliği.'
   },
   {
     id: 'netflix-standard',

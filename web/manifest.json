@@ -1,7 +1,8 @@
 {
-  "name": "SubRadar — Masaüstü Abonelik Zekâsı",
+  "name": "SubRadar — Masaüstü Abonelik Yöneticisi",
   "short_name": "SubRadar",
-  "description": "%100 Yerel AES-256 Kasa ve Tek Tıkla Abonelik İptali",
+  "version": "1.0",
+  "description": "Unutulan Abonelikleri Yakalayın ve Tek Tıkla İptal Edin — %100 İnternetsiz ve Cihaz İçi Güvenli",
   "start_url": "./code.html",
   "display": "standalone",
   "background_color": "#07090e",

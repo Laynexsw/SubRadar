@@ -12,15 +12,15 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
 
 - **Kök (`/`):**
   - `index.html`: `web/code.html` dosyasına anında yönlendirir.
+  - `LICENSE`: SubRadar Resmi Ticari Yazılım Lisansı (Commercial License v1.0).
   - `PRODUCT.md`: Ürün vizyonu, kitleler, Apple Glass tasarım standartları.
   - `tsconfig.json`: TypeScript / React (Originkit TSX) derleyici yapılandırması.
-  - `README.md`: Mimari tablo, vitrin bağlantıları, lisans rehberi ve 21'li Otonom AI Mühendislik Organizasyonu.
+  - `README.md`: Mimari tablo, vitrin bağlantıları, ticari paketler ve kurulum rehberi.
   - `AGENTS.md`: AI ajanları için hızlı proje haritası ve referans kılavuzu.
   - `CODEBASE.md`: Derinlemesine fonksiyon, DOM ID ve durum modelleri rehberi.
   - `.agents/`: `rules/codebase-context.md` (kurallar), `agents/` (21 kalıcı uzman alt ajan `*/agent.md`) ve `skills/` (14 yerel skill paketi: `impeccable`, `ui-ux-pro-max`, `design-system`, `ui-styling`, `brand`, `banner-design`, `design`, `slides`, `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`, `ponytail-gain`, `ponytail-help`).
-  - `licenses/`: MIT, Apache 2.0, BSD-3, BSD-2, GPL v3, AGPL v3, MPL 2.0, Unlicense, Proprietary tam metinleri ve karşılaştırma matrisi (`licenses/README.md`).
 
-- **Masaüstü Uygulaması (`app/` - v1.5.0 Aktif):**
+- **Masaüstü Uygulaması (`app/` - v1.0 Aktif):**
   - Mimari: Electron çerçevesiz Apple Glass pencere (`main.js`), context-isolated IPC (`preload.js`), yerel kriptografik kasa (`vault.js` - AES-256-CBC + scrypt + HMAC-SHA256), şifreli yerel depo (`store.js`), çevrimdışı ekstre ayrıştırıcı (`statement-parser.js`) ve 6502 SK / GDPR Madde 17 yasal fesih derleyicisi (`legal-notice.js`).
   - Dizin: `app/src/main/` ve `app/src/renderer/` (`scripts/`, `styles/`, `index.html`).
 
@@ -56,12 +56,12 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
      9. `web-ui-engineer`: Modüler `web/components/`, `web/css/`, `web/js/` ve `web/code.html` ön yüz geliştirme uzmanı.
      10. `hero-simulator-engineer`: Hero macOS pencere simülatörü (`hero-window.js`), trafik ışıkları, canlı iptal simülasyonu ve gerçek zamanlı sayaçlar mühendisi.
      11. `interactive-modals-engineer`: Raycast/Linear stili `⌘K` Komut Paleti (`command-palette.js`), kısayollar modalı (`shortcuts-modal.js`), indirme/reclaim modalları ve Toast mühendisi.
-     12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), FinOps israf hesaplayıcı (`calculator.js`) ve Air-Gap ekstre analizörü (`statement-lab.js`) uzmanı.
+     12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), abonelik tasarruf hesaplayıcı (`calculator.js`) ve çevrimdışı ekstre analizörü (`statement-lab.js`) uzmanı.
      13. `supabase-auth-specialist`: Supabase v2 SDK (`supabase.js`), Double-Slider Apple Glass Auth modalı (`auth-modal.js`) ve kurumsal başvuru (`enterprise-modal.js`) uzmanı.
    - **D. Masaüstü Çekirdeği, Kriptografi & Hukuk Departmanı:**
-     14. `desktop-core-engineer`: `app/` v1.5.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
+     14. `desktop-core-engineer`: `app/` v1.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
      15. `security-crypto-auditor`: AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa (`vault.js`, `store.js`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
-     16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve 10'lu `licenses/` matrisi hukuk uzmanı.
+     16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
    - **E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı:**
      17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
      18. `github-platform-manager`: GitHub platform ve vitrin yöneticisi (`gh repo edit`, depo adı, açıklama, homepage URL, topics/etiketler, Releases ve GitHub Pages ayarları).

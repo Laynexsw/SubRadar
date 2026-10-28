@@ -24,8 +24,8 @@ export function initDownloadModal() {
   let dlTotalMB = 48.2;
   const DL_SIZES = { macOS: [48.2, 51.7], Windows: [52.6, 49.8] };
   const DL_FILES = {
-    macOS: ['SubRadar-1.4.2-arm64.dmg', 'SubRadar-1.4.2-x64.dmg'],
-    Windows: ['SubRadar-Setup-1.4.2-x64.exe', 'SubRadar-Setup-1.4.2-arm64.msi']
+    macOS: ['SubRadar-1.0-arm64.dmg', 'SubRadar-1.0-x64.dmg'],
+    Windows: ['SubRadar-Setup-1.0-x64.exe', 'SubRadar-Setup-1.0-arm64.msi']
   };
   let dlFileName = DL_FILES.macOS[0];
 

@@ -1,6 +1,6 @@
 /**
- * SubRadar Desktop — Core Application & State Controller (app.js)
- * Impeccable Craft • Zero-Knowledge • 100% Offline Reactive Architecture
+ * SubRadar Desktop v1.0 — Ana Uygulama ve Durum Yöneticisi (app.js)
+ * %100 Çevrimdışı • Şifreli Yerel Kasa • Kullanıcı Dostu Arayüz
  */
 
 (function () {
@@ -245,7 +245,7 @@
 
     // Update KPI UI
     DOM.kpiBurn.textContent = formatCurrency(monthlyBurnTRY);
-    DOM.kpiActiveSubsCount.textContent = `${activeSubsCount} aktif servis`;
+    DOM.kpiActiveSubsCount.textContent = `${activeSubsCount} aktif abonelik`;
 
     DOM.kpiLeaks.textContent = leaksCount;
     DOM.kpiRecover.textContent = formatCurrency(recoverableWasteTRY);
@@ -266,19 +266,19 @@
       DOM.dashboardTrialAlert.style.display = 'none';
     }
 
-    // Financial Hygiene Score
+    // Budget Health Score
     if (leaksCount === 0 && trialsCount === 0) {
       DOM.kpiHygiene.textContent = 'A+';
       DOM.kpiHygiene.style.color = 'var(--accent-emerald)';
-      DOM.kpiHygieneDesc.textContent = 'Mükemmel hijyen • Sıfır sızıntı';
+      DOM.kpiHygieneDesc.textContent = 'Harika durum • Gereksiz harcama yok';
     } else if (leaksCount <= 1 && trialsCount <= 1) {
       DOM.kpiHygiene.textContent = 'B+';
       DOM.kpiHygiene.style.color = 'var(--accent-amber)';
-      DOM.kpiHygieneDesc.textContent = 'İyi durumda • 1-2 inceleme gerek';
+      DOM.kpiHygieneDesc.textContent = 'İyi durumda • 1-2 aboneliği gözden geçirin';
     } else {
       DOM.kpiHygiene.textContent = 'C-';
       DOM.kpiHygiene.style.color = 'var(--accent-rose)';
-      DOM.kpiHygieneDesc.textContent = 'Kritik kaçak riski • Derhal denetle';
+      DOM.kpiHygieneDesc.textContent = 'Yüksek gider • Kullanılmayanları iptal edin';
     }
   }
 
@@ -339,7 +339,7 @@
         badgeLabel = 'Deneme Süresi';
       } else if (sub.status === 'idle') {
         badgeClass = 'badge-idle';
-        badgeLabel = 'Atıl / Hayalet';
+        badgeLabel = 'Kullanılmıyor';
       } else if (sub.status === 'cancelled') {
         badgeClass = 'badge-cancelled';
         badgeLabel = 'İptal Edildi';
@@ -354,7 +354,7 @@
               <div class="sub-avatar" style="background: ${avatarColor};">${avatarLetters}</div>
               <div>
                 <div class="sub-name">${escapeHTML(sub.name)}</div>
-                <div class="sub-plan">${escapeHTML(sub.plan || 'Standart Plan')}</div>
+                <div class="sub-plan">${escapeHTML(sub.plan || 'Standart Paket')}</div>
               </div>
             </div>
           </td>
@@ -367,12 +367,12 @@
           <td style="text-align: right;">
             <div style="display: inline-flex; align-items: center; gap: 6px;">
               ${sub.status !== 'cancelled' ? `
-                <button type="button" class="btn btn-secondary action-direct-kill" data-id="${sub.id}" title="Doğrudan İptal Portalı ve Protokolü" style="padding: 4px 10px; font-size: 11px;">
+                <button type="button" class="btn btn-secondary action-direct-kill" data-id="${sub.id}" title="Aboneliği İptal Et" style="padding: 4px 10px; font-size: 11px;">
                   ⚡ İptal Et
                 </button>
               ` : `
-                <button type="button" class="btn btn-secondary action-legal-notice" data-id="${sub.id}" title="Fesih İhtarnamesini Gör" style="padding: 4px 10px; font-size: 11px;">
-                  📄 Fesih İhtarı
+                <button type="button" class="btn btn-secondary action-legal-notice" data-id="${sub.id}" title="İptal Dilekçesini Gör" style="padding: 4px 10px; font-size: 11px;">
+                  📄 İptal Dilekçesi
                 </button>
               `}
               <button type="button" class="btn btn-secondary btn-icon action-edit" data-id="${sub.id}" title="Düzenle" style="width: 28px; height: 28px; font-size: 11px;">✏️</button>
@@ -460,12 +460,12 @@
   // -------------------------------------------------------------------------
   function renderRiskRadar() {
     const highRisks = state.subscriptions.filter(s => s.status === 'idle' || s.status === 'trial');
-    DOM.radarLiveCount.textContent = `● ${highRisks.length} Kritik Risk Tespit Edildi`;
+    DOM.radarLiveCount.textContent = `● ${highRisks.length} Dikkat Gerektiren Abonelik`;
 
     if (highRisks.length === 0) {
       DOM.riskRadarItems.innerHTML = `
         <div style="padding: 40px; text-align: center; color: var(--accent-emerald); font-size: 13px;">
-          ✓ Tebrikler! Hiçbir atıl lisans veya unutulmuş deneme tuzağı bulunamadı. Kasanız tamamen temiz.
+          ✓ Harika! Kullanılmayan veya deneme süresi bitmek üzere olan bir aboneliğiniz bulunmuyor.
         </div>
       `;
       return;
@@ -478,8 +478,8 @@
 
       const isTrial = sub.status === 'trial';
       const warningText = isTrial 
-        ? '⚠️ Deneme süresi yakında sona eriyor! Otomatik kart çekimi yapılacak.'
-        : `⚠️ Atıl Lisans: ${sub.notes || 'Haftalardır arka plan işlemi başlatılmadı.'}`;
+        ? '⚠️ Ücretsiz deneme süresi yakında sona eriyor! İptal edilmezse otomatik ödeme çekilecek.'
+        : `⚠️ Kullanılmayan Abonelik: ${sub.notes || 'Uzun süredir aktif olarak kullanılmıyor.'}`;
 
       return `
         <div class="glass-card" style="padding: 16px 20px; border-color: ${isTrial ? 'rgba(245, 158, 11, 0.3)' : 'rgba(244, 63, 94, 0.3)'};">
@@ -487,14 +487,14 @@
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="font-size: 18px;">${isTrial ? '⏳' : '🛑'}</span>
               <span style="font-weight: 600; color: #fff; font-size: 14px;">${escapeHTML(sub.name)}</span>
-              <span class="badge ${isTrial ? 'badge-trial' : 'badge-idle'}">${isTrial ? 'Deneme Tuzağı' : 'Hayalet Lisans'}</span>
+              <span class="badge ${isTrial ? 'badge-trial' : 'badge-idle'}">${isTrial ? 'Deneme Süresi Bitiyor' : 'Kullanılmıyor'}</span>
             </div>
             <span class="font-mono text-white" style="font-weight: 700; font-size: 15px;">${formatCurrency(priceTRY)}/ay</span>
           </div>
           <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">${warningText}</p>
           <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn btn-primary action-kill-now" data-id="${sub.id}" style="font-size: 11px; padding: 5px 14px;">⚡ Karanlık Deseni Atla & İptal Et</button>
-            <button type="button" class="btn btn-secondary action-view-legal" data-id="${sub.id}" style="font-size: 11px; padding: 5px 14px;">📄 Fesih İhtarnamesi Üret</button>
+            <button type="button" class="btn btn-primary action-kill-now" data-id="${sub.id}" style="font-size: 11px; padding: 5px 14px;">⚡ Hemen İptal Et</button>
+            <button type="button" class="btn btn-secondary action-view-legal" data-id="${sub.id}" style="font-size: 11px; padding: 5px 14px;">📄 İptal Dilekçesi Oluştur</button>
           </div>
         </div>
       `;
@@ -543,7 +543,7 @@
               🔗 İptal Sayfasına Git
             </button>
             <button type="button" class="btn btn-secondary action-legal-trigger" data-id="${s.id}">
-              📄 Yasal Fesih İhtarı Üret
+              📄 Resmi İptal Dilekçesi Oluştur
             </button>
             <button type="button" class="btn btn-danger action-mark-cancelled" data-id="${s.id}" style="font-size: 11px; padding: 4px;">
               ✕ İptal Edildi Olarak İşaretle
@@ -682,7 +682,7 @@
     });
 
     DOM.statementResultsContainer.style.display = 'block';
-    showToast(`${detectedList.length} adet abonelik yerel RAM'de yakalandı!`);
+    showToast(`${detectedList.length} adet abonelik çevrimdışı olarak bulundu!`);
   });
 
   DOM.btnImportAllDetected?.addEventListener('click', async () => {
@@ -693,7 +693,7 @@
     recalculateKPIs();
     renderAllViews();
     DOM.statementResultsContainer.style.display = 'none';
-    showToast(`${detectedList.length} adet abonelik kasanıza aktarıldı!`);
+    showToast(`${detectedList.length} adet abonelik listenize aktarıldı!`);
     switchTab('subscriptions');
   });
 
@@ -831,12 +831,12 @@
   DOM.btnLockVaultNow?.addEventListener('click', async () => {
     await window.subradarAPI.vault.lock();
     state.isUnlocked = false;
-    DOM.vaultBadge.innerHTML = '<span>🔒 AES-256 Kilitli</span>';
+    DOM.vaultBadge.innerHTML = '<span>🔒 Kasa Kilitli</span>';
     DOM.vaultBadge.classList.remove('unlocked');
     DOM.gateInput.value = '';
     DOM.gateScreen.style.display = 'flex';
     DOM.gateInput.focus();
-    showToast('Kasa kilitlendi. Bellek temizlendi.');
+    showToast('Kasa kilitlendi.');
   });
 
   DOM.btnExportBackup?.addEventListener('click', async () => {
@@ -970,15 +970,15 @@
       { title: 'Abonelikler Listesini Aç', action: () => switchTab('subscriptions'), icon: '💳' },
       { title: 'Risk Radarı ve Deneme Uyarılarını İncele', action: () => switchTab('risk-radar'), icon: '⚠️' },
       { title: 'Tek Tıkla İptal Merkezini Aç', action: () => switchTab('kill-switch'), icon: '⚡' },
-      { title: 'Banka Ekstresi Tara (100% Yerel)', action: () => switchTab('statement-scanner'), icon: '📄' },
-      { title: 'Kasa Güvenlik Ayarlarına Git', action: () => switchTab('vault-settings'), icon: '⚙️' },
+      { title: 'Banka Ekstresi Tara (Çevrimdışı)', action: () => switchTab('statement-scanner'), icon: '📄' },
+      { title: 'Kasa ve Güvenlik Ayarlarına Git', action: () => switchTab('vault-settings'), icon: '⚙️' },
       { title: '+ Yeni Abonelik Ekle', action: () => openNewSubModal(), icon: '➕' },
-      { title: 'Kasayı Hemen Kilitle', action: () => DOM.btnLockVaultNow.click(), icon: '🔒' },
-      { title: 'Şifreli Yedek Dışa Aktar (.subradar)', action: () => DOM.btnExportBackup.click(), icon: '💾' }
+      { title: 'Kasayı Şimdi Kilitle', action: () => DOM.btnLockVaultNow.click(), icon: '🔒' },
+      { title: 'Şifreli Yedek İndir (.subradar)', action: () => DOM.btnExportBackup.click(), icon: '💾' }
     ];
 
     const matchedSubs = state.subscriptions.filter(s => s.name.toLowerCase().includes(query)).map(s => ({
-      title: `${s.name} İptal & Fesih Detayı`,
+      title: `${s.name} — İptal Dilekçesi & Detay`,
       action: () => openLegalNoticeModal(s.id),
       icon: '⚡'
     }));
@@ -1061,14 +1061,14 @@
         if (state.preferences.userName) DOM.prefUserName.value = state.preferences.userName;
         if (state.preferences.userEmail) DOM.prefUserEmail.value = state.preferences.userEmail;
 
-        DOM.vaultBadge.innerHTML = '<span>🔓 AES-256 Açık</span>';
+        DOM.vaultBadge.innerHTML = '<span>🔓 Kasa Açık</span>';
         DOM.vaultBadge.classList.add('unlocked');
 
         recalculateKPIs();
         renderAllViews();
-        showToast('Kasa başarıyla açıldı. AES-256 koruması devrede.');
+        showToast('Kasa başarıyla açıldı.');
       } else {
-        DOM.gateError.textContent = res.error || 'Hatalı ana şifre veya bozulmuş veri.';
+        DOM.gateError.textContent = res.error || 'Hatalı ana şifre girdiniz. Lütfen tekrar deneyin.';
         DOM.gateError.style.display = 'block';
       }
     } catch (err) {
@@ -1095,9 +1095,9 @@
     try {
       const hasVault = await window.subradarAPI.vault.hasVault();
       if (!hasVault) {
-        DOM.gateTitle.textContent = 'Yeni Kasa Kurulumu';
-        DOM.gateSubtitle.textContent = 'Verilerinizi AES-256 ile şifreleyecek bir ana parola belirleyin.';
-        DOM.gateBtn.textContent = 'Yeni Kasa Oluştur';
+        DOM.gateTitle.textContent = 'Yeni Şifreli Kasa Oluştur';
+        DOM.gateSubtitle.textContent = 'Bilgilerinizi bilgisayarınızda güvenle koruyacak bir ana şifre belirleyin.';
+        DOM.gateBtn.textContent = 'Kasa Oluştur ve Başla';
       }
     } catch (e) {}
 

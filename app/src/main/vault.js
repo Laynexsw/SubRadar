@@ -1,8 +1,8 @@
 /**
- * SubRadar Desktop — AES-256-CBC Cryptographic Vault Engine
+ * SubRadar Desktop v1.0 — AES-256 Şifreli Yerel Kasa Motoru
  * 
- * %100 Zero-Knowledge, Offline-First Security Core.
- * Built with native Node.js crypto (Scrypt KDF + AES-256-CBC + HMAC-SHA256).
+ * %100 Çevrimdışı ve Yerel Güvenlik Çekirdeği.
+ * Yerleşik Node.js şifreleme altyapısı (Scrypt + AES-256-CBC + HMAC-SHA256) ile çalışır.
  */
 
 const crypto = require('crypto');
@@ -57,7 +57,7 @@ function encryptVault(dataObject, masterPassword) {
   const tag = hmac.digest();
 
   return {
-    version: '1.5',
+    version: '1.0',
     algorithm: ALGORITHM,
     kdf: 'scrypt',
     salt: salt.toString('base64'),

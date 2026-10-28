@@ -1,64 +1,65 @@
-# Product
+# Product — SubRadar v1.0
 
 <!-- impeccable:product-schema 1 -->
 
 ## Platform
 
-web
+web & desktop (v1.0)
 
 ## Users
 
-* **Bireysel Kullanıcılar & Uzaktan Çalışanlar:** Onlarca dijital eğlence ve yazılım servisine (Netflix, Spotify, Canva, YouTube, Prime) abone olan, ücretsiz deneme sürelerini unutup para kaybeden kullanıcılar.
-* **Yazılımcılar & Tasarımcılar:** Adobe Creative Cloud, GitHub Copilot, ChatGPT Plus, Figma, Claude, AWS gibi yüksek maliyetli araçları kullanan ve aylarca açmadığı araçlara bütçe ayıran profesyoneller.
-* **Gizlilik Odaklı Güç Kullanıcıları (Power Users):** Banka hesaplarını veya kredi kartı şifrelerini üçüncü parti SaaS bulut araçlarına (Plaid vb.) teslim etmek istemeyen kullanıcılar.
+* **Bireysel Kullanıcılar & Uzaktan Çalışanlar:** Dijital eğlence ve günlük yazılım servislerine (Netflix, Spotify, Canva, YouTube, Prime) abone olan, ücretsiz deneme sürelerini unutup gereksiz ödeme yapan herkes.
+* **Yazılımcılar, Tasarımcılar & Serbest Çalışanlar:** Adobe Creative Cloud, GitHub Copilot, ChatGPT Plus, Figma, Claude gibi profesyonel araçları kullanan ve aylarca açmadığı aboneliklere bütçe ayıran kullanıcılar.
+* **Gizliliğine Önem Veren Kullanıcılar:** Banka hesaplarını veya kredi kartı şifrelerini internet üzerindeki üçüncü taraf uygulamalara vermek istemeyen, verilerinin yalnızca kendi bilgisayarında kalmasını isteyen kullanıcılar.
 
 ## Product Purpose
 
-SubRadar, kullanıcıların abonelik israfını, unutulan deneme tuzaklarını ve gizli fiyat artışlarını tespit eden; hiçbir banka şifresi veya bulut sunucusu gerektirmeden **%100 yerel ve çevrimdışı** çalışan masaüstü ve web abonelik analiz ve tek tıkla iptal platformudur.
+SubRadar (v1.0), unutulan abonelikleri, deneme süresi tuzaklarını ve sessiz fiyat artışlarını kolayca fark etmenizi sağlayan; hiçbir banka şifresi veya internet sunucusu gerektirmeden **yalnızca bilgisayarınızda ve çevrimdışı (internetsiz)** çalışan masaüstü ve web abonelik yönetim platformudur.
 
 ## Positioning
 
-Geleneksel abonelik takip uygulamaları kullanıcıdan banka giriş bilgisi talep edip finansal verileri bulut sunucularına satarken; **SubRadar %100 yereldir, tüm verileri kullanıcının kendi bilgisayarında AES-256 ile şifreler, sıfır telemetri kullanır ve tek tıkla yasal fesih dilekçesi üretir.**
+Geleneksel abonelik takip uygulamaları kullanıcıdan banka giriş bilgisi isteyip finansal verileri bulut sunucularına taşırken; **SubRadar tüm verileri yalnızca kullanıcının kendi bilgisayarında güçlü şifreleme (AES-256) ile korur, hiçbir kullanıcı verisini dışarıya göndermez ve tek tıkla resmi abonelik iptal dilekçesi hazırlar.**
 
 ## Operating Context
 
-* **Web Tanıtım Vitrini (`web/`):** GitHub Pages üzerinde yayında olan, interaktif macOS pencere simülasyonu ve israf hesaplayıcısı sunan ikna ve dönüşüm yüzü.
-* **Masaüstü Uygulaması (`app/`):** Kullanıcının bilgisayarında çalışan, çerçevesiz pencere, sistem tepsisi ve yerel AES-256 kasası barındıran yerel istemci (Electron / Native).
+* **Web Tanıtım Vitrini (`web/`):** İnteraktif uygulama önizlemesi ve abonelik israf hesaplayıcısı sunan web arayüzü.
+* **Masaüstü Uygulaması (`app/`):** Doğrudan kullanıcının kendi bilgisayarında çevrimdışı çalışan, şifreli yerel kasaya sahip masaüstü uygulaması (SubRadar v1.0 - Ticari Lisans).
 
 ## Capabilities and Constraints
 
 * **Yetkinlikler:**
-  - AES-256-CBC yerel şifreli kasa motoru.
-  - İnteraktif İsraf Hesaplayıcı (kullanıcı profilleri: Bireysel, Freelancer, Ekip).
-  - "Tek Tıkla İptal" sihirbazı: Doğrudan hesap iptal portalı bağlantıları + Tüketici Hakları mevzuatına uygun resmi fesih mektubu üreticisi.
-  - Canlı döviz kurları ile para birimi dönüşümü (TRY, USD, EUR, GBP).
-  - Apple Glass, Dark Mode, çalışan macOS trafik ışıkları ve kısayollar (Ctrl+K).
+  - Yalnızca bilgisayarınızda çalışan şifreli veri kasası (AES-256).
+  - İnteraktif İsraf Hesaplayıcı (Bireysel, Serbest Çalışan ve Ekip profilleri).
+  - "Tek Tıkla İptal" yardımcısı: Servislerin doğrudan abonelik iptal sayfalarına yönlendirme + Tüketici Hakları mevzuatına uygun resmi iptal dilekçesi oluşturucu.
+  - Güncel döviz kurları ile para birimi dönüşümü (TRY, USD, EUR, GBP).
+  - Modern koyu tema, akıcı pencere kullanımı ve klavye kısayolları (Ctrl+K).
 * **Kısıtlar:**
-  - Banka şifresi veya API entegrasyonu istenmez (gizlilik gereği tüm veriler yerel girilir).
-  - Bulut sunucusu ve telemetri bulunmaz.
+  - Banka şifresi veya kart bilgisi kesinlikle istenmez; tüm veriler güvenliğiniz için yalnızca kendi bilgisayarınızda tutulur.
+  - Bulut sunucusu veya kullanıcı takip sistemi bulunmaz.
+  - Yazılım, **SubRadar Ticari Yazılım Lisansı v1.0** kapsamında lisanslanmıştır.
 
 ## Brand Commitments
 
-* **İsim:** SubRadar
-* **Slogan:** "Masaüstü Abonelik Zekâsı ve Tek Tıkla İptal"
-* **Marka Sesi:** Keskin, güven veren, korumacı, gizlilik takıntılı ve premium ("Aboneliklerinizi siz yönetin, onlar sizi değil.").
-* **Görsel Dil:** Apple Glass (Glassmorphism), derin koyu mod (`#07090E`), macOS pencere ergonomisi, neon indigo (`#6366F1`), zümrüt yeşili (`#10B981`) ve gül pembesi (`#F43F5E`) aksanlar.
+* **İsim:** SubRadar (Sürüm v1.0)
+* **Slogan:** "Aboneliklerinizi Kolayca Yönetin, Tek Tıkla İptal Edin"
+* **Marka Sesi:** Samimi, anlaşılır, güven veren, kullanıcı dostu ve profesyonel ("Aboneliklerinizi siz yönetin, onlar sizi değil.").
+* **Görsel Dil:** Modern cam efektli arayüz (Apple Glass), göz yormayan koyu tema (`#07090E`), indigo (`#6366F1`), zümrüt yeşili (`#10B981`) ve gül pembesi (`#F43F5E`) vurgular.
 
 ## Evidence on Hand
 
-* **Çalışan Web Vitrini:** [`web/code.html`](web/code.html) (Canlı simülasyon, trafik ışıkları, hesaplayıcı).
-* **Modüler Bileşenler:** [`web/components/`](web/components/) (14 adet modüler HTML parçası).
-* **Ekran Görüntüleri:** [`screenshots/`](screenshots/) (5 adet yüksek çözünürlüklü arayüz karesi).
+* **Çalışan Web Vitrini:** [`web/code.html`](web/code.html) (Canlı uygulama önizlemesi ve israf hesaplayıcı).
+* **Modüler Bileşenler:** [`web/components/`](web/components/) (Modüler HTML arayüz parçaları).
+* **Ekran Görüntüleri:** [`screenshots/`](screenshots/) (Yüksek çözünürlüklü uygulama ekran görüntüleri).
 
 ## Product Principles
 
-1. **Mutlak Gizlilik (Zero Knowledge, 100% Local):** Kullanıcının finansal veya abonelik verisi asla cihazından dışarı çıkamaz.
-2. **Dürüst Kullanılabilirlik (Honest Craft):** Sahte canlılık (fake pingler) veya manipülatif karanlık tasarımlar (dark patterns) yasaktır.
-3. **Anında Eylem (Frictionless Cancellation):** Kullanıcıyı engellemek yerine tek butonla resmi iptale ve yasal fesih metnine ulaştırmak.
-4. **Zirve Tasarım Standartları (Out-of-Distribution Craft):** Apple Keynote ve Raycast kalitesinde tipografi, akıcı animasyon ve ferah hiyerarşi.
+1. **Tam Gizlilik (Yalnızca Bilgisayarınızda):** Harcama ve abonelik bilgileriniz asla cihazınızdan dışarı çıkmaz.
+2. **Şeffaf ve Dürüst Deneyim:** Yanıltıcı bildirimler veya karmaşık ekranlar yerine herkesin rahatça kullanabileceği sade bir tasarım sunulur.
+3. **Kolay ve Hızlı İptal:** Kullanıcıyı uğraştırmak yerine tek butonla resmi iptal sayfasına ve hazır iptal dilekçesine ulaştırır.
+4. **Yüksek Tasarım Kalitesi:** Okunaklı yazılar, akıcı geçişler ve düzenli ekran yerleşimi ile keyifli bir kullanım sağlar.
 
 ## Accessibility & Inclusion
 
-* WCAG AA/AAA kontrast oranları (metinlerde en az 4.5:1).
-* Klavye erişilebilirliği (`:focus-visible`, `Ctrl+K` arama, `Esc` kapatma).
-* Dokunmatik hedefler için minimum 44px ergonomik buton boyutları.
+* Yüksek okunabilirlik ve renk kontrastı (WCAG AA/AAA standartlarına uygun).
+* Tam klavye desteği (`:focus-visible`, `Ctrl+K` hızlı arama, `Esc` ile kapatma).
+* Rahat tıklanabilir buton ve menü boyutları (minimum 44px).

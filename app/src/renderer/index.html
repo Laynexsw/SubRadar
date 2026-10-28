@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SubRadar Desktop — Yerel Kasa & Abonelik Zekâsı</title>
+  <title>SubRadar Desktop v1.0 — Yerel Kasa & Abonelik Yönetimi</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,15 +30,15 @@
       <div class="titlebar-center">
         <div class="app-brand">
           <span class="brand-dot"></span>
-          <span>SubRadar Desktop</span>
+          <span>SubRadar Desktop <small style="opacity: 0.65; font-weight: 400;">v1.0</small></span>
         </div>
         <div class="vault-status-badge" id="vault-status-badge">
-          <span>🔒 AES-256 Kilitli</span>
+          <span>🔒 Kasa Kilitli</span>
         </div>
       </div>
 
       <div class="titlebar-actions">
-        <button type="button" class="btn btn-secondary btn-icon" id="btn-cmd-trigger" title="Komut Paleti (Ctrl+K)" style="font-size: 11px; font-family: var(--font-mono); width: auto; padding: 4px 10px;">
+        <button type="button" class="btn btn-secondary btn-icon" id="btn-cmd-trigger" title="Hızlı Arama ve Komutlar (Ctrl+K)" style="font-size: 11px; font-family: var(--font-mono); width: auto; padding: 4px 10px;">
           <span>⌘K</span>
         </button>
         <select id="header-currency-select" class="form-select" style="padding: 4px 8px; font-size: 12px; width: auto; background: rgba(255,255,255,0.06); border-radius: 6px;" aria-label="Para Birimi">
@@ -82,7 +82,7 @@
 
           <button type="button" class="nav-item" data-tab="statement-scanner">
             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-            <span>Ekstre Tara (%100 Yerel)</span>
+            <span>Ekstre Tara (Çevrimdışı)</span>
           </button>
 
           <button type="button" class="nav-item" data-tab="vault-settings">
@@ -97,8 +97,8 @@
             <span id="stat-mem-val">17,4 MB</span>
           </div>
           <div class="system-stat-pill">
-            <span>Yerel Motor:</span>
-            <span id="stat-ping-val" style="color: var(--accent-emerald);">3,4ms</span>
+            <span>Çevrimdışı Mod:</span>
+            <span id="stat-ping-val" style="color: var(--accent-emerald);">Aktif (v1.0)</span>
           </div>
         </div>
       </aside>
@@ -111,8 +111,8 @@
         ----------------------------------------------------------------- -->
         <section class="view-panel" id="view-dashboard">
           <div style="margin-bottom: 24px;">
-            <h1 style="font-size: 24px; font-weight: 700; color: #fff;">Abonelik Zekâsı</h1>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Yerel AES-256 kasa aktif. Verileriniz asla cihazınızdan dışarı çıkmaz.</p>
+            <h1 style="font-size: 24px; font-weight: 700; color: #fff;">Abonelik ve Bütçe Özeti</h1>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Şifreli yerel kasanız aktif. Tüm verileriniz çevrimdışı olarak yalnızca bilgisayarınızda saklanır.</p>
           </div>
 
           <!-- Alert Banner for Trial Trap -->
@@ -120,8 +120,8 @@
             <div style="display: flex; align-items: center; gap: 12px;">
               <span style="font-size: 20px;">⚠️</span>
               <div>
-                <div style="font-size: 13px; font-weight: 600; color: #fff;" id="trial-alert-title">Kritik Deneme Tuzağı Uyarısı!</div>
-                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;" id="trial-alert-desc">Bazı servislerinizin ücretsiz deneme süresi 48 saat içinde doluyor.</div>
+                <div style="font-size: 13px; font-weight: 600; color: #fff;" id="trial-alert-title">Ücretsiz Deneme Süresi Uyarısı!</div>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;" id="trial-alert-desc">Bazı aboneliklerinizin ücretsiz deneme süresi yakında doluyor ve ücretli döneme geçecek.</div>
               </div>
             </div>
             <button type="button" class="btn btn-secondary" style="font-size: 12px; padding: 6px 14px;" id="btn-goto-radar">İncele & İptal Et</button>
@@ -130,34 +130,34 @@
           <!-- 4 KPI Cards -->
           <div class="kpi-grid">
             <div class="glass-card kpi-card">
-              <span class="kpi-label">Aylık Toplam Yakım</span>
+              <span class="kpi-label">Aylık Toplam Gider</span>
               <div class="kpi-value tnum" id="kpi-burn-val">₺0,00</div>
               <div class="kpi-subtext">
-                <span id="kpi-active-subs-count">0 aktif servis</span>
+                <span id="kpi-active-subs-count">0 aktif abonelik</span>
               </div>
             </div>
 
             <div class="glass-card kpi-card">
-              <span class="kpi-label">Yakalanan Sızıntı</span>
+              <span class="kpi-label">Kullanılmayan Abonelik</span>
               <div class="kpi-value tnum" style="color: var(--accent-rose);" id="kpi-leaks-val">0</div>
               <div class="kpi-subtext">
-                <span>Atıl & hayalet araçlar</span>
+                <span>Boşa ödenen üyelikler</span>
               </div>
             </div>
 
             <div class="glass-card kpi-card">
-              <span class="kpi-label">Kurtarılabilir Yıllık İsraf</span>
+              <span class="kpi-label">Yıllık Tasarruf Fırsatı</span>
               <div class="kpi-value tnum" style="color: var(--accent-emerald);" id="kpi-recover-val">₺0,00</div>
               <div class="kpi-subtext">
-                <span>Tek tıkla feshedilebilir</span>
+                <span>Tek tıkla iptal edilebilir</span>
               </div>
             </div>
 
             <div class="glass-card kpi-card">
-              <span class="kpi-label">Finansal Hijyen Skoru</span>
+              <span class="kpi-label">Bütçe Sağlık Puanı</span>
               <div class="kpi-value" id="kpi-hygiene-val" style="color: var(--accent-blue);">A+</div>
               <div class="kpi-subtext">
-                <span id="kpi-hygiene-desc">Temiz kasa, sıfır kaçak</span>
+                <span id="kpi-hygiene-desc">Temiz bütçe, gereksiz harcama yok</span>
               </div>
             </div>
           </div>
@@ -165,7 +165,7 @@
           <!-- Recent Subscriptions Section -->
           <div class="glass-card" style="padding: 24px;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
-              <h2 style="font-size: 15px; font-weight: 600; color: #fff;">İnceleme Bekleyen Lisanslar</h2>
+              <h2 style="font-size: 15px; font-weight: 600; color: #fff;">Son Eklenen ve İncelenen Abonelikler</h2>
               <button type="button" class="btn btn-secondary" style="font-size: 12px;" id="btn-view-all-subs">Tümünü Yönet →</button>
             </div>
             <div id="dashboard-recent-subs" class="table-container">
@@ -180,8 +180,8 @@
         <section class="view-panel" id="view-subscriptions" style="display: none;">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
             <div>
-              <h1 style="font-size: 24px; font-weight: 700; color: #fff;">Abonelik Portföyü</h1>
-              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Kayıtlı lisanslar, yenilenme takvimleri ve doğrudan fesih kontrolleri.</p>
+              <h1 style="font-size: 24px; font-weight: 700; color: #fff;">Abonelik Listesi</h1>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Kayıtlı abonelikleriniz, ödeme tarihleri ve hızlı iptal seçenekleri.</p>
             </div>
             <button type="button" class="btn btn-primary" id="btn-add-sub-trigger">+ Abonelik Ekle</button>
           </div>
@@ -191,19 +191,19 @@
             <div class="filter-group">
               <button type="button" class="filter-pill active" data-filter="all">Tümü</button>
               <button type="button" class="filter-pill" data-filter="active">Aktif</button>
-              <button type="button" class="filter-pill" data-filter="trial">Deneme</button>
-              <button type="button" class="filter-pill" data-filter="idle">Atıl / Risk</button>
+              <button type="button" class="filter-pill" data-filter="trial">Deneme Süresi</button>
+              <button type="button" class="filter-pill" data-filter="idle">Kullanılmayan</button>
               <button type="button" class="filter-pill" data-filter="cancelled">İptal Edilenler</button>
             </div>
 
             <div style="display: flex; align-items: center; gap: 10px;">
               <select id="sub-category-filter" class="form-select" style="width: auto; padding: 6px 12px; font-size: 12px;" aria-label="Kategoriye Göre Filtrele">
                 <option value="all">Tüm Kategoriler</option>
-                <option value="Design">Design</option>
-                <option value="Development">Development</option>
-                <option value="AI & Productivity">AI & Productivity</option>
-                <option value="Streaming">Streaming</option>
-                <option value="Cloud & Hosting">Cloud & Hosting</option>
+                <option value="Design">Tasarım (Design)</option>
+                <option value="Development">Yazılım (Development)</option>
+                <option value="AI & Productivity">Yapay Zekâ & Üretkenlik</option>
+                <option value="Streaming">Dizi, Film & Müzik</option>
+                <option value="Cloud & Hosting">Bulut & Depolama</option>
               </select>
 
               <div class="search-box">
@@ -218,10 +218,10 @@
             <table class="sub-table">
               <thead>
                 <tr>
-                  <th>Hizmet & Plan</th>
+                  <th>Hizmet & Paket</th>
                   <th>Kategori</th>
-                  <th>Yenilenme</th>
-                  <th>Aylık Maliyet</th>
+                  <th>Yenilenme Tarihi</th>
+                  <th>Tutar</th>
                   <th>Durum</th>
                   <th style="text-align: right;">İşlemler</th>
                 </tr>
@@ -238,8 +238,8 @@
         ----------------------------------------------------------------- -->
         <section class="view-panel" id="view-risk-radar" style="display: none;">
           <div style="margin-bottom: 24px;">
-            <h1 style="font-size: 24px; font-weight: 700; color: #fff;">Risk & Deneme Radarı</h1>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Unutulan deneme tuzakları, sessiz zamlar ve kullanılmayan atıl koltuklar.</p>
+            <h1 style="font-size: 24px; font-weight: 700; color: #fff;">Risk & Deneme Süresi Radarı</h1>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Ücretsiz deneme süresi bitmek üzere olan veya uzun süredir kullanmadığınız abonelikler.</p>
           </div>
 
           <div style="display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start;">
@@ -257,13 +257,13 @@
                 <div class="radar-sweep-beam"></div>
                 <div style="position: absolute; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 12px #10b981;"></div>
               </div>
-              <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px;">Yerel Donanım Taraması</div>
-              <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-emerald);" id="radar-live-count">● 0 Kritik Risk Tespit Edildi</div>
+              <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px;">Çevrimdışı Abonelik Taraması</div>
+              <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-emerald);" id="radar-live-count">● 0 Dikkat Gerektiren Abonelik</div>
             </div>
 
             <!-- Risk Items List -->
             <div class="glass-card" style="padding: 24px;">
-              <h2 style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 16px;">Acil Müdahale Edilmesi Gerekenler</h2>
+              <h2 style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 16px;">İncelenmesi Önerilen Abonelikler</h2>
               <div id="risk-radar-items" style="display: flex; flex-direction: column; gap: 12px;">
                 <!-- Dynamically Populated Risk Cards -->
               </div>
@@ -277,7 +277,7 @@
         <section class="view-panel" id="view-kill-switch" style="display: none;">
           <div style="margin-bottom: 24px;">
             <h1 style="font-size: 24px; font-weight: 700; color: #fff;">Tek Tıkla İptal Merkezi</h1>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Karanlık desenleri (dark patterns) atlayın. Doğrudan sağlayıcı iptal portalını açın veya yasal fesih ihtarnamesi oluşturun.</p>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Karmaşık iptal menüleriyle uğraşmayın. Doğrudan servisin iptal sayfasına gidin veya resmi iptal dilekçesi oluşturun.</p>
           </div>
 
           <div id="kill-switch-cards-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px;">
@@ -290,33 +290,33 @@
         ----------------------------------------------------------------- -->
         <section class="view-panel" id="view-statement-scanner" style="display: none;">
           <div style="margin-bottom: 24px;">
-            <h1 style="font-size: 24px; font-weight: 700; color: #fff;">%100 Yerel Ekstre / Fatura Tarayıcısı</h1>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Banka ekstrenizi veya kart hareketlerinizi yapıştırın. Yapay zekâ veya bulut olmadan, tamamen cihazınızın RAM'inde abonelikleri otomatik ayıklar.</p>
+            <h1 style="font-size: 24px; font-weight: 700; color: #fff;">Çevrimdışı Ekstre ve Harcama Tarayıcısı</h1>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Banka ekstrenizi veya kredi kartı hareketlerinizi yapıştırın. İnternet bağlantısı gerekmeden, tamamen bilgisayarınızda aboneliklerinizi otomatik bulur.</p>
           </div>
 
           <div class="glass-card" style="padding: 24px; margin-bottom: 24px;">
             <div style="display: flex; gap: 12px; margin-bottom: 16px;">
               <button type="button" class="btn btn-secondary" id="btn-load-sample-statement" style="font-size: 12px;">📄 Örnek Banka Ekstresi Yükle</button>
-              <button type="button" class="btn btn-primary" id="btn-run-statement-scan" style="font-size: 12px;">⚡ Ekstreyi Yerelde Tara</button>
+              <button type="button" class="btn btn-primary" id="btn-run-statement-scan" style="font-size: 12px;">⚡ Ekstreyi Şimdi Tara</button>
             </div>
-            <textarea id="statement-text-input" class="form-textarea font-mono" rows="8" placeholder="Banka ekstresi satırlarını veya CSV içeriğini buraya yapıştırın... (Örn: 14.10.2026 NETFLIX.COM 299.99 TL / ADOBE SYSTEMS 2966.52 TRY / SPOTIFY TR 99.99 TL)" style="font-size: 12px; line-height: 1.6;"></textarea>
+            <textarea id="statement-text-input" class="form-textarea font-mono" rows="8" placeholder="Banka ekstresi satırlarını veya kredi kartı hareketlerinizi buraya yapıştırın... (Örn: 14.10.2026 NETFLIX.COM 299.99 TL / ADOBE SYSTEMS 2966.52 TRY / SPOTIFY TR 99.99 TL)" style="font-size: 12px; line-height: 1.6;"></textarea>
           </div>
 
           <!-- Detected Subscriptions Preview -->
           <div id="statement-results-container" style="display: none;" class="glass-card">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-              <h2 style="font-size: 15px; font-weight: 600; color: #fff;">Tespit Edilen Abonelikler (<span id="detected-count">0</span>)</h2>
-              <button type="button" class="btn btn-emerald" id="btn-import-all-detected" style="font-size: 12px;">+ Tümünü Kasaya Aktar</button>
+              <h2 style="font-size: 15px; font-weight: 600; color: #fff;">Bulunan Abonelikler (<span id="detected-count">0</span>)</h2>
+              <button type="button" class="btn btn-emerald" id="btn-import-all-detected" style="font-size: 12px;">+ Tümünü Listeme Aktar</button>
             </div>
             <div class="table-container">
               <table class="sub-table">
                 <thead>
                   <tr>
-                    <th>Tespit Edilen Servis</th>
-                    <th>Plan</th>
-                    <th>Fiyat</th>
-                    <th>Kaynak Satır</th>
-                    <th style="text-align: right;">Aksiyon</th>
+                    <th>Bulunan Servis</th>
+                    <th>Paket</th>
+                    <th>Tutar</th>
+                    <th>Ekstre Satırı</th>
+                    <th style="text-align: right;">İşlem</th>
                   </tr>
                 </thead>
                 <tbody id="detected-subs-body">
@@ -333,29 +333,29 @@
         <section class="view-panel" id="view-vault-settings" style="display: none;">
           <div style="margin-bottom: 24px;">
             <h1 style="font-size: 24px; font-weight: 700; color: #fff;">Kasa & Güvenlik Ayarları</h1>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Kriptografik anahtarlar, yedekleme ve sıfır-bilgi (zero-knowledge) kontrolleri.</p>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Şifreleme koruması, yedekleme işlemleri ve kişisel bilgileriniz.</p>
           </div>
 
           <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-            <!-- Cryptography Card -->
+            <!-- Security & Version Card -->
             <div class="glass-card" style="padding: 24px;">
-              <h2 style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 14px;">Kriptografik Durum</h2>
+              <h2 style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 14px;">Güvenlik ve Sürüm Bilgisi</h2>
               <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle);">
-                  <span style="color: var(--text-secondary);">Şifreleme Motoru:</span>
-                  <span class="font-mono text-white">AES-256-CBC</span>
+                  <span style="color: var(--text-secondary);">Uygulama Sürümü:</span>
+                  <span class="font-mono text-white">v1.0 (Ticari Lisans)</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle);">
-                  <span style="color: var(--text-secondary);">Anahtar Türetme (KDF):</span>
-                  <span class="font-mono text-white">Scrypt (N=16384, r=8, p=1)</span>
+                  <span style="color: var(--text-secondary);">Veri Şifreleme:</span>
+                  <span class="font-mono text-white">AES-256 Standart Koruma</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle);">
-                  <span style="color: var(--text-secondary);">Bütünlük Koruması:</span>
-                  <span class="font-mono text-white">HMAC-SHA256 (Timing-Safe)</span>
+                  <span style="color: var(--text-secondary);">Şifre Güvenliği:</span>
+                  <span class="font-mono text-white">Güçlendirilmiş Anahtar Koruması</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle);">
-                  <span style="color: var(--text-secondary);">Bulut Telemetrisi:</span>
-                  <span class="font-mono" style="color: var(--accent-emerald);">%100 Çevrimdışı (0 Bayt)</span>
+                  <span style="color: var(--text-secondary);">İnternet ve Veri Paylaşımı:</span>
+                  <span class="font-mono" style="color: var(--accent-emerald);">%100 Çevrimdışı (Veri Gönderilmez)</span>
                 </div>
               </div>
               <div style="margin-top: 20px;">
@@ -366,34 +366,34 @@
             <!-- Backup & Restore Card -->
             <div class="glass-card" style="padding: 24px;">
               <h2 style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 14px;">Şifreli Yedekleme</h2>
-              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">Kasanızı şifreli tek bir `.subradar` dosyası olarak dışa aktarabilir veya başka bir bilgisayardan içe aktarabilirsiniz.</p>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">Verilerinizi şifreli bir `.subradar` dosyası olarak bilgisayarınıza yedekleyebilir veya başka bir bilgisayardan geri yükleyebilirsiniz.</p>
               <div style="display: flex; flex-direction: column; gap: 10px;">
-                <button type="button" class="btn btn-secondary" id="btn-export-backup">💾 Şifreli Kasa Yedeği Dışa Aktar (.subradar)</button>
+                <button type="button" class="btn btn-secondary" id="btn-export-backup">💾 Şifreli Yedek İndir (.subradar)</button>
                 <button type="button" class="btn btn-secondary" id="btn-import-backup">📂 Yedekten Geri Yükle (.subradar)</button>
               </div>
             </div>
 
             <!-- Profile & Notification Preferences -->
             <div class="glass-card" style="padding: 24px;">
-              <h2 style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 14px;">Kullanıcı & Fesih Bilgileri</h2>
+              <h2 style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 14px;">Kullanıcı ve İptal Dilekçesi Bilgileri</h2>
               <div style="display: flex; flex-direction: column; gap: 12px;">
                 <div>
-                  <label class="form-label">Ad Soyad (Fesih Mektuplarında Görünür)</label>
+                  <label class="form-label">Ad Soyad (İptal Dilekçesinde Yer Alır)</label>
                   <input type="text" class="form-input" id="pref-user-name" value="Abonelik Sahibi">
                 </div>
                 <div>
-                  <label class="form-label">Kayıtlı E-Posta</label>
+                  <label class="form-label">Kayıtlı E-Posta Adresi</label>
                   <input type="email" class="form-input" id="pref-user-email" value="kullanici@subradar.local">
                 </div>
-                <button type="button" class="btn btn-secondary" id="btn-save-prefs" style="align-self: flex-start; margin-top: 6px;">Kaydet</button>
+                <button type="button" class="btn btn-secondary" id="btn-save-prefs" style="align-self: flex-start; margin-top: 6px;">Bilgileri Kaydet</button>
               </div>
             </div>
 
             <!-- Danger Zone -->
             <div class="glass-card" style="padding: 24px; border-color: rgba(244, 63, 94, 0.3);">
-              <h2 style="font-size: 15px; font-weight: 600; color: var(--accent-rose); margin-bottom: 8px;">Tehlikeli Bölge</h2>
-              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">Tüm kayıtlı abonelikleri ve yerel kasa anahtarlarını silip fabrikatif ayarlara döndürür. Bu işlem geri alınamaz.</p>
-              <button type="button" class="btn btn-danger" id="btn-factory-reset">⚠️ Tüm Kasayı Sıfırla (Fabrika Ayarları)</button>
+              <h2 style="font-size: 15px; font-weight: 600; color: var(--accent-rose); margin-bottom: 8px;">Verileri Sıfırla</h2>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">Tüm kayıtlı abonelikleri ve yerel kasa verilerini silerek uygulamayı ilk kurulum haline döndürür. Bu işlem geri alınamaz.</p>
+              <button type="button" class="btn btn-danger" id="btn-factory-reset">⚠️ Tüm Verileri Sıfırla (Fabrika Ayarları)</button>
             </div>
           </div>
         </section>
@@ -412,12 +412,12 @@
           </svg>
         </div>
 
-        <h2 class="gate-title" id="gate-title">SubRadar Yerel Kasa</h2>
-        <p class="gate-desc" id="gate-subtitle">Verilerinizi çözmek için lütfen ana şifrenizi girin.</p>
+        <h2 class="gate-title" id="gate-title">SubRadar Şifreli Kasa</h2>
+        <p class="gate-desc" id="gate-subtitle">Aboneliklerinize erişmek için lütfen ana şifrenizi girin.</p>
 
         <form id="gate-form">
           <div class="pw-wrapper">
-            <input type="password" id="gate-password-input" class="form-input" placeholder="Ana Kasa Şifresi..." autocomplete="current-password" autofocus required>
+            <input type="password" id="gate-password-input" class="form-input" placeholder="Ana Kasa Şifreniz..." autocomplete="current-password" autofocus required>
             <button type="button" class="pw-toggle" id="btn-toggle-pw" title="Şifreyi Göster/Gizle" aria-label="Şifreyi Göster veya Gizle">👁️</button>
           </div>
 
@@ -425,13 +425,13 @@
             <div class="strength-bar-fill" id="gate-strength-bar"></div>
           </div>
 
-          <div id="gate-error-msg" style="color: var(--accent-rose); font-size: 12px; margin-bottom: 14px; display: none;">Hatalı ana şifre veya bozulmuş veri.</div>
+          <div id="gate-error-msg" style="color: var(--accent-rose); font-size: 12px; margin-bottom: 14px; display: none;">Hatalı ana şifre girdiniz. Lütfen tekrar deneyin.</div>
 
           <button type="submit" class="btn btn-primary" id="gate-submit-btn" style="width: 100%; margin-bottom: 12px;">Kasayı Aç</button>
 
           <!-- Quick Test Helper Button -->
           <button type="button" class="btn btn-secondary" id="btn-quick-demo-unlock" style="width: 100%; font-size: 11px; opacity: 0.85;">
-            ⚡ Hızlı Demo Açılışı (subradar2026)
+            ⚡ Örnek Verilerle Hızlı Giriş (subradar2026)
           </button>
         </form>
       </div>
@@ -449,7 +449,7 @@
         <div class="modal-body">
           <!-- Preset Chips -->
           <div style="margin-bottom: 18px;">
-            <label class="form-label">Hazır SaaS Şablonu Seç</label>
+            <label class="form-label">Hazır Popüler Servislerden Seç</label>
             <div id="preset-chips-container" style="display: flex; flex-wrap: wrap; gap: 6px; max-height: 85px; overflow-y: auto; padding: 4px 0;">
               <!-- Populated via presets.js -->
             </div>
@@ -458,22 +458,22 @@
           <form id="form-sub" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div style="grid-column: span 2;">
               <label class="form-label">Servis Adı *</label>
-              <input type="text" class="form-input" id="input-sub-name" placeholder="Örn: Adobe Creative Cloud" required>
+              <input type="text" class="form-input" id="input-sub-name" placeholder="Örn: Netflix, Spotify, Adobe..." required>
             </div>
 
             <div>
               <label class="form-label">Plan / Paket</label>
-              <input type="text" class="form-input" id="input-sub-plan" placeholder="Örn: Pro Tier">
+              <input type="text" class="form-input" id="input-sub-plan" placeholder="Örn: Standart Paket">
             </div>
 
             <div>
               <label class="form-label">Kategori</label>
               <select id="input-sub-category" class="form-select" aria-label="Abonelik Kategorisi">
-                <option value="Design">Design</option>
-                <option value="Development">Development</option>
-                <option value="AI & Productivity">AI & Productivity</option>
-                <option value="Streaming">Streaming</option>
-                <option value="Cloud & Hosting">Cloud & Hosting</option>
+                <option value="Design">Tasarım (Design)</option>
+                <option value="Development">Yazılım (Development)</option>
+                <option value="AI & Productivity">Yapay Zekâ & Üretkenlik</option>
+                <option value="Streaming">Dizi, Film & Müzik</option>
+                <option value="Cloud & Hosting">Bulut & Depolama</option>
                 <option value="Other">Diğer</option>
               </select>
             </div>
@@ -493,7 +493,7 @@
             </div>
 
             <div>
-              <label class="form-label">Ödeme Döngüsü</label>
+              <label class="form-label">Ödeme Sıklığı</label>
               <select id="input-sub-cycle" class="form-select" aria-label="Ödeme Döngüsü">
                 <option value="monthly">Aylık</option>
                 <option value="yearly">Yıllık</option>
@@ -502,28 +502,28 @@
             </div>
 
             <div>
-              <label class="form-label">Sonraki Yenilenme Tarihi</label>
+              <label class="form-label">Sonraki Ödeme Tarihi</label>
               <input type="date" class="form-input font-mono" id="input-sub-renewal">
             </div>
 
             <div>
-              <label class="form-label">Durum</label>
+              <label class="form-label">Kullanım Durumu</label>
               <select id="input-sub-status" class="form-select" aria-label="Abonelik Durumu">
-                <option value="active">Aktif</option>
-                <option value="trial">Ücretsiz Deneme</option>
-                <option value="idle">Atıl / Riskli (Kullanılmıyor)</option>
+                <option value="active">Aktif Kullanılıyor</option>
+                <option value="trial">Ücretsiz Deneme Süresinde</option>
+                <option value="idle">Kullanılmıyor (Boşa Ödenen)</option>
                 <option value="cancelled">İptal Edildi</option>
               </select>
             </div>
 
             <div>
-              <label class="form-label">Doğrudan İptal Portalı URL</label>
-              <input type="url" class="form-input" id="input-sub-cancel-url" placeholder="https://account.service.com/cancel">
+              <label class="form-label">Doğrudan İptal Sayfası Bağlantısı (URL)</label>
+              <input type="url" class="form-input" id="input-sub-cancel-url" placeholder="https://...">
             </div>
 
             <div style="grid-column: span 2;">
-              <label class="form-label">Notlar & Risk Faktörü</label>
-              <input type="text" class="form-input" id="input-sub-notes" placeholder="Örn: 2 haftadır hiç açılmadı...">
+              <label class="form-label">Notlar ve Hatırlatmalar</label>
+              <input type="text" class="form-input" id="input-sub-notes" placeholder="Örn: 2 haftadır hiç kullanılmadı...">
             </div>
           </form>
         </div>
@@ -540,18 +540,18 @@
     <div class="modal-backdrop" id="modal-legal-backdrop" style="display: none;">
       <div class="modal-dialog" style="max-width: 640px;">
         <div class="modal-header">
-          <h2 style="font-size: 16px; font-weight: 600; color: #fff;">Resmi Fesih İhtarnamesi</h2>
+          <h2 style="font-size: 16px; font-weight: 600; color: #fff;">Resmi Abonelik İptal Dilekçesi</h2>
           <button type="button" class="btn btn-icon btn-secondary" id="btn-close-legal-modal" aria-label="Kapat">✕</button>
         </div>
         <div class="modal-body">
           <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
-            6502 Sayılı Tüketicinin Korunması Kanunu m. 52/4 ve GDPR Madde 17 uyarınca oluşturulmuş resmi fesih metnidir.
+            6502 Sayılı Tüketicinin Korunması Hakkında Kanun ve kişisel verilerin korunması mevzuatına uygun resmi iptal talebi metnidir.
           </div>
           <textarea id="legal-notice-preview" class="form-textarea font-mono" rows="14" readonly style="font-size: 11px; line-height: 1.5; background: rgba(8, 10, 15, 0.95);"></textarea>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="btn-open-direct-portal">🔗 Doğrudan İptal Portalını Aç</button>
-          <button type="button" class="btn btn-primary" id="btn-copy-legal-notice">📋 Metni Kopyala</button>
+          <button type="button" class="btn btn-secondary" id="btn-open-direct-portal">🔗 Doğrudan İptal Sayfasını Aç</button>
+          <button type="button" class="btn btn-primary" id="btn-copy-legal-notice">📋 Dilekçe Metnini Kopyala</button>
         </div>
       </div>
     </div>
@@ -563,7 +563,7 @@
       <div class="modal-dialog" style="max-width: 520px;">
         <div style="padding: 14px 18px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 16px; color: var(--text-muted);">🔍</span>
-          <input type="text" id="cmd-palette-input" class="form-input" placeholder="Komut yaz veya abonelik ara..." style="border: none; background: transparent; padding: 0; font-size: 14px;" autofocus>
+          <input type="text" id="cmd-palette-input" class="form-input" placeholder="Ekran değiştir, işlem yap veya abonelik ara..." style="border: none; background: transparent; padding: 0; font-size: 14px;" autofocus>
           <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); border: 1px solid var(--border-subtle); padding: 2px 6px; border-radius: 4px;">ESC</span>
         </div>
         <div id="cmd-palette-results" style="max-height: 300px; overflow-y: auto; padding: 8px;">

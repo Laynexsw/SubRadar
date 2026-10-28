@@ -67,7 +67,7 @@
 
     ctx.fillStyle = '#34d399';
     ctx.font = '600 13px -apple-system, monospace';
-    ctx.fillText('✓ HAVA BOŞLUĞU DOĞRULANDI', 855, 129);
+    ctx.fillText('✓ %100 ÇEVRİMDIŞI & GÜVENLİ', 855, 129);
 
     // 5. Title / Label
     ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';

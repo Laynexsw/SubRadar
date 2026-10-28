@@ -1,7 +1,7 @@
 {
   "name": "subradar-desktop",
-  "version": "1.5.0",
-  "description": "SubRadar Desktop — Offline-First Subscription Intelligence & 1-Click Kill Switch with AES-256 Local Vault",
+  "version": "1.0.0",
+  "description": "SubRadar Desktop v1.0 — Çevrimdışı Abonelik Yönetimi, Tek Tıkla İptal Merkezi ve Şifreli Yerel Kasa",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -21,7 +21,7 @@
     "kill-switch"
   ],
   "author": "Laynexsw",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "devDependencies": {
     "electron": "^33.2.0"
   },

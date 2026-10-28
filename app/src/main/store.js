@@ -80,7 +80,7 @@ class SecureVaultStore {
           status: 'idle', // 'active' | 'trial' | 'idle' | 'cancelled'
           trialEndDate: null,
           directCancelUrl: 'https://account.adobe.com/plans',
-          notes: 'Son 51 gündür arka plan işlemi başlatılmadı.',
+          notes: 'Son 51 gündür hiç kullanılmadı.',
           cancellationProtocolExecuted: false
         },
         {
@@ -95,7 +95,7 @@ class SecureVaultStore {
           status: 'idle',
           trialEndDate: null,
           directCancelUrl: 'https://account.jetbrains.com/licenses',
-          notes: '2 yerel geliştirici profilinde koltuklar atanmamış.',
+          notes: 'Uzun süredir aktif olarak kullanılmıyor.',
           cancellationProtocolExecuted: false
         },
         {
@@ -110,7 +110,7 @@ class SecureVaultStore {
           status: 'active',
           trialEndDate: null,
           directCancelUrl: 'https://www.figma.com/settings',
-          notes: 'Bu hafta 34 saat açık, vazgeçilmez iş akışı.',
+          notes: 'Bu hafta 34 saat aktif olarak kullanıldı.',
           cancellationProtocolExecuted: false
         },
         {
@@ -125,7 +125,7 @@ class SecureVaultStore {
           status: 'trial',
           trialEndDate: new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0],
           directCancelUrl: 'https://chat.openai.com/#settings',
-          notes: '48 saat içinde deneme süresi bitiyor! Kart çekimi tetiklenecek.',
+          notes: '48 saat içinde ücretsiz deneme süresi bitiyor! Otomatik ödeme çekilecek.',
           cancellationProtocolExecuted: false
         },
         {

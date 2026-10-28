@@ -17,14 +17,13 @@
 
 ## 1. Genel Bakış ve Katmanlar
 
-SubRadar Enterprise & Personal FinOps, organizasyonlarda ve bireysel iş akışlarında kontrolsüz abonelik israfını (SaaS Sprawl), terk edilmiş koltukları (Gölge IT) ve karanlık desenleri engelleyen; tek tıkla doğrudan iptal ve resmi fesih araçları sunan, %100 yerel ve çevrimdışı çalışan yeni nesil bir finansal zekâ platformudur.
+SubRadar v1.0, bireysel kullanıcıların ve şirketlerin unutulan aboneliklerini, deneme sürelerini ve zorlaştırılmış iptal süreçlerini engelleyen; tek tıkla doğrudan iptal ve resmi fesih dilekçesi araçları sunan, %100 yerel ve çevrimdışı çalışan masaüstü abonelik yönetim platformudur.
 
-Depo şu anda **beş kurumsal katmandan** oluşur:
-1. **Kök Yönetim Katmanı (`/`):** Dağıtım yapılandırması (`index.html`, `.nojekyll`, `.gitignore`, `tsconfig.json`), güvenlik politikaları (`privacy.html`, `terms.html`, `thanks.html`), SEO varlıkları (`robots.txt`, `sitemap.xml`) ve mimari dokümantasyon (`README.md`, `PRODUCT.md`, `AGENTS.md`, `CODEBASE.md`, `.agents/rules/`, `.agents/agents/`, `.agents/skills/`).
-2. **Kurumsal Lisans Çerçevesi (`licenses/`):** 9 alternatif lisans şablonu (MIT, Apache 2.0, GPL, AGPL, BSD, MPL, Unlicense, Proprietary) ve kurumsal seçim matrisi.
-3. **Masaüstü İşletim Çekirdeği (`app/`):** Electron v33, Node.js yerel AES-256 kasası, Air-Gap ekstre analizörü, 6502 SK & GDPR fesih motoru, çerçevesiz Apple Glass UI ve güvenli IPC köprüsüne sahip tam fonksiyonel masaüstü istemcisi.
-4. **Harici UI Bileşenleri (`components/`):** Originkit CLI (`components/originkit/ui/tiles-loader.tsx`, `components/originkit/ui/vector-wordmark.tsx`) resmi React/TypeScript tasarım sistemi bileşenleri.
-5. **Web Vitrini & Simülasyon Platformu (`web/`):**
+Depo şu anda **dört ana katmandan** oluşur:
+1. **Kök Yönetim Katmanı (`/`):** Dağıtım yapılandırması (`index.html`, `.nojekyll`, `.gitignore`, `tsconfig.json`), güvenlik ve ticari lisans politikaları (`LICENSE` v1.0, `privacy.html`, `terms.html`, `thanks.html`), SEO varlıkları (`robots.txt`, `sitemap.xml`) ve mimari dokümantasyon (`README.md`, `PRODUCT.md`, `AGENTS.md`, `CODEBASE.md`, `.agents/rules/`, `.agents/agents/`, `.agents/skills/`).
+2. **Masaüstü İşletim Çekirdeği (`app/ v1.0`):** Electron v33, Node.js yerel AES-256 kasası, çevrimdışı ekstre analizörü, 6502 SK & GDPR fesih motoru, çerçevesiz Apple Glass UI ve güvenli IPC köprüsüne sahip tam fonksiyonel masaüstü istemcisi.
+3. **Harici UI Bileşenleri (`components/`):** Originkit CLI (`components/originkit/ui/tiles-loader.tsx`, `components/originkit/ui/vector-wordmark.tsx`) resmi React/TypeScript tasarım sistemi bileşenleri.
+4. **Web Vitrini & Simülasyon Platformu (`web/`):**
    * **Modüler Kaynak:** `components/` (23 HTML parçası + Originkit tip köprüsü), `css/` (4 dosya), `js/` (27 modül), `assets/cursors/`, `vendor/three/`, `manifest.json`, `sw.js`, `scripts/build.py`, `scripts/embed_tiles_loader.py`.
    * **Üretim / Canlı Yayın:** `code.html` (~340 KB, tüm stil, betik ve HTML'in birleştiği, GitHub Pages'ta yayınlanan monolitik tekil paket).
 
@@ -44,20 +43,16 @@ Depo şu anda **beş kurumsal katmandan** oluşur:
 * [`og-image.svg`](file:///c:/Users/arday/Desktop/SubRadar/og-image.svg): 1200x630 Sosyal medya önizleme (Open Graph & Twitter) kartı.
 * [`.nojekyll`](file:///c:/Users/arday/Desktop/SubRadar/.nojekyll): GitHub Pages'ın Jekyll motorunu devre dışı bırakarak dosya yollarının eksiksiz sunulmasını sağlar.
 * [`.gitignore`](file:///c:/Users/arday/Desktop/SubRadar/.gitignore): IDE araçları (`.agent/`, `.gemini/`, `.codex/`, `.opencode/`), `node_modules/`, `dist/`, `.env` ve sistem dosyalarını hariç tutar.
-* [`LICENSE`](file:///c:/Users/arday/Desktop/SubRadar/LICENSE): Ana depo MIT açık kaynak lisansı.
-* [`PRODUCT.md`](file:///c:/Users/arday/Desktop/SubRadar/PRODUCT.md): Ürün vizyonu, hedef kitle (freelancer, yazılımcı, gizlilik odaklı kullanıcılar), WCAG standartları, marka sesi ve ilkeleri.
+* [`LICENSE`](file:///c:/Users/arday/Desktop/SubRadar/LICENSE): SubRadar Resmi Ticari Yazılım Lisansı (Commercial License v1.0).
+* [`PRODUCT.md`](file:///c:/Users/arday/Desktop/SubRadar/PRODUCT.md): Ürün vizyonu, hedef kitle (bireysel kullanıcılar, profesyoneller, şirketler), WCAG standartları, marka sesi ve ilkeleri.
 * [`tsconfig.json`](file:///c:/Users/arday/Desktop/SubRadar/tsconfig.json): TypeScript / React (Originkit TSX) derleyici ve tip kontrol yapılandırması.
-* [`README.md`](file:///c:/Users/arday/Desktop/SubRadar/README.md): GitHub deposu karşılama sayfası, mimari harita, canlı bağlantılar ve lisans karşılaştırma tablosu.
+* [`README.md`](file:///c:/Users/arday/Desktop/SubRadar/README.md): GitHub deposu karşılama sayfası, mimari harita, canlı bağlantılar ve ticari paket tablosu.
 * [`AGENTS.md`](file:///c:/Users/arday/Desktop/SubRadar/AGENTS.md): AI asistanları için kompakt hızlı başlangıç ve bağlam koruma rehberi.
 * [`.agents/rules/codebase-context.md`](file:///c:/Users/arday/Desktop/SubRadar/.agents/rules/codebase-context.md): AI geliştirme kuralları, Baş Orkestratör & 21 Uzman Alt Ajan yönetim politikaları.
 * [`.agents/agents/`](file:///c:/Users/arday/Desktop/SubRadar/.agents/agents/): 5 Departman ve 21 Kalıcı Uzman Alt Ajan (`*/agent.md`) tanım dosyaları.
 * [`.agents/skills/`](file:///c:/Users/arday/Desktop/SubRadar/.agents/skills/): 14 yerel skill paketi (`impeccable`, `ui-ux-pro-max`, `design-system`, `ui-styling`, `brand`, `banner-design`, `design`, `slides`, `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`, `ponytail-gain`, `ponytail-help`).
 
-### 2.2 Lisans Kütüphanesi (`licenses/`)
-* [`licenses/README.md`](file:///c:/Users/arday/Desktop/SubRadar/licenses/README.md): Lisans seçim kılavuzu ve 9 popüler lisansın karşılaştırma tablosu.
-* [`licenses/*.txt`](file:///c:/Users/arday/Desktop/SubRadar/licenses/): MIT, Apache-2.0, BSD-3, BSD-2, GPL-3.0, AGPL-3.0, MPL-2.0, Unlicense ve Proprietary tam metinleri.
-
-### 2.3 Harici UI Bileşenleri (`components/originkit/`)
+### 2.2 Harici UI Bileşenleri (`components/originkit/`)
 * [`components/originkit/ui/tiles-loader.tsx`](file:///c:/Users/arday/Desktop/SubRadar/components/originkit/ui/tiles-loader.tsx): Originkit CLI resmi React/TypeScript Tiles Loader bileşeni.
 * [`components/originkit/ui/vector-wordmark.tsx`](file:///c:/Users/arday/Desktop/SubRadar/components/originkit/ui/vector-wordmark.tsx): Originkit CLI resmi React/TypeScript Vector Wordmark bileşeni (2 kanallı WebGL atlası, kübik smoothstep imleç dönüşümü ve 3 düğümlü kafes takibi).
 
@@ -71,12 +66,12 @@ Depo şu anda **beş kurumsal katmandan** oluşur:
 * **`sections/`**:
   * `hero.html`: Ana manşet, işletim sistemi indirme butonları (macOS / Windows), interaktif macOS simülasyon penceresi (`#hero-mock-window`).
   * `problem.html`: Gizli abonelik kayıpları, 4.2 dakikalık iptal atlama süresi ve sektör istatistikleri.
-  * `statement-lab.html`: Canlı hava boşluğu (Air-Gap) banka ekstresi ve sızıntı tarayıcısı laboratuvarı (`FileReader API`, sıfır bulut).
+  * `statement-lab.html`: Canlı çevrimdışı banka ekstresi ve unutulan abonelik tarayıcısı laboratuvarı (`FileReader API`, sıfır bulut).
   * `calculator.html`: İsraf hesaplama kaydırıcıları, hızlı kullanıcı profilleri, 1/5 yıllık tasarruf projeksiyonu, PNG "Abonelik Röntgeni" kart ihracı (`#calc-export-png-btn`) ve X paylaşımı.
   * `comparison.html`: Şeffaflık & güven rakip karşılaştırma matrisi (SubRadar vs Rocket Money / Truebill vs Bobby vs Excel).
   * `features.html`: 4 çekirdek motor (Denetim, Otomatik Yakalama, Atlama Motoru, Yerel Kasa).
   * `architecture.html`: Yerel AES-256 SQLite kilitli kasa mimarisi ve sıfır-bulut ilkeleri.
-  * `os-downloads.html`: macOS (Apple Silicon / Intel), Windows (x64 / ARM64) ve Linux kartları + v1.5.0 sürümü.
+  * `os-downloads.html`: macOS (Apple Silicon / Intel), Windows (x64 / ARM64) ve Linux kartları + v1.0 sürümü.
   * `hash-verifier.html`: İstemci tarafı donanım ivmeli SHA-256 kurulum doğrulama aracı (`WebCrypto API`).
   * `pricing.html`: Free ($0), Pro ($79 tek seferlik ömür boyu lisans) ve Enterprise (özel kurumsal lisans) modelleri; aboneliksiz tek seferlik ödeme mimarisi.
   * `faq.html`: Sıkça sorulan sorular akordeonu.
@@ -100,7 +95,7 @@ Depo şu anda **beş kurumsal katmandan** oluşur:
 * [`vendor/three/`](file:///c:/Users/arday/Desktop/SubRadar/web/vendor/three/): Yerel donanım ivmeli 3D WebGL motoru (`three.min.js`, `three.module.js`).
 * [`test-tiles.html`](file:///c:/Users/arday/Desktop/SubRadar/web/test-tiles.html): Originkit Tiles Loader bağımsız test ve demo sayfası.
 * [`manifest.json`](file:///c:/Users/arday/Desktop/SubRadar/web/manifest.json): PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği).
-* [`sw.js`](file:///c:/Users/arday/Desktop/SubRadar/web/sw.js): Çevrimdışı Service Worker önbellekleme motoru (`subradar-v1.6.0-cache`, HTML dökümanları için Network-First stratejisi).
+* [`sw.js`](file:///c:/Users/arday/Desktop/SubRadar/web/sw.js): Çevrimdışı Service Worker önbellekleme motoru (`subradar-v1.0-cache`, HTML dökümanları için Network-First stratejisi).
 * [`config.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/config.js): Kurlar (`USD: 1`, `EUR: 0.86`, `TRY: 48.35`), `srCurrency`, `setCurrency(cur)`, `srConvert(usd)`.
 * [`supabase.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/supabase.js): Supabase v2 JS SDK istemcisi, Auth (E-posta, OAuth, Şifre Sıfırlama) ve PostgreSQL REST tabloları (`profiles`, `licenses`, `enterprise_inquiries`, `user_vault_backups`) köprüsü.
 * [`theme.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/theme.js): Açık/koyu mod mantığı (`#theme-toggle`, `localStorage: sr-theme`).
@@ -108,7 +103,7 @@ Depo şu anda **beş kurumsal katmandan** oluşur:
 * [`toast.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/toast.js): Apple Glass bildirim balonu (`srShowToast(message)`).
 * [`audio-fx.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/audio-fx.js): Web Audio API sıfır-dosya matematiksel osilatörlü dokunsal ses motoru (`playClick`, `playToggle`, `playSuccess`, `toggle`).
 * [`cursor-glow.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/cursor-glow.js): Dinamik imleç takipçi cam aydınlatma motoru (`--mouse-x`, `--mouse-y`).
-* [`statement-lab.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/statement-lab.js): İstemci taraflı Air-Gap ekstre ve kaçak sızıntı analizörü (`FileReader API`).
+* [`statement-lab.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/statement-lab.js): İstemci taraflı çevrimdışı ekstre ve unutulan abonelik analizörü (`FileReader API`).
 * [`hash-verifier.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/hash-verifier.js): WebCrypto donanım ivmeli SHA-256 kurulum paketi bütünlük doğrulayıcısı.
 * [`social-export.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/social-export.js): HTML5 Canvas 1200x630 Retina "Abonelik Röntgeni" kart üretici, PNG indirici ve X/LinkedIn paylaşım köprüsü.
 * [`calculator.js`](file:///c:/Users/arday/Desktop/SubRadar/web/js/calculator.js): Kaydırıcı dinleyicileri, profil butonları (`.calc-preset-btn`), formül hesaplama: `(subs * 32 + trials * 78) * 12`.
@@ -287,13 +282,13 @@ Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** 
 9. `web-ui-engineer`: Modüler `web/components/`, `web/css/`, `web/js/` ve `web/code.html` ön yüz geliştirme uzmanı.
 10. `hero-simulator-engineer`: Hero macOS pencere simülatörü (`hero-window.js`), trafik ışıkları, canlı iptal simülasyonu ve gerçek zamanlı sayaçlar mühendisi.
 11. `interactive-modals-engineer`: Raycast/Linear stili `⌘K` Komut Paleti (`command-palette.js`), kısayollar modalı (`shortcuts-modal.js`), indirme/reclaim modalları ve Toast mühendisi.
-12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), FinOps israf hesaplayıcı (`calculator.js`) ve Air-Gap ekstre analizörü (`statement-lab.js`) uzmanı.
+12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), abonelik tasarruf hesaplayıcı (`calculator.js`) ve çevrimdışı ekstre analizörü (`statement-lab.js`) uzmanı.
 13. `supabase-auth-specialist`: Supabase v2 SDK (`supabase.js`), Double-Slider Apple Glass Auth modalı (`auth-modal.js`) ve kurumsal başvuru (`enterprise-modal.js`) uzmanı.
 
 #### D. Masaüstü Çekirdeği, Kriptografi & Hukuk Departmanı
-14. `desktop-core-engineer`: `app/` v1.5.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
+14. `desktop-core-engineer`: `app/` v1.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
 15. `security-crypto-auditor`: AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa (`vault.js`, `store.js`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
-16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve 10'lu `licenses/` matrisi hukuk uzmanı.
+16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
 
 #### E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı
 17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
@@ -314,8 +309,8 @@ Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** 
   * `.nojekyll` dosyası Jekyll motorunu kapatarak statik varlıkların filtrelenmesini engeller.
 * **GitHub CLI (`gh`):**
   * Yetkili kullanıcı oturumu açık (`Laynexsw`).
-  * Güncel Açıklama: `"⚡ Masaüstü abonelik zekâsı, tek tıkla iptal ve %100 yerel AES-256 kasa. Unutulan deneme tuzaklarını ve gizli yenilemeleri durdurun. Sıfır bulut, sıfır telemetri."`
-  * Güncel Konular (Topics): `apple-design`, `desktop-app`, `electron`, `offline-first`, `privacy-first`, `subscription-tracker`, `license-templates`, `open-source`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`.
+  * Güncel Açıklama: `"⚡ SubRadar v1.0 — Akıllı Masaüstü Abonelik Takibi, Tek Tıkla İptal ve %100 Yerel AES-256 Şifreli Kasa. Unutulan abonelikleri ve deneme sürelerini internetsiz ekstre analizi ve resmi fesih dilekçesiyle sonlandırın. Tek seferlik ticari lisans."`
+  * Güncel Konular (Topics): `apple-design`, `desktop-app`, `electron`, `offline-first`, `privacy-first`, `subscription-tracker`, `commercial-software`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`.
   * Canlı Bilgileri Güncelleme Komutu:
     ```powershell
     gh repo edit Laynexsw/SubRadar -d "<açıklama>" -h "https://laynexsw.github.io/SubRadar/" --add-topic "<etiket1,etiket2>"

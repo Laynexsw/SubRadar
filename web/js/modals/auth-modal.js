@@ -532,7 +532,7 @@ export function initAuthModal() {
       const session = getActiveSession() || { name: 'Kullanıcı', email: 'kullanici@subradar.dev' };
       const backupData = {
         app: 'SubRadar',
-        version: '1.5.0',
+        version: '1.0',
         exportedAt: new Date().toISOString(),
         user: session,
         subscriptionsSummary: {
