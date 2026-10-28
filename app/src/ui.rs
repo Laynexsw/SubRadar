@@ -1,4 +1,4 @@
-//! SubRadar v1.0 — Sitedeki Uygulama Önizlemesi ile 1:1 Birebir Masaüstü Arayüzü (`ui.rs`)
+//! SubRadar v1.0 — Sitedeki Önizleme ile 1:1 Birebir + Maksimum Kullanıcı Dostu Arayüz (`ui.rs`)
 
 use std::fs;
 use std::process::Command;
@@ -10,15 +10,11 @@ use eframe::egui::{
 
 use crate::legal::{generate_legal_notice, NoticeLanguage};
 use crate::models::{
-    format_usd_tr, BillingCycle, Currency, SubStatus, Subscription, SummaryStats, VaultPayload,
+    BillingCycle, Currency, SubStatus, Subscription, SummaryStats, VaultPayload,
 };
 use crate::parser::{parse_statement, SAMPLE_STATEMENT};
 use crate::presets::SERVICE_PRESETS;
-use crate::theme::{
-    apply_theme, ACCENT_EMERALD, BG_HEADER, BG_MAIN, BG_SIDEBAR, BORDER_DARK, BORDER_SUBTLE,
-    DARK_TEXT, LIGHT_BTN_BG, LIGHT_BTN_HOVER, SURFACE_DARK, TEXT_DIM, TEXT_MUTED_DARK,
-    TEXT_SECONDARY, TEXT_WHITE,
-};
+use crate::theme::{apply_theme, ThemePalette};
 use crate::vault::{default_vault_path, load_vault_from_file, save_vault_to_file, VAULT_FILENAME};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -29,6 +25,15 @@ pub enum WorkspaceTab {
     LocalVault,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum OverviewFilter {
+    All,
+    PassiveWaste,
+    ActiveUsed,
+    Protected,
+    Cancelled,
+}
+
 pub struct SubRadarApp {
     pub payload: VaultPayload,
     pub is_locked: bool,
@@ -36,13 +41,22 @@ pub struct SubRadarApp {
     pub master_password: String,
     pub unlock_input: String,
     pub active_tab: WorkspaceTab,
+    pub overview_filter: OverviewFilter,
     pub search_query: String,
     pub focus_search_next_frame: bool,
-    pub status_message: Option<String>,
 
-    // New Subscription / Preset Form
+    // Interactive Inline Drawer & Undo State
+    pub expanded_sub_id: Option<String>,
+    pub editing_sub_id: Option<String>,
+    pub edit_price_input: String,
+    pub edit_note_input: String,
+    pub last_cancelled_id: Option<String>,
+    pub toast_banner: Option<(String, bool)>, // (message, show_undo)
+
+    // Quick Add Form (Subscriptions tab)
     pub form_name: String,
     pub form_plan: String,
+    pub form_category: String,
     pub form_price: String,
     pub form_cancel_url: String,
     pub form_notes: String,
@@ -51,13 +65,14 @@ pub struct SubRadarApp {
     pub statement_input: String,
     pub detected_subs: Vec<Subscription>,
 
-    // Legal Notice & Blocking Rules
+    // Legal Notice & Smart Rules
     pub selected_sub_idx: usize,
     pub notice_lang: NoticeLanguage,
     pub generated_notice: String,
-    pub rule_block_trial_trap: bool,
-    pub rule_block_silent_price_hike: bool,
-    pub rule_block_zombie_renewal: bool,
+    pub rule_warn_trial_3days: bool,
+    pub rule_mark_idle_30days: bool,
+    pub rule_notify_price_hike: bool,
+    pub rule_auto_refund_notice: bool,
 }
 
 impl Default for SubRadarApp {
@@ -89,22 +104,30 @@ impl Default for SubRadarApp {
             master_password,
             unlock_input: String::new(),
             active_tab: WorkspaceTab::Overview,
+            overview_filter: OverviewFilter::All,
             search_query: String::new(),
             focus_search_next_frame: false,
-            status_message: None,
-            form_name: String::new(),
-            form_plan: "BOŞTA LİSANS".to_string(),
-            form_price: "29.99".to_string(),
-            form_cancel_url: String::new(),
-            form_notes: "Yeni eklenen abonelik kaydı.".to_string(),
+            expanded_sub_id: None,
+            editing_sub_id: None,
+            edit_price_input: String::new(),
+            edit_note_input: String::new(),
+            last_cancelled_id: None,
+            toast_banner: None,
+            form_name: "Netflix".to_string(),
+            form_plan: "Standart Paket".to_string(),
+            form_category: "Dizi, Film & Müzik".to_string(),
+            form_price: "14.99".to_string(),
+            form_cancel_url: "https://www.netflix.com/cancelplan".to_string(),
+            form_notes: "Hazır şablondan seçildi.".to_string(),
             statement_input: SAMPLE_STATEMENT.to_string(),
             detected_subs: Vec::new(),
             selected_sub_idx: 0,
             notice_lang: NoticeLanguage::Turkish,
             generated_notice: String::new(),
-            rule_block_trial_trap: true,
-            rule_block_silent_price_hike: true,
-            rule_block_zombie_renewal: true,
+            rule_warn_trial_3days: true,
+            rule_mark_idle_30days: true,
+            rule_notify_price_hike: true,
+            rule_auto_refund_notice: true,
         };
         app.refresh_legal_notice();
         app
@@ -117,11 +140,39 @@ impl SubRadarApp {
         let _ = save_vault_to_file(&path, &self.payload, &self.master_password);
     }
 
+    fn show_toast(&mut self, msg: impl Into<String>, show_undo: bool) {
+        self.toast_banner = Some((msg.into(), show_undo));
+    }
+
     fn reset_simulation(&mut self) {
         self.payload.subscriptions = VaultPayload::default_overview_subscriptions();
+        self.overview_filter = OverviewFilter::All;
         self.search_query.clear();
+        self.expanded_sub_id = None;
+        self.editing_sub_id = None;
+        self.last_cancelled_id = None;
         self.persist_vault();
         self.refresh_legal_notice();
+        self.show_toast(
+            "✓ Simülasyon başlangıç durumuna sıfırlandı ($384,20 / 3 Pasif Lisans).",
+            false,
+        );
+    }
+
+    fn undo_last_cancel(&mut self) {
+        if let Some(last_id) = self.last_cancelled_id.take() {
+            if let Some(sub) = self
+                .payload
+                .subscriptions
+                .iter_mut()
+                .find(|s| s.id == last_id)
+            {
+                sub.status = SubStatus::UnusedTrial;
+                let name = sub.name.clone();
+                self.persist_vault();
+                self.show_toast(format!("↩ {} iptal işlemi geri alındı.", name), false);
+            }
+        }
     }
 
     fn refresh_legal_notice(&mut self) {
@@ -177,7 +228,7 @@ impl SubRadarApp {
         resp.on_hover_text(tooltip).clicked()
     }
 
-    fn render_window_header(&mut self, ctx: &egui::Context, ui: &mut egui::Ui) {
+    fn render_window_header(&mut self, ctx: &egui::Context, ui: &mut egui::Ui, pal: &ThemePalette) {
         let header_rect = ui.max_rect();
 
         ui.horizontal_centered(|ui| {
@@ -196,47 +247,38 @@ impl SubRadarApp {
                 ui,
                 Color32::from_rgb(26, 171, 41),
                 "+",
-                "Büyüt / Küçült",
+                "Tam Ekran / Pencereli",
             ) {
                 self.is_maximized = !self.is_maximized;
                 ctx.send_viewport_cmd(ViewportCommand::Maximized(self.is_maximized));
             }
 
-            ui.add_space(14.0);
+            ui.add_space(12.0);
             ui.label(
                 RichText::new("SubRadar Masaüstü — Yerel Kasa")
                     .font(FontId::new(11.5, FontFamily::Monospace))
-                    .color(TEXT_MUTED_DARK),
+                    .color(pal.text_muted),
             );
 
-            // Center Search Box ("Aboneliğe git (Ctrl+K)" + "esc")
-            let avail = ui.available_width();
-            let search_w = 260.0_f32;
-            let right_status_w = 175.0_f32;
-            let left_pad = ((avail - search_w - right_status_w) * 0.5).max(12.0);
-            ui.add_space(left_pad);
+            ui.add_space(18.0);
 
+            // Center Search Box ("Aboneliğe git (Ctrl+K)" + "esc")
             egui::Frame::new()
-                .fill(Color32::from_rgb(16, 16, 20))
-                .stroke(Stroke::new(1.0_f32, Color32::from_rgb(34, 34, 42)))
+                .fill(pal.search_bg)
+                .stroke(Stroke::new(1.0_f32, pal.search_border))
                 .corner_radius(CornerRadius::same(6))
                 .inner_margin(Margin::symmetric(10, 4))
                 .show(ui, |ui| {
-                    ui.set_width(search_w);
                     ui.horizontal(|ui| {
-                        ui.label(
-                            RichText::new("🔍")
-                                .size(11.0)
-                                .color(TEXT_MUTED_DARK),
-                        );
+                        ui.label(RichText::new("🔍").size(11.0).color(pal.text_muted));
                         let edit = egui::TextEdit::singleline(&mut self.search_query)
                             .frame(false)
                             .font(FontId::new(11.5, FontFamily::Monospace))
-                            .desired_width(185.0)
+                            .desired_width(175.0)
                             .hint_text(
                                 RichText::new("Aboneliğe git (Ctrl+K)")
                                     .font(FontId::new(11.5, FontFamily::Monospace))
-                                    .color(TEXT_MUTED_DARK),
+                                    .color(pal.text_muted),
                             );
                         let resp = ui.add(edit);
                         if self.focus_search_next_frame {
@@ -245,7 +287,7 @@ impl SubRadarApp {
                         }
 
                         egui::Frame::new()
-                            .fill(Color32::from_rgb(30, 30, 36))
+                            .fill(pal.bg_elevated)
                             .corner_radius(CornerRadius::same(3))
                             .inner_margin(Margin::symmetric(5, 1))
                             .show(ui, |ui| {
@@ -254,10 +296,11 @@ impl SubRadarApp {
                                         egui::Label::new(
                                             RichText::new("esc")
                                                 .font(FontId::new(9.5, FontFamily::Monospace))
-                                                .color(TEXT_MUTED_DARK),
+                                                .color(pal.text_muted),
                                         )
                                         .sense(Sense::click()),
                                     )
+                                    .on_hover_text("Aramayı temizle (Esc)")
                                     .clicked()
                                 {
                                     self.search_query.clear();
@@ -266,26 +309,67 @@ impl SubRadarApp {
                     });
                 });
 
-            // Right Status: Green dot + SENKRONİZE (YEREL)
+            // Right Controls: Sync status + New Sub + Theme toggle + Currency switcher
             ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                ui.add_space(16.0);
+                ui.add_space(14.0);
                 ui.label(
                     RichText::new("SENKRONİZE (YEREL)")
-                        .font(FontId::new(10.5, FontFamily::Monospace))
-                        .color(TEXT_MUTED_DARK),
+                        .font(FontId::new(10.0, FontFamily::Monospace))
+                        .color(pal.text_muted),
                 );
                 let (dot_rect, _) = ui.allocate_exact_size(Vec2::splat(8.0), Sense::hover());
                 ui.painter()
-                    .circle_filled(dot_rect.center(), 3.5, ACCENT_EMERALD);
+                    .circle_filled(dot_rect.center(), 3.5, pal.accent_emerald);
+
+                ui.add_space(6.0);
+                if ui
+                    .button(RichText::new("+ Yeni Abonelik").size(11.0).strong())
+                    .on_hover_text("Hızlı abonelik ekle (Ctrl+N)")
+                    .clicked()
+                {
+                    self.active_tab = WorkspaceTab::Subscriptions;
+                }
+
+                let theme_icon = if self.payload.preferences.dark_mode {
+                    "🌙 Koyu"
+                } else {
+                    "☀ Açık"
+                };
+                if ui
+                    .button(RichText::new(theme_icon).size(11.0))
+                    .on_hover_text("Koyu / Açık tema geçişi")
+                    .clicked()
+                {
+                    self.payload.preferences.dark_mode = !self.payload.preferences.dark_mode;
+                    self.persist_vault();
+                }
+
+                // 1-Click Currency Switcher ($ USD | ₺ TRY | € EUR)
+                for curr in [Currency::EUR, Currency::TRY, Currency::USD] {
+                    let is_sel = self.payload.preferences.currency == curr;
+                    let label = format!("{} {}", curr.symbol(), curr.code());
+                    if ui
+                        .selectable_label(
+                            is_sel,
+                            RichText::new(label)
+                                .font(FontId::new(10.5, FontFamily::Monospace)),
+                        )
+                        .on_hover_text("Tüm fiyatları bu para biriminde göster")
+                        .clicked()
+                    {
+                        self.payload.preferences.currency = curr;
+                        self.persist_vault();
+                    }
+                }
             });
         });
 
-        // Allow dragging window from blank areas of header bar
+        // Drag window from blank header areas
         let pointer_pos = ctx.input(|i| i.pointer.interact_pos());
         let primary_down = ctx.input(|i| i.pointer.primary_pressed());
-        if primary_down && ! ctx.wants_keyboard_input() {
+        if primary_down && !ctx.wants_keyboard_input() {
             if let Some(pos) = pointer_pos {
-                if header_rect.contains(pos) && pos.x > 95.0 && (pos.x < 430.0 || pos.x > 730.0) {
+                if header_rect.contains(pos) && pos.x > 85.0 && pos.x < 310.0 {
                     ctx.send_viewport_cmd(ViewportCommand::StartDrag);
                 }
             }
@@ -294,6 +378,7 @@ impl SubRadarApp {
 
     fn render_sidebar_nav_item(
         ui: &mut egui::Ui,
+        pal: &ThemePalette,
         icon: &str,
         label: &str,
         right_badge: Option<(&str, bool)>,
@@ -306,22 +391,19 @@ impl SubRadarApp {
             ui.painter().rect(
                 rect,
                 CornerRadius::same(8),
-                Color32::from_rgb(26, 26, 31),
-                Stroke::new(1.0_f32, Color32::from_rgb(42, 42, 50)),
+                pal.nav_active_bg,
+                Stroke::new(1.0_f32, pal.nav_active_border),
                 egui::StrokeKind::Inside,
             );
         } else if resp.hovered() {
-            ui.painter().rect_filled(
-                rect,
-                CornerRadius::same(8),
-                Color32::from_rgb(18, 18, 22),
-            );
+            ui.painter()
+                .rect_filled(rect, CornerRadius::same(8), pal.nav_hover_bg);
         }
 
         let text_color = if selected || resp.hovered() {
-            TEXT_WHITE
+            pal.text_primary
         } else {
-            TEXT_SECONDARY
+            pal.text_secondary
         };
 
         ui.painter().text(
@@ -349,14 +431,14 @@ impl SubRadarApp {
                 ui.painter().rect_filled(
                     pill_rect,
                     CornerRadius::same(4),
-                    Color32::from_rgb(32, 32, 38),
+                    pal.badge_passive_bg,
                 );
                 ui.painter().text(
                     pill_rect.center(),
                     egui::Align2::CENTER_CENTER,
                     badge_str,
                     FontId::new(10.5, FontFamily::Monospace),
-                    TEXT_WHITE,
+                    pal.text_primary,
                 );
             } else {
                 ui.painter().text(
@@ -364,7 +446,7 @@ impl SubRadarApp {
                     egui::Align2::RIGHT_CENTER,
                     badge_str,
                     FontId::new(11.0, FontFamily::Monospace),
-                    TEXT_DIM,
+                    pal.text_dim,
                 );
             }
         }
@@ -372,14 +454,14 @@ impl SubRadarApp {
         resp.clicked()
     }
 
-    fn render_sidebar(&mut self, ui: &mut egui::Ui, passive_count: usize) {
+    fn render_sidebar(&mut self, ui: &mut egui::Ui, pal: &ThemePalette, passive_count: usize) {
         ui.add_space(18.0);
         ui.horizontal(|ui| {
             ui.add_space(10.0);
             ui.label(
                 RichText::new("ÇALIŞMA ALANI")
                     .font(FontId::new(10.0, FontFamily::Monospace))
-                    .color(TEXT_DIM),
+                    .color(pal.text_dim),
             );
         });
         ui.add_space(6.0);
@@ -389,6 +471,7 @@ impl SubRadarApp {
 
         if Self::render_sidebar_nav_item(
             ui,
+            pal,
             "⊞",
             "Genel Bakış",
             None,
@@ -399,6 +482,7 @@ impl SubRadarApp {
 
         if Self::render_sidebar_nav_item(
             ui,
+            pal,
             "❐",
             "Abonelikler",
             Some((&total_subs_badge, false)),
@@ -409,6 +493,7 @@ impl SubRadarApp {
 
         if Self::render_sidebar_nav_item(
             ui,
+            pal,
             "⊗",
             "Engelleme Kuralları",
             Some((&rules_badge, true)),
@@ -420,6 +505,7 @@ impl SubRadarApp {
 
         if Self::render_sidebar_nav_item(
             ui,
+            pal,
             "🔒",
             "Yerel Kasa",
             None,
@@ -434,7 +520,7 @@ impl SubRadarApp {
             ui.label(
                 RichText::new("İŞLEM MOTORU")
                     .font(FontId::new(10.0, FontFamily::Monospace))
-                    .color(TEXT_DIM),
+                    .color(pal.text_dim),
             );
         });
         ui.add_space(8.0);
@@ -446,14 +532,14 @@ impl SubRadarApp {
                     ui.label(
                         RichText::new("Bellek kullanımı")
                             .font(FontId::new(11.5, FontFamily::Monospace))
-                            .color(TEXT_MUTED_DARK),
+                            .color(pal.text_muted),
                     );
                     ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
                         ui.label(
                             RichText::new("18,4 MB")
                                 .font(FontId::new(11.5, FontFamily::Monospace))
                                 .strong()
-                                .color(TEXT_WHITE),
+                                .color(pal.text_primary),
                         );
                     });
                 });
@@ -461,40 +547,41 @@ impl SubRadarApp {
                 ui.add_space(6.0);
                 let (bar_rect, _) =
                     ui.allocate_exact_size(Vec2::new(ui.available_width(), 4.0), Sense::hover());
-                ui.painter().rect_filled(
-                    bar_rect,
-                    CornerRadius::same(2),
-                    Color32::from_rgb(28, 28, 34),
-                );
+                ui.painter()
+                    .rect_filled(bar_rect, CornerRadius::same(2), pal.border_subtle);
                 let fill_w = bar_rect.width() * 0.24;
                 let fill_rect =
                     Rect::from_min_size(bar_rect.min, Vec2::new(fill_w, bar_rect.height()));
-                ui.painter().rect_filled(
-                    fill_rect,
-                    CornerRadius::same(2),
-                    Color32::from_rgb(228, 228, 231),
-                );
+                ui.painter()
+                    .rect_filled(fill_rect, CornerRadius::same(2), pal.text_primary);
 
                 ui.add_space(14.0);
                 ui.horizontal(|ui| {
                     ui.label(
                         RichText::new("Yerel Çekirdek:")
                             .font(FontId::new(11.0, FontFamily::Monospace))
-                            .color(TEXT_MUTED_DARK),
+                            .color(pal.text_muted),
                     );
                     ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
                         ui.label(
                             RichText::new("Servis Etkin")
                                 .font(FontId::new(11.0, FontFamily::Monospace))
-                                .color(ACCENT_EMERALD),
+                                .color(pal.accent_emerald),
                         );
                     });
                 });
             });
     }
 
-    fn render_overview_tab(&mut self, ui: &mut egui::Ui, stats: &SummaryStats) {
-        // 1. Top 3-Column Metric Strip (No individual boxes; vertical dividers between columns + horizontal line below)
+    fn render_overview_tab(
+        &mut self,
+        ui: &mut egui::Ui,
+        pal: &ThemePalette,
+        stats: &SummaryStats,
+    ) {
+        let pref_curr = self.payload.preferences.currency;
+
+        // 1. Top 3-Column Metric Strip (1:1 Match with Screenshot)
         let strip_height = 68.0;
         let total_w = ui.available_width();
         let (strip_rect, _) =
@@ -511,39 +598,39 @@ impl SubRadarApp {
                 Pos2::new(c2_x - 16.0, strip_rect.top() + 4.0),
                 Pos2::new(c2_x - 16.0, strip_rect.bottom() - 12.0),
             ],
-            Stroke::new(1.0_f32, BORDER_SUBTLE),
+            Stroke::new(1.0_f32, pal.border_subtle),
         );
         ui.painter().line_segment(
             [
                 Pos2::new(c3_x - 16.0, strip_rect.top() + 4.0),
                 Pos2::new(c3_x - 16.0, strip_rect.bottom() - 12.0),
             ],
-            Stroke::new(1.0_f32, BORDER_SUBTLE),
+            Stroke::new(1.0_f32, pal.border_subtle),
         );
 
-        // Column 1: AYLIK GİDER -> $384,20
+        // Column 1: AYLIK GİDER
         ui.painter().text(
-            Pos2::new(c1_x, strip_rect.top() + 6.0),
+            Pos2::new(c1_x, strip_rect.top() + 4.0),
             egui::Align2::LEFT_TOP,
             "AYLIK GİDER",
             FontId::new(10.5, FontFamily::Monospace),
-            TEXT_MUTED_DARK,
+            pal.text_muted,
         );
         ui.painter().text(
-            Pos2::new(c1_x, strip_rect.top() + 26.0),
+            Pos2::new(c1_x, strip_rect.top() + 24.0),
             egui::Align2::LEFT_TOP,
-            format_usd_tr(stats.monthly_burn_usd),
+            pref_curr.format_from_usd(stats.monthly_burn_usd),
             FontId::new(26.0, FontFamily::Monospace),
-            TEXT_WHITE,
+            pal.text_primary,
         );
 
-        // Column 2: YAKALANAN SIZINTI -> 3 Pasif Lisanslar
+        // Column 2: YAKALANAN SIZINTI
         ui.painter().text(
-            Pos2::new(c2_x + 4.0, strip_rect.top() + 6.0),
+            Pos2::new(c2_x + 4.0, strip_rect.top() + 4.0),
             egui::Align2::LEFT_TOP,
             "YAKALANAN SIZINTI",
             FontId::new(10.5, FontFamily::Monospace),
-            TEXT_MUTED_DARK,
+            pal.text_muted,
         );
         let leaks_label = if stats.passive_leaks_count == 0 {
             "0 Pasif Lisans".to_string()
@@ -551,27 +638,27 @@ impl SubRadarApp {
             format!("{} Pasif Lisanslar", stats.passive_leaks_count)
         };
         ui.painter().text(
-            Pos2::new(c2_x + 4.0, strip_rect.top() + 26.0),
+            Pos2::new(c2_x + 4.0, strip_rect.top() + 24.0),
             egui::Align2::LEFT_TOP,
             leaks_label,
             FontId::new(24.0, FontFamily::Proportional),
-            TEXT_WHITE,
+            pal.text_primary,
         );
 
-        // Column 3: YILLIK KURTARILABİLİR İSRAF -> $1.890,00
+        // Column 3: YILLIK KURTARILABİLİR İSRAF
         ui.painter().text(
-            Pos2::new(c3_x + 4.0, strip_rect.top() + 6.0),
+            Pos2::new(c3_x + 4.0, strip_rect.top() + 4.0),
             egui::Align2::LEFT_TOP,
             "YILLIK KURTARILABİLİR İSRAF",
             FontId::new(10.5, FontFamily::Monospace),
-            TEXT_MUTED_DARK,
+            pal.text_muted,
         );
         ui.painter().text(
-            Pos2::new(c3_x + 4.0, strip_rect.top() + 26.0),
+            Pos2::new(c3_x + 4.0, strip_rect.top() + 24.0),
             egui::Align2::LEFT_TOP,
-            format_usd_tr(stats.annual_recoverable_usd),
+            pref_curr.format_from_usd(stats.annual_recoverable_usd),
             FontId::new(26.0, FontFamily::Monospace),
-            TEXT_WHITE,
+            pal.text_primary,
         );
 
         // Horizontal divider under metrics
@@ -580,272 +667,596 @@ impl SubRadarApp {
                 Pos2::new(strip_rect.left(), strip_rect.bottom()),
                 Pos2::new(strip_rect.right(), strip_rect.bottom()),
             ],
-            Stroke::new(1.0_f32, BORDER_SUBTLE),
+            Stroke::new(1.0_f32, pal.border_subtle),
         );
 
-        ui.add_space(10.0);
+        ui.add_space(8.0);
 
-        // 2. Subscription Rows matching screenshot 1:1
-        let query = self.search_query.trim().to_lowercase();
-        let mut cancel_action_idx: Option<usize> = None;
-        let mut shown = 0usize;
-
-        for (idx, sub) in self.payload.subscriptions.iter().enumerate() {
-            if sub.status == SubStatus::Cancelled {
-                continue;
-            }
-            if !query.is_empty() {
-                let m = sub.name.to_lowercase().contains(&query)
-                    || sub.plan.to_lowercase().contains(&query)
-                    || sub.notes.to_lowercase().contains(&query);
-                if !m {
-                    continue;
-                }
-            }
-
-            shown += 1;
-            let row_h = 74.0;
-            let (row_rect, _) =
-                ui.allocate_exact_size(Vec2::new(ui.available_width(), row_h), Sense::hover());
-
-            // Left Avatar Box (36x36 rounded)
-            let avatar_rect = Rect::from_center_size(
-                Pos2::new(row_rect.left() + 18.0, row_rect.center().y),
-                Vec2::splat(36.0),
-            );
-            if sub.is_light_avatar() {
-                ui.painter()
-                    .rect_filled(avatar_rect, CornerRadius::same(7), LIGHT_BTN_BG);
-                ui.painter().text(
-                    avatar_rect.center(),
-                    egui::Align2::CENTER_CENTER,
-                    sub.avatar_code(),
-                    FontId::new(12.5, FontFamily::Proportional),
-                    DARK_TEXT,
-                );
-            } else {
-                ui.painter().rect(
-                    avatar_rect,
-                    CornerRadius::same(7),
-                    Color32::from_rgb(18, 18, 22),
-                    Stroke::new(1.0_f32, Color32::from_rgb(36, 36, 44)),
-                    egui::StrokeKind::Inside,
-                );
-                ui.painter().text(
-                    avatar_rect.center(),
-                    egui::Align2::CENTER_CENTER,
-                    sub.avatar_code(),
-                    FontId::new(12.0, FontFamily::Monospace),
-                    TEXT_WHITE,
-                );
-            }
-
-            // Title + Pill Badge
-            let text_left = row_rect.left() + 50.0;
-            let title_galley = ui.painter().layout_no_wrap(
-                sub.name.clone(),
-                FontId::new(14.5, FontFamily::Proportional),
-                TEXT_WHITE,
-            );
-            let title_pos = Pos2::new(text_left, row_rect.top() + 16.0);
-            let title_w = title_galley.size().x;
-            ui.painter().galley(title_pos, title_galley, TEXT_WHITE);
-
-            // Badge next to title
-            let badge_galley = ui.painter().layout_no_wrap(
-                sub.plan.clone(),
-                FontId::new(9.5, FontFamily::Monospace),
-                if sub.status == SubStatus::Active {
-                    TEXT_MUTED_DARK
-                } else {
-                    TEXT_WHITE
-                },
-            );
-            let badge_w = badge_galley.size().x + 14.0;
-            let badge_rect = Rect::from_min_size(
-                Pos2::new(text_left + title_w + 10.0, row_rect.top() + 15.0),
-                Vec2::new(badge_w, 19.0),
-            );
-            let badge_fill = if sub.status == SubStatus::Active {
-                Color32::from_rgb(15, 15, 19)
-            } else {
-                Color32::from_rgb(28, 28, 35)
-            };
-            ui.painter().rect(
-                badge_rect,
-                CornerRadius::same(4),
-                badge_fill,
-                Stroke::new(1.0_f32, Color32::from_rgb(42, 42, 52)),
-                egui::StrokeKind::Inside,
-            );
-            ui.painter().galley(
-                Pos2::new(badge_rect.left() + 7.0, badge_rect.top() + 3.5),
-                badge_galley,
-                TEXT_WHITE,
-            );
-
-            // Subtitle below title
-            ui.painter().text(
-                Pos2::new(text_left, row_rect.top() + 41.0),
-                egui::Align2::LEFT_TOP,
-                &sub.notes,
-                FontId::new(12.5, FontFamily::Proportional),
-                TEXT_MUTED_DARK,
-            );
-
-            // Right Action Button ("Hemen İptal  →" or "Korumalı")
-            if sub.status == SubStatus::Active {
-                let prot_rect = Rect::from_center_size(
-                    Pos2::new(row_rect.right() - 44.0, row_rect.center().y),
-                    Vec2::new(86.0, 32.0),
-                );
-                ui.painter().rect(
-                    prot_rect,
-                    CornerRadius::same(6),
-                    Color32::from_rgb(13, 13, 17),
-                    Stroke::new(1.0_f32, Color32::from_rgb(34, 34, 42)),
-                    egui::StrokeKind::Inside,
-                );
-                ui.painter().text(
-                    prot_rect.center(),
-                    egui::Align2::CENTER_CENTER,
-                    "Korumalı",
-                    FontId::new(11.5, FontFamily::Monospace),
-                    TEXT_MUTED_DARK,
-                );
-
-                // Cost stack to the left of Korumalı
-                let cost_right = prot_rect.left() - 18.0;
-                ui.painter().text(
-                    Pos2::new(cost_right, row_rect.top() + 18.0),
-                    egui::Align2::RIGHT_TOP,
-                    format!("{}/ay", format_usd_tr(sub.price)),
-                    FontId::new(14.5, FontFamily::Monospace),
-                    TEXT_WHITE,
-                );
-                ui.painter().text(
-                    Pos2::new(cost_right, row_rect.top() + 40.0),
-                    egui::Align2::RIGHT_TOP,
-                    &sub.next_renewal,
-                    FontId::new(9.5, FontFamily::Monospace),
-                    TEXT_DIM,
-                );
-            } else {
-                let btn_rect = Rect::from_center_size(
-                    Pos2::new(row_rect.right() - 58.0, row_rect.center().y),
-                    Vec2::new(116.0, 38.0),
-                );
-                let btn_resp = ui.interact(
-                    btn_rect,
-                    egui::Id::new(("kill_btn", idx)),
-                    Sense::click(),
-                );
-                let btn_bg = if btn_resp.hovered() {
-                    LIGHT_BTN_HOVER
-                } else {
-                    LIGHT_BTN_BG
-                };
-                ui.painter()
-                    .rect_filled(btn_rect, CornerRadius::same(7), btn_bg);
-                ui.painter().text(
-                    btn_rect.center(),
-                    egui::Align2::CENTER_CENTER,
-                    "Hemen İptal  →",
-                    FontId::new(12.0, FontFamily::Proportional),
-                    DARK_TEXT,
-                );
-
-                if btn_resp
-                    .on_hover_text("Aboneliği hemen iptal et ve tasarrufu hesapla")
+        // 2. Quick Filter Bar & Shortcut Actions
+        ui.horizontal(|ui| {
+            for (filt, label) in [
+                (OverviewFilter::All, "Tümü"),
+                (OverviewFilter::PassiveWaste, "⚠ Boşa Ödenenler"),
+                (OverviewFilter::ActiveUsed, "✓ Aktif Kullanılanlar"),
+                (OverviewFilter::Protected, "🛡 Korumalılar"),
+                (OverviewFilter::Cancelled, "✕ İptal Edilenler"),
+            ] {
+                if ui
+                    .selectable_label(
+                        self.overview_filter == filt,
+                        RichText::new(label).size(11.5),
+                    )
                     .clicked()
                 {
-                    cancel_action_idx = Some(idx);
+                    self.overview_filter = filt;
                 }
-
-                // Cost stack to the left of Hemen İptal ->
-                let cost_right = btn_rect.left() - 18.0;
-                ui.painter().text(
-                    Pos2::new(cost_right, row_rect.top() + 18.0),
-                    egui::Align2::RIGHT_TOP,
-                    format!("{}/ay", format_usd_tr(sub.price)),
-                    FontId::new(14.5, FontFamily::Monospace),
-                    TEXT_WHITE,
-                );
-                ui.painter().text(
-                    Pos2::new(cost_right, row_rect.top() + 40.0),
-                    egui::Align2::RIGHT_TOP,
-                    &sub.next_renewal,
-                    FontId::new(9.5, FontFamily::Monospace),
-                    TEXT_DIM,
-                );
             }
 
-            // Row bottom subtle divider
-            ui.painter().line_segment(
-                [
-                    Pos2::new(row_rect.left(), row_rect.bottom()),
-                    Pos2::new(row_rect.right(), row_rect.bottom()),
-                ],
-                Stroke::new(1.0_f32, Color32::from_rgb(22, 22, 27)),
-            );
+            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                if ui
+                    .button(RichText::new("🔍 Ekstre Tara").size(11.5))
+                    .clicked()
+                {
+                    self.active_tab = WorkspaceTab::BlockingRules;
+                }
+                if ui
+                    .button(RichText::new("+ Hızlı Abonelik Ekle").size(11.5))
+                    .clicked()
+                {
+                    self.active_tab = WorkspaceTab::Subscriptions;
+                }
+            });
+        });
+
+        ui.add_space(4.0);
+
+        // 3. Subscription Rows + Inline Action Drawer
+        let query = self.search_query.trim().to_lowercase();
+        let mut cancel_action_idx: Option<usize> = None;
+        let mut restore_action_idx: Option<usize> = None;
+        let mut toggle_protect_idx: Option<usize> = None;
+        let mut open_url_str: Option<String> = None;
+        let mut prepare_legal_idx: Option<usize> = None;
+        let mut toggle_expand_id: Option<String> = None;
+        let mut start_edit_idx: Option<usize> = None;
+        let mut save_edit_idx: Option<usize> = None;
+        let mut shown = 0usize;
+
+        egui::ScrollArea::vertical()
+            .id_salt("overview_rows_scroll")
+            .max_height(335.0)
+            .show(ui, |ui| {
+                for (idx, sub) in self.payload.subscriptions.iter().enumerate() {
+                    let filter_ok = match self.overview_filter {
+                        OverviewFilter::All => sub.status != SubStatus::Cancelled,
+                        OverviewFilter::PassiveWaste => sub.status == SubStatus::UnusedTrial,
+                        OverviewFilter::ActiveUsed | OverviewFilter::Protected => {
+                            sub.status == SubStatus::Active
+                        }
+                        OverviewFilter::Cancelled => sub.status == SubStatus::Cancelled,
+                    };
+                    if !filter_ok {
+                        continue;
+                    }
+
+                    if !query.is_empty() {
+                        let m = sub.name.to_lowercase().contains(&query)
+                            || sub.plan.to_lowercase().contains(&query)
+                            || sub.notes.to_lowercase().contains(&query);
+                        if !m {
+                            continue;
+                        }
+                    }
+
+                    shown += 1;
+                    let row_h = 70.0;
+                    let (row_rect, row_resp) = ui.allocate_exact_size(
+                        Vec2::new(ui.available_width(), row_h),
+                        Sense::click(),
+                    );
+
+                    if row_resp.hovered() {
+                        ui.painter().rect_filled(
+                            row_rect,
+                            CornerRadius::same(6),
+                            pal.nav_hover_bg,
+                        );
+                    }
+
+                    // Left Avatar Box (36x36 rounded)
+                    let avatar_rect = Rect::from_center_size(
+                        Pos2::new(row_rect.left() + 18.0, row_rect.center().y),
+                        Vec2::splat(36.0),
+                    );
+                    if sub.is_light_avatar() {
+                        ui.painter()
+                            .rect_filled(avatar_rect, CornerRadius::same(7), pal.cta_bg);
+                        ui.painter().text(
+                            avatar_rect.center(),
+                            egui::Align2::CENTER_CENTER,
+                            sub.avatar_code(),
+                            FontId::new(12.5, FontFamily::Proportional),
+                            pal.cta_fg,
+                        );
+                    } else {
+                        ui.painter().rect(
+                            avatar_rect,
+                            CornerRadius::same(7),
+                            pal.bg_surface,
+                            Stroke::new(1.0_f32, pal.border_default),
+                            egui::StrokeKind::Inside,
+                        );
+                        ui.painter().text(
+                            avatar_rect.center(),
+                            egui::Align2::CENTER_CENTER,
+                            sub.avatar_code(),
+                            FontId::new(12.0, FontFamily::Monospace),
+                            pal.text_primary,
+                        );
+                    }
+
+                    // Title + Pill Badge
+                    let text_left = row_rect.left() + 50.0;
+                    let title_galley = ui.painter().layout_no_wrap(
+                        sub.name.clone(),
+                        FontId::new(14.5, FontFamily::Proportional),
+                        pal.text_primary,
+                    );
+                    let title_pos = Pos2::new(text_left, row_rect.top() + 14.0);
+                    let title_w = title_galley.size().x;
+                    ui.painter().galley(title_pos, title_galley, pal.text_primary);
+
+                    let badge_text = if sub.status == SubStatus::Cancelled {
+                        "İPTAL EDİLDİ".to_string()
+                    } else {
+                        sub.plan.clone()
+                    };
+                    let badge_galley = ui.painter().layout_no_wrap(
+                        badge_text,
+                        FontId::new(9.5, FontFamily::Monospace),
+                        if sub.status == SubStatus::Active {
+                            pal.text_muted
+                        } else {
+                            pal.text_primary
+                        },
+                    );
+                    let badge_w = badge_galley.size().x + 14.0;
+                    let badge_rect = Rect::from_min_size(
+                        Pos2::new(text_left + title_w + 10.0, row_rect.top() + 13.0),
+                        Vec2::new(badge_w, 19.0),
+                    );
+                    let (badge_fill, badge_stroke) = if sub.status == SubStatus::Active {
+                        (pal.badge_active_bg, pal.badge_active_border)
+                    } else {
+                        (pal.badge_passive_bg, pal.badge_passive_border)
+                    };
+                    ui.painter().rect(
+                        badge_rect,
+                        CornerRadius::same(4),
+                        badge_fill,
+                        Stroke::new(1.0_f32, badge_stroke),
+                        egui::StrokeKind::Inside,
+                    );
+                    ui.painter().galley(
+                        Pos2::new(badge_rect.left() + 7.0, badge_rect.top() + 3.5),
+                        badge_galley,
+                        pal.text_primary,
+                    );
+
+                    // Subtitle below title
+                    ui.painter().text(
+                        Pos2::new(text_left, row_rect.top() + 39.0),
+                        egui::Align2::LEFT_TOP,
+                        &sub.notes,
+                        FontId::new(12.5, FontFamily::Proportional),
+                        pal.text_muted,
+                    );
+
+                    let display_cost = format!(
+                        "{}{}",
+                        pref_curr.format_from_usd(sub.monthly_cost_usd()),
+                        sub.billing_cycle.short_suffix()
+                    );
+
+                    // Right Action Control ("Hemen İptal  →", "Korumalı", or "↩ Geri Al")
+                    if sub.status == SubStatus::Active {
+                        let prot_rect = Rect::from_center_size(
+                            Pos2::new(row_rect.right() - 44.0, row_rect.center().y),
+                            Vec2::new(86.0, 32.0),
+                        );
+                        let prot_resp = ui.interact(
+                            prot_rect,
+                            egui::Id::new(("prot_btn", idx)),
+                            Sense::click(),
+                        );
+                        ui.painter().rect(
+                            prot_rect,
+                            CornerRadius::same(6),
+                            pal.badge_active_bg,
+                            Stroke::new(1.0_f32, pal.badge_active_border),
+                            egui::StrokeKind::Inside,
+                        );
+                        ui.painter().text(
+                            prot_rect.center(),
+                            egui::Align2::CENTER_CENTER,
+                            "Korumalı",
+                            FontId::new(11.5, FontFamily::Monospace),
+                            pal.text_muted,
+                        );
+                        if prot_resp
+                            .on_hover_text("Yönetim seçeneklerini açmak için tıklayın")
+                            .clicked()
+                        {
+                            toggle_expand_id = Some(sub.id.clone());
+                        }
+
+                        let cost_right = prot_rect.left() - 18.0;
+                        ui.painter().text(
+                            Pos2::new(cost_right, row_rect.top() + 16.0),
+                            egui::Align2::RIGHT_TOP,
+                            display_cost,
+                            FontId::new(14.5, FontFamily::Monospace),
+                            pal.text_primary,
+                        );
+                        ui.painter().text(
+                            Pos2::new(cost_right, row_rect.top() + 38.0),
+                            egui::Align2::RIGHT_TOP,
+                            &sub.next_renewal,
+                            FontId::new(9.5, FontFamily::Monospace),
+                            pal.text_dim,
+                        );
+                    } else if sub.status == SubStatus::Cancelled {
+                        let undo_rect = Rect::from_center_size(
+                            Pos2::new(row_rect.right() - 52.0, row_rect.center().y),
+                            Vec2::new(100.0, 32.0),
+                        );
+                        let undo_resp = ui.interact(
+                            undo_rect,
+                            egui::Id::new(("undo_row_btn", idx)),
+                            Sense::click(),
+                        );
+                        ui.painter().rect(
+                            undo_rect,
+                            CornerRadius::same(6),
+                            pal.bg_elevated,
+                            Stroke::new(1.0_f32, pal.border_default),
+                            egui::StrokeKind::Inside,
+                        );
+                        ui.painter().text(
+                            undo_rect.center(),
+                            egui::Align2::CENTER_CENTER,
+                            "↩ Geri Al",
+                            FontId::new(11.5, FontFamily::Proportional),
+                            pal.text_primary,
+                        );
+                        if undo_resp.clicked() {
+                            restore_action_idx = Some(idx);
+                        }
+
+                        let cost_right = undo_rect.left() - 18.0;
+                        ui.painter().text(
+                            Pos2::new(cost_right, row_rect.top() + 16.0),
+                            egui::Align2::RIGHT_TOP,
+                            display_cost,
+                            FontId::new(14.5, FontFamily::Monospace),
+                            pal.text_muted,
+                        );
+                    } else {
+                        let btn_rect = Rect::from_center_size(
+                            Pos2::new(row_rect.right() - 58.0, row_rect.center().y),
+                            Vec2::new(116.0, 38.0),
+                        );
+                        let btn_resp = ui.interact(
+                            btn_rect,
+                            egui::Id::new(("kill_btn", idx)),
+                            Sense::click(),
+                        );
+                        let btn_bg = if btn_resp.hovered() {
+                            pal.cta_hover
+                        } else {
+                            pal.cta_bg
+                        };
+                        ui.painter()
+                            .rect_filled(btn_rect, CornerRadius::same(7), btn_bg);
+                        ui.painter().text(
+                            btn_rect.center(),
+                            egui::Align2::CENTER_CENTER,
+                            "Hemen İptal  →",
+                            FontId::new(12.0, FontFamily::Proportional),
+                            pal.cta_fg,
+                        );
+
+                        if btn_resp
+                            .on_hover_text(
+                                "Tıklandığında aboneliği iptal eder, tasarrufa ekler ve yönetim seçeneklerini açar",
+                            )
+                            .clicked()
+                        {
+                            cancel_action_idx = Some(idx);
+                        }
+
+                        let cost_right = btn_rect.left() - 18.0;
+                        ui.painter().text(
+                            Pos2::new(cost_right, row_rect.top() + 16.0),
+                            egui::Align2::RIGHT_TOP,
+                            display_cost,
+                            FontId::new(14.5, FontFamily::Monospace),
+                            pal.text_primary,
+                        );
+                        ui.painter().text(
+                            Pos2::new(cost_right, row_rect.top() + 38.0),
+                            egui::Align2::RIGHT_TOP,
+                            &sub.next_renewal,
+                            FontId::new(9.5, FontFamily::Monospace),
+                            pal.text_dim,
+                        );
+                    }
+
+                    if row_resp
+                        .on_hover_text("İptal, resmi dilekçe ve düzenleme seçenekleri için tıklayın")
+                        .clicked()
+                    {
+                        toggle_expand_id = Some(sub.id.clone());
+                    }
+
+                    // Expandable Inline Action Drawer
+                    if self.expanded_sub_id.as_deref() == Some(sub.id.as_str()) {
+                        egui::Frame::new()
+                            .fill(pal.bg_surface)
+                            .stroke(Stroke::new(1.0_f32, pal.border_default))
+                            .corner_radius(CornerRadius::same(8))
+                            .inner_margin(Margin::symmetric(14, 10))
+                            .show(ui, |ui| {
+                                ui.horizontal_wrapped(|ui| {
+                                    if sub.status != SubStatus::Cancelled {
+                                        if ui
+                                            .button(
+                                                RichText::new(
+                                                    "✓ İptal Edildi İşaretle (Tasarrufa Ekle)",
+                                                )
+                                                .size(11.5)
+                                                .color(pal.accent_emerald),
+                                            )
+                                            .clicked()
+                                        {
+                                            cancel_action_idx = Some(idx);
+                                        }
+                                    } else if ui
+                                        .button(RichText::new("↩ İptali Geri Al").size(11.5))
+                                        .clicked()
+                                    {
+                                        restore_action_idx = Some(idx);
+                                    }
+
+                                    if !sub.cancel_url.is_empty()
+                                        && ui
+                                            .button(
+                                                RichText::new("🌐 Resmi İptal Sayfasına Git")
+                                                    .size(11.5),
+                                            )
+                                            .clicked()
+                                    {
+                                        open_url_str = Some(sub.cancel_url.clone());
+                                    }
+
+                                    if ui
+                                        .button(
+                                            RichText::new(
+                                                "📄 Resmi İptal & İade Dilekçesi Hazırla",
+                                            )
+                                            .size(11.5),
+                                        )
+                                        .clicked()
+                                    {
+                                        prepare_legal_idx = Some(idx);
+                                    }
+
+                                    let prot_label = if sub.status == SubStatus::Active {
+                                        "🛡 Korumayı Kaldır (Boşta İşaretle)"
+                                    } else {
+                                        "🛡 Korumalı Yap"
+                                    };
+                                    if ui.button(RichText::new(prot_label).size(11.5)).clicked() {
+                                        toggle_protect_idx = Some(idx);
+                                    }
+
+                                    if ui
+                                        .button(RichText::new("✏ Fiyat / Not Düzenle").size(11.5))
+                                        .clicked()
+                                    {
+                                        start_edit_idx = Some(idx);
+                                    }
+                                });
+
+                                if self.editing_sub_id.as_deref() == Some(sub.id.as_str()) {
+                                    ui.add_space(6.0);
+                                    ui.horizontal(|ui| {
+                                        ui.label(RichText::new("Aylık Tutar ($):").size(11.5));
+                                        ui.add_sized(
+                                            [80.0, 24.0],
+                                            egui::TextEdit::singleline(&mut self.edit_price_input),
+                                        );
+                                        ui.label(RichText::new("Not:").size(11.5));
+                                        ui.add_sized(
+                                            [260.0, 24.0],
+                                            egui::TextEdit::singleline(&mut self.edit_note_input),
+                                        );
+                                        if ui.button("💾 Kaydet").clicked() {
+                                            save_edit_idx = Some(idx);
+                                        }
+                                    });
+                                }
+                            });
+                    }
+
+                    // Row bottom subtle divider
+                    ui.painter().line_segment(
+                        [
+                            Pos2::new(row_rect.left(), row_rect.bottom()),
+                            Pos2::new(row_rect.right(), row_rect.bottom()),
+                        ],
+                        Stroke::new(1.0_f32, pal.border_subtle),
+                    );
+                }
+
+                if shown == 0 {
+                    ui.add_space(28.0);
+                    ui.vertical_centered(|ui| {
+                        ui.label(
+                            RichText::new(
+                                "Bu filtrede abonelik bulunamadı. Tümünü görmek için 'Tümü' veya 'Simülasyonu Sıfırla'ya tıklayın.",
+                            )
+                            .font(FontId::new(12.0, FontFamily::Monospace))
+                            .color(pal.text_muted),
+                        );
+                    });
+                }
+            });
+
+        // Apply deferred row actions
+        if let Some(id) = toggle_expand_id {
+            if self.expanded_sub_id.as_deref() == Some(id.as_str()) {
+                self.expanded_sub_id = None;
+            } else {
+                self.expanded_sub_id = Some(id);
+            }
         }
 
-        if shown == 0 {
-            ui.add_space(36.0);
-            ui.vertical_centered(|ui| {
-                ui.label(
-                    RichText::new("Eşleşen yerel abonelik bulunamadı. Temizlemek için ESC'ye veya Simülasyonu Sıfırla'ya basın.")
-                        .font(FontId::new(12.0, FontFamily::Monospace))
-                        .color(TEXT_MUTED_DARK),
-                );
-            });
+        if let Some(idx) = start_edit_idx {
+            let sub = &self.payload.subscriptions[idx];
+            self.editing_sub_id = Some(sub.id.clone());
+            self.edit_price_input = format!("{:.2}", sub.price);
+            self.edit_note_input = sub.notes.clone();
+        }
+
+        if let Some(idx) = save_edit_idx {
+            if let Ok(new_p) = self.edit_price_input.replace(',', ".").parse::<f64>() {
+                if new_p > 0.0 {
+                    self.payload.subscriptions[idx].price = new_p;
+                }
+            }
+            self.payload.subscriptions[idx].notes = self.edit_note_input.trim().to_string();
+            let name = self.payload.subscriptions[idx].name.clone();
+            self.editing_sub_id = None;
+            self.persist_vault();
+            self.show_toast(format!("✓ {} bilgileri güncellendi.", name), false);
         }
 
         if let Some(idx) = cancel_action_idx {
-            self.payload.subscriptions[idx].status = SubStatus::Cancelled;
+            let sub = &mut self.payload.subscriptions[idx];
+            sub.status = SubStatus::Cancelled;
+            let id = sub.id.clone();
+            let name = sub.name.clone();
+            let saved = pref_curr.format_from_usd(sub.monthly_cost_usd());
+            self.last_cancelled_id = Some(id.clone());
+            self.expanded_sub_id = Some(id);
             self.persist_vault();
+            self.show_toast(
+                format!(
+                    "✓ {} iptal edildi — Aylık {} tasarruf sağlandı",
+                    name, saved
+                ),
+                true,
+            );
         }
 
-        // Push terminal status bar to bottom of the right view
+        if let Some(idx) = restore_action_idx {
+            self.payload.subscriptions[idx].status = SubStatus::UnusedTrial;
+            let name = self.payload.subscriptions[idx].name.clone();
+            self.persist_vault();
+            self.show_toast(format!("↩ {} tekrar listeye alındı.", name), false);
+        }
+
+        if let Some(idx) = toggle_protect_idx {
+            let cur = self.payload.subscriptions[idx].status;
+            self.payload.subscriptions[idx].status = if cur == SubStatus::Active {
+                SubStatus::UnusedTrial
+            } else {
+                SubStatus::Active
+            };
+            let name = self.payload.subscriptions[idx].name.clone();
+            self.persist_vault();
+            self.show_toast(format!("✓ {} koruma durumu güncellendi.", name), false);
+        }
+
+        if let Some(url) = open_url_str {
+            Self::open_external_url(&url);
+            self.show_toast("🌐 Resmi abonelik iptal sayfası tarayıcıda açıldı.", false);
+        }
+
+        if let Some(idx) = prepare_legal_idx {
+            self.selected_sub_idx = idx;
+            self.refresh_legal_notice();
+            self.active_tab = WorkspaceTab::BlockingRules;
+            self.show_toast("📄 Resmi iptal ve iade dilekçesi hazırlandı.", false);
+        }
+
+        // 4. Toast Banner & Bottom Terminal Status Strip
         let remaining = ui.available_height();
-        if remaining > 44.0 {
-            ui.add_space(remaining - 44.0);
+        if remaining > 56.0 {
+            ui.add_space(remaining - 56.0);
         } else {
-            ui.add_space(12.0);
+            ui.add_space(6.0);
+        }
+
+        if let Some((msg, can_undo)) = self.toast_banner.clone() {
+            egui::Frame::new()
+                .fill(pal.bg_surface)
+                .stroke(Stroke::new(1.0_f32, pal.border_default))
+                .corner_radius(CornerRadius::same(6))
+                .inner_margin(Margin::symmetric(12, 5))
+                .show(ui, |ui| {
+                    ui.horizontal(|ui| {
+                        ui.label(
+                            RichText::new(&msg)
+                                .size(11.5)
+                                .color(pal.accent_emerald),
+                        );
+                        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                            if ui.small_button("✕").clicked() {
+                                self.toast_banner = None;
+                            }
+                            if can_undo && ui.small_button("↩ Geri Al").clicked() {
+                                self.undo_last_cancel();
+                            }
+                        });
+                    });
+                });
+            ui.add_space(4.0);
         }
 
         let (line_rect, _) =
             ui.allocate_exact_size(Vec2::new(ui.available_width(), 1.0), Sense::hover());
         ui.painter().line_segment(
             [line_rect.left_top(), line_rect.right_top()],
-            Stroke::new(1.0_f32, BORDER_SUBTLE),
+            Stroke::new(1.0_f32, pal.border_subtle),
         );
-        ui.add_space(10.0);
+        ui.add_space(8.0);
 
         ui.horizontal(|ui| {
             ui.label(
                 RichText::new("🗄  Yerel Veritabanı: encrypted_sqlite_aes256.db")
                     .font(FontId::new(11.5, FontFamily::Monospace))
-                    .color(TEXT_MUTED_DARK),
+                    .color(pal.text_muted),
             );
 
             ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
                 ui.label(
                     RichText::new("4 Arka Plan Engelleyici Etkin")
                         .font(FontId::new(11.5, FontFamily::Monospace))
-                        .color(TEXT_MUTED_DARK),
+                        .color(pal.text_muted),
                 );
                 ui.label(
                     RichText::new("•")
                         .font(FontId::new(11.5, FontFamily::Monospace))
-                        .color(TEXT_DIM),
+                        .color(pal.text_dim),
                 );
                 if ui
                     .add(
                         egui::Label::new(
                             RichText::new("↻ Simülasyonu Sıfırla")
                                 .font(FontId::new(11.5, FontFamily::Monospace))
-                                .color(TEXT_SECONDARY),
+                                .color(pal.text_secondary),
                         )
                         .sense(Sense::click()),
                     )
@@ -858,323 +1269,568 @@ impl SubRadarApp {
         });
     }
 
-    fn render_subscriptions_tab(&mut self, ui: &mut egui::Ui) {
+    fn render_subscriptions_tab(&mut self, ui: &mut egui::Ui, pal: &ThemePalette) {
+        let pref_curr = self.payload.preferences.currency;
+
         ui.horizontal(|ui| {
             ui.label(
-                RichText::new("Abonelik Portföyü & Ekstre Tarayıcı")
-                    .size(16.0)
+                RichText::new("Popüler Servislerden 3 Saniyede Abonelik Ekle (18+ Hazır Şablon)")
+                    .size(15.0)
                     .strong(),
             );
             ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                if ui.button("↻ Varsayılan Listeyi Yükle").clicked() {
-                    self.reset_simulation();
-                }
-            });
-        });
-        ui.add_space(6.0);
-
-        ui.columns(2, |cols| {
-            // Left: Quick Add from 18+ Presets
-            cols[0].label(
-                RichText::new("18+ Hazır Servisten Tek Tıkla Ekle")
-                    .font(FontId::new(12.5, FontFamily::Monospace))
-                    .color(TEXT_SECONDARY),
-            );
-            cols[0].add_space(4.0);
-
-            egui::ScrollArea::vertical()
-                .id_salt("presets_list")
-                .max_height(210.0)
-                .show(&mut cols[0], |ui| {
-                    for preset in SERVICE_PRESETS {
-                        egui::Frame::new()
-                            .fill(SURFACE_DARK)
-                            .stroke(Stroke::new(1.0_f32, BORDER_SUBTLE))
-                            .corner_radius(CornerRadius::same(6))
-                            .inner_margin(Margin::symmetric(10, 6))
-                            .show(ui, |ui| {
-                                ui.horizontal(|ui| {
-                                    ui.label(RichText::new(preset.name).strong());
-                                    ui.label(
-                                        RichText::new(format!("• {}", preset.plan))
-                                            .size(11.5)
-                                            .color(TEXT_MUTED_DARK),
-                                    );
-                                    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                                        if ui.button("+ Ekle").clicked() {
-                                            let mut s = preset.to_subscription(
-                                                self.payload.subscriptions.len() + 1,
-                                            );
-                                            s.currency = Currency::USD;
-                                            s.price = (preset.default_price / 48.35 * 100.0).round()
-                                                / 100.0;
-                                            s.plan = "BOŞTA LİSANS".to_string();
-                                            s.next_renewal = "OTOMATİK ÖDEME".to_string();
-                                            s.status = SubStatus::UnusedTrial;
-                                            self.payload.subscriptions.insert(0, s);
-                                            self.persist_vault();
-                                            self.active_tab = WorkspaceTab::Overview;
-                                        }
-                                        if ui.button("İptal Sayfası ↗").clicked() {
-                                            Self::open_external_url(preset.cancel_url);
-                                        }
-                                    });
-                                });
-                            });
-                    }
-                });
-
-            // Right: Offline Statement Scanner
-            cols[1].horizontal(|ui| {
-                ui.label(
-                    RichText::new("Çevrimdışı Ekstre Tarayıcı")
-                        .font(FontId::new(12.5, FontFamily::Monospace))
-                        .color(TEXT_SECONDARY),
-                );
-                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                    if ui.button("⚡ Ekstreyi Tara ve Ekle").clicked() {
-                        let found = parse_statement(&self.statement_input, Currency::USD);
-                        for mut item in found {
-                            item.currency = Currency::USD;
-                            if item.price > 150.0 {
-                                item.price = (item.price / 48.35 * 100.0).round() / 100.0;
-                            }
-                            item.plan = "EKSTREDEN YAKALANDI".to_string();
-                            item.next_renewal = "OTOMATİK ÖDEME".to_string();
-                            self.payload.subscriptions.push(item);
-                        }
-                        self.persist_vault();
-                        self.active_tab = WorkspaceTab::Overview;
-                    }
-                });
-            });
-            cols[1].add_space(4.0);
-            cols[1].add_sized(
-                [cols[1].available_width(), 205.0],
-                egui::TextEdit::multiline(&mut self.statement_input)
-                    .font(FontId::new(11.0, FontFamily::Monospace)),
-            );
-        });
-
-        ui.add_space(10.0);
-        ui.separator();
-        ui.add_space(6.0);
-        ui.label(
-            RichText::new("Özel Abonelik Ekle")
-                .font(FontId::new(12.5, FontFamily::Monospace))
-                .color(TEXT_SECONDARY),
-        );
-        ui.horizontal(|ui| {
-            ui.label("Servis:");
-            ui.add_sized([160.0, 26.0], egui::TextEdit::singleline(&mut self.form_name));
-            ui.label("Rozet:");
-            ui.add_sized([120.0, 26.0], egui::TextEdit::singleline(&mut self.form_plan));
-            ui.label("Aylık ($):");
-            ui.add_sized([70.0, 26.0], egui::TextEdit::singleline(&mut self.form_price));
-            if ui.button("+ Genel Bakışa Ekle").clicked() {
-                let price = self
-                    .form_price
-                    .replace(',', ".")
-                    .parse::<f64>()
-                    .unwrap_or(19.99);
-                if !self.form_name.trim().is_empty() {
-                    self.payload.subscriptions.insert(
-                        0,
-                        Subscription {
-                            id: format!("sub-custom-{}", self.payload.subscriptions.len() + 1),
-                            name: self.form_name.trim().to_string(),
-                            plan: self.form_plan.trim().to_string(),
-                            category: "Diğer".to_string(),
-                            price,
-                            currency: Currency::USD,
-                            billing_cycle: BillingCycle::Monthly,
-                            next_renewal: "OTOMATİK ÖDEME".to_string(),
-                            status: SubStatus::UnusedTrial,
-                            cancel_url: self.form_cancel_url.clone(),
-                            notes: self.form_notes.clone(),
-                        },
-                    );
-                    self.form_name.clear();
-                    self.persist_vault();
+                if ui.button("← Genel Bakışa Dön").clicked() {
                     self.active_tab = WorkspaceTab::Overview;
                 }
-            }
+            });
         });
-    }
-
-    fn render_blocking_rules_tab(&mut self, ui: &mut egui::Ui, ctx: &egui::Context) {
         ui.label(
-            RichText::new("Engelleme Kuralları & Resmi Fesih Dilekçesi")
-                .size(16.0)
-                .strong(),
+            RichText::new(
+                "Bir servise tıkladığınızda isim, kategori, varsayılan fiyat ve resmi iptal adresi otomatik doldurulur.",
+            )
+            .size(12.0)
+            .color(pal.text_muted),
         );
+        ui.add_space(6.0);
+
+        // 18+ Preset Grid (3 columns)
+        let mut quick_added_name: Option<String> = None;
+        egui::ScrollArea::vertical()
+            .id_salt("presets_grid_scroll")
+            .max_height(175.0)
+            .show(ui, |ui| {
+                egui::Grid::new("popular_presets_grid")
+                    .num_columns(3)
+                    .spacing([10.0, 8.0])
+                    .show(ui, |ui| {
+                        for (i, preset) in SERVICE_PRESETS.iter().enumerate() {
+                            let usd_price = (preset.default_price / 48.35 * 100.0).round() / 100.0;
+                            egui::Frame::new()
+                                .fill(pal.bg_surface)
+                                .stroke(Stroke::new(1.0_f32, pal.border_subtle))
+                                .corner_radius(CornerRadius::same(7))
+                                .inner_margin(Margin::symmetric(10, 6))
+                                .show(ui, |ui| {
+                                    ui.set_min_width(245.0);
+                                    ui.horizontal(|ui| {
+                                        if ui
+                                            .selectable_label(
+                                                self.form_name == preset.name,
+                                                RichText::new(preset.name).strong().size(12.5),
+                                            )
+                                            .on_hover_text("Bilgileri forma doldur")
+                                            .clicked()
+                                        {
+                                            self.form_name = preset.name.to_string();
+                                            self.form_plan = preset.plan.to_string();
+                                            self.form_category = preset.category.to_string();
+                                            self.form_price = format!("{:.2}", usd_price);
+                                            self.form_cancel_url = preset.cancel_url.to_string();
+                                            self.form_notes = format!(
+                                                "{} ({}) aboneliği.",
+                                                preset.name, preset.category
+                                            );
+                                        }
+
+                                        ui.with_layout(
+                                            Layout::right_to_left(Align::Center),
+                                            |ui| {
+                                                if ui
+                                                    .small_button("+ Listeme Ekle")
+                                                    .on_hover_text("Tek tıkla doğrudan listeye ekle")
+                                                    .clicked()
+                                                {
+                                                    let mut s = preset.to_subscription(
+                                                        self.payload.subscriptions.len() + 1,
+                                                    );
+                                                    s.currency = Currency::USD;
+                                                    s.price = usd_price;
+                                                    s.plan = "BOŞTA LİSANS".to_string();
+                                                    s.next_renewal = "OTOMATİK ÖDEME".to_string();
+                                                    s.status = SubStatus::UnusedTrial;
+                                                    self.payload.subscriptions.insert(0, s);
+                                                    self.persist_vault();
+                                                    quick_added_name =
+                                                        Some(preset.name.to_string());
+                                                }
+                                                ui.label(
+                                                    RichText::new(
+                                                        pref_curr.format_from_usd(usd_price),
+                                                    )
+                                                    .font(FontId::new(11.0, FontFamily::Monospace))
+                                                    .color(pal.text_muted),
+                                                );
+                                            },
+                                        );
+                                    });
+                                });
+                            if (i + 1) % 3 == 0 {
+                                ui.end_row();
+                            }
+                        }
+                    });
+            });
+
+        if let Some(name) = quick_added_name {
+            self.show_toast(format!("✓ {} listenize eklendi.", name), false);
+            self.active_tab = WorkspaceTab::Overview;
+        }
+
         ui.add_space(8.0);
 
-        ui.columns(2, |cols| {
-            // Left: 3 Active Interceptors
-            egui::Frame::new()
-                .fill(SURFACE_DARK)
-                .stroke(Stroke::new(1.0_f32, BORDER_SUBTLE))
-                .corner_radius(CornerRadius::same(8))
-                .inner_margin(Margin::same(14))
-                .show(&mut cols[0], |ui| {
-                    ui.label(
-                        RichText::new("AKTİF ARKA PLAN ENGELLEYİCİLER (3)")
-                            .font(FontId::new(11.0, FontFamily::Monospace))
-                            .color(TEXT_MUTED_DARK),
-                    );
-                    ui.add_space(8.0);
-                    ui.checkbox(
-                        &mut self.rule_block_trial_trap,
-                        "Deneme Süresi Bitmeden 48 Saat Önce Uyarı & Otomatik Durdurma",
-                    );
-                    ui.add_space(6.0);
-                    ui.checkbox(
-                        &mut self.rule_block_silent_price_hike,
-                        "Sessiz Fiyat Artışı ve Kur Farkı Sızıntı Tespiti",
-                    );
-                    ui.add_space(6.0);
-                    ui.checkbox(
-                        &mut self.rule_block_zombie_renewal,
-                        "30+ Gündür Hiç Açılmayan Uygulamaları 'Pasif Lisans' İşaretle",
+        // Auto-filled Quick Add Form Bar
+        egui::Frame::new()
+            .fill(pal.bg_surface)
+            .stroke(Stroke::new(1.0_f32, pal.border_default))
+            .corner_radius(CornerRadius::same(8))
+            .inner_margin(Margin::symmetric(12, 10))
+            .show(ui, |ui| {
+                ui.horizontal_wrapped(|ui| {
+                    ui.label(RichText::new("Servis:").size(12.0));
+                    ui.add_sized([150.0, 26.0], egui::TextEdit::singleline(&mut self.form_name));
+
+                    ui.label(RichText::new("Paket:").size(12.0));
+                    ui.add_sized([120.0, 26.0], egui::TextEdit::singleline(&mut self.form_plan));
+
+                    ui.label(RichText::new("Aylık ($):").size(12.0));
+                    ui.add_sized([70.0, 26.0], egui::TextEdit::singleline(&mut self.form_price));
+
+                    ui.label(RichText::new("Not:").size(12.0));
+                    ui.add_sized(
+                        [180.0, 26.0],
+                        egui::TextEdit::singleline(&mut self.form_notes),
                     );
 
-                    ui.add_space(14.0);
-                    ui.label(
-                        RichText::new("RESMİ İPTAL DİLEKÇESİ İÇİN ABONELİK SEÇİN")
-                            .font(FontId::new(11.0, FontFamily::Monospace))
-                            .color(TEXT_MUTED_DARK),
-                    );
-                    ui.add_space(4.0);
-                    let mut clicked_sub: Option<usize> = None;
-                    for (idx, s) in self.payload.subscriptions.iter().enumerate() {
-                        if ui
-                            .selectable_label(self.selected_sub_idx == idx, &s.name)
-                            .clicked()
-                        {
-                            clicked_sub = Some(idx);
+                    if ui
+                        .button(
+                            RichText::new("+ Listeme Ekle")
+                                .strong()
+                                .color(pal.accent_emerald),
+                        )
+                        .clicked()
+                    {
+                        let price = self
+                            .form_price
+                            .replace(',', ".")
+                            .parse::<f64>()
+                            .unwrap_or(14.99);
+                        if !self.form_name.trim().is_empty() {
+                            let name = self.form_name.trim().to_string();
+                            self.payload.subscriptions.insert(
+                                0,
+                                Subscription {
+                                    id: format!(
+                                        "sub-custom-{}",
+                                        self.payload.subscriptions.len() + 1
+                                    ),
+                                    name: name.clone(),
+                                    plan: self.form_plan.trim().to_string(),
+                                    category: self.form_category.trim().to_string(),
+                                    price,
+                                    currency: Currency::USD,
+                                    billing_cycle: BillingCycle::Monthly,
+                                    next_renewal: "OTOMATİK ÖDEME".to_string(),
+                                    status: SubStatus::UnusedTrial,
+                                    cancel_url: self.form_cancel_url.trim().to_string(),
+                                    notes: self.form_notes.trim().to_string(),
+                                },
+                            );
+                            self.persist_vault();
+                            self.show_toast(format!("✓ {} listenize eklendi.", name), false);
+                            self.active_tab = WorkspaceTab::Overview;
                         }
                     }
+                });
+            });
+
+        ui.add_space(10.0);
+        ui.label(
+            RichText::new(format!(
+                "Kayıtlı Abonelikler ({})",
+                self.payload.subscriptions.len()
+            ))
+            .size(13.5)
+            .strong(),
+        );
+        ui.add_space(4.0);
+
+        let mut del_idx: Option<usize> = None;
+        let mut status_toggle_idx: Option<usize> = None;
+        egui::ScrollArea::vertical()
+            .id_salt("all_subs_manage_scroll")
+            .max_height(190.0)
+            .show(ui, |ui| {
+                for (idx, s) in self.payload.subscriptions.iter().enumerate() {
+                    egui::Frame::new()
+                        .fill(pal.bg_surface)
+                        .stroke(Stroke::new(1.0_f32, pal.border_subtle))
+                        .corner_radius(CornerRadius::same(6))
+                        .inner_margin(Margin::symmetric(12, 6))
+                        .show(ui, |ui| {
+                            ui.horizontal(|ui| {
+                                ui.label(RichText::new(&s.name).strong());
+                                ui.label(
+                                    RichText::new(format!("• {}", s.status.label()))
+                                        .size(11.5)
+                                        .color(pal.text_muted),
+                                );
+                                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                                    if ui
+                                        .small_button(
+                                            RichText::new("🗑 Sil").color(pal.accent_rose),
+                                        )
+                                        .clicked()
+                                    {
+                                        del_idx = Some(idx);
+                                    }
+                                    if !s.cancel_url.is_empty()
+                                        && ui.small_button("🌐 İptal Sayfası").clicked()
+                                    {
+                                        Self::open_external_url(&s.cancel_url);
+                                    }
+                                    if ui.small_button("Durum Değiştir").clicked() {
+                                        status_toggle_idx = Some(idx);
+                                    }
+                                    ui.label(
+                                        RichText::new(format!(
+                                            "{}/ay",
+                                            pref_curr.format_from_usd(s.monthly_cost_usd())
+                                        ))
+                                        .font(FontId::new(12.0, FontFamily::Monospace))
+                                        .strong(),
+                                    );
+                                });
+                            });
+                        });
+                }
+            });
+
+        if let Some(idx) = status_toggle_idx {
+            let next = match self.payload.subscriptions[idx].status {
+                SubStatus::UnusedTrial => SubStatus::Active,
+                SubStatus::Active => SubStatus::Cancelled,
+                SubStatus::Cancelled => SubStatus::UnusedTrial,
+            };
+            self.payload.subscriptions[idx].status = next;
+            self.persist_vault();
+        }
+        if let Some(idx) = del_idx {
+            let removed = self.payload.subscriptions.remove(idx);
+            self.persist_vault();
+            self.refresh_legal_notice();
+            self.show_toast(format!("🗑 {} silindi.", removed.name), false);
+        }
+    }
+
+    fn render_blocking_rules_tab(
+        &mut self,
+        ui: &mut egui::Ui,
+        ctx: &egui::Context,
+        pal: &ThemePalette,
+    ) {
+        ui.columns(2, |cols| {
+            // Left Column: Section 1 (Smart Rules) + Section 2 (100% Offline Statement Scanner)
+            egui::Frame::new()
+                .fill(pal.bg_surface)
+                .stroke(Stroke::new(1.0_f32, pal.border_subtle))
+                .corner_radius(CornerRadius::same(8))
+                .inner_margin(Margin::same(12))
+                .show(&mut cols[0], |ui| {
+                    ui.label(
+                        RichText::new("1. AKILLI KORUMA & ENGELLEME KURALLARI")
+                            .font(FontId::new(11.0, FontFamily::Monospace))
+                            .color(pal.text_muted),
+                    );
+                    ui.add_space(6.0);
+                    ui.checkbox(
+                        &mut self.rule_warn_trial_3days,
+                        "Ücretsiz deneme bitmeden 3 gün önce uyar",
+                    );
+                    ui.checkbox(
+                        &mut self.rule_mark_idle_30days,
+                        "30+ gün kullanılmayan abonelikleri otomatik 'Boşta' işaretle",
+                    );
+                    ui.checkbox(
+                        &mut self.rule_notify_price_hike,
+                        "Fiyat artışı tespit edildiğinde bildir",
+                    );
+                    ui.checkbox(
+                        &mut self.rule_auto_refund_notice,
+                        "İptal edilen abonelikten tekrar çekim olursa iade dilekçesi hazırla",
+                    );
+                });
+
+            cols[0].add_space(8.0);
+
+            egui::Frame::new()
+                .fill(pal.bg_surface)
+                .stroke(Stroke::new(1.0_f32, pal.border_subtle))
+                .corner_radius(CornerRadius::same(8))
+                .inner_margin(Margin::same(12))
+                .show(&mut cols[0], |ui| {
+                    ui.horizontal(|ui| {
+                        ui.label(
+                            RichText::new("2. %100 ÇEVRİMDIŞI BANKA EKSTRESİ TARAYICI")
+                                .font(FontId::new(11.0, FontFamily::Monospace))
+                                .color(pal.text_muted),
+                        );
+                        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                            if ui.small_button("Örnek Banka Ekstresi Yükle").clicked() {
+                                self.statement_input = SAMPLE_STATEMENT.to_string();
+                            }
+                        });
+                    });
+                    ui.add_space(4.0);
+                    ui.add_sized(
+                        [ui.available_width(), 120.0],
+                        egui::TextEdit::multiline(&mut self.statement_input)
+                            .font(FontId::new(10.5, FontFamily::Monospace)),
+                    );
+                    ui.add_space(6.0);
+                    ui.horizontal(|ui| {
+                        if ui.button("🔍 Ekstreyi Şimdi Tara").clicked() {
+                            self.detected_subs =
+                                parse_statement(&self.statement_input, Currency::USD);
+                            self.show_toast(
+                                format!(
+                                    "✓ Ekstrede {} adet abonelik tespit edildi.",
+                                    self.detected_subs.len()
+                                ),
+                                false,
+                            );
+                        }
+                        if !self.detected_subs.is_empty()
+                            && ui
+                                .button(
+                                    RichText::new(format!(
+                                        "+ Bulunanları Listeme Ekle ({})",
+                                        self.detected_subs.len()
+                                    ))
+                                    .color(pal.accent_emerald),
+                                )
+                                .clicked()
+                        {
+                            let count = self.detected_subs.len();
+                            for mut item in self.detected_subs.drain(..) {
+                                item.currency = Currency::USD;
+                                if item.price > 150.0 {
+                                    item.price = (item.price / 48.35 * 100.0).round() / 100.0;
+                                }
+                                item.plan = "EKSTREDEN YAKALANDI".to_string();
+                                item.next_renewal = "OTOMATİK ÖDEME".to_string();
+                                self.payload.subscriptions.insert(0, item);
+                            }
+                            self.persist_vault();
+                            self.show_toast(
+                                format!("✓ {} abonelik genel bakış listesine eklendi.", count),
+                                false,
+                            );
+                            self.active_tab = WorkspaceTab::Overview;
+                        }
+                    });
+                });
+
+            // Right Column: Section 3 (Official 6502 SK & GDPR Legal Cancellation & Refund Notice)
+            egui::Frame::new()
+                .fill(pal.bg_surface)
+                .stroke(Stroke::new(1.0_f32, pal.border_subtle))
+                .corner_radius(CornerRadius::same(8))
+                .inner_margin(Margin::same(12))
+                .show(&mut cols[1], |ui| {
+                    ui.label(
+                        RichText::new("3. RESMİ İPTAL & ÜCRET İADESİ DİLEKÇESİ (6502 SK & GDPR)")
+                            .font(FontId::new(11.0, FontFamily::Monospace))
+                            .color(pal.text_muted),
+                    );
+                    ui.add_space(6.0);
+
+                    let mut clicked_sub: Option<usize> = None;
+                    ui.horizontal_wrapped(|ui| {
+                        for (idx, s) in self.payload.subscriptions.iter().enumerate() {
+                            if ui
+                                .selectable_label(
+                                    self.selected_sub_idx == idx,
+                                    RichText::new(&s.name).size(11.5),
+                                )
+                                .clicked()
+                            {
+                                clicked_sub = Some(idx);
+                            }
+                        }
+                    });
                     if let Some(idx) = clicked_sub {
                         self.selected_sub_idx = idx;
                         self.refresh_legal_notice();
                     }
-                });
 
-            // Right: 6502 SK & GDPR Legal Notice Generator
-            cols[1].horizontal(|ui| {
-                if ui
-                    .selectable_label(
-                        self.notice_lang == NoticeLanguage::Turkish,
-                        "🇹🇷 6502 SK & KVKK (Türkçe)",
-                    )
-                    .clicked()
-                {
-                    self.notice_lang = NoticeLanguage::Turkish;
-                    self.refresh_legal_notice();
-                }
-                if ui
-                    .selectable_label(
-                        self.notice_lang == NoticeLanguage::English,
-                        "🇬🇧 GDPR Art. 17 (English)",
-                    )
-                    .clicked()
-                {
-                    self.notice_lang = NoticeLanguage::English;
-                    self.refresh_legal_notice();
-                }
-            });
-            cols[1].add_space(4.0);
-            cols[1].add_sized(
-                [cols[1].available_width(), 260.0],
-                egui::TextEdit::multiline(&mut self.generated_notice)
-                    .font(FontId::new(11.0, FontFamily::Monospace)),
-            );
-            cols[1].add_space(6.0);
-            cols[1].horizontal(|ui| {
-                if ui.button("📋 Dilekçeyi Panoya Kopyala").clicked() {
-                    ctx.copy_text(self.generated_notice.clone());
-                    self.status_message =
-                        Some("Resmi iptal dilekçesi panoya kopyalandı.".to_string());
-                }
-                if ui.button("💾 .txt Olarak Kaydet").clicked() {
-                    let path = std::env::current_dir()
-                        .unwrap_or_default()
-                        .join("subradar-iptal-dilekcesi.txt");
-                    let _ = fs::write(path, &self.generated_notice);
-                    self.status_message =
-                        Some("subradar-iptal-dilekcesi.txt kaydedildi.".to_string());
-                }
-            });
+                    ui.add_space(4.0);
+                    ui.horizontal(|ui| {
+                        ui.label(RichText::new("Ad Soyad:").size(11.5));
+                        if ui
+                            .add_sized(
+                                [120.0, 22.0],
+                                egui::TextEdit::singleline(&mut self.payload.preferences.user_name),
+                            )
+                            .changed()
+                        {
+                            self.refresh_legal_notice();
+                        }
+                        if ui
+                            .selectable_label(
+                                self.notice_lang == NoticeLanguage::Turkish,
+                                "🇹🇷 Türkçe (6502 SK)",
+                            )
+                            .clicked()
+                        {
+                            self.notice_lang = NoticeLanguage::Turkish;
+                            self.refresh_legal_notice();
+                        }
+                        if ui
+                            .selectable_label(
+                                self.notice_lang == NoticeLanguage::English,
+                                "🇬🇧 English (GDPR)",
+                            )
+                            .clicked()
+                        {
+                            self.notice_lang = NoticeLanguage::English;
+                            self.refresh_legal_notice();
+                        }
+                    });
+
+                    ui.add_space(6.0);
+                    ui.add_sized(
+                        [ui.available_width(), 240.0],
+                        egui::TextEdit::multiline(&mut self.generated_notice)
+                            .font(FontId::new(10.5, FontFamily::Monospace)),
+                    );
+
+                    ui.add_space(6.0);
+                    ui.horizontal(|ui| {
+                        if ui.button("📋 Panoya Kopyala").clicked() {
+                            ctx.copy_text(self.generated_notice.clone());
+                            self.show_toast(
+                                "✓ Resmi iptal dilekçesi panoya kopyalandı.",
+                                false,
+                            );
+                        }
+                        if ui.button("💾 .txt Olarak İndir").clicked() {
+                            let path = std::env::current_dir()
+                                .unwrap_or_default()
+                                .join("subradar-iptal-dilekcesi.txt");
+                            let _ = fs::write(&path, &self.generated_notice);
+                            self.show_toast(
+                                format!("✓ Dilekçe kaydedildi: {}", path.display()),
+                                false,
+                            );
+                        }
+                    });
+                });
         });
     }
 
-    fn render_local_vault_tab(&mut self, ui: &mut egui::Ui) {
+    fn render_local_vault_tab(&mut self, ui: &mut egui::Ui, pal: &ThemePalette) {
         ui.label(
-            RichText::new("Yerel Kasa (encrypted_sqlite_aes256.db)")
+            RichText::new("Yerel Kasa & Veri Güvenliği")
                 .size(16.0)
                 .strong(),
         );
-        ui.add_space(8.0);
+        ui.label(
+            RichText::new(
+                "Tüm abonelik verileriniz hiçbir bulut sunucusuna gönderilmeden bilgisayarınızda şifreli olarak saklanır.",
+            )
+            .size(12.5)
+            .color(pal.text_muted),
+        );
+        ui.add_space(10.0);
 
         egui::Frame::new()
-            .fill(SURFACE_DARK)
-            .stroke(Stroke::new(1.0_f32, BORDER_SUBTLE))
+            .fill(pal.bg_surface)
+            .stroke(Stroke::new(1.0_f32, pal.border_subtle))
             .corner_radius(CornerRadius::same(10))
             .inner_margin(Margin::same(18))
             .show(ui, |ui| {
                 ui.label(
-                    RichText::new("KRİPTOGRAFİK KASA VE SÜRÜM DURUMU")
-                        .font(FontId::new(11.0, FontFamily::Monospace))
-                        .color(TEXT_MUTED_DARK),
+                    RichText::new("✓ AES-256 Yerel Koruma Aktif")
+                        .size(14.5)
+                        .strong()
+                        .color(pal.accent_emerald),
                 );
-                ui.add_space(8.0);
+                ui.add_space(6.0);
                 ui.label("• Uygulama Sürümü: SubRadar Masaüstü v1.0 (Ticari Lisans)");
-                ui.label("• Veritabanı: encrypted_sqlite_aes256.db / .subradar");
-                ui.label("• Şifreleme Standardı: AES-256-CBC + PBKDF2-HMAC-SHA256");
-                ui.label(
-                    RichText::new("• Senkronizasyon: %100 Yerel ve Çevrimdışı (Bulut Yok)")
-                        .color(ACCENT_EMERALD),
-                );
+                ui.label("• Yerel Veritabanı: encrypted_sqlite_aes256.db / .subradar");
+                ui.label("• Şifreleme Motoru: AES-256-CBC + PBKDF2-HMAC-SHA256");
+                ui.label("• İnternet ve Bulut Paylaşımı: %100 Çevrimdışı (0 Bayt Veri Çıkışı)");
 
-                ui.add_space(14.0);
+                ui.add_space(16.0);
                 ui.horizontal(|ui| {
-                    ui.label("Ana Kasa Şifresi:");
+                    ui.label("Kasa Ana Şifresi:");
                     ui.add_sized(
-                        [220.0, 28.0],
+                        [200.0, 28.0],
                         egui::TextEdit::singleline(&mut self.master_password).password(true),
                     );
-                    if ui.button("💾 Kasayı Şifrele ve Kaydet").clicked() {
+                });
+
+                ui.add_space(12.0);
+                ui.horizontal_wrapped(|ui| {
+                    if ui
+                        .button(
+                            RichText::new("💾 Verilerimi Şimdi Kaydet")
+                                .strong()
+                                .color(pal.accent_emerald),
+                        )
+                        .clicked()
+                    {
                         let path = default_vault_path();
-                        if save_vault_to_file(&path, &self.payload, &self.master_password).is_ok()
-                        {
-                            self.status_message = Some(format!(
-                                "Şifreli kasa kaydedildi ({})",
-                                VAULT_FILENAME
-                            ));
+                        match save_vault_to_file(&path, &self.payload, &self.master_password) {
+                            Ok(_) => self.show_toast(
+                                format!(
+                                    "✓ Verileriniz AES-256 ile şifrelenerek kaydedildi ({}).",
+                                    VAULT_FILENAME
+                                ),
+                                false,
+                            ),
+                            Err(e) => self.show_toast(e, false),
                         }
                     }
+
+                    if ui.button("📤 Yedek Dışa Aktar (.json)").clicked() {
+                        let backup_path = std::env::current_dir()
+                            .unwrap_or_default()
+                            .join("subradar-backup.json");
+                        if let Ok(json) = serde_json::to_string_pretty(&self.payload) {
+                            if fs::write(&backup_path, json).is_ok() {
+                                self.show_toast(
+                                    format!(
+                                        "✓ Yedek dosyası dışa aktarıldı: {}",
+                                        backup_path.display()
+                                    ),
+                                    false,
+                                );
+                            }
+                        }
+                    }
+
                     if ui.button("🔒 Kasayı Şimdi Kilitle").clicked() {
                         self.is_locked = true;
                     }
                 });
 
-                if let Some(msg) = &self.status_message {
-                    ui.add_space(8.0);
-                    ui.label(RichText::new(msg).color(ACCENT_EMERALD));
+                if let Some((msg, _)) = &self.toast_banner {
+                    ui.add_space(10.0);
+                    ui.label(RichText::new(msg).color(pal.accent_emerald));
                 }
             });
     }
 
-    fn render_lock_screen(&mut self, ctx: &egui::Context) {
+    fn render_lock_screen(&mut self, ctx: &egui::Context, pal: &ThemePalette) {
         egui::CentralPanel::default()
-            .frame(egui::Frame::new().fill(BG_MAIN))
+            .frame(egui::Frame::new().fill(pal.bg_canvas))
             .show(ctx, |ui| {
                 ui.vertical_centered(|ui| {
                     ui.add_space(150.0);
                     egui::Frame::new()
-                        .fill(SURFACE_DARK)
-                        .stroke(Stroke::new(1.0_f32, BORDER_DARK))
+                        .fill(pal.bg_surface)
+                        .stroke(Stroke::new(1.0_f32, pal.border_default))
                         .corner_radius(CornerRadius::same(12))
                         .inner_margin(Margin::same(28))
                         .show(ui, |ui| {
@@ -1189,7 +1845,7 @@ impl SubRadarApp {
                                 ui.label(
                                     RichText::new("encrypted_sqlite_aes256.db kilidini açın")
                                         .font(FontId::new(11.5, FontFamily::Monospace))
-                                        .color(TEXT_MUTED_DARK),
+                                        .color(pal.text_muted),
                                 );
                                 ui.add_space(14.0);
                                 let resp = ui.add_sized(
@@ -1220,63 +1876,69 @@ impl SubRadarApp {
 
 impl eframe::App for SubRadarApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        apply_theme(ctx, true);
+        let dark_mode = self.payload.preferences.dark_mode;
+        apply_theme(ctx, dark_mode);
+        let pal = ThemePalette::for_mode(dark_mode);
 
-        // Keyboard shortcuts: Ctrl+K focuses search, ESC clears search
+        // Keyboard shortcuts: Ctrl+K focuses search, Ctrl+N opens quick add, ESC clears search/drawer
         if ctx.input(|i| i.modifiers.command && i.key_pressed(Key::K)) {
-            self.active_tab = WorkspaceTab::Overview;
             self.focus_search_next_frame = true;
+        }
+        if ctx.input(|i| i.modifiers.command && i.key_pressed(Key::N)) {
+            self.active_tab = WorkspaceTab::Subscriptions;
         }
         if ctx.input(|i| i.key_pressed(Key::Escape)) {
             self.search_query.clear();
+            self.expanded_sub_id = None;
+            self.editing_sub_id = None;
         }
 
-        // Top Custom Frameless Window Bar (46px height, #0b0b0e fill, 1px bottom border)
+        // Top Custom Frameless Window Bar (46px height)
         egui::TopBottomPanel::top("subradar_window_header")
             .exact_height(46.0)
             .frame(
                 egui::Frame::new()
-                    .fill(BG_HEADER)
+                    .fill(pal.bg_header)
                     .inner_margin(Margin::ZERO)
-                    .stroke(Stroke::new(1.0_f32, BORDER_SUBTLE)),
+                    .stroke(Stroke::new(1.0_f32, pal.border_subtle)),
             )
             .show(ctx, |ui| {
-                self.render_window_header(ctx, ui);
+                self.render_window_header(ctx, ui, &pal);
             });
 
         if self.is_locked {
-            self.render_lock_screen(ctx);
+            self.render_lock_screen(ctx, &pal);
             return;
         }
 
         let stats = SummaryStats::compute(&self.payload.subscriptions);
 
-        // Left Sidebar (230px width, #08080a fill, 1px right border)
+        // Left Sidebar (230px width)
         egui::SidePanel::left("subradar_left_sidebar")
             .exact_width(230.0)
             .resizable(false)
             .frame(
                 egui::Frame::new()
-                    .fill(BG_SIDEBAR)
+                    .fill(pal.bg_sidebar)
                     .inner_margin(Margin::symmetric(12, 6))
-                    .stroke(Stroke::new(1.0_f32, BORDER_SUBTLE)),
+                    .stroke(Stroke::new(1.0_f32, pal.border_subtle)),
             )
             .show(ctx, |ui| {
-                self.render_sidebar(ui, stats.passive_leaks_count);
+                self.render_sidebar(ui, &pal, stats.passive_leaks_count);
             });
 
-        // Right Main Content Area (#09090b fill)
+        // Right Main Content Area
         egui::CentralPanel::default()
             .frame(
                 egui::Frame::new()
-                    .fill(BG_MAIN)
-                    .inner_margin(Margin::symmetric(28, 22)),
+                    .fill(pal.bg_canvas)
+                    .inner_margin(Margin::symmetric(28, 20)),
             )
             .show(ctx, |ui| match self.active_tab {
-                WorkspaceTab::Overview => self.render_overview_tab(ui, &stats),
-                WorkspaceTab::Subscriptions => self.render_subscriptions_tab(ui),
-                WorkspaceTab::BlockingRules => self.render_blocking_rules_tab(ui, ctx),
-                WorkspaceTab::LocalVault => self.render_local_vault_tab(ui),
+                WorkspaceTab::Overview => self.render_overview_tab(ui, &pal, &stats),
+                WorkspaceTab::Subscriptions => self.render_subscriptions_tab(ui, &pal),
+                WorkspaceTab::BlockingRules => self.render_blocking_rules_tab(ui, ctx, &pal),
+                WorkspaceTab::LocalVault => self.render_local_vault_tab(ui, &pal),
             });
     }
 }

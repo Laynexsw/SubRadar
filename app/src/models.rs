@@ -1,4 +1,4 @@
-//! SubRadar v1.0 — Veri Modelleri ve Sitedeki Önizleme Verileri (`models.rs`)
+//! SubRadar v1.0 — Veri Modelleri, Para Birimi Dönüşümleri ve Önizleme Metrikleri (`models.rs`)
 
 use serde::{Deserialize, Serialize};
 
@@ -44,20 +44,40 @@ impl Currency {
 
     pub fn format_from_try(&self, amount_try: f64) -> String {
         let converted = self.from_try(amount_try);
-        format!("{}{:.2}", self.symbol(), converted)
+        format_currency_tr(converted, self.symbol())
+    }
+
+    pub fn format_from_usd(&self, amount_usd: f64) -> String {
+        let converted = match self {
+            Currency::USD => amount_usd,
+            Currency::TRY => amount_usd * 48.35,
+            Currency::EUR => amount_usd * (48.35 / 52.10),
+        };
+        format_currency_tr(converted, self.symbol())
     }
 }
 
-pub fn format_usd_tr(amount_usd: f64) -> String {
-    let cents = (amount_usd * 100.0).round() as i64;
+pub fn format_currency_tr(amount: f64, symbol: &str) -> String {
+    let cents = (amount * 100.0).round() as i64;
     let whole = cents / 100;
     let frac = (cents % 100).abs();
-    let whole_str = if whole >= 1000 {
-        format!("{}.{:03}", whole / 1000, whole % 1000)
+    let whole_str = if whole >= 1_000_000 {
+        format!(
+            "{}.{:03}.{:03}",
+            whole / 1_000_000,
+            (whole / 1_000) % 1_000,
+            whole % 1_000
+        )
+    } else if whole >= 1_000 {
+        format!("{}.{:03}", whole / 1_000, whole % 1_000)
     } else {
         format!("{}", whole)
     };
-    format!("${},{:02}", whole_str, frac)
+    format!("{}{},{:02}", symbol, whole_str, frac)
+}
+
+pub fn format_usd_tr(amount_usd: f64) -> String {
+    format_currency_tr(amount_usd, "$")
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -103,8 +123,8 @@ pub enum SubStatus {
 impl SubStatus {
     pub fn label(&self) -> &'static str {
         match self {
-            SubStatus::Active => "Aktif",
-            SubStatus::UnusedTrial => "Pasif / Deneme",
+            SubStatus::Active => "Korumalı / Aktif",
+            SubStatus::UnusedTrial => "Boşa Ödenen",
             SubStatus::Cancelled => "İptal Edildi",
         }
     }
@@ -131,6 +151,15 @@ impl Subscription {
         self.billing_cycle.to_monthly(base_try)
     }
 
+    pub fn monthly_cost_usd(&self) -> f64 {
+        let usd = match self.currency {
+            Currency::USD => self.price,
+            Currency::TRY => self.price / 48.35,
+            Currency::EUR => self.price * (52.10 / 48.35),
+        };
+        self.billing_cycle.to_monthly(usd)
+    }
+
     pub fn avatar_code(&self) -> &'static str {
         let lower = self.name.to_lowercase();
         if lower.contains("adobe") {
@@ -151,6 +180,16 @@ impl Subscription {
             "YT"
         } else if lower.contains("github") {
             "GH"
+        } else if lower.contains("icloud") || lower.contains("apple") {
+            "iC"
+        } else if lower.contains("disney") {
+            "D+"
+        } else if lower.contains("amazon") {
+            "Am"
+        } else if lower.contains("xbox") {
+            "XB"
+        } else if lower.contains("canva") {
+            "Cv"
         } else {
             "SR"
         }
@@ -265,9 +304,6 @@ pub struct SummaryStats {
 }
 
 impl SummaryStats {
-    /// Computes the exact hero metrics matching the web preview:
-    /// Baseline with the 4 default rows is $384,20 monthly spend, 3 Pasif Lisanslar, and $1.890,00 annual recoverable waste.
-    /// Cancelling any passive license immediately subtracts its monthly cost and 12x annual waste!
     pub fn compute(subs: &[Subscription]) -> Self {
         let mut cancelled_monthly_usd = 0.0;
         let mut passive_leaks_count = 0usize;
@@ -275,11 +311,7 @@ impl SummaryStats {
         let mut extra_waste_usd = 0.0;
 
         for s in subs {
-            let usd_val = match s.currency {
-                Currency::USD => s.price,
-                Currency::TRY => s.price / 48.35,
-                Currency::EUR => s.price * (52.10 / 48.35),
-            };
+            let usd_val = s.monthly_cost_usd();
             let is_core = matches!(
                 s.id.as_str(),
                 "sub-adobe-cc" | "sub-jetbrains" | "sub-figma" | "sub-aws-idle"

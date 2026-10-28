@@ -18,7 +18,8 @@ fn main() -> eframe::Result<()> {
         viewport: egui::ViewportBuilder::default()
             .with_title("SubRadar Masaüstü — Yerel Kasa")
             .with_decorations(false)
-            .with_inner_size([1120.0, 620.0])
+            .with_resizable(true)
+            .with_inner_size([1140.0, 650.0])
             .with_min_inner_size([960.0, 560.0]),
         ..Default::default()
     };
