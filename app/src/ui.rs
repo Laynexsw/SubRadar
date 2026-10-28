@@ -8,12 +8,15 @@ use eframe::egui::{
     RichText, Sense, Stroke, Vec2, ViewportCommand,
 };
 
-use crate::legal::{generate_legal_notice, NoticeLanguage};
+use crate::legal::{
+    generate_chargeback_document, generate_legal_notice, generate_thh_application,
+    LegalDocumentType, NoticeLanguage,
+};
 use crate::models::{
     BillingCycle, Currency, SpendingCategory, SubStatus, Subscription, SummaryStats, VaultPayload,
 };
 use crate::parser::{detect_price_hike, parse_statement, SAMPLE_STATEMENT};
-use crate::presets::SERVICE_PRESETS;
+use crate::presets::{get_dark_pattern_guide, SERVICE_PRESETS};
 use crate::theme::{apply_theme, ThemePalette};
 use crate::vault::{default_vault_path, load_vault_from_file, save_vault_to_file, VAULT_FILENAME};
 
@@ -58,6 +61,7 @@ pub struct SubRadarApp {
 
     // Interactive Inline Drawer & Undo State
     pub expanded_sub_id: Option<String>,
+    pub dark_pattern_active_id: Option<String>,
     pub editing_sub_id: Option<String>,
     pub edit_price_input: String,
     pub edit_note_input: String,
@@ -79,6 +83,7 @@ pub struct SubRadarApp {
 
     // Legal Notice & Smart Rules
     pub selected_sub_idx: usize,
+    pub legal_doc_type: LegalDocumentType,
     pub notice_lang: NoticeLanguage,
     pub generated_notice: String,
     pub rule_warn_trial_3days: bool,
@@ -121,6 +126,7 @@ impl Default for SubRadarApp {
             search_query: String::new(),
             focus_search_next_frame: false,
             expanded_sub_id: None,
+            dark_pattern_active_id: None,
             editing_sub_id: None,
             edit_price_input: String::new(),
             edit_note_input: String::new(),
@@ -136,6 +142,7 @@ impl Default for SubRadarApp {
             statement_input: SAMPLE_STATEMENT.to_string(),
             detected_subs: Vec::new(),
             selected_sub_idx: 0,
+            legal_doc_type: LegalDocumentType::CancellationNotice,
             notice_lang: NoticeLanguage::Turkish,
             generated_notice: String::new(),
             rule_warn_trial_3days: true,
@@ -163,6 +170,7 @@ impl SubRadarApp {
         self.overview_filter = OverviewFilter::All;
         self.search_query.clear();
         self.expanded_sub_id = None;
+        self.dark_pattern_active_id = None;
         self.editing_sub_id = None;
         self.last_cancelled_id = None;
         self.persist_vault();
@@ -202,8 +210,17 @@ impl SubRadarApp {
             self.selected_sub_idx = 0;
         }
         let sub = &self.payload.subscriptions[self.selected_sub_idx];
-        self.generated_notice =
-            generate_legal_notice(sub, &self.payload.preferences, self.notice_lang);
+        self.generated_notice = match self.legal_doc_type {
+            LegalDocumentType::CancellationNotice => {
+                generate_legal_notice(sub, &self.payload.preferences, self.notice_lang)
+            }
+            LegalDocumentType::ConsumerArbitration => {
+                generate_thh_application(sub, &self.payload.preferences)
+            }
+            LegalDocumentType::BankChargeback => {
+                generate_chargeback_document(sub, &self.payload.preferences, "4123", "2026-10-14")
+            }
+        };
     }
 
     fn open_external_url(url: &str) {
@@ -598,6 +615,7 @@ impl SubRadarApp {
         stats: &SummaryStats,
     ) {
         let pref_curr = self.payload.preferences.currency;
+        let mut cancel_action_idx: Option<usize> = None;
 
         // 1. Top 3-Column Metric Strip (1:1 Match with Screenshot)
         let strip_height = 68.0;
@@ -687,6 +705,92 @@ impl SubRadarApp {
             ],
             Stroke::new(1.0_f32, pal.border_subtle),
         );
+
+        // 1.3 YAKLAŞAN YENİLEME KALKANI (Önümüzdeki 7 Gün)
+        let upcoming_renewals = SummaryStats::find_upcoming_renewals(&self.payload.subscriptions, 7);
+        if !upcoming_renewals.is_empty() {
+            ui.add_space(8.0);
+            let amber_color = Color32::from_rgb(245, 158, 11);
+            egui::Frame::new()
+                .fill(pal.bg_surface)
+                .stroke(Stroke::new(1.0_f32, amber_color.gamma_multiply(0.6)))
+                .corner_radius(CornerRadius::same(10))
+                .inner_margin(Margin::symmetric(14, 10))
+                .show(ui, |ui| {
+                    ui.horizontal(|ui| {
+                        ui.label(
+                            RichText::new("⏰ YAKLAŞAN YENİLEMELER (ÖNÜMÜZDEKİ 7 GÜN)")
+                                .font(FontId::new(10.5, FontFamily::Monospace))
+                                .strong()
+                                .color(amber_color),
+                        );
+
+                        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                            let total_risk_usd: f64 = upcoming_renewals.iter().map(|u| u.cost_usd).sum();
+                            ui.label(
+                                RichText::new(format!(
+                                    "Yenileme Tutarı: {}",
+                                    pref_curr.format_from_usd(total_risk_usd)
+                                ))
+                                .font(FontId::new(10.5, FontFamily::Monospace))
+                                .color(pal.text_muted),
+                            );
+                        });
+                    });
+
+                    ui.add_space(6.0);
+                    for item in &upcoming_renewals {
+                        ui.horizontal(|ui| {
+                            let (badge_bg, badge_fg, badge_text) = if item.days_left == 0 {
+                                (Color32::from_rgb(45, 18, 22), pal.accent_rose, "BUGÜN!".to_string())
+                            } else if item.days_left <= 3 {
+                                (Color32::from_rgb(38, 28, 12), amber_color, format!("{} gün kaldı", item.days_left))
+                            } else {
+                                (pal.bg_elevated, pal.text_muted, format!("{} gün sonra", item.days_left))
+                            };
+
+                            egui::Frame::new()
+                                .fill(badge_bg)
+                                .stroke(Stroke::new(1.0_f32, badge_fg.gamma_multiply(0.5)))
+                                .corner_radius(CornerRadius::same(4))
+                                .inner_margin(Margin::symmetric(6, 2))
+                                .show(ui, |ui| {
+                                    ui.label(
+                                        RichText::new(badge_text)
+                                            .font(FontId::new(10.0, FontFamily::Monospace))
+                                            .strong()
+                                            .color(badge_fg),
+                                    );
+                                });
+
+                            ui.label(
+                                RichText::new(&item.sub_name)
+                                    .font(FontId::new(11.5, FontFamily::Proportional))
+                                    .strong()
+                                    .color(pal.text_primary),
+                            );
+                            ui.label(
+                                RichText::new(format!("• {}", pref_curr.format_from_usd(item.cost_usd)))
+                                    .font(FontId::new(11.0, FontFamily::Monospace))
+                                    .color(pal.text_muted),
+                            );
+
+                            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                                if let Some(idx) = self.payload.subscriptions.iter().position(|s| s.id == item.sub_id) {
+                                    if ui.button(
+                                        RichText::new("Hemen İptal Et  →")
+                                            .font(FontId::new(10.5, FontFamily::Proportional))
+                                            .color(pal.cta_fg),
+                                    ).clicked() {
+                                        cancel_action_idx = Some(idx);
+                                    }
+                                }
+                            });
+                        });
+                        ui.add_space(3.0);
+                    }
+                });
+        }
 
         // 1.5 BENTO GRID: Kategori & Harcama Dağılımı + Bütçe Sağlık Skoru
         let cat_spendings = SummaryStats::compute_category_spending(&self.payload.subscriptions);
@@ -952,7 +1056,6 @@ impl SubRadarApp {
 
         // 3. Subscription Rows + Inline Action Drawer
         let query = self.search_query.trim().to_lowercase();
-        let mut cancel_action_idx: Option<usize> = None;
         let mut restore_action_idx: Option<usize> = None;
         let mut toggle_protect_idx: Option<usize> = None;
         let mut open_url_str: Option<String> = None;
@@ -1371,7 +1474,57 @@ impl SubRadarApp {
                                     {
                                         start_edit_idx = Some(idx);
                                     }
+
+                                    if get_dark_pattern_guide(&sub.name).is_some() {
+                                        let is_open = self.dark_pattern_active_id.as_deref() == Some(sub.id.as_str());
+                                        let btn_label = if is_open {
+                                            "🎯 Tuzağı Gizle"
+                                        } else {
+                                            "🎯 İptal Tuzağını Aşma Rehberi"
+                                        };
+                                        if ui
+                                            .button(
+                                                RichText::new(btn_label)
+                                                    .size(11.5)
+                                                    .color(Color32::from_rgb(245, 158, 11)),
+                                            )
+                                            .clicked()
+                                        {
+                                            if is_open {
+                                                self.dark_pattern_active_id = None;
+                                            } else {
+                                                self.dark_pattern_active_id = Some(sub.id.clone());
+                                            }
+                                        }
+                                    }
                                 });
+
+                                if self.dark_pattern_active_id.as_deref() == Some(sub.id.as_str()) {
+                                    if let Some(guide) = get_dark_pattern_guide(&sub.name) {
+                                        ui.add_space(8.0);
+                                        egui::Frame::new()
+                                            .fill(pal.bg_elevated)
+                                            .stroke(Stroke::new(1.0_f32, Color32::from_rgb(245, 158, 11)))
+                                            .corner_radius(CornerRadius::same(6))
+                                            .inner_margin(Margin::symmetric(12, 10))
+                                            .show(ui, |ui| {
+                                                ui.horizontal(|ui| {
+                                                    ui.label(
+                                                        RichText::new("🎯 KARANLIK DESEN (DARK PATTERN) BYPASS REHBERİ")
+                                                            .font(FontId::new(11.0, FontFamily::Monospace))
+                                                            .strong()
+                                                            .color(Color32::from_rgb(245, 158, 11)),
+                                                    );
+                                                });
+                                                ui.add_space(4.0);
+                                                ui.label(
+                                                    RichText::new(guide)
+                                                        .font(FontId::new(11.0, FontFamily::Proportional))
+                                                        .color(pal.text_primary),
+                                                );
+                                            });
+                                    }
+                                }
 
                                 if self.editing_sub_id.as_deref() == Some(sub.id.as_str()) {
                                     ui.add_space(6.0);
@@ -2061,7 +2214,7 @@ impl SubRadarApp {
                     });
                 });
 
-            // Right Column: Section 3 (Official 6502 SK & GDPR Legal Cancellation & Refund Notice)
+            // Right Column: Section 3 (Hukuki Savunma, THH Başvurusu & Banka Ters İbraz Dosyası)
             egui::Frame::new()
                 .fill(pal.bg_surface)
                 .stroke(Stroke::new(1.0_f32, pal.border_subtle))
@@ -2069,10 +2222,46 @@ impl SubRadarApp {
                 .inner_margin(Margin::same(12))
                 .show(&mut cols[1], |ui| {
                     ui.label(
-                        RichText::new("3. RESMİ İPTAL & ÜCRET İADESİ DİLEKÇESİ (6502 SK & GDPR)")
+                        RichText::new("3. HUKUKİ SİLAHLANMA: THH, İHTARNAME & TERS İBRAZ (CHARGEBACK)")
                             .font(FontId::new(11.0, FontFamily::Monospace))
                             .color(pal.text_muted),
                     );
+                    ui.add_space(6.0);
+
+                    // Document Type Switcher Tabs
+                    ui.horizontal(|ui| {
+                        if ui
+                            .selectable_label(
+                                self.legal_doc_type == LegalDocumentType::CancellationNotice,
+                                "📜 6502 SK İhtarname",
+                            )
+                            .clicked()
+                        {
+                            self.legal_doc_type = LegalDocumentType::CancellationNotice;
+                            self.refresh_legal_notice();
+                        }
+                        if ui
+                            .selectable_label(
+                                self.legal_doc_type == LegalDocumentType::ConsumerArbitration,
+                                "⚖ THH Başvurusu (E-Devlet)",
+                            )
+                            .clicked()
+                        {
+                            self.legal_doc_type = LegalDocumentType::ConsumerArbitration;
+                            self.refresh_legal_notice();
+                        }
+                        if ui
+                            .selectable_label(
+                                self.legal_doc_type == LegalDocumentType::BankChargeback,
+                                "💳 Chargeback Dosyası",
+                            )
+                            .clicked()
+                        {
+                            self.legal_doc_type = LegalDocumentType::BankChargeback;
+                            self.refresh_legal_notice();
+                        }
+                    });
+
                     ui.add_space(6.0);
 
                     let mut clicked_sub: Option<usize> = None;
@@ -2106,25 +2295,27 @@ impl SubRadarApp {
                         {
                             self.refresh_legal_notice();
                         }
-                        if ui
-                            .selectable_label(
-                                self.notice_lang == NoticeLanguage::Turkish,
-                                "🇹🇷 Türkçe (6502 SK)",
-                            )
-                            .clicked()
-                        {
-                            self.notice_lang = NoticeLanguage::Turkish;
-                            self.refresh_legal_notice();
-                        }
-                        if ui
-                            .selectable_label(
-                                self.notice_lang == NoticeLanguage::English,
-                                "🇬🇧 English (GDPR)",
-                            )
-                            .clicked()
-                        {
-                            self.notice_lang = NoticeLanguage::English;
-                            self.refresh_legal_notice();
+                        if self.legal_doc_type == LegalDocumentType::CancellationNotice {
+                            if ui
+                                .selectable_label(
+                                    self.notice_lang == NoticeLanguage::Turkish,
+                                    "🇹🇷 Türkçe (6502 SK)",
+                                )
+                                .clicked()
+                            {
+                                self.notice_lang = NoticeLanguage::Turkish;
+                                self.refresh_legal_notice();
+                            }
+                            if ui
+                                .selectable_label(
+                                    self.notice_lang == NoticeLanguage::English,
+                                    "🇬🇧 English (GDPR)",
+                                )
+                                .clicked()
+                            {
+                                self.notice_lang = NoticeLanguage::English;
+                                self.refresh_legal_notice();
+                            }
                         }
                     });
 
@@ -2140,17 +2331,22 @@ impl SubRadarApp {
                         if ui.button("📋 Panoya Kopyala").clicked() {
                             ctx.copy_text(self.generated_notice.clone());
                             self.show_toast(
-                                "✓ Resmi iptal dilekçesi panoya kopyalandı.",
+                                "✓ Belge metni panoya kopyalandı.",
                                 false,
                             );
                         }
                         if ui.button("💾 .txt Olarak İndir").clicked() {
+                            let filename = match self.legal_doc_type {
+                                LegalDocumentType::CancellationNotice => "subradar-iptal-ihtarname.txt",
+                                LegalDocumentType::ConsumerArbitration => "subradar-thh-basvuru-formu.txt",
+                                LegalDocumentType::BankChargeback => "subradar-chargeback-dosyasi.txt",
+                            };
                             let path = std::env::current_dir()
                                 .unwrap_or_default()
-                                .join("subradar-iptal-dilekcesi.txt");
+                                .join(filename);
                             let _ = fs::write(&path, &self.generated_notice);
                             self.show_toast(
-                                format!("✓ Dilekçe kaydedildi: {}", path.display()),
+                                format!("✓ Belge kaydedildi: {}", path.display()),
                                 false,
                             );
                         }
