@@ -20,12 +20,12 @@
 SubRadar Enterprise & Personal FinOps, organizasyonlarda ve bireysel iş akışlarında kontrolsüz abonelik israfını (SaaS Sprawl), terk edilmiş koltukları (Gölge IT) ve karanlık desenleri engelleyen; tek tıkla doğrudan iptal ve resmi fesih araçları sunan, %100 yerel ve çevrimdışı çalışan yeni nesil bir finansal zekâ platformudur.
 
 Depo şu anda **beş kurumsal katmandan** oluşur:
-1. **Kök Yönetim Katmanı (`/`):** Dağıtım yapılandırması (`index.html`, `.nojekyll`, `.gitignore`), güvenlik politikaları (`privacy.html`, `terms.html`, `thanks.html`), SEO varlıkları (`robots.txt`, `sitemap.xml`) ve mimari dokümantasyon (`README.md`, `PRODUCT.md`, `AGENTS.md`, `CODEBASE.md`, `.agents/rules/`).
+1. **Kök Yönetim Katmanı (`/`):** Dağıtım yapılandırması (`index.html`, `.nojekyll`, `.gitignore`, `tsconfig.json`), güvenlik politikaları (`privacy.html`, `terms.html`, `thanks.html`), SEO varlıkları (`robots.txt`, `sitemap.xml`) ve mimari dokümantasyon (`README.md`, `PRODUCT.md`, `AGENTS.md`, `CODEBASE.md`, `.agents/rules/`, `.agents/agents/`, `.agents/skills/`).
 2. **Kurumsal Lisans Çerçevesi (`licenses/`):** 9 alternatif lisans şablonu (MIT, Apache 2.0, GPL, AGPL, BSD, MPL, Unlicense, Proprietary) ve kurumsal seçim matrisi.
 3. **Masaüstü İşletim Çekirdeği (`app/`):** Electron v33, Node.js yerel AES-256 kasası, Air-Gap ekstre analizörü, 6502 SK & GDPR fesih motoru, çerçevesiz Apple Glass UI ve güvenli IPC köprüsüne sahip tam fonksiyonel masaüstü istemcisi.
 4. **Harici UI Bileşenleri (`components/`):** Originkit CLI (`components/originkit/ui/tiles-loader.tsx`, `components/originkit/ui/vector-wordmark.tsx`) resmi React/TypeScript tasarım sistemi bileşenleri.
 5. **Web Vitrini & Simülasyon Platformu (`web/`):**
-   * **Modüler Kaynak:** `components/` (23 HTML parçası + Originkit tip köprüsü), `css/` (3 dosya), `js/` (22 modül), `manifest.json`, `sw.js`, `scripts/build.py`, `scripts/embed_tiles_loader.py`.
+   * **Modüler Kaynak:** `components/` (23 HTML parçası + Originkit tip köprüsü), `css/` (4 dosya), `js/` (27 modül), `assets/cursors/`, `vendor/three/`, `manifest.json`, `sw.js`, `scripts/build.py`, `scripts/embed_tiles_loader.py`.
    * **Üretim / Canlı Yayın:** `code.html` (~340 KB, tüm stil, betik ve HTML'in birleştiği, GitHub Pages'ta yayınlanan monolitik tekil paket).
 
 ---
@@ -46,8 +46,12 @@ Depo şu anda **beş kurumsal katmandan** oluşur:
 * [`.gitignore`](file:///c:/Users/arday/Desktop/SubRadar/.gitignore): IDE araçları (`.agent/`, `.gemini/`, `.codex/`, `.opencode/`), `node_modules/`, `dist/`, `.env` ve sistem dosyalarını hariç tutar.
 * [`LICENSE`](file:///c:/Users/arday/Desktop/SubRadar/LICENSE): Ana depo MIT açık kaynak lisansı.
 * [`PRODUCT.md`](file:///c:/Users/arday/Desktop/SubRadar/PRODUCT.md): Ürün vizyonu, hedef kitle (freelancer, yazılımcı, gizlilik odaklı kullanıcılar), WCAG standartları, marka sesi ve ilkeleri.
+* [`tsconfig.json`](file:///c:/Users/arday/Desktop/SubRadar/tsconfig.json): TypeScript / React (Originkit TSX) derleyici ve tip kontrol yapılandırması.
 * [`README.md`](file:///c:/Users/arday/Desktop/SubRadar/README.md): GitHub deposu karşılama sayfası, mimari harita, canlı bağlantılar ve lisans karşılaştırma tablosu.
 * [`AGENTS.md`](file:///c:/Users/arday/Desktop/SubRadar/AGENTS.md): AI asistanları için kompakt hızlı başlangıç ve bağlam koruma rehberi.
+* [`.agents/rules/codebase-context.md`](file:///c:/Users/arday/Desktop/SubRadar/.agents/rules/codebase-context.md): AI geliştirme kuralları, Baş Orkestratör & 20 Uzman Alt Ajan yönetim politikaları.
+* [`.agents/agents/`](file:///c:/Users/arday/Desktop/SubRadar/.agents/agents/): 5 Departman ve 20 Kalıcı Uzman Alt Ajan (`*/agent.md`) tanım dosyaları.
+* [`.agents/skills/`](file:///c:/Users/arday/Desktop/SubRadar/.agents/skills/): 14 yerel skill paketi (`impeccable`, `ui-ux-pro-max`, `design-system`, `ui-styling`, `brand`, `banner-design`, `design`, `slides`, `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`, `ponytail-gain`, `ponytail-help`).
 
 ### 2.2 Lisans Kütüphanesi (`licenses/`)
 * [`licenses/README.md`](file:///c:/Users/arday/Desktop/SubRadar/licenses/README.md): Lisans seçim kılavuzu ve 9 popüler lisansın karşılaştırma tablosu.
@@ -91,7 +95,9 @@ Depo şu anda **beş kurumsal katmandan** oluşur:
 * [`cursors.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/cursors.css): Windows 11 Tailless Cursors (Jepri Creations) imleç motoru. `dark_arrow`, `dark_hand`, `dark_ibeam`, `dark_no` ve açık tema varyantlarını hem Base64 Data URI hem de `assets/cursors/` yoluyla sıfır gecikmeyle sisteme bağlar.
 * [`main.css`](file:///c:/Users/arday/Desktop/SubRadar/web/css/main.css): `base.css`, `components.css` ve `cursors.css` modüllerini içe aktarır.
 
-### 2.5 Web Betikleri (`web/js/`) & PWA
+### 2.5 Web Betikleri (`web/js/`), Varlıklar & PWA
+* [`assets/cursors/`](file:///c:/Users/arday/Desktop/SubRadar/web/assets/cursors/): Windows 11 Tailless Cursors (Jepri Creations) 32x32 RGBA imleç varlıkları (Dark / Light).
+* [`vendor/three/`](file:///c:/Users/arday/Desktop/SubRadar/web/vendor/three/): Yerel donanım ivmeli 3D WebGL motoru (`three.min.js`, `three.module.js`).
 * [`test-tiles.html`](file:///c:/Users/arday/Desktop/SubRadar/web/test-tiles.html): Originkit Tiles Loader bağımsız test ve demo sayfası.
 * [`manifest.json`](file:///c:/Users/arday/Desktop/SubRadar/web/manifest.json): PWA web uygulama manifesti (çevrimdışı ve tam ekran desteği).
 * [`sw.js`](file:///c:/Users/arday/Desktop/SubRadar/web/sw.js): Çevrimdışı Service Worker önbellekleme motoru (`subradar-v1.6.0-cache`, HTML dökümanları için Network-First stratejisi).
@@ -255,13 +261,47 @@ python -m http.server 8765
 ```
 Tarayıcıdan `http://localhost:8765/web/code.html` veya `http://localhost:8765/` adresine gidin.
 
-### 7.2 Bileşen Senkronizasyon Kuralı
+### 7.2 Bileşen ve Dokümantasyon Senkronizasyon Kuralı (ZORUNLU)
 Canlı yayınlanan sayfa doğrudan `web/code.html`'dir.
 Modüler `web/components/` veya `web/js/` içinde bir değişiklik yaptığınızda:
-1. `python web/scripts/build.py` çalıştırarak 14 modüler bileşenin bütünlüğünü doğrulayın.
+1. `python web/scripts/build.py` çalıştırarak 23 modüler bileşenin bütünlüğünü doğrulayın.
 2. `web/code.html` dosyasındaki ilgili bloğu da güncelleyin veya oraya entegre edin.
+3. **KOD YAPISI & DOKÜMANTASYON SENKRONİZASYONU:** Kod tabanında yapılan her ekleme, silme veya mimari değişiklikte; git commit ve push işlemlerinden önce MUTLAKA `README.md`, `CODEBASE.md` ve `AGENTS.md` dosyalarındaki **Kod Yapısı (Dosya Haritası / Ağacı)**, katman durumları ve açıklamaları anında ve eksiksiz güncellenecektir.
 
-### 7.3 Git, GitHub ve Canlı Dağıtım (Production) Detayları
+### 7.3 Baş Orkestratör & 20 Uzman Alt Ajan (Subagent) Yönetim Kuralı (ZORUNLU)
+Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Kod geliştirme, dosya düzenleme, araştırma, test ve dokümantasyon işlerini doğrudan yapmak yerine aşağıdaki **5 Departman ve 20 Uzman Alt Ajanlık Otonom Mühendislik Organizasyonunu** oluşturup görevlendirerek (`define_subagent` / `invoke_subagent`) yürütür; sonuçları denetler ve kullanıcıya raporlar:
+
+#### A. Araştırma, Kod Yıkımı (Debloat) & Mimari Denetim Departmanı
+1. `deep-code-researcher`: Derin kod analizi, DOM ID ve veri akışı haritalama, bağımlılık ve fizibilite araştırmacısı.
+2. `ponytail-debloater`: Kod yıkıcı / sadeleştirici (`ponytail`, `ponytail-audit`, `ponytail-review`), ölü kod temizliği, YAGNI ve refactoring uzmanı.
+3. `architecture-sync-guardian`: 23 modüler web bileşeni (`web/components/`, `css/`, `js/`) ile monolitik `web/code.html` arasındaki 1:1 eşitliği koruyan senkronizasyon muhafızı.
+4. `performance-a11y-auditor`: 60FPS çalışma zamanı performansı, GPU/WebGL bellek optimizasyonu, ARIA erişilebilirlik ve mobil ergonomi denetçisi.
+
+#### B. Tasarım, Marka & Görsel Sanatlar Departmanı
+5. `ui-ux-glass-designer`: Baş Tasarımcı; `impeccable`, `ui-ux-pro-max`, `design-system` ve `ui-styling` yetenekleriyle Apple Glassmorphism, SF Pro tipografi ve tema kontrast mimarı.
+6. `brand-visual-artist`: Marka kimliği (`brand`, `design`, `banner-design`), özel SVG ikonlar (`favicon.svg`, `og-image.svg`), 1200x630 Canvas sosyal medya kartı ve Windows 11 Tailless imleç (`cursors.css`) tasarımcısı.
+7. `originkit-webgl-specialist`: Originkit `Tiles Loader` (`tiles-loader.js`), `Vector Wordmark` WebGL 2.0 (`vector-wordmark.js`), Three.js 3D sahneleri ve mikro-animasyon uzmanı.
+8. `audio-haptics-engineer`: Web Audio API sıfır-dosya matematiksel osilatör ses motoru (`audio-fx.js`) ve dokunsal arayüz geri bildirim mühendisi.
+
+#### C. Web Platformu & FinOps Mühendislik Departmanı
+9. `web-ui-engineer`: Modüler `web/components/`, `web/css/`, `web/js/` ve `web/code.html` ön yüz geliştirme uzmanı.
+10. `hero-simulator-engineer`: Hero macOS pencere simülatörü (`hero-window.js`), trafik ışıkları, canlı iptal simülasyonu ve gerçek zamanlı sayaçlar mühendisi.
+11. `interactive-modals-engineer`: Raycast/Linear stili `⌘K` Komut Paleti (`command-palette.js`), kısayollar modalı (`shortcuts-modal.js`), indirme/reclaim modalları ve Toast mühendisi.
+12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), FinOps israf hesaplayıcı (`calculator.js`) ve Air-Gap ekstre analizörü (`statement-lab.js`) uzmanı.
+13. `supabase-auth-specialist`: Supabase v2 SDK (`supabase.js`), Double-Slider Apple Glass Auth modalı (`auth-modal.js`) ve kurumsal başvuru (`enterprise-modal.js`) uzmanı.
+
+#### D. Masaüstü Çekirdeği, Kriptografi & Hukuk Departmanı
+14. `desktop-core-engineer`: `app/` v1.5.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
+15. `security-crypto-auditor`: AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa (`vault.js`, `store.js`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
+16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve 10'lu `licenses/` matrisi hukuk uzmanı.
+
+#### E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı
+17. `git-github-ops`: Git & GitHub operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `push`, tag ve GitHub Pages dağıtım kontrolü) uzmanı.
+18. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
+19. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
+20. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
+
+### 7.4 Git, GitHub ve Canlı Dağıtım (Production) Detayları
 * **Depo Sahibi & Hesabı:** `Laynexsw`
 * **Depo Adı & URL:** [https://github.com/Laynexsw/SubRadar](https://github.com/Laynexsw/SubRadar)
 * **Git Remote:** `origin` -> `https://github.com/Laynexsw/SubRadar.git`

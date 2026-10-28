@@ -49,10 +49,15 @@ SubRadar/
 │   ├── .nojekyll                         # GitHub Pages Jekyll statik derleyici devre dışı bırakma bayrağı
 │   ├── .gitignore                        # Versiyon kontrolünden hariç tutulan sistem ve geçici dosyalar
 │   ├── LICENSE                           # Proje ana MIT Açık Kaynak Lisansı
+│   ├── PRODUCT.md                        # Ürün vizyonu, hedef kitle, erişilebilirlik (WCAG) ve marka ilkeleri
+│   ├── tsconfig.json                     # TypeScript / React (Originkit TSX) derleyici ve tip kontrol yapılandırması
 │   ├── README.md                         # Kurumsal karşılama, mimari harita ve yönetim dokümantasyonu
 │   ├── AGENTS.md                         # [BU DOSYA] AI oturumları için hızlı hafıza ve mimari özeti
 │   ├── CODEBASE.md                       # Eksiksiz kod tabanı, fonksiyon imzaları ve DOM ID kataloğu
-│   └── .agents/rules/                    # Geliştirme kuralları, agent yetkilendirme ve hafıza politikaları
+│   └── .agents/                          # Otonom AI Mühendislik Organizasyonu, Kurallar ve Yetenekler
+│       ├── rules/codebase-context.md     # Geliştirme kuralları, Baş Orkestratör yetkilendirme ve hafıza politikaları
+│       ├── agents/                       # 5 Departman / 20 Kalıcı Uzman Alt Ajan (Subagent) tanım dosyaları (*/agent.md)
+│       └── skills/                       # 14 Yerel Skill Paketi (impeccable, ui-ux-pro-max, design-system, ui-styling, brand, banner-design, design, slides, ponytail, ponytail-review, ponytail-audit, ponytail-debt, ponytail-gain, ponytail-help)
 │
 ├── 📜 2. KURUMSAL LİSANS ŞABLON KOLEKSİYONU & MATRİSİ (LICENSES FRAMEWORK - licenses/)
 │   ├── README.md                         # Lisans karşılaştırma matrisi, ticari haklar ve kurumsal seçim rehberi
@@ -115,6 +120,9 @@ SubRadar/
     │
     ├── assets/                           # Web Varlık ve Medya Klasörü
     │   └── cursors/                      # Windows 11 Tailless Cursors (Jepri Creations) 32x32 RGBA imleç varlıkları (Dark / Light)
+    │
+    ├── vendor/                           # Yerel Üçüncü Parti Çevrimdışı Kütüphaneler
+    │   └── three/                        # Donanım ivmeli 3D WebGL motoru (three.min.js, three.module.js)
     │
     ├── components/                       # 23 Parçalı Modüler HTML UI Bileşenleri
     │   ├── layout/                       # Çerçeve & Genel Düzen Bileşenleri
@@ -265,6 +273,38 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
    Kullanıcı verisi toplayacak hiçbir harici analytics/telemetri kütüphanesi eklenemez. Tasarım Tailwind CDN ve Google Material Symbols dışında tamamen saf CSS/JS üzerine kuruludur.
 5. **KOD YAPISI & DOKÜMANTASYON SENKRONİZASYONU (ZORUNLU KURAL):**
    Kod tabanında yapılan her ekleme, silme veya mimari değişiklikte; git commit ve push işlemlerinden önce MUTLAKA `README.md`, `CODEBASE.md` ve `AGENTS.md` dosyalarındaki **Kod Yapısı (Dosya Haritası / Ağacı)**, katman durumları ve açıklamaları anında ve eksiksiz güncellenecektir. Kod ile dokümantasyonun uyuşmaması kabul edilemez.
+6. **BAŞ ORKESTRATÖR VE ALT AJAN (SUBAGENT) YÖNETİM KURALI (ZORUNLU — 5 DEPARTMAN / 20 UZMAN ALT AJAN):**
+   Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Kod geliştirme, dosya düzenleme, araştırma, test ve dokümantasyon işlerini doğrudan yapmak yerine aşağıdaki **5 Departman ve 20 Uzman Alt Ajanlık Otonom Mühendislik Organizasyonunu** oluşturup görevlendirerek (`define_subagent` / `invoke_subagent`) yürütür; sonuçları denetler ve kullanıcıya raporlar:
+
+   #### A. Araştırma, Kod Yıkımı (Debloat) & Mimari Denetim Departmanı
+   1. `deep-code-researcher`: Derin kod analizi, DOM ID ve veri akışı haritalama, bağımlılık ve fizibilite araştırmacısı.
+   2. `ponytail-debloater`: Kod yıkıcı / sadeleştirici (`ponytail`, `ponytail-audit`, `ponytail-review`), ölü kod temizliği, YAGNI ve refactoring uzmanı.
+   3. `architecture-sync-guardian`: 23 modüler web bileşeni (`web/components/`, `css/`, `js/`) ile monolitik `web/code.html` arasındaki 1:1 eşitliği koruyan senkronizasyon muhafızı.
+   4. `performance-a11y-auditor`: 60FPS çalışma zamanı performansı, GPU/WebGL bellek optimizasyonu, ARIA erişilebilirlik ve mobil ergonomi denetçisi.
+
+   #### B. Tasarım, Marka & Görsel Sanatlar Departmanı
+   5. `ui-ux-glass-designer`: Baş Tasarımcı; `impeccable`, `ui-ux-pro-max`, `design-system` ve `ui-styling` yetenekleriyle Apple Glassmorphism, SF Pro tipografi ve tema kontrast mimarı.
+   6. `brand-visual-artist`: Marka kimliği (`brand`, `design`, `banner-design`), özel SVG ikonlar (`favicon.svg`, `og-image.svg`), 1200x630 Canvas sosyal medya kartı ve Windows 11 Tailless imleç (`cursors.css`) tasarımcısı.
+   7. `originkit-webgl-specialist`: Originkit `Tiles Loader` (`tiles-loader.js`), `Vector Wordmark` WebGL 2.0 (`vector-wordmark.js`), Three.js 3D sahneleri ve mikro-animasyon uzmanı.
+   8. `audio-haptics-engineer`: Web Audio API sıfır-dosya matematiksel osilatör ses motoru (`audio-fx.js`) ve dokunsal arayüz geri bildirim mühendisi.
+
+   #### C. Web Platformu & FinOps Mühendislik Departmanı
+   9. `web-ui-engineer`: Modüler `web/components/`, `web/css/`, `web/js/` ve `web/code.html` ön yüz geliştirme uzmanı.
+   10. `hero-simulator-engineer`: Hero macOS pencere simülatörü (`hero-window.js`), trafik ışıkları, canlı iptal simülasyonu ve gerçek zamanlı sayaçlar mühendisi.
+   11. `interactive-modals-engineer`: Raycast/Linear stili `⌘K` Komut Paleti (`command-palette.js`), kısayollar modalı (`shortcuts-modal.js`), indirme/reclaim modalları ve Toast mühendisi.
+   12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), FinOps israf hesaplayıcı (`calculator.js`) ve Air-Gap ekstre analizörü (`statement-lab.js`) uzmanı.
+   13. `supabase-auth-specialist`: Supabase v2 SDK (`supabase.js`), Double-Slider Apple Glass Auth modalı (`auth-modal.js`) ve kurumsal başvuru (`enterprise-modal.js`) uzmanı.
+
+   #### D. Masaüstü Çekirdeği, Kriptografi & Hukuk Departmanı
+   14. `desktop-core-engineer`: `app/` v1.5.0 Electron (`main.js`, `preload.js`) ve masaüstü arayüz (`app/src/renderer/`) çekirdek mühendisi.
+   15. `security-crypto-auditor`: AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa (`vault.js`, `store.js`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
+   16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve 10'lu `licenses/` matrisi hukuk uzmanı.
+
+   #### E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı
+   17. `git-github-ops`: Git & GitHub operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `push`, tag ve GitHub Pages dağıtım kontrolü) uzmanı.
+   18. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
+   19. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
+   20. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
 
 ---
 

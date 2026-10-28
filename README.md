@@ -64,10 +64,15 @@ SubRadar/
 │   ├── .nojekyll                         # GitHub Pages Jekyll statik derleyici devre dışı bırakma bayrağı
 │   ├── .gitignore                        # Versiyon kontrolünden hariç tutulan sistem ve geçici dosyalar
 │   ├── LICENSE                           # Proje ana MIT Açık Kaynak Lisansı
+│   ├── PRODUCT.md                        # Ürün vizyonu, hedef kitle, erişilebilirlik (WCAG) ve marka ilkeleri
+│   ├── tsconfig.json                     # TypeScript / React (Originkit TSX) derleyici ve tip kontrol yapılandırması
 │   ├── README.md                         # [BU DOSYA] Kurumsal karşılama, mimari harita ve yönetim dokümantasyonu
 │   ├── AGENTS.md                         # AI ajanları ve LLM oturumları için hızlı kurumsal bellek ve bağlam kılavuzu
 │   ├── CODEBASE.md                       # Eksiksiz kod tabanı, fonksiyon imzaları ve DOM ID kataloğu
-│   └── .agents/rules/                    # Geliştirme kuralları, agent yetkilendirme ve hafıza politikaları
+│   └── .agents/                          # Otonom AI Mühendislik Organizasyonu, Kurallar ve Yetenekler
+│       ├── rules/codebase-context.md     # Geliştirme kuralları, Baş Orkestratör yetkilendirme ve hafıza politikaları
+│       ├── agents/                       # 5 Departman / 20 Kalıcı Uzman Alt Ajan (Subagent) tanım dosyaları (*/agent.md)
+│       └── skills/                       # 14 Yerel Skill Paketi (impeccable, ui-ux-pro-max, design-system, ui-styling, brand, banner-design, design, slides, ponytail, ponytail-review, ponytail-audit, ponytail-debt, ponytail-gain, ponytail-help)
 │
 ├── 📜 2. KURUMSAL LİSANS ŞABLON KOLEKSİYONU & MATRİSİ (LICENSES FRAMEWORK - licenses/)
 │   ├── README.md                         # Lisans karşılaştırma matrisi, ticari haklar ve kurumsal seçim rehberi
@@ -128,6 +133,12 @@ SubRadar/
     ├── manifest.json                     # Progressive Web App (PWA) manifesti (çevrimdışı ve tam ekran desteği)
     ├── sw.js                             # Çevrimdışı Service Worker önbellekleme motoru (v1.6.1 Network-First HTML)
     │
+    ├── assets/                           # Web Varlık ve Medya Klasörü
+    │   └── cursors/                      # Windows 11 Tailless Cursors (Jepri Creations) 32x32 RGBA imleç varlıkları (Dark / Light)
+    │
+    ├── vendor/                           # Yerel Üçüncü Parti Çevrimdışı Kütüphaneler
+    │   └── three/                        # Donanım ivmeli 3D WebGL motoru (three.min.js, three.module.js)
+    │
     ├── components/                       # 23 Parçalı Modüler HTML UI Bileşenleri
     │   ├── layout/                       # Çerçeve & Genel Düzen Bileşenleri
     │   │   ├── header.html               # Üst cam çubuk, logo, ⌘K, ses, kısayol, dil, kur ve tema kontrolleri
@@ -165,6 +176,7 @@ SubRadar/
     ├── css/                              # Web Stil Sistemi (Apple Glassmorphism)
     │   ├── base.css                      # Renk token'ları, SF Pro/Inter tipografi hiyerarşisi, açık/koyu tema sınıfları
     │   ├── components.css                # Cam efektleri, range slider, imleç ışığı, ses dalgası ve modal animasyonları
+    │   ├── cursors.css                   # Windows 11 Tailless imleç CSS motoru ve Base64 veri URI kuralları
     │   └── main.css                      # Tüm CSS modüllerini derleyen ana stil orkestrasyonu
     │
     ├── js/                               # Web İstemci Zekâsı & Modüler Betikler
@@ -257,6 +269,20 @@ npm run test:parser
 # Çerçevesiz Apple Glass penceresini başlatın
 npm start
 ```
+
+---
+
+## 🤖 Otonom AI Mühendislik Organizasyonu (Baş Orkestratör & 20 Uzman Alt Ajan)
+
+SubRadar deposu, `.agents/agents/` ve `.agents/rules/` altında yapılandırılmış **Baş Orkestratör (Manager) + 5 Departman / 20 Uzman Alt Ajan (Subagent)** mimarisiyle yönetilir. Ana yapay zekâ asistanı yalnızca **Baş Orkestratör** rolündedir ve görevleri aşağıdaki uzman alt ajanlara delege ederek yürütür:
+
+| Departman | Uzman Alt Ajanlar (`define_subagent` / `.agents/agents/*/agent.md`) | Sorumluluk Alanı |
+| :--- | :--- | :--- |
+| **A. Araştırma, Debloat & Mimari Denetim** | `deep-code-researcher`, `ponytail-debloater`, `architecture-sync-guardian`, `performance-a11y-auditor` | Derin kod ve DOM analizi, `ponytail` ile ölü kod yıkımı, 23 modüler bileşen ↔ `web/code.html` 1:1 senkronizasyonu, 60FPS WebGL ve ARIA denetimi. |
+| **B. Tasarım, Marka & Görsel Sanatlar** | `ui-ux-glass-designer`, `brand-visual-artist`, `originkit-webgl-specialist`, `audio-haptics-engineer` | Apple Glassmorphism (`impeccable`, `ui-ux-pro-max`), SVG/Canvas varlıklar, Tailless imleçler, Originkit `Tiles Loader` & `Vector Wordmark` WebGL 2.0, Web Audio ses motoru. |
+| **C. Web Platformu & FinOps Mühendislik** | `web-ui-engineer`, `hero-simulator-engineer`, `interactive-modals-engineer`, `i18n-finops-specialist`, `supabase-auth-specialist` | Modüler web ön yüzü, macOS Hero simülatörü, `⌘K` Komut Paleti & modallar, TR/EN/DE çeviri, canlı döviz (`fx.js`), FinOps hesaplayıcı, Air-Gap ekstre lab, Supabase v2 & Double-Slider Auth. |
+| **D. Masaüstü Çekirdeği, Kriptografi & Hukuk** | `desktop-core-engineer`, `security-crypto-auditor`, `legal-compliance-counsel` | Electron v33 (`main.js`, `preload.js`), `AES-256-CBC` + `scrypt` + `HMAC-SHA256` yerel kasa, SHA-256 doğrulayıcı, 6502 SK & GDPR Madde 17 resmi ihtarname ve 10'lu lisans matrisi. |
+| **E. DevOps, Git/GitHub, QA & Dokümantasyon** | `git-github-ops`, `seo-pwa-release-engineer`, `test-automation-runner`, `qa-docs-specialist` | Git/GitHub operasyonları, PWA Service Worker (`sw.js`), SEO haritaları, birim/bileşen testleri (`vault.test.js`, `parser.test.js`, `build.py`) ve zorunlu `README.md` / `CODEBASE.md` / `AGENTS.md` senkronizasyonu. |
 
 ---
 
