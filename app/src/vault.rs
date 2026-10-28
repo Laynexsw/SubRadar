@@ -2,7 +2,7 @@
 
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 use aes::cipher::{block_padding::Pkcs7, BlockDecryptMut, BlockEncryptMut, KeyIvInit};
 use base64::{engine::general_purpose::STANDARD as B64, Engine as _};
@@ -16,7 +16,7 @@ type Aes256CbcEnc = cbc::Encryptor<aes::Aes256>;
 type Aes256CbcDec = cbc::Decryptor<aes::Aes256>;
 type HmacSha256 = Hmac<Sha256>;
 
-const PBKDF2_ITERATIONS: u32 = 12_000;
+const PBKDF2_ITERATIONS: u32 = 60_000;
 pub const VAULT_FILENAME: &str = "encrypted_sqlite_aes256.subradar";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -31,15 +31,47 @@ pub struct EncryptedEnvelope {
 }
 
 fn generate_entropy_bytes(seed_label: &[u8]) -> [u8; 16] {
-    let nanos = SystemTime::now()
+    // 1. Duvar saati zaman entropisi (SystemTime)
+    let sys_nanos = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map(|d| d.as_nanos())
         .unwrap_or(0);
+
+    // 2. İşlem ve iş parçacığı kimliği (PID & Thread ID)
     let pid = std::process::id();
+    let thread_id = format!("{:?}", std::thread::current().id());
+
+    // 3. Yüksek çözünürlüklü performans sayaçları (Monotonik sayaç ve CPU döngü sayacı)
+    let perf_start = Instant::now();
+    let perf_nanos = perf_start.elapsed().as_nanos();
+    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+    let rdtsc: u64 = unsafe { std::arch::x86_64::_rdtsc() };
+    #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+    let rdtsc: u64 = 0;
+
+    // 4. Bellek adresi entropisi (ASLR korumalı yığın, öbek ve fonksiyon adresleri)
+    let stack_val = 0xAA55_AA55_u64;
+    let stack_addr = &stack_val as *const u64 as usize;
+    let heap_box = Box::new(0xDEAD_BEEF_u64);
+    let heap_addr = &*heap_box as *const u64 as usize;
+    let fn_addr = generate_entropy_bytes as *const () as usize;
+
+    // 5. Monotonik sıra sayacı (Eşzamanlı çağrıların farklı entropi üretmesini garanti eder)
+    static COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
+    let seq = COUNTER.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+
     let mut hasher = Sha256::new();
-    hasher.update(nanos.to_le_bytes());
+    hasher.update(sys_nanos.to_le_bytes());
     hasher.update(pid.to_le_bytes());
+    hasher.update(thread_id.as_bytes());
+    hasher.update(perf_nanos.to_le_bytes());
+    hasher.update(rdtsc.to_le_bytes());
+    hasher.update(stack_addr.to_le_bytes());
+    hasher.update(heap_addr.to_le_bytes());
+    hasher.update(fn_addr.to_le_bytes());
+    hasher.update(seq.to_le_bytes());
     hasher.update(seed_label);
+
     let digest = hasher.finalize();
     let mut out = [0u8; 16];
     out.copy_from_slice(&digest[..16]);

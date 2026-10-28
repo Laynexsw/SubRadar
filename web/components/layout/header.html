@@ -1,3 +1,7 @@
+<script>
+  // SEC-04 & SEC-06: Anti-Clickjacking Frame-Busting
+  if (window.top !== window.self) { window.top.location = window.self.location; }
+</script>
 <!-- Atmospheric Background Radiance -->
 <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
 <div class="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[1100px] h-[650px] bg-white/[0.025] rounded-full blur-[200px]"></div>

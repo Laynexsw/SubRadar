@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=code.html?v=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <meta http-equiv="refresh" content="0; url=code.html?v=1.1">
   <title>SubRadar</title>
   <style>html,body{background:#000000;margin:0;padding:0;overflow:hidden;}</style>
   <script>
-    var q = window.location.search ? window.location.search + "&v=1.0" : "?v=1.0";
+    // SEC-04 & SEC-06: Anti-Clickjacking Frame-Busting
+    if (window.top !== window.self) { window.top.location = window.self.location; }
+    var q = window.location.search ? window.location.search + "&v=1.1" : "?v=1.1";
     window.location.replace("code.html" + q + window.location.hash);
   </script>
 </head>

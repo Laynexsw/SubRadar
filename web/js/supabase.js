@@ -235,16 +235,27 @@ export async function srSubmitEnterpriseInquiry({ name, email, company, seats, r
 }
 
 /**
- * Verify License Key in Supabase Table
+ * Verify License Key in Supabase Table (SEC-02 Hardened: RPC first, restricted columns)
  */
 export async function srCheckLicense(licenseKey) {
   const cleanKey = (licenseKey || '').trim().toUpperCase();
   const client = getSupabase();
 
   if (client) {
+    // SEC-02: Varsa RPC verify_license fonksiyonunu önce dene
+    try {
+      const { data: rpcData, error: rpcError } = await client.rpc('verify_license', { key_input: cleanKey });
+      if (!rpcError && rpcData) {
+        return rpcData;
+      }
+    } catch (e) {
+      // RPC yoksa kısıtlı sütun sorgusuna devam et
+    }
+
+    // SEC-02: select('*') yerine sadece gerekli alanlar
     const { data, error } = await client
       .from('licenses')
-      .select('*')
+      .select('status, tier, expires_at')
       .eq('license_key', cleanKey)
       .eq('status', 'active')
       .maybeSingle();
@@ -252,7 +263,17 @@ export async function srCheckLicense(licenseKey) {
     return data;
   }
 
-  const list = await supabaseRest(`licenses?license_key=eq.${encodeURIComponent(cleanKey)}&status=eq.active&select=*`);
+  // REST RPC Fallback
+  try {
+    const rpcRes = await supabaseRest('rpc/verify_license', {
+      method: 'POST',
+      body: { key_input: cleanKey }
+    });
+    if (rpcRes) return rpcRes;
+  } catch (e) {}
+
+  // REST Tablo Sorgusu: Yalnızca gerekli alanlar
+  const list = await supabaseRest(`licenses?license_key=eq.${encodeURIComponent(cleanKey)}&status=eq.active&select=status,tier,expires_at`);
   return list && list.length ? list[0] : null;
 }
 

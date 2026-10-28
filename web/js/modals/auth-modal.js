@@ -239,14 +239,23 @@ export function initAuthModal() {
     if (session) {
       const displayName = session.name || (session.email ? session.email.split('@')[0] : 'Kullanıcı');
       if (authBtnLabel) {
-        authBtnLabel.innerHTML = `<span class="w-2 h-2 rounded-full bg-white inline-block mr-1"></span>${displayName} (Hesabım)`;
+        // SEC-05: Unfiltered innerHTML sanitization
+        authBtnLabel.innerHTML = '';
+        var dot = document.createElement('span');
+        dot.className = 'w-2 h-2 rounded-full bg-white inline-block mr-1';
+        authBtnLabel.appendChild(dot);
+        authBtnLabel.appendChild(document.createTextNode(`${displayName} (Hesabım)`));
       }
       if (profileName) profileName.textContent = displayName;
       if (profileEmail) profileEmail.textContent = session.email || 'kullanici@subradar.dev';
       if (avatarInitials) {
         const parts = displayName.split(' ');
         const initials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : displayName.substring(0, 2).toUpperCase();
-        avatarInitials.innerHTML = `${initials}<span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-white border-2 border-[#09090b]"></span>`;
+        avatarInitials.innerHTML = '';
+        avatarInitials.appendChild(document.createTextNode(initials));
+        var badge = document.createElement('span');
+        badge.className = 'absolute bottom-0 right-0 w-3 h-3 rounded-full bg-white border-2 border-[#09090b]';
+        avatarInitials.appendChild(badge);
       }
       showActiveDashboard();
     } else {

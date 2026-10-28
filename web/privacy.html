@@ -3,6 +3,12 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <script>
+    // SEC-04 & SEC-06: Anti-Clickjacking Frame-Busting
+    if (window.top !== window.self) { window.top.location = window.self.location; }
+  </script>
   <title>Gizlilik Politikası — Yalnızca Bilgisayarınızda & Çevrimdışı Kasa | SubRadar v1.0</title>
   <meta name="description" content="SubRadar v1.0 tamamen çevrimdışı (internetsiz) ve yalnızca bilgisayarınızda çalışır. Bulut sunucusu ve takip çerezi olmadan aboneliklerinizi güvenle korur."/>
   <meta name="theme-color" content="#07090e"/>

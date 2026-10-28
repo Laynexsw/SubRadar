@@ -1,8 +1,9 @@
 /* =========================================================================
    SubRadar — Offline-First Progressive Web App Service Worker
+   SEC-03 Hardened Edition: Origin Boundary Protection & Safe Fallbacks
    ========================================================================= */
 
-const CACHE_NAME = 'subradar-v1.0-cache';
+const CACHE_NAME = 'subradar-v1.1-cache';
 const ASSETS_TO_CACHE = [
   './code.html',
   './favicon.svg',
@@ -57,6 +58,18 @@ self.addEventListener('fetch', (event) => {
   // Only handle GET requests
   if (event.request.method !== 'GET') return;
 
+  var url;
+  try {
+    url = new URL(event.request.url);
+  } catch (e) {
+    return;
+  }
+
+  // SEC-03: Sadece same-origin istekleri ele al; harici API'leri (open.er-api, supabase vb.) önbelleğe alma ve akışlarını bozma
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
   // Universal Network-First: Always attempt fresh network fetch first; fall back to cache when offline
   event.respondWith(
     fetch(event.request)
@@ -69,7 +82,16 @@ self.addEventListener('fetch', (event) => {
       })
       .catch(() => {
         return caches.match(event.request).then((cached) => {
-          return cached || caches.match('./code.html');
+          if (cached) return cached;
+          // SEC-03: ./code.html fallback'ini YALNIZCA navigate modundaki sayfa isteklerinde çalıştır; API veya veri isteklerine asla HTML döndürme!
+          if (event.request.mode === 'navigate') {
+            return caches.match('./code.html');
+          }
+          return new Response(JSON.stringify({ error: 'Ağ bağlantısı yok (Çevrimdışı)', offline: true }), {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: { 'Content-Type': 'application/json' }
+          });
         });
       })
   );
