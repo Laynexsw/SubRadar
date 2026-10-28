@@ -29,6 +29,7 @@ pub mod primitives {
     pub const AMBER_500: Color32 = Color32::from_rgb(245, 158, 11);   // #f59e0b
     pub const ROSE_500: Color32 = Color32::from_rgb(239, 68, 68);     // #ef4444
     pub const SKY_400: Color32 = Color32::from_rgb(56, 189, 248);    // #38bdf8
+    pub const PURPLE_400: Color32 = Color32::from_rgb(192, 132, 252); // #c084fc
 
     // Consistent 4/8/12/16/24px Spacing Rhythm
     pub const SPACE_1: f32 = 4.0;
@@ -55,6 +56,7 @@ pub const ACCENT_EMERALD: Color32 = primitives::EMERALD_500;
 pub const ACCENT_AMBER: Color32 = primitives::AMBER_500;
 pub const ACCENT_ROSE: Color32 = primitives::ROSE_500;
 pub const ACCENT_BLUE: Color32 = primitives::SKY_400;
+pub const ACCENT_PURPLE: Color32 = primitives::PURPLE_400;
 
 pub const TEXT_WHITE: Color32 = primitives::ZINC_100;
 pub const TEXT_SECONDARY: Color32 = primitives::ZINC_400;

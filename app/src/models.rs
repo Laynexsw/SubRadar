@@ -198,6 +198,76 @@ impl Subscription {
     pub fn is_light_avatar(&self) -> bool {
         self.name.to_lowercase().contains("adobe")
     }
+
+    pub fn spending_category(&self) -> SpendingCategory {
+        let cat_lower = self.category.to_lowercase();
+        let name_lower = self.name.to_lowercase();
+        let text = format!("{} {}", cat_lower, name_lower);
+
+        if text.contains("yazılım")
+            || text.contains("yazilim")
+            || text.contains("software")
+            || text.contains("developer")
+            || text.contains("jetbrains")
+            || text.contains("github")
+            || text.contains("gitlab")
+            || text.contains("docker")
+            || text.contains("cursor")
+            || text.contains("copilot")
+        {
+            SpendingCategory::SoftwareDev
+        } else if text.contains("dizi")
+            || text.contains("film")
+            || text.contains("müzik")
+            || text.contains("muzik")
+            || text.contains("oyun")
+            || text.contains("eğlence")
+            || text.contains("eglence")
+            || text.contains("netflix")
+            || text.contains("spotify")
+            || text.contains("youtube")
+            || text.contains("disney")
+            || text.contains("steam")
+            || text.contains("xbox")
+            || text.contains("prime")
+            || text.contains("playstation")
+        {
+            SpendingCategory::Entertainment
+        } else if text.contains("bulut")
+            || text.contains("cloud")
+            || text.contains("sunucu")
+            || text.contains("depolama")
+            || text.contains("aws")
+            || text.contains("azure")
+            || text.contains("gcp")
+            || text.contains("digitalocean")
+            || text.contains("hetzner")
+            || text.contains("vercel")
+            || text.contains("icloud")
+            || text.contains("google drive")
+            || text.contains("dropbox")
+        {
+            SpendingCategory::CloudServer
+        } else if text.contains("üretkenlik")
+            || text.contains("uretkenlik")
+            || text.contains("yapay")
+            || text.contains("tasarım")
+            || text.contains("tasarim")
+            || text.contains("figma")
+            || text.contains("adobe")
+            || text.contains("canva")
+            || text.contains("chatgpt")
+            || text.contains("openai")
+            || text.contains("claude")
+            || text.contains("notion")
+            || text.contains("office")
+            || text.contains("linear")
+        {
+            SpendingCategory::Productivity
+        } else {
+            SpendingCategory::Other
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -345,4 +415,156 @@ impl SummaryStats {
             annual_recoverable_usd,
         }
     }
+
+    pub fn compute_category_spending(subs: &[Subscription]) -> Vec<CategorySpending> {
+        let mut map: std::collections::BTreeMap<SpendingCategory, (f64, usize)> =
+            std::collections::BTreeMap::new();
+        for cat in [
+            SpendingCategory::SoftwareDev,
+            SpendingCategory::Entertainment,
+            SpendingCategory::CloudServer,
+            SpendingCategory::Productivity,
+            SpendingCategory::Other,
+        ] {
+            map.insert(cat, (0.0, 0));
+        }
+
+        let mut total_monthly_usd = 0.0;
+        for sub in subs {
+            if sub.status != SubStatus::Cancelled {
+                let cost = sub.monthly_cost_usd();
+                let cat = sub.spending_category();
+                let entry = map.entry(cat).or_insert((0.0, 0));
+                entry.0 += cost;
+                entry.1 += 1;
+                total_monthly_usd += cost;
+            }
+        }
+
+        let mut result = Vec::new();
+        for (category, (monthly_usd, count)) in map {
+            let percentage = if total_monthly_usd > 0.0 {
+                (monthly_usd / total_monthly_usd) * 100.0
+            } else {
+                0.0
+            };
+            result.push(CategorySpending {
+                category,
+                monthly_usd,
+                percentage,
+                count,
+            });
+        }
+        result.sort_by(|a, b| {
+            b.monthly_usd
+                .partial_cmp(&a.monthly_usd)
+                .unwrap_or(std::cmp::Ordering::Equal)
+        });
+        result
+    }
+
+    pub fn compute_budget_health(stats: &SummaryStats) -> BudgetHealth {
+        let leaks = stats.passive_leaks_count;
+        if leaks == 0 {
+            BudgetHealth {
+                grade: "A+",
+                score: 98,
+                message: "Mükemmel Bütçe — Sıfır Boşa Ödeme",
+                fill_fraction: 0.98,
+                color_rgb: (16, 185, 129), // Emerald
+            }
+        } else if leaks == 1 {
+            BudgetHealth {
+                grade: "B+",
+                score: 82,
+                message: "İyi — 1 Pasif Lisans İncelenmeli",
+                fill_fraction: 0.82,
+                color_rgb: (56, 189, 248), // Sky Blue
+            }
+        } else if leaks <= 3 {
+            BudgetHealth {
+                grade: "B",
+                score: 68,
+                message: "Orta — Bütçede Tasarruf Fırsatları Var",
+                fill_fraction: 0.68,
+                color_rgb: (245, 158, 11), // Amber
+            }
+        } else {
+            BudgetHealth {
+                grade: "C-",
+                score: 42,
+                message: "Kritik — Yüksek Pasif Abonelik İsrafı",
+                fill_fraction: 0.42,
+                color_rgb: (239, 68, 68), // Rose
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+pub enum SpendingCategory {
+    SoftwareDev,
+    Entertainment,
+    CloudServer,
+    Productivity,
+    Other,
+}
+
+impl SpendingCategory {
+    pub fn label(&self) -> &'static str {
+        match self {
+            SpendingCategory::SoftwareDev => "Yazılım & Geliştirici",
+            SpendingCategory::Entertainment => "Eğlence & Dizi",
+            SpendingCategory::CloudServer => "Bulut & Sunucu",
+            SpendingCategory::Productivity => "Üretkenlik",
+            SpendingCategory::Other => "Diğer",
+        }
+    }
+
+    pub fn short_label(&self) -> &'static str {
+        match self {
+            SpendingCategory::SoftwareDev => "Yazılım",
+            SpendingCategory::Entertainment => "Eğlence",
+            SpendingCategory::CloudServer => "Bulut",
+            SpendingCategory::Productivity => "Üretkenlik",
+            SpendingCategory::Other => "Diğer",
+        }
+    }
+
+    pub fn icon(&self) -> &'static str {
+        match self {
+            SpendingCategory::SoftwareDev => "💻",
+            SpendingCategory::Entertainment => "🎬",
+            SpendingCategory::CloudServer => "☁",
+            SpendingCategory::Productivity => "⚡",
+            SpendingCategory::Other => "📦",
+        }
+    }
+
+    pub fn color_rgb(&self) -> (u8, u8, u8) {
+        match self {
+            SpendingCategory::SoftwareDev => (56, 189, 248),   // Sky Blue (#38bdf8)
+            SpendingCategory::Entertainment => (244, 63, 94),  // Rose (#f43f5e)
+            SpendingCategory::CloudServer => (192, 132, 252),  // Light Purple (#c084fc)
+            SpendingCategory::Productivity => (16, 185, 129),  // Emerald (#10b981)
+            SpendingCategory::Other => (245, 158, 11),         // Amber (#f59e0b)
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct CategorySpending {
+    pub category: SpendingCategory,
+    pub monthly_usd: f64,
+    pub percentage: f64,
+    pub count: usize,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct BudgetHealth {
+    pub grade: &'static str,
+    pub score: u32,
+    pub message: &'static str,
+    pub fill_fraction: f32,
+    pub color_rgb: (u8, u8, u8),
 }

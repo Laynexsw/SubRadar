@@ -10,7 +10,7 @@ use eframe::egui::{
 
 use crate::legal::{generate_legal_notice, NoticeLanguage};
 use crate::models::{
-    BillingCycle, Currency, SubStatus, Subscription, SummaryStats, VaultPayload,
+    BillingCycle, Currency, SpendingCategory, SubStatus, Subscription, SummaryStats, VaultPayload,
 };
 use crate::parser::{parse_statement, SAMPLE_STATEMENT};
 use crate::presets::SERVICE_PRESETS;
@@ -51,6 +51,7 @@ pub struct SubRadarApp {
     pub edit_price_input: String,
     pub edit_note_input: String,
     pub last_cancelled_id: Option<String>,
+    pub last_cancelled_status: Option<SubStatus>,
     pub toast_banner: Option<(String, bool)>, // (message, show_undo)
 
     // Quick Add Form (Subscriptions tab)
@@ -112,6 +113,7 @@ impl Default for SubRadarApp {
             edit_price_input: String::new(),
             edit_note_input: String::new(),
             last_cancelled_id: None,
+            last_cancelled_status: None,
             toast_banner: None,
             form_name: "Netflix".to_string(),
             form_plan: "Standart Paket".to_string(),
@@ -161,13 +163,17 @@ impl SubRadarApp {
 
     fn undo_last_cancel(&mut self) {
         if let Some(last_id) = self.last_cancelled_id.take() {
+            let prev_status = self
+                .last_cancelled_status
+                .take()
+                .unwrap_or(SubStatus::UnusedTrial);
             if let Some(sub) = self
                 .payload
                 .subscriptions
                 .iter_mut()
                 .find(|s| s.id == last_id)
             {
-                sub.status = SubStatus::UnusedTrial;
+                sub.status = prev_status;
                 let name = sub.name.clone();
                 self.persist_vault();
                 self.show_toast(format!("↩ {} iptal işlemi geri alındı.", name), false);
@@ -670,6 +676,228 @@ impl SubRadarApp {
             Stroke::new(1.0_f32, pal.border_subtle),
         );
 
+        // 1.5 BENTO GRID: Kategori & Harcama Dağılımı + Bütçe Sağlık Skoru
+        let cat_spendings = SummaryStats::compute_category_spending(&self.payload.subscriptions);
+        let health = SummaryStats::compute_budget_health(stats);
+
+        ui.add_space(8.0);
+
+        egui::Frame::new()
+            .fill(pal.bg_surface)
+            .stroke(Stroke::new(1.0_f32, pal.border_subtle))
+            .corner_radius(CornerRadius::same(10))
+            .inner_margin(Margin::symmetric(14, 10))
+            .show(ui, |ui| {
+                // Header: Title + Health Badge
+                ui.horizontal(|ui| {
+                    ui.label(
+                        RichText::new("BENTO HARCAMA ANALİTİĞİ & DAĞILIM")
+                            .font(FontId::new(10.0, FontFamily::Monospace))
+                            .color(pal.text_muted),
+                    );
+
+                    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                        let health_color = Color32::from_rgb(
+                            health.color_rgb.0,
+                            health.color_rgb.1,
+                            health.color_rgb.2,
+                        );
+                        egui::Frame::new()
+                            .fill(pal.bg_elevated)
+                            .stroke(Stroke::new(1.0_f32, health_color.gamma_multiply(0.5)))
+                            .corner_radius(CornerRadius::same(6))
+                            .inner_margin(Margin::symmetric(8, 2))
+                            .show(ui, |ui| {
+                                ui.horizontal(|ui| {
+                                    let (dot, _) =
+                                        ui.allocate_exact_size(Vec2::splat(6.0), Sense::hover());
+                                    ui.painter().circle_filled(dot.center(), 3.0, health_color);
+                                    ui.label(
+                                        RichText::new(format!(
+                                            "Bütçe Sağlığı: {} ({} Puan)",
+                                            health.grade, health.score
+                                        ))
+                                        .font(FontId::new(10.0, FontFamily::Monospace))
+                                        .strong()
+                                        .color(health_color),
+                                    );
+                                });
+                            });
+                    });
+                });
+
+                ui.add_space(6.0);
+
+                // Multi-Segmented Bento Progress Bar
+                let total_bar_w = ui.available_width();
+                let bar_h = 8.0;
+                let (bar_rect, bar_resp) =
+                    ui.allocate_exact_size(Vec2::new(total_bar_w, bar_h), Sense::hover());
+                ui.painter()
+                    .rect_filled(bar_rect, CornerRadius::same(4), pal.border_subtle);
+
+                let mut cur_x = bar_rect.left();
+                for cat in &cat_spendings {
+                    if cat.percentage <= 0.0 {
+                        continue;
+                    }
+                    let seg_w = (total_bar_w * (cat.percentage as f32 / 100.0)).max(2.0);
+                    let seg_rect = Rect::from_min_size(
+                        Pos2::new(cur_x, bar_rect.top()),
+                        Vec2::new(seg_w.min(bar_rect.right() - cur_x), bar_h),
+                    );
+                    let (cr, cg, cb) = cat.category.color_rgb();
+                    let seg_color = Color32::from_rgb(cr, cg, cb);
+                    ui.painter()
+                        .rect_filled(seg_rect, CornerRadius::same(3), seg_color);
+
+                    cur_x += seg_w;
+                    if cur_x >= bar_rect.right() {
+                        break;
+                    }
+                }
+
+                if bar_resp.hovered() {
+                    let mut tip = String::from("Bento Kategori Dağılımı:\n");
+                    for cat in &cat_spendings {
+                        if cat.percentage > 0.0 {
+                            tip.push_str(&format!(
+                                "{} {}: {} (%{:.1}) • {} servis\n",
+                                cat.category.icon(),
+                                cat.category.label(),
+                                pref_curr.format_from_usd(cat.monthly_usd),
+                                cat.percentage,
+                                cat.count
+                            ));
+                        }
+                    }
+                    bar_resp.on_hover_text(tip.trim_end());
+                }
+
+                ui.add_space(8.0);
+
+                // Bento Mini Cards: 5 Category Mini Cards + 1 Health Score Card
+                let num_cards = 6.0;
+                let spacing = 6.0;
+                let card_w = ((total_bar_w - spacing * (num_cards - 1.0)) / num_cards).max(110.0);
+                let card_h = 56.0;
+
+                ui.horizontal(|ui| {
+                    for cat_kind in [
+                        SpendingCategory::SoftwareDev,
+                        SpendingCategory::Entertainment,
+                        SpendingCategory::CloudServer,
+                        SpendingCategory::Productivity,
+                        SpendingCategory::Other,
+                    ] {
+                        let cat_data = cat_spendings.iter().find(|c| c.category == cat_kind);
+                        let monthly_usd = cat_data.map(|c| c.monthly_usd).unwrap_or(0.0);
+                        let percentage = cat_data.map(|c| c.percentage).unwrap_or(0.0);
+                        let count = cat_data.map(|c| c.count).unwrap_or(0);
+                        let (cr, cg, cb) = cat_kind.color_rgb();
+                        let cat_color = Color32::from_rgb(cr, cg, cb);
+
+                        egui::Frame::new()
+                            .fill(pal.bg_elevated)
+                            .stroke(Stroke::new(1.0_f32, pal.border_subtle))
+                            .corner_radius(CornerRadius::same(6))
+                            .inner_margin(Margin::symmetric(8, 6))
+                            .show(ui, |ui| {
+                                ui.set_width(card_w);
+                                ui.set_height(card_h);
+                                ui.vertical(|ui| {
+                                    ui.horizontal(|ui| {
+                                        ui.label(RichText::new(cat_kind.icon()).size(10.5));
+                                        ui.label(
+                                            RichText::new(cat_kind.short_label())
+                                                .font(FontId::new(10.0, FontFamily::Proportional))
+                                                .strong()
+                                                .color(pal.text_primary),
+                                        );
+                                        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                                            ui.label(
+                                                RichText::new(format!("%{:.0}", percentage))
+                                                    .font(FontId::new(9.0, FontFamily::Monospace))
+                                                    .color(cat_color),
+                                            );
+                                        });
+                                    });
+                                    ui.add_space(2.0);
+                                    ui.label(
+                                        RichText::new(pref_curr.format_from_usd(monthly_usd))
+                                            .font(FontId::new(11.5, FontFamily::Monospace))
+                                            .strong()
+                                            .color(pal.text_primary),
+                                    );
+                                    ui.label(
+                                        RichText::new(format!("{} aktif", count))
+                                            .font(FontId::new(8.5, FontFamily::Monospace))
+                                            .color(pal.text_dim),
+                                    );
+                                });
+                            });
+                    }
+
+                    // 6th Card: Health Score Card
+                    let health_color = Color32::from_rgb(
+                        health.color_rgb.0,
+                        health.color_rgb.1,
+                        health.color_rgb.2,
+                    );
+                    egui::Frame::new()
+                        .fill(pal.bg_elevated)
+                        .stroke(Stroke::new(1.0_f32, health_color.gamma_multiply(0.4)))
+                        .corner_radius(CornerRadius::same(6))
+                        .inner_margin(Margin::symmetric(8, 6))
+                        .show(ui, |ui| {
+                            ui.set_width(card_w);
+                            ui.set_height(card_h);
+                            ui.vertical(|ui| {
+                                ui.horizontal(|ui| {
+                                    ui.label(RichText::new("🛡").size(10.5));
+                                    ui.label(
+                                        RichText::new("Skor")
+                                            .font(FontId::new(10.0, FontFamily::Proportional))
+                                            .strong()
+                                            .color(pal.text_primary),
+                                    );
+                                    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                                        egui::Frame::new()
+                                            .fill(health_color)
+                                            .corner_radius(CornerRadius::same(3))
+                                            .inner_margin(Margin::symmetric(4, 1))
+                                            .show(ui, |ui| {
+                                                ui.label(
+                                                    RichText::new(health.grade)
+                                                        .font(FontId::new(
+                                                            9.0,
+                                                            FontFamily::Monospace,
+                                                        ))
+                                                        .strong()
+                                                        .color(Color32::from_rgb(10, 10, 12)),
+                                                );
+                                            });
+                                    });
+                                });
+                                ui.add_space(2.0);
+                                ui.label(
+                                    RichText::new(format!("{} Puan", health.score))
+                                        .font(FontId::new(11.5, FontFamily::Monospace))
+                                        .strong()
+                                        .color(health_color),
+                                );
+                                ui.label(
+                                    RichText::new(health.message)
+                                        .font(FontId::new(8.5, FontFamily::Proportional))
+                                        .color(pal.text_dim),
+                                );
+                            });
+                        });
+                });
+            });
+
+        ui.add_space(8.0);
+
         ui.add_space(8.0);
 
         // 2. Quick Filter Bar & Shortcut Actions
@@ -724,7 +952,7 @@ impl SubRadarApp {
 
         egui::ScrollArea::vertical()
             .id_salt("overview_rows_scroll")
-            .max_height(335.0)
+            .max_height(240.0)
             .show(ui, |ui| {
                 for (idx, sub) in self.payload.subscriptions.iter().enumerate() {
                     let filter_ok = match self.overview_filter {
@@ -1143,17 +1371,20 @@ impl SubRadarApp {
         }
 
         if let Some(idx) = cancel_action_idx {
+            let previous_status = self.payload.subscriptions[idx].status;
             let sub = &mut self.payload.subscriptions[idx];
             sub.status = SubStatus::Cancelled;
             let id = sub.id.clone();
             let name = sub.name.clone();
-            let saved = pref_curr.format_from_usd(sub.monthly_cost_usd());
+            let annual_saved = sub.monthly_cost_usd() * 12.0;
+            let saved = pref_curr.format_from_usd(annual_saved);
             self.last_cancelled_id = Some(id.clone());
+            self.last_cancelled_status = Some(previous_status);
             self.expanded_sub_id = Some(id);
             self.persist_vault();
             self.show_toast(
                 format!(
-                    "✓ {} iptal edildi — Aylık {} tasarruf sağlandı",
+                    "✓ {} iptal edildi — Yılda {} kazandınız",
                     name, saved
                 ),
                 true,
@@ -1201,23 +1432,45 @@ impl SubRadarApp {
 
         if let Some((msg, can_undo)) = self.toast_banner.clone() {
             egui::Frame::new()
-                .fill(pal.bg_surface)
-                .stroke(Stroke::new(1.0_f32, pal.border_default))
-                .corner_radius(CornerRadius::same(6))
-                .inner_margin(Margin::symmetric(12, 5))
+                .fill(pal.bg_elevated)
+                .stroke(Stroke::new(1.2_f32, pal.accent_emerald.gamma_multiply(0.7)))
+                .corner_radius(CornerRadius::same(8))
+                .inner_margin(Margin::symmetric(14, 8))
                 .show(ui, |ui| {
                     ui.horizontal(|ui| {
                         ui.label(
                             RichText::new(&msg)
-                                .size(11.5)
-                                .color(pal.accent_emerald),
+                                .size(12.0)
+                                .strong()
+                                .color(pal.text_primary),
                         );
                         ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                            if ui.small_button("✕").clicked() {
+                            if ui
+                                .add(
+                                    egui::Button::new(
+                                        RichText::new("✕")
+                                            .font(FontId::new(11.0, FontFamily::Monospace))
+                                            .color(pal.text_muted),
+                                    )
+                                    .frame(false),
+                                )
+                                .clicked()
+                            {
                                 self.toast_banner = None;
                             }
-                            if can_undo && ui.small_button("↩ Geri Al").clicked() {
-                                self.undo_last_cancel();
+                            if can_undo {
+                                ui.add_space(8.0);
+                                let undo_btn = egui::Button::new(
+                                    RichText::new("↩ Geri Al")
+                                        .size(11.5)
+                                        .strong()
+                                        .color(pal.cta_fg),
+                                )
+                                .fill(pal.cta_bg)
+                                .corner_radius(CornerRadius::same(5));
+                                if ui.add(undo_btn).clicked() {
+                                    self.undo_last_cancel();
+                                }
                             }
                         });
                     });
@@ -1235,22 +1488,12 @@ impl SubRadarApp {
 
         ui.horizontal(|ui| {
             ui.label(
-                RichText::new("🗄  Yerel Veritabanı: encrypted_sqlite_aes256.db")
-                    .font(FontId::new(11.5, FontFamily::Monospace))
-                    .color(pal.text_muted),
+                RichText::new("⚡ Raycast Kısayolları: [Ctrl+K] Ara • [Ctrl+N] Ekle • [Ctrl+E] Ekstre • [Ctrl+T] Tema • [Ctrl+D] Birim • [Esc] Kapat")
+                    .font(FontId::new(10.0, FontFamily::Monospace))
+                    .color(pal.text_dim),
             );
 
             ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                ui.label(
-                    RichText::new("4 Arka Plan Engelleyici Etkin")
-                        .font(FontId::new(11.5, FontFamily::Monospace))
-                        .color(pal.text_muted),
-                );
-                ui.label(
-                    RichText::new("•")
-                        .font(FontId::new(11.5, FontFamily::Monospace))
-                        .color(pal.text_dim),
-                );
                 if ui
                     .add(
                         egui::Label::new(
@@ -1880,13 +2123,59 @@ impl eframe::App for SubRadarApp {
         apply_theme(ctx, dark_mode);
         let pal = ThemePalette::for_mode(dark_mode);
 
-        // Keyboard shortcuts: Ctrl+K focuses search, Ctrl+N opens quick add, ESC clears search/drawer
-        if ctx.input(|i| i.modifiers.command && i.key_pressed(Key::K)) {
+        // Raycast Power-User Hotkeys (Ctrl/Cmd based)
+        let ctrl_or_cmd = ctx.input(|i| i.modifiers.command || i.modifiers.ctrl);
+
+        // Ctrl+K: Canlı arama ve komut çubuğuna odaklanma
+        if ctrl_or_cmd && ctx.input(|i| i.key_pressed(Key::K)) {
             self.focus_search_next_frame = true;
         }
-        if ctx.input(|i| i.modifiers.command && i.key_pressed(Key::N)) {
+
+        // Ctrl+N: Hızlı abonelik ekleme paneli
+        if ctrl_or_cmd && ctx.input(|i| i.key_pressed(Key::N)) {
             self.active_tab = WorkspaceTab::Subscriptions;
         }
+
+        // Ctrl+E: Çevrimdışı ekstre tarayıcı sekmesine anında geçiş
+        if ctrl_or_cmd && ctx.input(|i| i.key_pressed(Key::E)) {
+            self.active_tab = WorkspaceTab::BlockingRules;
+            self.refresh_legal_notice();
+        }
+
+        // Ctrl+T: Koyu / Açık tema geçişi
+        if ctrl_or_cmd && ctx.input(|i| i.key_pressed(Key::T)) {
+            self.payload.preferences.dark_mode = !self.payload.preferences.dark_mode;
+            self.persist_vault();
+            self.show_toast(
+                if self.payload.preferences.dark_mode {
+                    "🌙 Koyu tema aktif edildi (Ctrl+T)"
+                } else {
+                    "☀ Açık tema aktif edildi (Ctrl+T)"
+                },
+                false,
+            );
+        }
+
+        // Ctrl+D: Para birimi değiştirici (USD -> TRY -> EUR döngüsü)
+        if ctrl_or_cmd && ctx.input(|i| i.key_pressed(Key::D)) {
+            let next_curr = match self.payload.preferences.currency {
+                Currency::USD => Currency::TRY,
+                Currency::TRY => Currency::EUR,
+                Currency::EUR => Currency::USD,
+            };
+            self.payload.preferences.currency = next_curr;
+            self.persist_vault();
+            self.show_toast(
+                format!(
+                    "💱 Para birimi {} ({}) olarak değiştirildi (Ctrl+D)",
+                    next_curr.code(),
+                    next_curr.symbol()
+                ),
+                false,
+            );
+        }
+
+        // Esc: Arama filtresini temizleme veya açık çekmeceyi kapatma
         if ctx.input(|i| i.key_pressed(Key::Escape)) {
             self.search_query.clear();
             self.expanded_sub_id = None;
