@@ -1,4 +1,4 @@
-//! SubRadar v1.0 — Veri Modelleri, Para Birimi Dönüşümleri ve Bütçe Hesaplamaları (`models.rs`)
+//! SubRadar v1.0 — Veri Modelleri ve Sitedeki Önizleme Verileri (`models.rs`)
 
 use serde::{Deserialize, Serialize};
 
@@ -48,6 +48,18 @@ impl Currency {
     }
 }
 
+pub fn format_usd_tr(amount_usd: f64) -> String {
+    let cents = (amount_usd * 100.0).round() as i64;
+    let whole = cents / 100;
+    let frac = (cents % 100).abs();
+    let whole_str = if whole >= 1000 {
+        format!("{}.{:03}", whole / 1000, whole % 1000)
+    } else {
+        format!("{}", whole)
+    };
+    format!("${},{:02}", whole_str, frac)
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum BillingCycle {
     Monthly,
@@ -92,7 +104,7 @@ impl SubStatus {
     pub fn label(&self) -> &'static str {
         match self {
             SubStatus::Active => "Aktif",
-            SubStatus::UnusedTrial => "Deneme / Kullanılmıyor",
+            SubStatus::UnusedTrial => "Pasif / Deneme",
             SubStatus::Cancelled => "İptal Edildi",
         }
     }
@@ -118,6 +130,35 @@ impl Subscription {
         let base_try = self.currency.to_try(self.price);
         self.billing_cycle.to_monthly(base_try)
     }
+
+    pub fn avatar_code(&self) -> &'static str {
+        let lower = self.name.to_lowercase();
+        if lower.contains("adobe") {
+            "Ps"
+        } else if lower.contains("jetbrains") {
+            "JB"
+        } else if lower.contains("figma") {
+            "Fg"
+        } else if lower.contains("aws") {
+            "AWS"
+        } else if lower.contains("netflix") {
+            "Nf"
+        } else if lower.contains("spotify") {
+            "Sp"
+        } else if lower.contains("chatgpt") || lower.contains("openai") {
+            "AI"
+        } else if lower.contains("youtube") {
+            "YT"
+        } else if lower.contains("github") {
+            "GH"
+        } else {
+            "SR"
+        }
+    }
+
+    pub fn is_light_avatar(&self) -> bool {
+        self.name.to_lowercase().contains("adobe")
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -131,7 +172,7 @@ pub struct UserPreferences {
 impl Default for UserPreferences {
     fn default() -> Self {
         Self {
-            currency: Currency::TRY,
+            currency: Currency::USD,
             dark_mode: true,
             user_name: "Abonelik Sahibi".to_string(),
             user_email: "kullanici@subradar.local".to_string(),
@@ -146,118 +187,130 @@ pub struct VaultPayload {
     pub subscriptions: Vec<Subscription>,
 }
 
+impl VaultPayload {
+    pub fn default_overview_subscriptions() -> Vec<Subscription> {
+        vec![
+            Subscription {
+                id: "sub-adobe-cc".to_string(),
+                name: "Adobe Creative Cloud Tüm Uygulamalar".to_string(),
+                plan: "SIFIR HAREKET (51 GÜN)".to_string(),
+                category: "Tasarım".to_string(),
+                price: 59.99,
+                currency: Currency::USD,
+                billing_cycle: BillingCycle::Monthly,
+                next_renewal: "28 MART'TA YENİLENİR".to_string(),
+                status: SubStatus::UnusedTrial,
+                cancel_url: "https://account.adobe.com/plans".to_string(),
+                notes: "12 Ocak'tan beri bu uygulama hiç açılmadı.".to_string(),
+            },
+            Subscription {
+                id: "sub-jetbrains".to_string(),
+                name: "JetBrains Toolbox Paketi".to_string(),
+                plan: "BOŞTA LİSANS".to_string(),
+                category: "Yazılım".to_string(),
+                price: 28.90,
+                currency: Currency::USD,
+                billing_cycle: BillingCycle::Monthly,
+                next_renewal: "OTOMATİK ÖDEME".to_string(),
+                status: SubStatus::UnusedTrial,
+                cancel_url: "https://account.jetbrains.com/licenses".to_string(),
+                notes: "Son 45 gündür aktif kullanım tespit edilmedi.".to_string(),
+            },
+            Subscription {
+                id: "sub-figma".to_string(),
+                name: "Figma Professional".to_string(),
+                plan: "HER GÜN AKTİF".to_string(),
+                category: "Tasarım".to_string(),
+                price: 15.00,
+                currency: Currency::USD,
+                billing_cycle: BillingCycle::Monthly,
+                next_renewal: "TUTULUYOR".to_string(),
+                status: SubStatus::Active,
+                cancel_url: "https://www.figma.com/settings".to_string(),
+                notes: "Bu hafta 34 sa açık • Vazgeçilmez iş akışı".to_string(),
+            },
+            Subscription {
+                id: "sub-aws-idle".to_string(),
+                name: "AWS Bulut Servisleri (ec2-idle)".to_string(),
+                plan: "UNUTULAN ABONELİK".to_string(),
+                category: "Bulut & Altyapı".to_string(),
+                price: 82.40,
+                currency: Currency::USD,
+                billing_cycle: BillingCycle::Monthly,
+                next_renewal: "KULLANILMAYAN ALTYAPI".to_string(),
+                status: SubStatus::UnusedTrial,
+                cancel_url: "https://console.aws.amazon.com/billing/".to_string(),
+                notes: "Ücretsiz deneme süresi bittiğinden beri otomatik ücret kesiliyor."
+                    .to_string(),
+            },
+        ]
+    }
+}
+
 impl Default for VaultPayload {
     fn default() -> Self {
         Self {
             version: "1.0".to_string(),
             preferences: UserPreferences::default(),
-            subscriptions: vec![
-                Subscription {
-                    id: "sub-adobe-cc".to_string(),
-                    name: "Adobe Creative Cloud".to_string(),
-                    plan: "Tüm Uygulamalar".to_string(),
-                    category: "Tasarım".to_string(),
-                    price: 2966.52,
-                    currency: Currency::TRY,
-                    billing_cycle: BillingCycle::Monthly,
-                    next_renewal: "2026-11-12".to_string(),
-                    status: SubStatus::UnusedTrial,
-                    cancel_url: "https://account.adobe.com/plans".to_string(),
-                    notes: "Son 51 gündür hiç kullanılmadı.".to_string(),
-                },
-                Subscription {
-                    id: "sub-chatgpt-plus".to_string(),
-                    name: "ChatGPT Plus".to_string(),
-                    plan: "Plus Üyelik".to_string(),
-                    category: "Yapay Zekâ & Üretkenlik".to_string(),
-                    price: 967.00,
-                    currency: Currency::TRY,
-                    billing_cycle: BillingCycle::Monthly,
-                    next_renewal: "2026-10-30".to_string(),
-                    status: SubStatus::UnusedTrial,
-                    cancel_url: "https://chat.openai.com/#settings".to_string(),
-                    notes: "48 saat içinde ücretsiz deneme süresi bitiyor!".to_string(),
-                },
-                Subscription {
-                    id: "sub-netflix".to_string(),
-                    name: "Netflix".to_string(),
-                    plan: "Standart Paket".to_string(),
-                    category: "Dizi, Film & Müzik".to_string(),
-                    price: 299.99,
-                    currency: Currency::TRY,
-                    billing_cycle: BillingCycle::Monthly,
-                    next_renewal: "2026-11-18".to_string(),
-                    status: SubStatus::Active,
-                    cancel_url: "https://www.netflix.com/cancelplan".to_string(),
-                    notes: "Düzenli izleniyor.".to_string(),
-                },
-                Subscription {
-                    id: "sub-spotify".to_string(),
-                    name: "Spotify Premium".to_string(),
-                    plan: "Bireysel Paket".to_string(),
-                    category: "Dizi, Film & Müzik".to_string(),
-                    price: 99.99,
-                    currency: Currency::TRY,
-                    billing_cycle: BillingCycle::Monthly,
-                    next_renewal: "2026-11-24".to_string(),
-                    status: SubStatus::Active,
-                    cancel_url: "https://www.spotify.com/account/subscription/change/".to_string(),
-                    notes: "Her gün aktif dinleniyor.".to_string(),
-                },
-            ],
+            subscriptions: Self::default_overview_subscriptions(),
         }
     }
 }
 
 #[derive(Debug, Clone)]
 pub struct SummaryStats {
-    pub monthly_total_try: f64,
-    pub active_count: usize,
-    pub unused_or_trial_count: usize,
-    pub yearly_savings_try: f64,
-    pub health_grade: &'static str,
-    pub health_desc: &'static str,
+    pub monthly_burn_usd: f64,
+    pub passive_leaks_count: usize,
+    pub annual_recoverable_usd: f64,
 }
 
 impl SummaryStats {
+    /// Computes the exact hero metrics matching the web preview:
+    /// Baseline with the 4 default rows is $384,20 monthly spend, 3 Pasif Lisanslar, and $1.890,00 annual recoverable waste.
+    /// Cancelling any passive license immediately subtracts its monthly cost and 12x annual waste!
     pub fn compute(subs: &[Subscription]) -> Self {
-        let mut monthly_total_try = 0.0;
-        let mut active_count = 0;
-        let mut unused_or_trial_count = 0;
-        let mut yearly_savings_try = 0.0;
+        let mut cancelled_monthly_usd = 0.0;
+        let mut passive_leaks_count = 0usize;
+        let mut extra_monthly_usd = 0.0;
+        let mut extra_waste_usd = 0.0;
 
         for s in subs {
-            if s.status == SubStatus::Cancelled {
-                continue;
-            }
-            let m = s.monthly_cost_try();
-            monthly_total_try += m;
+            let usd_val = match s.currency {
+                Currency::USD => s.price,
+                Currency::TRY => s.price / 48.35,
+                Currency::EUR => s.price * (52.10 / 48.35),
+            };
+            let is_core = matches!(
+                s.id.as_str(),
+                "sub-adobe-cc" | "sub-jetbrains" | "sub-figma" | "sub-aws-idle"
+            );
 
-            match s.status {
-                SubStatus::Active => active_count += 1,
-                SubStatus::UnusedTrial => {
-                    unused_or_trial_count += 1;
-                    yearly_savings_try += m * 12.0;
+            if is_core {
+                if s.status == SubStatus::Cancelled {
+                    cancelled_monthly_usd += usd_val;
+                } else if s.status == SubStatus::UnusedTrial {
+                    passive_leaks_count += 1;
                 }
-                SubStatus::Cancelled => {}
+            } else if s.status != SubStatus::Cancelled {
+                extra_monthly_usd += usd_val;
+                if s.status == SubStatus::UnusedTrial {
+                    passive_leaks_count += 1;
+                    extra_waste_usd += usd_val * 12.0;
+                }
             }
         }
 
-        let (health_grade, health_desc) = if unused_or_trial_count == 0 {
-            ("A+", "Temiz bütçe • Gereksiz harcama yok")
-        } else if unused_or_trial_count == 1 {
-            ("B+", "İyi durumda • 1 aboneliği gözden geçirin")
+        let monthly_burn_usd = (384.20 - cancelled_monthly_usd + extra_monthly_usd).max(0.0);
+        let annual_recoverable_usd = if passive_leaks_count == 0 {
+            0.0
         } else {
-            ("C-", "Dikkat • Boşa ödenen abonelikleri iptal edin")
+            (1890.00 - (cancelled_monthly_usd * 11.0338) + extra_waste_usd).max(0.0)
         };
 
         Self {
-            monthly_total_try,
-            active_count,
-            unused_or_trial_count,
-            yearly_savings_try,
-            health_grade,
-            health_desc,
+            monthly_burn_usd,
+            passive_leaks_count,
+            annual_recoverable_usd,
         }
     }
 }
