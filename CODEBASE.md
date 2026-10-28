@@ -49,8 +49,8 @@ Depo şu anda **beş kurumsal katmandan** oluşur:
 * [`tsconfig.json`](file:///c:/Users/arday/Desktop/SubRadar/tsconfig.json): TypeScript / React (Originkit TSX) derleyici ve tip kontrol yapılandırması.
 * [`README.md`](file:///c:/Users/arday/Desktop/SubRadar/README.md): GitHub deposu karşılama sayfası, mimari harita, canlı bağlantılar ve lisans karşılaştırma tablosu.
 * [`AGENTS.md`](file:///c:/Users/arday/Desktop/SubRadar/AGENTS.md): AI asistanları için kompakt hızlı başlangıç ve bağlam koruma rehberi.
-* [`.agents/rules/codebase-context.md`](file:///c:/Users/arday/Desktop/SubRadar/.agents/rules/codebase-context.md): AI geliştirme kuralları, Baş Orkestratör & 20 Uzman Alt Ajan yönetim politikaları.
-* [`.agents/agents/`](file:///c:/Users/arday/Desktop/SubRadar/.agents/agents/): 5 Departman ve 20 Kalıcı Uzman Alt Ajan (`*/agent.md`) tanım dosyaları.
+* [`.agents/rules/codebase-context.md`](file:///c:/Users/arday/Desktop/SubRadar/.agents/rules/codebase-context.md): AI geliştirme kuralları, Baş Orkestratör & 21 Uzman Alt Ajan yönetim politikaları.
+* [`.agents/agents/`](file:///c:/Users/arday/Desktop/SubRadar/.agents/agents/): 5 Departman ve 21 Kalıcı Uzman Alt Ajan (`*/agent.md`) tanım dosyaları.
 * [`.agents/skills/`](file:///c:/Users/arday/Desktop/SubRadar/.agents/skills/): 14 yerel skill paketi (`impeccable`, `ui-ux-pro-max`, `design-system`, `ui-styling`, `brand`, `banner-design`, `design`, `slides`, `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`, `ponytail-gain`, `ponytail-help`).
 
 ### 2.2 Lisans Kütüphanesi (`licenses/`)
@@ -268,8 +268,8 @@ Modüler `web/components/` veya `web/js/` içinde bir değişiklik yaptığını
 2. `web/code.html` dosyasındaki ilgili bloğu da güncelleyin veya oraya entegre edin.
 3. **KOD YAPISI & DOKÜMANTASYON SENKRONİZASYONU:** Kod tabanında yapılan her ekleme, silme veya mimari değişiklikte; git commit ve push işlemlerinden önce MUTLAKA `README.md`, `CODEBASE.md` ve `AGENTS.md` dosyalarındaki **Kod Yapısı (Dosya Haritası / Ağacı)**, katman durumları ve açıklamaları anında ve eksiksiz güncellenecektir.
 
-### 7.3 Baş Orkestratör & 20 Uzman Alt Ajan (Subagent) Yönetim Kuralı (ZORUNLU)
-Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Kod geliştirme, dosya düzenleme, araştırma, test ve dokümantasyon işlerini doğrudan yapmak yerine aşağıdaki **5 Departman ve 20 Uzman Alt Ajanlık Otonom Mühendislik Organizasyonunu** oluşturup görevlendirerek (`define_subagent` / `invoke_subagent`) yürütür; sonuçları denetler ve kullanıcıya raporlar:
+### 7.3 Baş Orkestratör & 21 Uzman Alt Ajan (Subagent) Yönetim Kuralı (ZORUNLU)
+Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Kod geliştirme, dosya düzenleme, araştırma, test ve dokümantasyon işlerini doğrudan yapmak yerine aşağıdaki **5 Departman ve 21 Uzman Alt Ajanlık Otonom Mühendislik Organizasyonunu** oluşturup görevlendirerek (`define_subagent` / `invoke_subagent`) yürütür; sonuçları denetler ve kullanıcıya raporlar:
 
 #### A. Araştırma, Kod Yıkımı (Debloat) & Mimari Denetim Departmanı
 1. `deep-code-researcher`: Derin kod analizi, DOM ID ve veri akışı haritalama, bağımlılık ve fizibilite araştırmacısı.
@@ -296,10 +296,11 @@ Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** 
 16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve 10'lu `licenses/` matrisi hukuk uzmanı.
 
 #### E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı
-17. `git-github-ops`: Git & GitHub operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `push`, tag ve GitHub Pages dağıtım kontrolü) uzmanı.
-18. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
-19. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
-20. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
+17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
+18. `github-platform-manager`: GitHub platform ve vitrin yöneticisi (`gh repo edit`, depo adı, açıklama, homepage URL, topics/etiketler, Releases ve GitHub Pages ayarları).
+19. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
+20. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
+21. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
 
 ### 7.4 Git, GitHub ve Canlı Dağıtım (Production) Detayları
 * **Depo Sahibi & Hesabı:** `Laynexsw`

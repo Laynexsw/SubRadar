@@ -71,7 +71,7 @@ SubRadar/
 │   ├── CODEBASE.md                       # Eksiksiz kod tabanı, fonksiyon imzaları ve DOM ID kataloğu
 │   └── .agents/                          # Otonom AI Mühendislik Organizasyonu, Kurallar ve Yetenekler
 │       ├── rules/codebase-context.md     # Geliştirme kuralları, Baş Orkestratör yetkilendirme ve hafıza politikaları
-│       ├── agents/                       # 5 Departman / 20 Kalıcı Uzman Alt Ajan (Subagent) tanım dosyaları (*/agent.md)
+│       ├── agents/                       # 5 Departman / 21 Kalıcı Uzman Alt Ajan (Subagent) tanım dosyaları (*/agent.md)
 │       └── skills/                       # 14 Yerel Skill Paketi (impeccable, ui-ux-pro-max, design-system, ui-styling, brand, banner-design, design, slides, ponytail, ponytail-review, ponytail-audit, ponytail-debt, ponytail-gain, ponytail-help)
 │
 ├── 📜 2. KURUMSAL LİSANS ŞABLON KOLEKSİYONU & MATRİSİ (LICENSES FRAMEWORK - licenses/)
@@ -272,9 +272,9 @@ npm start
 
 ---
 
-## 🤖 Otonom AI Mühendislik Organizasyonu (Baş Orkestratör & 20 Uzman Alt Ajan)
+## 🤖 Otonom AI Mühendislik Organizasyonu (Baş Orkestratör & 21 Uzman Alt Ajan)
 
-SubRadar deposu, `.agents/agents/` ve `.agents/rules/` altında yapılandırılmış **Baş Orkestratör (Manager) + 5 Departman / 20 Uzman Alt Ajan (Subagent)** mimarisiyle yönetilir. Ana yapay zekâ asistanı yalnızca **Baş Orkestratör** rolündedir ve görevleri aşağıdaki uzman alt ajanlara delege ederek yürütür:
+SubRadar deposu, `.agents/agents/` ve `.agents/rules/` altında yapılandırılmış **Baş Orkestratör (Manager) + 5 Departman / 21 Uzman Alt Ajan (Subagent)** mimarisiyle yönetilir. Ana yapay zekâ asistanı yalnızca **Baş Orkestratör** rolündedir ve görevleri aşağıdaki uzman alt ajanlara delege ederek yürütür:
 
 | Departman | Uzman Alt Ajanlar (`define_subagent` / `.agents/agents/*/agent.md`) | Sorumluluk Alanı |
 | :--- | :--- | :--- |
@@ -282,7 +282,7 @@ SubRadar deposu, `.agents/agents/` ve `.agents/rules/` altında yapılandırılm
 | **B. Tasarım, Marka & Görsel Sanatlar** | `ui-ux-glass-designer`, `brand-visual-artist`, `originkit-webgl-specialist`, `audio-haptics-engineer` | Apple Glassmorphism (`impeccable`, `ui-ux-pro-max`), SVG/Canvas varlıklar, Tailless imleçler, Originkit `Tiles Loader` & `Vector Wordmark` WebGL 2.0, Web Audio ses motoru. |
 | **C. Web Platformu & FinOps Mühendislik** | `web-ui-engineer`, `hero-simulator-engineer`, `interactive-modals-engineer`, `i18n-finops-specialist`, `supabase-auth-specialist` | Modüler web ön yüzü, macOS Hero simülatörü, `⌘K` Komut Paleti & modallar, TR/EN/DE çeviri, canlı döviz (`fx.js`), FinOps hesaplayıcı, Air-Gap ekstre lab, Supabase v2 & Double-Slider Auth. |
 | **D. Masaüstü Çekirdeği, Kriptografi & Hukuk** | `desktop-core-engineer`, `security-crypto-auditor`, `legal-compliance-counsel` | Electron v33 (`main.js`, `preload.js`), `AES-256-CBC` + `scrypt` + `HMAC-SHA256` yerel kasa, SHA-256 doğrulayıcı, 6502 SK & GDPR Madde 17 resmi ihtarname ve 10'lu lisans matrisi. |
-| **E. DevOps, Git/GitHub, QA & Dokümantasyon** | `git-github-ops`, `seo-pwa-release-engineer`, `test-automation-runner`, `qa-docs-specialist` | Git/GitHub operasyonları, PWA Service Worker (`sw.js`), SEO haritaları, birim/bileşen testleri (`vault.test.js`, `parser.test.js`, `build.py`) ve zorunlu `README.md` / `CODEBASE.md` / `AGENTS.md` senkronizasyonu. |
+| **E. DevOps, Git/GitHub, QA & Dokümantasyon** | `git-ops-specialist`, `github-platform-manager`, `seo-pwa-release-engineer`, `test-automation-runner`, `qa-docs-specialist` | Yerel Git operasyonları (`status`, `diff`, `branch`, `commit`, `tag`, `push`), GitHub platform/vitrin yönetimi (`gh repo edit`, açıklama, etiketler/topics, Releases, Pages), PWA Service Worker (`sw.js`), SEO haritaları, birim/bileşen testleri ve zorunlu `README.md` / `CODEBASE.md` / `AGENTS.md` senkronizasyonu. |
 
 ---
 

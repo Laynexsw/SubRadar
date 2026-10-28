@@ -14,10 +14,10 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
   - `index.html`: `web/code.html` dosyasına anında yönlendirir.
   - `PRODUCT.md`: Ürün vizyonu, kitleler, Apple Glass tasarım standartları.
   - `tsconfig.json`: TypeScript / React (Originkit TSX) derleyici yapılandırması.
-  - `README.md`: Mimari tablo, vitrin bağlantıları, lisans rehberi ve 20'li Otonom AI Mühendislik Organizasyonu.
+  - `README.md`: Mimari tablo, vitrin bağlantıları, lisans rehberi ve 21'li Otonom AI Mühendislik Organizasyonu.
   - `AGENTS.md`: AI ajanları için hızlı proje haritası ve referans kılavuzu.
   - `CODEBASE.md`: Derinlemesine fonksiyon, DOM ID ve durum modelleri rehberi.
-  - `.agents/`: `rules/codebase-context.md` (kurallar), `agents/` (20 kalıcı uzman alt ajan `*/agent.md`) ve `skills/` (14 yerel skill paketi: `impeccable`, `ui-ux-pro-max`, `design-system`, `ui-styling`, `brand`, `banner-design`, `design`, `slides`, `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`, `ponytail-gain`, `ponytail-help`).
+  - `.agents/`: `rules/codebase-context.md` (kurallar), `agents/` (21 kalıcı uzman alt ajan `*/agent.md`) ve `skills/` (14 yerel skill paketi: `impeccable`, `ui-ux-pro-max`, `design-system`, `ui-styling`, `brand`, `banner-design`, `design`, `slides`, `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`, `ponytail-gain`, `ponytail-help`).
   - `licenses/`: MIT, Apache 2.0, BSD-3, BSD-2, GPL v3, AGPL v3, MPL 2.0, Unlicense, Proprietary tam metinleri ve karşılaştırma matrisi (`licenses/README.md`).
 
 - **Masaüstü Uygulaması (`app/` - v1.5.0 Aktif):**
@@ -41,7 +41,7 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
 3. **Erişilebilirlik:** Minimum 44px dokunmatik hedefler, klavye gezintisi (`:focus-visible`, `Esc`, `Enter`, ok tuşları).
 4. **Tasarım:** SF Pro font ailesi, Apple Glass (`backdrop-filter: blur(24px)`), zümrüt yeşili (`#10b981`), neon mor/indigo (`#6366f1`) ve koyu arka planlar (`#000000`, `#09090b`).
 5. **KOD YAPISI & DOKÜMANTASYON SENKRONİZASYONU (ZORUNLU KURAL):** Kod tabanında yapılan her ekleme, silme veya mimari değişiklikte; git commit ve push işlemlerinden önce MUTLAKA `README.md`, `CODEBASE.md` ve `AGENTS.md` dosyalarındaki **Kod Yapısı (Dosya Haritası / Ağacı)**, katman durumları ve açıklamaları anında ve eksiksiz güncellenecektir. Kod ile dokümantasyonun uyuşmaması kabul edilemez.
-6. **BAŞ ORKESTRATÖR VE ALT AJAN (SUBAGENT) YÖNETİM KURALI (ZORUNLU — 5 DEPARTMAN / 20 UZMAN ALT AJAN):** Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Kod geliştirme, dosya düzenleme, araştırma, test ve dokümantasyon işlerini doğrudan yapmak yerine aşağıdaki **5 Departman ve 20 Uzman Alt Ajanlık Otonom Mühendislik Organizasyonunu** oluşturup görevlendirerek (`define_subagent` / `invoke_subagent`) yürütür; sonuçları denetler ve kullanıcıya raporlar:
+6. **BAŞ ORKESTRATÖR VE ALT AJAN (SUBAGENT) YÖNETİM KURALI (ZORUNLU — 5 DEPARTMAN / 21 UZMAN ALT AJAN):** Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Kod geliştirme, dosya düzenleme, araştırma, test ve dokümantasyon işlerini doğrudan yapmak yerine aşağıdaki **5 Departman ve 21 Uzman Alt Ajanlık Otonom Mühendislik Organizasyonunu** oluşturup görevlendirerek (`define_subagent` / `invoke_subagent`) yürütür; sonuçları denetler ve kullanıcıya raporlar:
    - **A. Araştırma, Kod Yıkımı (Debloat) & Mimari Denetim Departmanı:**
      1. `deep-code-researcher`: Derin kod analizi, DOM ID ve veri akışı haritalama, bağımlılık ve fizibilite araştırmacısı.
      2. `ponytail-debloater`: Kod yıkıcı / sadeleştirici (`ponytail`, `ponytail-audit`, `ponytail-review`), ölü kod temizliği, YAGNI ve refactoring uzmanı.
@@ -63,10 +63,11 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
      15. `security-crypto-auditor`: AES-256-CBC + scrypt + HMAC-SHA256 yerel kasa (`vault.js`, `store.js`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
      16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve 10'lu `licenses/` matrisi hukuk uzmanı.
    - **E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı:**
-     17. `git-github-ops`: Git & GitHub operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `push`, tag ve GitHub Pages dağıtım kontrolü) uzmanı.
-     18. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
-     19. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
-     20. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
+     17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
+     18. `github-platform-manager`: GitHub platform ve vitrin yöneticisi (`gh repo edit`, depo adı, açıklama, homepage URL, topics/etiketler, Releases ve GitHub Pages ayarları).
+     19. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
+     20. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
+     21. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
 
 ## 3. GİT & GİTHUB YAPILANDIRMASI
 

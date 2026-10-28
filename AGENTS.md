@@ -56,7 +56,7 @@ SubRadar/
 │   ├── CODEBASE.md                       # Eksiksiz kod tabanı, fonksiyon imzaları ve DOM ID kataloğu
 │   └── .agents/                          # Otonom AI Mühendislik Organizasyonu, Kurallar ve Yetenekler
 │       ├── rules/codebase-context.md     # Geliştirme kuralları, Baş Orkestratör yetkilendirme ve hafıza politikaları
-│       ├── agents/                       # 5 Departman / 20 Kalıcı Uzman Alt Ajan (Subagent) tanım dosyaları (*/agent.md)
+│       ├── agents/                       # 5 Departman / 21 Kalıcı Uzman Alt Ajan (Subagent) tanım dosyaları (*/agent.md)
 │       └── skills/                       # 14 Yerel Skill Paketi (impeccable, ui-ux-pro-max, design-system, ui-styling, brand, banner-design, design, slides, ponytail, ponytail-review, ponytail-audit, ponytail-debt, ponytail-gain, ponytail-help)
 │
 ├── 📜 2. KURUMSAL LİSANS ŞABLON KOLEKSİYONU & MATRİSİ (LICENSES FRAMEWORK - licenses/)
@@ -273,8 +273,8 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
    Kullanıcı verisi toplayacak hiçbir harici analytics/telemetri kütüphanesi eklenemez. Tasarım Tailwind CDN ve Google Material Symbols dışında tamamen saf CSS/JS üzerine kuruludur.
 5. **KOD YAPISI & DOKÜMANTASYON SENKRONİZASYONU (ZORUNLU KURAL):**
    Kod tabanında yapılan her ekleme, silme veya mimari değişiklikte; git commit ve push işlemlerinden önce MUTLAKA `README.md`, `CODEBASE.md` ve `AGENTS.md` dosyalarındaki **Kod Yapısı (Dosya Haritası / Ağacı)**, katman durumları ve açıklamaları anında ve eksiksiz güncellenecektir. Kod ile dokümantasyonun uyuşmaması kabul edilemez.
-6. **BAŞ ORKESTRATÖR VE ALT AJAN (SUBAGENT) YÖNETİM KURALI (ZORUNLU — 5 DEPARTMAN / 20 UZMAN ALT AJAN):**
-   Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Kod geliştirme, dosya düzenleme, araştırma, test ve dokümantasyon işlerini doğrudan yapmak yerine aşağıdaki **5 Departman ve 20 Uzman Alt Ajanlık Otonom Mühendislik Organizasyonunu** oluşturup görevlendirerek (`define_subagent` / `invoke_subagent`) yürütür; sonuçları denetler ve kullanıcıya raporlar:
+6. **BAŞ ORKESTRATÖR VE ALT AJAN (SUBAGENT) YÖNETİM KURALI (ZORUNLU — 5 DEPARTMAN / 21 UZMAN ALT AJAN):**
+   Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Kod geliştirme, dosya düzenleme, araştırma, test ve dokümantasyon işlerini doğrudan yapmak yerine aşağıdaki **5 Departman ve 21 Uzman Alt Ajanlık Otonom Mühendislik Organizasyonunu** oluşturup görevlendirerek (`define_subagent` / `invoke_subagent`) yürütür; sonuçları denetler ve kullanıcıya raporlar:
 
    #### A. Araştırma, Kod Yıkımı (Debloat) & Mimari Denetim Departmanı
    1. `deep-code-researcher`: Derin kod analizi, DOM ID ve veri akışı haritalama, bağımlılık ve fizibilite araştırmacısı.
@@ -301,10 +301,11 @@ Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
    16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`legal-notice.js`, `legal-gen.js`), `privacy.html`, `terms.html` ve 10'lu `licenses/` matrisi hukuk uzmanı.
 
    #### E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı
-   17. `git-github-ops`: Git & GitHub operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `push`, tag ve GitHub Pages dağıtım kontrolü) uzmanı.
-   18. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
-   19. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
-   20. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
+   17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
+   18. `github-platform-manager`: GitHub platform ve vitrin yöneticisi (`gh repo edit`, depo adı, açıklama, homepage URL, topics/etiketler, Releases ve GitHub Pages ayarları).
+   19. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
+   20. `test-automation-runner`: Birim testleri (`vault.test.js`, `parser.test.js`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
+   21. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
 
 ---
 
