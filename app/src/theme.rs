@@ -85,6 +85,7 @@ pub struct ThemePalette {
     pub accent_emerald: Color32,
     pub accent_amber: Color32,
     pub accent_rose: Color32,
+    pub accent_sky: Color32,
 
     // Component Tokens
     pub cta_bg: Color32,
@@ -127,6 +128,7 @@ impl ThemePalette {
             accent_emerald: EMERALD_500,
             accent_amber: AMBER_500,
             accent_rose: ROSE_500,
+            accent_sky: SKY_400,
             cta_bg: ZINC_200,
             cta_hover: WHITE,
             cta_fg: ZINC_950,
@@ -159,6 +161,7 @@ impl ThemePalette {
             accent_emerald: EMERALD_600,
             accent_amber: AMBER_500,
             accent_rose: ROSE_500,
+            accent_sky: Color32::from_rgb(14, 165, 233),
             cta_bg: ZINC_950,
             cta_hover: ZINC_800,
             cta_fg: WHITE,

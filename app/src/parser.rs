@@ -250,6 +250,10 @@ pub fn parse_statement(raw_content: &str, default_currency: Currency) -> Vec<Sub
             status: SubStatus::UnusedTrial,
             cancel_url: preset.cancel_url.to_string(),
             notes,
+            is_shared: false,
+            shared_member_count: 1,
+            shared_members: String::new(),
+            my_share_percentage: 100.0,
         });
     }
 

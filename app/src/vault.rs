@@ -203,6 +203,56 @@ pub fn load_vault_from_file(
     decrypt_vault(&envelope, master_password)
 }
 
+/// Tüm kasa yükünü (VaultPayload) taşınabilir JSON yedeğine dönüştürür
+pub fn export_backup_json(payload: &VaultPayload) -> Result<String, String> {
+    serde_json::to_string_pretty(payload)
+        .map_err(|e| format!("Yedek JSON oluşturulamadı: {}", e))
+}
+
+/// Şifreli kasa yedeği (EncryptedEnvelope formatında) dışa aktarır
+pub fn export_encrypted_backup_json(
+    payload: &VaultPayload,
+    master_password: &str,
+) -> Result<String, String> {
+    let envelope = encrypt_vault(payload, master_password)?;
+    serde_json::to_string_pretty(&envelope)
+        .map_err(|e| format!("Şifreli yedek oluşturulamadı: {}", e))
+}
+
+/// JSON yedeğinden (düz veya şifreli zarf) verileri okur ve mevcut kasayla akıllıca birleştirir.
+/// Yeni eklenen/güncellenen abonelik sayısını döndürür.
+pub fn import_backup_json(
+    current_payload: &mut VaultPayload,
+    json_str: &str,
+    master_password: &str,
+) -> Result<usize, String> {
+    let trimmed = json_str.trim();
+    if trimmed.is_empty() {
+        return Err("Yedek verisi boş olamaz.".to_string());
+    }
+
+    let imported_payload = if let Ok(direct) = serde_json::from_str::<VaultPayload>(trimmed) {
+        direct
+    } else if let Ok(envelope) = serde_json::from_str::<EncryptedEnvelope>(trimmed) {
+        decrypt_vault(&envelope, master_password)?
+    } else {
+        return Err("Geçersiz yedek formatı. Düz JSON veya şifreli subradar zarfı bekleniyor.".to_string());
+    };
+
+    let mut merged_count = 0usize;
+    for incoming in imported_payload.subscriptions {
+        if let Some(existing) = current_payload.subscriptions.iter_mut().find(|s| s.id == incoming.id) {
+            *existing = incoming;
+            merged_count += 1;
+        } else {
+            current_payload.subscriptions.push(incoming);
+            merged_count += 1;
+        }
+    }
+
+    Ok(merged_count)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -235,5 +285,31 @@ mod tests {
         env.tag = B64.encode([0xAAu8; 32]);
         assert!(!verify_password(&env, "subradar2026"));
         assert!(decrypt_vault(&env, "subradar2026").is_err());
+    }
+
+    #[test]
+    fn test_backup_json_export_and_import() {
+        let original = VaultPayload::default();
+        let json_plain = export_backup_json(&original).unwrap();
+
+        let mut restore_target = VaultPayload {
+            version: "1.0".to_string(),
+            preferences: original.preferences.clone(),
+            subscriptions: Vec::new(),
+        };
+
+        let restored_count = import_backup_json(&mut restore_target, &json_plain, "subradar2026").unwrap();
+        assert_eq!(restored_count, original.subscriptions.len());
+        assert_eq!(restore_target.subscriptions.len(), original.subscriptions.len());
+
+        // Test encrypted backup import
+        let json_enc = export_encrypted_backup_json(&original, "subradar2026").unwrap();
+        let mut enc_target = VaultPayload {
+            version: "1.0".to_string(),
+            preferences: original.preferences.clone(),
+            subscriptions: Vec::new(),
+        };
+        let enc_restored_count = import_backup_json(&mut enc_target, &json_enc, "subradar2026").unwrap();
+        assert_eq!(enc_restored_count, original.subscriptions.len());
     }
 }

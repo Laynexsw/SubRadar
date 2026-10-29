@@ -149,6 +149,47 @@ pub struct Subscription {
     pub price_hike_detected: bool,
     #[serde(default)]
     pub price_hike_percentage: Option<f64>,
+    #[serde(default)]
+    pub is_shared: bool,
+    #[serde(default = "default_shared_member_count")]
+    pub shared_member_count: u32,
+    #[serde(default)]
+    pub shared_members: String,
+    #[serde(default = "default_share_percentage")]
+    pub my_share_percentage: f64,
+}
+
+fn default_shared_member_count() -> u32 {
+    1
+}
+
+fn default_share_percentage() -> f64 {
+    100.0
+}
+
+impl Default for Subscription {
+    fn default() -> Self {
+        Self {
+            id: String::new(),
+            name: String::new(),
+            plan: String::new(),
+            category: String::new(),
+            price: 0.0,
+            currency: Currency::USD,
+            billing_cycle: BillingCycle::Monthly,
+            next_renewal: String::new(),
+            status: SubStatus::Active,
+            cancel_url: String::new(),
+            notes: String::new(),
+            previous_price: None,
+            price_hike_detected: false,
+            price_hike_percentage: None,
+            is_shared: false,
+            shared_member_count: 1,
+            shared_members: String::new(),
+            my_share_percentage: 100.0,
+        }
+    }
 }
 
 impl Subscription {
@@ -164,6 +205,34 @@ impl Subscription {
             Currency::EUR => self.price * (52.10 / 48.35),
         };
         self.billing_cycle.to_monthly(usd)
+    }
+
+    /// Kişi başına düşen aylık maliyet (USD)
+    pub fn per_member_monthly_cost_usd(&self) -> f64 {
+        let total = self.monthly_cost_usd();
+        let count = (self.shared_member_count.max(1)) as f64;
+        total / count
+    }
+
+    /// Kullanıcının kendi cebinden çıkan net aylık payı (USD)
+    pub fn my_monthly_cost_usd(&self) -> f64 {
+        let total = self.monthly_cost_usd();
+        if self.is_shared && self.shared_member_count > 1 {
+            if self.my_share_percentage > 0.0 && self.my_share_percentage < 100.0 {
+                total * (self.my_share_percentage / 100.0)
+            } else {
+                total / (self.shared_member_count as f64)
+            }
+        } else {
+            total
+        }
+    }
+
+    /// Paylaşım sayesinde kurtarılan / bölüşülen aylık tasarruf (USD)
+    pub fn shared_saved_monthly_usd(&self) -> f64 {
+        let total = self.monthly_cost_usd();
+        let my_share = self.my_monthly_cost_usd();
+        (total - my_share).max(0.0)
     }
 
     pub fn avatar_code(&self) -> &'static str {
@@ -336,6 +405,10 @@ impl VaultPayload {
                 status: SubStatus::UnusedTrial,
                 cancel_url: "https://account.adobe.com/plans".to_string(),
                 notes: "12 Ocak'tan beri bu uygulama hiç açılmadı.".to_string(),
+                is_shared: false,
+                shared_member_count: 1,
+                shared_members: String::new(),
+                my_share_percentage: 100.0,
             },
             Subscription {
                 id: "sub-jetbrains".to_string(),
@@ -352,6 +425,10 @@ impl VaultPayload {
                 status: SubStatus::UnusedTrial,
                 cancel_url: "https://account.jetbrains.com/licenses".to_string(),
                 notes: "Son ekstrede sessizce +%35 zam yapıldığı tespit edildi (Önceki: $21,40).".to_string(),
+                is_shared: false,
+                shared_member_count: 1,
+                shared_members: String::new(),
+                my_share_percentage: 100.0,
             },
             Subscription {
                 id: "sub-figma".to_string(),
@@ -368,6 +445,10 @@ impl VaultPayload {
                 status: SubStatus::Active,
                 cancel_url: "https://www.figma.com/settings".to_string(),
                 notes: "Bu hafta 34 sa açık • Vazgeçilmez iş akışı".to_string(),
+                is_shared: false,
+                shared_member_count: 1,
+                shared_members: String::new(),
+                my_share_percentage: 100.0,
             },
             Subscription {
                 id: "sub-aws-idle".to_string(),
@@ -385,6 +466,10 @@ impl VaultPayload {
                 next_renewal: "2026-11-02 (5 gün sonra)".to_string(),
                 notes: "Ücretsiz deneme süresi bittiğinden beri otomatik ücret kesiliyor."
                     .to_string(),
+                is_shared: false,
+                shared_member_count: 1,
+                shared_members: String::new(),
+                my_share_percentage: 100.0,
             },
         ]
     }
@@ -413,30 +498,37 @@ impl SummaryStats {
         let mut passive_leaks_count = 0usize;
         let mut extra_monthly_usd = 0.0;
         let mut extra_waste_usd = 0.0;
+        let mut shared_savings_monthly_usd = 0.0;
 
         for s in subs {
-            let usd_val = s.monthly_cost_usd();
             let is_core = matches!(
                 s.id.as_str(),
                 "sub-adobe-cc" | "sub-jetbrains" | "sub-figma" | "sub-aws-idle"
             );
 
             if is_core {
+                let usd_val = s.monthly_cost_usd();
                 if s.status == SubStatus::Cancelled {
                     cancelled_monthly_usd += usd_val;
-                } else if s.status == SubStatus::UnusedTrial {
-                    passive_leaks_count += 1;
+                } else {
+                    if s.is_shared {
+                        shared_savings_monthly_usd += s.shared_saved_monthly_usd();
+                    }
+                    if s.status == SubStatus::UnusedTrial {
+                        passive_leaks_count += 1;
+                    }
                 }
             } else if s.status != SubStatus::Cancelled {
-                extra_monthly_usd += usd_val;
+                let my_val = s.my_monthly_cost_usd();
+                extra_monthly_usd += my_val;
                 if s.status == SubStatus::UnusedTrial {
                     passive_leaks_count += 1;
-                    extra_waste_usd += usd_val * 12.0;
+                    extra_waste_usd += my_val * 12.0;
                 }
             }
         }
 
-        let monthly_burn_usd = (384.20 - cancelled_monthly_usd + extra_monthly_usd).max(0.0);
+        let monthly_burn_usd = (384.20 - cancelled_monthly_usd - shared_savings_monthly_usd + extra_monthly_usd).max(0.0);
         let annual_recoverable_usd = if passive_leaks_count == 0 {
             0.0
         } else {
@@ -466,7 +558,7 @@ impl SummaryStats {
         let mut total_monthly_usd = 0.0;
         for sub in subs {
             if sub.status != SubStatus::Cancelled {
-                let cost = sub.monthly_cost_usd();
+                let cost = sub.my_monthly_cost_usd();
                 let cat = sub.spending_category();
                 let entry = map.entry(cat).or_insert((0.0, 0));
                 entry.0 += cost;
@@ -543,34 +635,16 @@ impl SummaryStats {
                 continue;
             }
 
-            let renewal_str = sub.next_renewal.to_lowercase();
-            let mut days_detected: Option<i32> = None;
-
-            // 1. Explicit relative days string: "3 gün", "5 gün sonra"
-            for token in renewal_str.split_whitespace() {
-                if let Ok(d) = token.parse::<i32>() {
-                    if (0..=30).contains(&d) {
-                        days_detected = Some(d);
-                        break;
+            let days_detected = parse_days_from_relative_or_date(&sub.next_renewal)
+                .or_else(|| {
+                    if sub.id == "sub-adobe-cc" {
+                        Some(3)
+                    } else if sub.id == "sub-aws-idle" {
+                        Some(5)
+                    } else {
+                        None
                     }
-                }
-            }
-
-            // 2. Parsed date YYYY-MM-DD or DD.MM.YYYY
-            if days_detected.is_none() {
-                if let Some(date_days) = parse_days_from_date(&renewal_str) {
-                    days_detected = Some(date_days);
-                }
-            }
-
-            // 3. Fallback for demo IDs if present
-            if days_detected.is_none() {
-                if sub.id == "sub-adobe-cc" {
-                    days_detected = Some(3);
-                } else if sub.id == "sub-aws-idle" {
-                    days_detected = Some(5);
-                }
-            }
+                });
 
             if let Some(days) = days_detected {
                 if days >= 0 && days <= window_days {
@@ -590,6 +664,18 @@ impl SummaryStats {
         upcoming.sort_by_key(|u| u.days_left);
         upcoming
     }
+}
+
+pub fn parse_days_from_relative_or_date(s: &str) -> Option<i32> {
+    let lower = s.to_lowercase();
+    for token in lower.split_whitespace() {
+        if let Ok(d) = token.parse::<i32>() {
+            if (0..=30).contains(&d) {
+                return Some(d);
+            }
+        }
+    }
+    parse_days_from_date(s)
 }
 
 fn parse_days_from_date(s: &str) -> Option<i32> {
@@ -713,4 +799,122 @@ pub struct BudgetHealth {
     pub message: &'static str,
     pub fill_fraction: f32,
     pub color_rgb: (u8, u8, u8),
+}
+
+/// Tüm aktif ve bekleyen abonelikleri standart RFC 5545 iCalendar (.ics) formatına dönüştürür.
+/// Apple Calendar, Google Calendar ve Microsoft Outlook ile tam uyumludur.
+pub fn export_subscriptions_to_ics(subs: &[Subscription], _pref_currency: Currency) -> String {
+    let mut ics = String::new();
+    ics.push_str("BEGIN:VCALENDAR\r\n");
+    ics.push_str("VERSION:2.0\r\n");
+    ics.push_str("PRODID:-//SubRadar//Abonelik ve Yenileme Radari v1.0//TR\r\n");
+    ics.push_str("CALSCALE:GREGORIAN\r\n");
+    ics.push_str("METHOD:PUBLISH\r\n");
+    ics.push_str("X-WR-CALNAME:SubRadar Abonelik Yenilemeleri\r\n");
+    ics.push_str("X-WR-TIMEZONE:Europe/Istanbul\r\n");
+
+    for sub in subs {
+        if sub.status == SubStatus::Cancelled {
+            continue;
+        }
+
+        let days_opt = parse_days_from_relative_or_date(&sub.next_renewal);
+        let dt_start = if let Some(days) = days_opt {
+            let target_day = 28 + days;
+            if target_day <= 31 {
+                format!("202610{:02}", target_day)
+            } else {
+                let nov_day = (target_day - 31).clamp(1, 30);
+                format!("202611{:02}", nov_day)
+            }
+        } else {
+            "20261101".to_string()
+        };
+
+        let freq_str = match sub.billing_cycle {
+            BillingCycle::Monthly => "MONTHLY",
+            BillingCycle::Yearly => "YEARLY",
+            BillingCycle::Weekly => "WEEKLY",
+        };
+
+        let uid = format!("subradar-{}@subradar.local", sub.id);
+        let summary = format!("Abonelik Yenileme: {} ({}{:.2})", sub.name, sub.currency.symbol(), sub.price);
+        let mut desc = format!(
+            "SubRadar Hatirlatici: {} ({}) yenileme gunu.\\nTutar: {}{:.2}\\nKategori: {}\\nNot: {}",
+            sub.name,
+            sub.plan,
+            sub.currency.symbol(),
+            sub.price,
+            sub.category,
+            sub.notes
+        );
+        if sub.is_shared && sub.shared_member_count > 1 {
+            desc.push_str(&format!(
+                "\\n[Aile/Ekip Paylasimi]: Toplam {} kisi, kisi basi pay: {}{:.2}",
+                sub.shared_member_count,
+                sub.currency.symbol(),
+                sub.my_monthly_cost_usd()
+            ));
+        }
+        if !sub.cancel_url.is_empty() {
+            desc.push_str(&format!("\\nIptal Linki: {}", sub.cancel_url));
+        }
+
+        ics.push_str("BEGIN:VEVENT\r\n");
+        ics.push_str(&format!("UID:{}\r\n", uid));
+        ics.push_str("DTSTAMP:20261028T120000Z\r\n");
+        ics.push_str(&format!("DTSTART;VALUE=DATE:{}\r\n", dt_start));
+        ics.push_str(&format!("SUMMARY:{}\r\n", summary));
+        ics.push_str(&format!("DESCRIPTION:{}\r\n", desc));
+        ics.push_str("STATUS:CONFIRMED\r\n");
+        ics.push_str("TRANSP:TRANSPARENT\r\n");
+        ics.push_str(&format!("RRULE:FREQ={}\r\n", freq_str));
+
+        // 1 Gun Once Alarm (VALARM)
+        ics.push_str("BEGIN:VALARM\r\n");
+        ics.push_str("TRIGGER:-P1D\r\n");
+        ics.push_str("ACTION:DISPLAY\r\n");
+        ics.push_str(&format!("DESCRIPTION:Yarin {} aboneligi yenilenecek!\r\n", sub.name));
+        ics.push_str("END:VALARM\r\n");
+
+        ics.push_str("END:VEVENT\r\n");
+    }
+
+    ics.push_str("END:VCALENDAR\r\n");
+    ics
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_shared_subscription_cost_calculation() {
+        let mut sub = Subscription::default();
+        sub.id = "sub-netflix-fam".to_string();
+        sub.name = "Netflix Aile Planı".to_string();
+        sub.price = 24.00;
+        sub.currency = Currency::USD;
+        sub.billing_cycle = BillingCycle::Monthly;
+        sub.is_shared = true;
+        sub.shared_member_count = 4;
+        sub.shared_members = "Ben, Ali, Ayşe, Mehmet".to_string();
+
+        assert_eq!(sub.per_member_monthly_cost_usd(), 6.00);
+        assert_eq!(sub.my_monthly_cost_usd(), 6.00);
+        assert_eq!(sub.shared_saved_monthly_usd(), 18.00);
+    }
+
+    #[test]
+    fn test_export_subscriptions_to_ics_format() {
+        let subs = VaultPayload::default_overview_subscriptions();
+        let ics = export_subscriptions_to_ics(&subs, Currency::USD);
+
+        assert!(ics.starts_with("BEGIN:VCALENDAR"));
+        assert!(ics.contains("VERSION:2.0"));
+        assert!(ics.contains("BEGIN:VEVENT"));
+        assert!(ics.contains("RRULE:FREQ=MONTHLY"));
+        assert!(ics.contains("BEGIN:VALARM"));
+        assert!(ics.ends_with("END:VCALENDAR\r\n"));
+    }
 }

@@ -13,12 +13,16 @@ use crate::legal::{
     LegalDocumentType, NoticeLanguage,
 };
 use crate::models::{
-    BillingCycle, Currency, SpendingCategory, SubStatus, Subscription, SummaryStats, VaultPayload,
+    export_subscriptions_to_ics, BillingCycle, Currency, SpendingCategory, SubStatus, Subscription,
+    SummaryStats, VaultPayload,
 };
 use crate::parser::{detect_price_hike, parse_statement, SAMPLE_STATEMENT};
 use crate::presets::{get_dark_pattern_guide, SERVICE_PRESETS};
 use crate::theme::{apply_theme, ThemePalette};
-use crate::vault::{default_vault_path, load_vault_from_file, save_vault_to_file, VAULT_FILENAME};
+use crate::vault::{
+    default_vault_path, export_backup_json, export_encrypted_backup_json, import_backup_json,
+    load_vault_from_file, save_vault_to_file, VAULT_FILENAME,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WorkspaceTab {
@@ -62,9 +66,12 @@ pub struct SubRadarApp {
     // Interactive Inline Drawer & Undo State
     pub expanded_sub_id: Option<String>,
     pub dark_pattern_active_id: Option<String>,
+    pub sharing_active_id: Option<String>,
+    pub edit_shared_members_input: String,
     pub editing_sub_id: Option<String>,
     pub edit_price_input: String,
     pub edit_note_input: String,
+    pub restore_json_path: String,
     pub last_cancelled_id: Option<String>,
     pub last_cancelled_status: Option<SubStatus>,
     pub toast_banner: Option<(String, bool)>, // (message, show_undo)
@@ -127,9 +134,12 @@ impl Default for SubRadarApp {
             focus_search_next_frame: false,
             expanded_sub_id: None,
             dark_pattern_active_id: None,
+            sharing_active_id: None,
+            edit_shared_members_input: String::new(),
             editing_sub_id: None,
             edit_price_input: String::new(),
             edit_note_input: String::new(),
+            restore_json_path: "subradar-backup.json".to_string(),
             last_cancelled_id: None,
             last_cancelled_status: None,
             toast_banner: None,
@@ -171,6 +181,7 @@ impl SubRadarApp {
         self.search_query.clear();
         self.expanded_sub_id = None;
         self.dark_pattern_active_id = None;
+        self.sharing_active_id = None;
         self.editing_sub_id = None;
         self.last_cancelled_id = None;
         self.persist_vault();
@@ -1049,6 +1060,27 @@ impl SubRadarApp {
                 {
                     self.active_tab = WorkspaceTab::Subscriptions;
                 }
+                if ui
+                    .button(
+                        RichText::new("📅 Takvime Ekle (.ics İndir)")
+                            .size(11.5)
+                            .color(pal.accent_sky),
+                    )
+                    .clicked()
+                {
+                    let ics = export_subscriptions_to_ics(&self.payload.subscriptions, pref_curr);
+                    let path = std::env::current_dir()
+                        .unwrap_or_default()
+                        .join("subradar-abonelik-takvimi.ics");
+                    let _ = fs::write(&path, ics);
+                    self.show_toast(
+                        format!(
+                            "✓ Takvim dışa aktarıldı: {} (Apple/Google/Outlook uyumlu)",
+                            path.display()
+                        ),
+                        false,
+                    );
+                }
             });
         });
 
@@ -1063,6 +1095,9 @@ impl SubRadarApp {
         let mut toggle_expand_id: Option<String> = None;
         let mut start_edit_idx: Option<usize> = None;
         let mut save_edit_idx: Option<usize> = None;
+        let mut toggle_shared_idx: Option<usize> = None;
+        let mut set_shared_count: Option<(usize, u32)> = None;
+        let mut set_shared_members: Option<(usize, String)> = None;
         let mut shown = 0usize;
 
         egui::ScrollArea::vertical()
@@ -1497,6 +1532,28 @@ impl SubRadarApp {
                                             }
                                         }
                                     }
+
+                                    let is_sharing_open = self.sharing_active_id.as_deref() == Some(sub.id.as_str());
+                                    let share_label = if sub.is_shared {
+                                        format!("👥 Aile/Ekip ({} Kişi)", sub.shared_member_count)
+                                    } else {
+                                        "👥 Aile/Ekip Bölüştür".to_string()
+                                    };
+                                    if ui
+                                        .button(
+                                            RichText::new(share_label)
+                                                .size(11.5)
+                                                .color(pal.accent_sky),
+                                        )
+                                        .clicked()
+                                    {
+                                        if is_sharing_open {
+                                            self.sharing_active_id = None;
+                                        } else {
+                                            self.sharing_active_id = Some(sub.id.clone());
+                                            self.edit_shared_members_input = sub.shared_members.clone();
+                                        }
+                                    }
                                 });
 
                                 if self.dark_pattern_active_id.as_deref() == Some(sub.id.as_str()) {
@@ -1524,6 +1581,95 @@ impl SubRadarApp {
                                                 );
                                             });
                                     }
+                                }
+
+                                if self.sharing_active_id.as_deref() == Some(sub.id.as_str()) {
+                                    ui.add_space(8.0);
+                                    egui::Frame::new()
+                                        .fill(pal.bg_elevated)
+                                        .stroke(Stroke::new(1.0_f32, pal.accent_sky))
+                                        .corner_radius(CornerRadius::same(8))
+                                        .inner_margin(Margin::symmetric(14, 10))
+                                        .show(ui, |ui| {
+                                            ui.horizontal(|ui| {
+                                                ui.label(
+                                                    RichText::new("👥 AİLE & EKİP ORTAK ABONELİK BÖLÜŞTÜRÜCÜ")
+                                                        .font(FontId::new(11.0, FontFamily::Monospace))
+                                                        .strong()
+                                                        .color(pal.accent_sky),
+                                                );
+                                            });
+                                            ui.add_space(6.0);
+
+                                            let mut is_shared_val = sub.is_shared;
+                                            if ui.checkbox(&mut is_shared_val, "Bu aboneliği aile veya ekiple ortak kullanıyorum (Maliyeti Bölüş)").changed() {
+                                                toggle_shared_idx = Some(idx);
+                                            }
+
+                                            if sub.is_shared {
+                                                ui.add_space(6.0);
+                                                ui.horizontal(|ui| {
+                                                    ui.label(RichText::new("Kişi Sayısı:").font(FontId::new(11.0, FontFamily::Monospace)));
+                                                    for count in [2, 3, 4, 5, 6] {
+                                                        let selected = sub.shared_member_count == count;
+                                                        let lbl = if count == 4 { "4 (Aile)" } else { "" };
+                                                        let btn_text = if lbl.is_empty() { format!("{}", count) } else { format!("{} {}", count, lbl) };
+                                                        if ui.selectable_label(selected, btn_text).clicked() {
+                                                            set_shared_count = Some((idx, count));
+                                                        }
+                                                    }
+                                                });
+
+                                                ui.add_space(4.0);
+                                                ui.horizontal(|ui| {
+                                                    ui.label(RichText::new("Üyeler:").font(FontId::new(11.0, FontFamily::Monospace)));
+                                                    let resp = ui.add_sized(
+                                                        [280.0, 22.0],
+                                                        egui::TextEdit::singleline(&mut self.edit_shared_members_input)
+                                                            .hint_text("Örn: Ben, Ahmet, Zeynep, Can"),
+                                                    );
+                                                    if resp.changed() {
+                                                        set_shared_members = Some((idx, self.edit_shared_members_input.clone()));
+                                                    }
+                                                });
+
+                                                ui.add_space(6.0);
+                                                let total_cost = sub.monthly_cost_usd();
+                                                let my_cost = sub.my_monthly_cost_usd();
+                                                let saved = sub.shared_saved_monthly_usd();
+
+                                                egui::Frame::new()
+                                                    .fill(pal.bg_surface)
+                                                    .stroke(Stroke::new(1.0_f32, pal.border_subtle))
+                                                    .corner_radius(CornerRadius::same(6))
+                                                    .inner_margin(Margin::symmetric(10, 6))
+                                                    .show(ui, |ui| {
+                                                        ui.horizontal(|ui| {
+                                                            ui.label(
+                                                                RichText::new(format!(
+                                                                    "Toplam: {} • Kişi Başı: {} ({} Kişi)",
+                                                                    pref_curr.format_from_usd(total_cost),
+                                                                    pref_curr.format_from_usd(my_cost),
+                                                                    sub.shared_member_count
+                                                                ))
+                                                                .font(FontId::new(11.0, FontFamily::Monospace))
+                                                                .color(pal.text_muted),
+                                                            );
+                                                            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                                                                ui.label(
+                                                                    RichText::new(format!(
+                                                                        "💡 Aylık Tasarruf: +{}/ay",
+                                                                        pref_curr.format_from_usd(saved)
+                                                                    ))
+                                                                    .font(FontId::new(11.0, FontFamily::Monospace))
+                                                                    .strong()
+                                                                    .color(pal.accent_emerald),
+                                                                );
+                                                            });
+                                                        });
+                                                    });
+                                            }
+                                        });
                                 }
 
                                 if self.editing_sub_id.as_deref() == Some(sub.id.as_str()) {
@@ -1650,6 +1796,30 @@ impl SubRadarApp {
             self.refresh_legal_notice();
             self.active_tab = WorkspaceTab::BlockingRules;
             self.show_toast("📄 Resmi iptal ve iade dilekçesi hazırlandı.", false);
+        }
+
+        if let Some(idx) = toggle_shared_idx {
+            self.payload.subscriptions[idx].is_shared = !self.payload.subscriptions[idx].is_shared;
+            if self.payload.subscriptions[idx].shared_member_count <= 1 {
+                self.payload.subscriptions[idx].shared_member_count = 2;
+                self.payload.subscriptions[idx].my_share_percentage = 50.0;
+            }
+            let name = self.payload.subscriptions[idx].name.clone();
+            self.persist_vault();
+            self.show_toast(format!("✓ {} aile/ekip ortak kullanım durumu güncellendi.", name), false);
+        }
+
+        if let Some((idx, count)) = set_shared_count {
+            self.payload.subscriptions[idx].shared_member_count = count;
+            self.payload.subscriptions[idx].my_share_percentage = 100.0 / (count as f64);
+            let name = self.payload.subscriptions[idx].name.clone();
+            self.persist_vault();
+            self.show_toast(format!("✓ {} {} kişi arasında bölüştürüldü.", name, count), false);
+        }
+
+        if let Some((idx, members)) = set_shared_members {
+            self.payload.subscriptions[idx].shared_members = members;
+            self.persist_vault();
         }
 
         // 4. Toast Banner & Bottom Terminal Status Strip
@@ -1944,6 +2114,10 @@ impl SubRadarApp {
                                     status: SubStatus::UnusedTrial,
                                     cancel_url: self.form_cancel_url.trim().to_string(),
                                     notes: self.form_notes.trim().to_string(),
+                                    is_shared: false,
+                                    shared_member_count: 1,
+                                    shared_members: String::new(),
+                                    my_share_percentage: 100.0,
                                 },
                             );
                             self.persist_vault();
@@ -2420,15 +2594,35 @@ impl SubRadarApp {
                         }
                     }
 
-                    if ui.button("📤 Yedek Dışa Aktar (.json)").clicked() {
+                    if ui.button("🔐 Şifreli Yedek Dışa Aktar (.json)").clicked() {
+                        let backup_path = std::env::current_dir()
+                            .unwrap_or_default()
+                            .join("subradar-encrypted-backup.json");
+                        match export_encrypted_backup_json(&self.payload, &self.master_password) {
+                            Ok(json) => {
+                                if fs::write(&backup_path, json).is_ok() {
+                                    self.show_toast(
+                                        format!(
+                                            "✓ AES-256 şifreli yedek oluşturuldu: {}",
+                                            backup_path.display()
+                                        ),
+                                        false,
+                                    );
+                                }
+                            }
+                            Err(e) => self.show_toast(format!("✕ Hata: {}", e), false),
+                        }
+                    }
+
+                    if ui.button("📤 Düz JSON Dışa Aktar (.json)").clicked() {
                         let backup_path = std::env::current_dir()
                             .unwrap_or_default()
                             .join("subradar-backup.json");
-                        if let Ok(json) = serde_json::to_string_pretty(&self.payload) {
+                        if let Ok(json) = export_backup_json(&self.payload) {
                             if fs::write(&backup_path, json).is_ok() {
                                 self.show_toast(
                                     format!(
-                                        "✓ Yedek dosyası dışa aktarıldı: {}",
+                                        "✓ JSON yedeği dışa aktarıldı: {}",
                                         backup_path.display()
                                     ),
                                     false,
@@ -2439,6 +2633,51 @@ impl SubRadarApp {
 
                     if ui.button("🔒 Kasayı Şimdi Kilitle").clicked() {
                         self.is_locked = true;
+                    }
+                });
+
+                ui.add_space(14.0);
+                ui.separator();
+                ui.add_space(10.0);
+
+                ui.label(
+                    RichText::new("📥 YEDEKTEN GERİ YÜKLE & VERİ BİRLEŞTİRME")
+                        .font(FontId::new(11.0, FontFamily::Monospace))
+                        .color(pal.text_muted),
+                );
+                ui.add_space(4.0);
+                ui.horizontal(|ui| {
+                    ui.label(RichText::new("Dosya Yolu:").size(11.5));
+                    ui.add_sized(
+                        [260.0, 24.0],
+                        egui::TextEdit::singleline(&mut self.restore_json_path)
+                            .hint_text("subradar-backup.json veya encrypted.json"),
+                    );
+                    if ui.button("📥 Yedekten Geri Yükle").clicked() {
+                        let path = std::path::Path::new(&self.restore_json_path);
+                        if path.exists() {
+                            match fs::read_to_string(path) {
+                                Ok(content) => {
+                                    match import_backup_json(&mut self.payload, &content, &self.master_password) {
+                                        Ok(count) => {
+                                            self.persist_vault();
+                                            self.refresh_legal_notice();
+                                            self.show_toast(
+                                                format!(
+                                                    "✓ {} abonelik başarıyla içe aktarıldı ve kasayla birleştirildi.",
+                                                    count
+                                                ),
+                                                false,
+                                            );
+                                        }
+                                        Err(err) => self.show_toast(format!("✕ Geri yükleme hatası: {}", err), false),
+                                    }
+                                }
+                                Err(e) => self.show_toast(format!("✕ Dosya okunamadı: {}", e), false),
+                            }
+                        } else {
+                            self.show_toast("✕ Belirtilen yedek dosyası bulunamadı.", false);
+                        }
                     }
                 });
 

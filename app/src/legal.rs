@@ -220,6 +220,10 @@ mod tests {
             status: SubStatus::UnusedTrial,
             cancel_url: "https://account.adobe.com/plans".to_string(),
             notes: String::new(),
+            is_shared: false,
+            shared_member_count: 1,
+            shared_members: String::new(),
+            my_share_percentage: 100.0,
         }
     }
 
