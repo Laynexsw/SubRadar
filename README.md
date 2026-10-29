@@ -8,14 +8,16 @@
 [![Sürüm](https://img.shields.io/badge/S%C3%BCr%C3%BCm-v1.0%20Native%20Rust-6366f1?style=for-the-badge&logo=rust&logoColor=white)](https://github.com/Laynexsw/SubRadar/tree/main/app)
 [![Güvenlik](https://img.shields.io/badge/G%C3%BCvenlik-AES--256%20Yerel%20%C5%9Eifreleme-10b981?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/Laynexsw/SubRadar/tree/main/app/src)
 [![Çevrimdışı Mimari](https://img.shields.io/badge/%C3%87al%C4%B1%C5%9Fma%20Modu-100%25%20%C3%87evrimd%C4%B1%C5%9F%C4%B1%20%26%20Yerel-0ea5e9?style=for-the-badge&logo=lock&logoColor=white)](privacy.html)
-[![Yasal Haklar](https://img.shields.io/badge/Yasal%20Koruma-6502%20SK%20%7C%20KVKK%20%7C%20GDPR-f59e0b?style=for-the-badge&logo=scales&logoColor=white)](terms.html)
+[![Test Durumu](https://img.shields.io/badge/Birim%20Testleri-15%2F15%20%25100%20Ba%C5%9Far%C4%B1-10b981?style=for-the-badge&logo=checkmarx&logoColor=white)](app/README.md)
+[![İkili Boyut](https://img.shields.io/badge/Native%20Binary-~3.2%20MB%20(S%C4%B1f%C4%B1r%20Bloat)-2563eb?style=for-the-badge&logo=speedtest&logoColor=white)](app/subradar.exe)
+[![Yasal Haklar](https://img.shields.io/badge/Yasal%20Koruma-6502%20SK%20%7C%20THH%20%7C%20T%C3%9CB%C4%B0S%20%7C%20GDPR-f59e0b?style=for-the-badge&logo=scales&logoColor=white)](terms.html)
 [![Platform Desteği](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows%20%7C%20Linux-18181b?style=for-the-badge&logo=apple&logoColor=white)](https://laynexsw.github.io/SubRadar/#os-downloads)
 [![Ticari Lisans](https://img.shields.io/badge/Lisans-Ticari%20Lisans%20(Commercial%20v1.0)-2563eb?style=for-the-badge)](LICENSE)
 
 <br/>
 
-**SubRadar v1.0**; hem günlük bireysel kullanıcılar hem de profesyonel ekipler için geliştirilmiş **resmi, hızlı ve %100 yerel çalışan masaüstü abonelik yönetim yazılımıdır**.  
-Netflix, Spotify, YouTube Premium, iCloud, Adobe, ChatGPT gibi kişisel aboneliklerinizden kurumsal iş yazılımlarınıza kadar tüm düzenli ödemelerinizi tek bir ekranda toplar. Unutulan deneme sürelerini, gizli fiyat artışlarını ve iptal edilmesi zorlaştırılan abonelikleri; banka şifrenizi istemeden ve verilerinizi hiçbir bulut sunucusuna göndermeden **tamamen kendi bilgisayarınızda** tespit eder ve tek tıkla sonlandırmanızı sağlar.
+**SubRadar v1.0**; hem günlük bireysel kullanıcılar hem de profesyonel ekipler için geliştirilmiş **resmi, ultra hızlı, sıfır webview/node bloat barındıran ve %100 yerel çalışan masaüstü abonelik yönetim yazılımıdır**.  
+Netflix, Spotify, YouTube Premium, iCloud, Adobe, ChatGPT gibi kişisel aboneliklerinizden kurumsal iş yazılımlarınıza kadar tüm düzenli harcamalarınızı tek ekranda toplar. Unutulan deneme sürelerini, sinsi fiyat artışlarını ve iptali imkânsız kılınan karanlık desenleri (Dark Patterns); banka şifrenizi istemeden ve verilerinizi hiçbir bulut sunucusuna göndermeden **tamamen kendi bilgisayarınızda** tespit eder ve tek tıkla sonlandırmanızı sağlar.
 
 <br/>
 
@@ -25,16 +27,62 @@ Netflix, Spotify, YouTube Premium, iCloud, Adobe, ChatGPT gibi kişisel abonelik
 
 ---
 
-## 📊 Neden SubRadar? (Sorun ve Çözüm)
+## 🌊 4 Geliştirme Dalgası (Completed Waves 1–4)
 
-Günümüzde hem bireysel kullanıcılar hem de işletmeler, farkında olmadan her ay kullanmadıkları abonelikler için ciddi bütçeler kaybetmektedir:
+SubRadar v1.0, masaüstü (Native Rust) ve modern web platformunda 4 kapsamlı geliştirme dalgası ile inşa edilmiştir:
 
-1. **Unutulan Deneme Süreleri ve Otomatik Yenilemeler:** "İlk ay ücretsiz" olarak başlatılan deneme üyelikleri ve yılda bir kez otomatik çekilen abonelikler, zamanında iptal edilmediği için bütçenizi sessizce eritir.
-2. **Zorlaştırılmış İptal Ekranları:** Pek çok dijital servis, abonelik iptal butonlarını karmaşık menülerin, bitmeyen anketlerin ve canlı destek adımlarının arkasına gizleyerek iptal sürecini zorlaştırır.
-3. **Bulut Uygulamalarının Gizlilik Riski:** Piyasadaki sıradan harcama takip uygulamaları, banka hesap şifrelerinizi ister ve harcama geçmişinizi kendi bulut sunucularına kaydeder. Üstelik aboneliklerinizi yönetmek için sizden her ay yeni bir abonelik ücreti talep eder.
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                                 SUBRADAR DÖRT GELİŞTİRME DALGASI                       │
+├────────────────────┬────────────────────┬────────────────────┬─────────────────────────┤
+│    DALGA 1         │    DALGA 2         │    DALGA 3         │      DALGA 4            │
+│  UI & Analitik     │  Şablon & Bankalar │  Yasal Kalkan      │  Ekip, Takvim & Yedek   │
+├────────────────────┼────────────────────┼────────────────────┼─────────────────────────┤
+│• Bento Grid Hub    │• 37 Servis Şablonu │• Resmi THH / TÜBİS │• Aile/Ekip Maliyet      │
+│• 3 Katmanlı Token  │• Çoklu Banka Parse │  6502 Başvuru Formu│  Bölüştürücü (Splitter) │
+│• Raycast Kısayollar│• Fiyat Artış &     │• Visa/Mastercard   │• RFC 5545 iCalendar     │
+│  (Ctrl+K/N/E/T/D)  │  Sinsi Yenileme    │  Chargeback Dilekçe│  (.ics) Takvim İhracı   │
+│• Linear Geri Al    │  Algılayıcı        │• Karanlık Desen    │• Çift Yönlü AES-256     │
+│  (Undo Toast)      │  (detect_price_hike) İptal Kılavuzları  │  JSON Yedekleme/Geri Yük│
+└────────────────────┴────────────────────┴────────────────────┴─────────────────────────┘
+```
 
-### SubRadar v1.0 Çözümü
-SubRadar, **%100 Çevrimdışı (İnternetsiz) Çalışma** yapısı ve **Tek Seferlik Ömür Boyu Ticari Lisans** modeliyle verilerinizi yalnızca kendi bilgisayarınızda tutar. Tek bir unutulmuş aboneliği iptal ettiğinizde dahi yazılım maliyetini anında geri kazanırsınız.
+### 🔹 Dalga 1: Bento Grid Analitiği, 3 Katmanlı Tasarım Sistemi & Raycast Kısayolları
+* **Bento Grid Kategori & Harcama Analitiği:** Harcamaları kategori bazlı (Eğlence, Üretkenlik, Bulut, AI, vb.) renk kodlu yüzdelerle ve bütçe sağlık skoruyla görselleştiren modern bento grid düzeni.
+* **3 Katmanlı Tasarım Sistemi Token Mimarisi (`theme.rs`):** İlkel palet (Primitive) -> Semantik rol (Semantic) -> Bileşen bazlı (Component) katmanlı token mimarisi. Apple Glass ve Raycast/Linear derin siyah kontrastı.
+* **Raycast / Linear Klavye Kısayolları:** Tam klavye odaklı ergonomi:
+  * `Ctrl+K`: Hızlı Komut Paleti ve servis filtreleme,
+  * `Ctrl+N`: Yeni abonelik ekleme penceresi,
+  * `Ctrl+E`: Çevrimdışı ekstre tarayıcısını açma,
+  * `Ctrl+T`: Koyu / Açık tema geçişi,
+  * `Ctrl+D`: Yasal cayma/fesih dilekçesi derleyicisi,
+  * `Space`: Seçili aboneliğin doğrudan resmi iptal portalını açma,
+  * `Esc`: Açık modalları ve aramayı anında temizleme.
+* **Linear Stili "Geri Al" (Undo Toast) Bildirim Bandı:** Bir abonelik silindiğinde veya iptal edildiğinde ekranın altından akıcı şekilde yükselen, 5 saniyelik geri alma butonuna sahip güvenli bildirim motoru.
+
+### 🔹 Dalga 2: 37 Popüler Servis Şablonu, Çoklu Banka Ekstreleri & Sinsi Fiyat Artışı Algılayıcı
+* **37 Popüler Servis Şablonu (6 Kategori - `presets.rs`):**
+  * *Streaming & Medya:* Netflix, Spotify, YouTube Premium, Disney+, Amazon Prime Video, Apple Music, BluTV, Gain, Exxen.
+  * *Yapay Zekâ & Üretkenlik:* OpenAI ChatGPT Plus, Anthropic Claude Pro, Midjourney, Perplexity Pro, GitHub Copilot.
+  * *Yazılım & Tasarım:* JetBrains All Products, Adobe Creative Cloud, Figma Professional, Canva Pro, Notion Plus.
+  * *Bulut Depolama & Altyapı:* Google One / Drive, Apple iCloud+, Microsoft 365, Dropbox Plus, AWS, DigitalOcean.
+  * *İş & İletişim:* Slack Pro, Zoom Workplace, LinkedIn Premium, Telegram Premium, X (Twitter) Premium.
+  * *Oyun & Donanım:* Xbox Game Pass Ultimate, PlayStation Plus, GeForce NOW.
+* **Yerel Çoklu Banka Ekstre Formatları (`parser.rs`):**
+  * Türkiye Bankaları: Garanti BBVA, İş Bankası, Enpara.com, Papara.
+  * Global Neobank & FinTech: Wise (CSV), Revolut (CSV / Text).
+* **Gizli Fiyat Artışı ve Sinsi Yenileme Algılayıcı (`detect_price_hikes`):** Ekstredeki ardışık aylar arasındaki tutar farklarını hesaplayarak enflasyon/fiyat artışlarını yüzde ve tutar olarak raporlayan algoritmik koruma.
+
+### 🔹 Dalga 3: Yasal Hakem Heyeti (6502 SK), Ters İbraz (Chargeback) & Karanlık Desen İptal Kılavuzları
+* **Resmi THH / TÜBİS (6502 SK) Tüketici Hakem Heyeti Başvuru Dilekçesi (`legal.rs`):** Ayıplı hizmet, izinsiz yenileme veya para iadesi yapılmayan durumlar için e-Devlet TÜBİS sistemine doğrudan yüklenebilir resmi hukuki şikayet metni.
+* **Visa / Mastercard Ters İbraz (Chargeback) Harcama İtirazı Formu:** Bankaya sunulmak üzere uluslararası kart kurallarına (Reason Code 13.1 / 4853 - İptal Edilen İşlem) uygun harcama itirazı belgesi.
+* **Hizmet Bazlı Karanlık Desen (Dark Pattern) İptal Kılavuzları:** Karmaşık iptal butonlarını, canlı desteğe yönlendiren tuzakları ve anket bariyerlerini aşmak için 37 popüler servise özel adım adım doğrudan fesih rehberi.
+* **Yaklaşan Yenileme & Deneme Radar Kalkanı:** Deneme süresi bitmeden 3 gün ve 1 gün önce renkli uyarı rozetleriyle bütçeyi koruyan erken ikaz motoru.
+
+### 🔹 Dalga 4: Aile/Ekip Maliyet Bölüştürücü, RFC 5545 iCalendar Takvim İhracı & Çift Yönlü Şifreli Yedekleme
+* **Aile & Ekip Ortak Lisans Maliyet Bölüştürücü (`models.rs`):** Netflix Aile, Spotify Aile, YouTube Family veya ekip araçlarının (Figma, GitHub) toplam maliyetini kişi sayısına bölerek kişi başı net payı ve aylık/yıllık tasarrufu hesaplar.
+* **Apple / Google / Outlook Takvim RFC 5545 iCalendar (`.ics`) İhracı:** Yaklaşan tüm fatura ve deneme yenileme tarihlerini tek tıkla Apple Calendar, Google Calendar ve Microsoft Outlook'a standart `.ics` dosyası olarak aktarır.
+* **Çift Yönlü AES-256 Şifreli JSON Yedekleme ve Akıllı Veri Birleştirme (`vault.rs`):** Kullanıcı verilerini güvenli parola ile dışa aktarır ve başka bir cihaza kopyalandığında mevcut verilerle çakışmadan akıllı birleştirme (merge) yapar.
 
 ---
 
@@ -42,10 +90,12 @@ SubRadar, **%100 Çevrimdışı (İnternetsiz) Çalışma** yapısı ve **Tek Se
 
 | Özellik | Nasıl Çalışır? | Size Sağladığı Fayda |
 | :--- | :--- | :--- |
-| 🛡️ **%100 Yerel Şifreli Kasa** | `AES-256` şifreleme standardı ile verileri sadece bilgisayarınızda (`encrypted_sqlite_aes256.subradar`) saklar. | Banka şifresi veya hesap erişimi istenmez. Verileriniz yalnızca sizin belirlediğiniz parola ile açılır; hiçbir sunucuya gönderilmez. |
-| 📄 **Çevrimdışı Ekstre Tarayıcı** | İndirdiğiniz banka/kredi kartı ekstresini (CSV / metin) internet bağlantısı olmadan doğrudan cihazınızda tarar. | Ekstreniz bilgisayarınızdan dışarı çıkmadan içerisindeki tüm düzenli abonelikler, unutulan üyelikler ve fiyat artışları saniyeler içinde listelenir. |
-| ⚡ **Tek Tıkla İptal & Yasal Dilekçe** | Doğrudan İptal Bağlantıları + **6502 Sayılı Tüketici Kanunu** ve **KVKK / GDPR** resmi iptal dilekçesi oluşturucu. | Karmaşık iptal menüleriyle uğraşmadan doğrudan iptal sayfasına ulaşırsınız veya tek tıkla resmi fesih/cayma bildirim metni oluşturup indirebilirsiniz. |
-| 🖥️ **Modern Apple Glass Arayüzü** | Akıcı masaüstü uygulaması, `⌘K` / `Ctrl+K` hızlı arama paleti ve canlı döviz kuru (`TRY`, `USD`, `EUR`) desteği. | Yabancı para birimiyle ödediğiniz aboneliklerin güncel TL/Dolar/Euro karşılığını, aylık toplam giderinizi ve yaklaşan ödeme günlerini anında görürsünüz. |
+| 🛡️ **%100 Yerel Şifreli Kasa** | `AES-256-CBC` + `PBKDF2` (60.000 iterasyon) + `HMAC-SHA256` ile verileri sadece bilgisayarınızda (`encrypted_sqlite_aes256.subradar`) saklar. | Banka şifresi veya hesap erişimi istenmez. Verileriniz yalnızca sizin belirlediğiniz parola ile açılır; hiçbir sunucuya gönderilmez. |
+| 📄 **Çoklu Banka Ekstre Tarayıcı** | Garanti BBVA, İş Bankası, Enpara, Papara, Wise ve Revolut ekstrelerini internet olmadan yerel bellekte ayrıştırır. | Ekstreniz bilgisayarınızdan çıkmadan içerisindeki tüm düzenli abonelikler, unutulan üyelikler ve fiyat artışları saniyeler içinde listelenir. |
+| ⚖️ **Hukuki Kalkan & İptal Belgeleri** | **6502 SK THH / TÜBİS Başvuru Dilekçesi**, **Visa/Mastercard Chargeback Formu** ve **KVKK / GDPR Madde 17** resmi fesih ihtarnamesi. | Haksız çekilen paraların iadesi için bankalara ve Hakem Heyetine sunulmaya hazır, resmi formatta dilekçeleri tek tıkla üretir. |
+| 👥 **Aile / Ekip Maliyet Paylaştırıcı** | Ortak kullanılan lisanslarda kişi başı düşen payı, katılımcı isimlerini ve elde edilen tasarrufu bento kartlarında gösterir. | Arkadaşlarınızla veya çalışma ekibinizle ortak lisansların maliyetini adil ve şeffaf şekilde yönetmenizi sağlar. |
+| 📅 **iCalendar (.ics) Entegrasyonu** | RFC 5545 standartlarında takvim dosyası üretir. | Google Calendar, Apple Calendar veya Outlook üzerinden yaklaşan ödeme günlerini telefonunuzda bildirim olarak görmenizi sağlar. |
+| ⚡ **Raycast/Linear Hızlı Tuş Takımı** | `Ctrl+K`, `Ctrl+N`, `Ctrl+E`, `Ctrl+T`, `Ctrl+D`, `Space`, `Esc` tuş kombinasyonları ve Linear Undo Toast. | Fareye dokunmadan abonelik ekleme, arama, iptal ve tema geçişlerini saniyeler içinde gerçekleştirmenizi sağlar. |
 
 ---
 
@@ -83,15 +133,17 @@ SubRadar/
 │   ├── Cargo.toml                        # Saf Rust paket, kriptografi ve eframe/egui Native GUI bağımlılıkları (v1.0.0)
 │   ├── Cargo.lock                        # Deterministik Rust bağımlılık kilit dosyası
 │   ├── README.md                         # Saf Rust masaüstü uygulaması mimari, derleme ve test kılavuzu
-│   └── src/                              # %100 Saf Rust Kaynak Kodları (~2.94 MB Tekil Native .exe)
+│   ├── subradar.exe                      # Tekil yerel masaüstü binary'si (~3.2 MB, sıfır bloat, hazır çalıştırılabilir)
+│   ├── encrypted_sqlite_aes256.subradar  # Yerel parola korumalı AES-256 şifreli veri kasası dosyası
+│   └── src/                              # %100 Saf Rust Kaynak Kodları (15/15 Birim Testi Geçerli)
 │       ├── main.rs                       # Konsolsuz yerel Windows GUI pencere başlatıcısı (eframe::run_native)
-│       ├── theme.rs                      # Minimalist Apple / Raycast / Linear koyu ve açık tema motoru
-│       ├── models.rs                     # Abonelik, durum, para birimi (TRY/USD/EUR) ve bütçe sağlık puanı veri modelleri
-│       ├── presets.rs                    # 18+ popüler dijital servis şablonu ve doğrudan resmi iptal bağlantıları
-│       ├── vault.rs                      # Saf Rust AES-256-CBC + PBKDF2-HMAC-SHA256 + HMAC-SHA256 yerel şifreli kasa motoru ve birim testleri
-│       ├── parser.rs                     # %100 çevrimdışı banka ekstresi ve harcama metni tarayıcısı ve birim testleri
-│       ├── legal.rs                      # 6502 SK & GDPR Madde 17 resmi iptal dilekçesi üreticisi ve birim testleri
-│       └── ui.rs                         # Tek ekranda net özet, Ctrl+K hızlı arama, tek tıkla iptal ve hızlı ekleme arayüzü
+│       ├── theme.rs                      # 3 Katmanlı Tasarım Sistemi Token Mimarisi (Primitive/Semantic/Component)
+│       ├── models.rs                     # Veri modelleri, Aile/Ekip Maliyet Bölüştürücü, iCalendar (.ics) ihracı
+│       ├── presets.rs                    # 37 Popüler Servis Şablonu (6 Kategori), doğrudan iptal URL'leri ve Dark Pattern rehberleri
+│       ├── parser.rs                     # Çoklu banka ekstre tarayıcısı (Garanti, İş Bankası, Enpara, Papara, Wise, Revolut) & detect_price_hikes
+│       ├── legal.rs                      # Resmi THH / TÜBİS (6502 SK) dilekçesi, Visa/Mastercard Chargeback formu ve GDPR bildirimleri
+│       ├── vault.rs                      # AES-256-CBC + PBKDF2 + HMAC-SHA256 şifreli kasa, çift yönlü JSON yedekleme/geri yükleme
+│       └── ui.rs                         # Bento Grid analitik paneli, Raycast klavye kısayolları, Linear Undo Toast ve arayüz motoru
 │
 ├── 🧩 3. ORIGINKIT & HARİCİ UI BİLEŞENLERİ (DESIGN SYSTEM RIG - components/)
 │   └── originkit/
@@ -119,145 +171,100 @@ SubRadar/
     │   └── three/                        # Donanım ivmeli 3D WebGL motoru (three.min.js, three.module.js)
     │
     ├── components/                       # 23 Parçalı Modüler HTML UI Bileşenleri
-    │   ├── layout/                       # Çerçeve & Genel Düzen Bileşenleri
-    │   │   ├── header.html               # Üst cam çubuk, logo, ⌘K, ses, kısayol, dil, kur ve tema kontrolleri
-    │   │   ├── footer.html               # Alt bilgi, Originkit Vector Wordmark, canlı yerel gecikme ve telif bildirimleri
-    │   │   ├── cookie-banner.html        # Minimal Apple Glass çerez kartı ve canlı kullanıcı etkileşim onayı
-    │   │   ├── mobile-sticky-cta.html    # Mobilde altta sabit kalan hızlı indirme ve aksiyon çubuğu
-    │   │   └── tiles-loader.html         # Originkit Tiles Loader editoryal karo yükleme ve yüzde sayacı iskeleti
-    │   │
-    │   ├── sections/                     # Sayfa Bölümleri & İşlevsel Modüller
-    │   │   ├── hero.html                 # Hero vitrin alanı, çift CTA ve interaktif macOS pencere simülasyonu
-    │   │   ├── problem.html              # Abonelik israfı, sektör verileri ve zorlaştırılmış iptal süreçleri
-    │   │   ├── statement-lab.html        # Canlı çevrimdışı banka ekstresi ve unutulan abonelik tarayıcısı
-    │   │   ├── calculator.html           # Abonelik tasarruf hesaplayıcı, kaydırıcılar, PNG kart ihracı ve X paylaşımı
-    │   │   ├── comparison.html           # Şeffaflık & güven karşılaştırma tablosu (SubRadar vs Bulut Uygulamaları)
-    │   │   ├── features.html             # Çekirdek 4 motor özelliği: Denetim, Otomatik Yakalama, Hızlı İptal, Yerel Kasa
-    │   │   ├── architecture.html         # Yerel AES-256 SQLite şifreleme ve çevrimdışı çalışma şeması
-    │   │   ├── os-downloads.html         # macOS, Windows ve Linux platform indirme kartları ve v1.0 sürüm bilgileri
-    │   │   ├── hash-verifier.html        # İstemci tarafı SHA-256 kurulum dosyası doğrulayıcı
-    │   │   ├── pricing.html              # Bireysel, Pro ($79) ve Kurumsal tek seferlik ömür boyu paket tablosu
-    │   │   └── faq.html                  # Sıkça sorulan sorular (SSS) akordeon bilgi paneli
-    │   │
-    │   ├── modals/                       # Etkileşimli Modallar & Kullanıcı Akışları
-    │   │   ├── download-modal.html       # Mimari seçimi (ARM/x86), indirme ilerleme çubuğu ve rehber modalı
-    │   │   ├── command-palette.html      # ⌘K / Ctrl+K hızlı komut paleti arama penceresi
-    │   │   ├── enterprise-modal.html     # Kurumsal çoklu kullanıcı teklif formu (doğrulama & bildirim)
-    │   │   ├── reclaim-modal.html        # Tasarruf adımları ve hızlı kurulum panosu (`curl -sSL...`)
-    │   │   ├── shortcuts-modal.html      # Klavye kısayolları rehber modalı (`?`, `T`, `S`, `C`, `L`, `D`)
-    │   │   ├── legal-generator-modal.html# Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih dilekçesi sihirbazı
-    │   │   └── auth-modal.html           # İkili kayan panelli (Double-Slider) Apple Glass giriş ve kayıt modalı
-    │   │
-    │   └── originkit/                    # Modüler Originkit Tip ve React Uyumluluk Parçaları
-    │       ├── react-shim.d.ts           # Saf JS ortamı için React TypeScript tip deklarasyon köprüsü
-    │       └── tiles-loader.tsx          # Modüler paket içi Originkit Tiles Loader kaynak bileşeni
+    │   ├── layout/                       # Çerçeve & Genel Düzen Bileşenleri (header, footer, cookie-banner, mobile-sticky-cta, tiles-loader)
+    │   ├── sections/                     # Sayfa Bölümleri & İşlevsel Modüller (hero, problem, statement-lab, calculator, comparison, features, architecture, os-downloads, hash-verifier, pricing, faq)
+    │   ├── modals/                       # Etkileşimli Modallar (command-palette, download-modal, enterprise-modal, reclaim-modal, shortcuts-modal, legal-generator-modal, auth-modal)
+    │   └── originkit/                    # Modüler Originkit Tip ve React Uyumluluk Parçaları (react-shim.d.ts, tiles-loader.tsx)
     │
-    ├── css/                              # Web Stil Sistemi (Apple Glassmorphism)
-    │   ├── base.css                      # Renk token'ları, SF Pro/Inter tipografi hiyerarşisi, açık/koyu tema sınıfları
-    │   ├── components.css                # Cam efektleri, range slider, imleç ışığı, ses dalgası ve modal animasyonları
-    │   ├── cursors.css                   # Windows 11 Tailless imleç CSS motoru ve Base64 veri URI kuralları
-    │   └── main.css                      # Tüm CSS modüllerini derleyen ana stil orkestrasyonu
-    │
-    ├── js/                               # Web İstemci Zekâsı & Modüler Betikler
-    │   ├── config.js                     # Sabitler, kurlar (USD, EUR, TRY) ve para birimi yöneticisi
-    │   ├── supabase.js                   # Supabase v2 JS SDK istemcisi, Auth ve Bulut Veritabanı entegrasyon köprüsü
-    │   ├── i18n.js                       # Kapsamlı TR/EN/DE çok dilli sözlüğü ve DOM metin düğümü çeviricisi
-    │   ├── theme.js                      # Koyu / Açık tema geçiş yöneticisi (`html.light`, `html.dark`)
-    │   ├── fx.js                         # Canlı döviz kurları çekici (open.er-api / frankfurter, 12 saat TTL)
-    │   ├── toast.js                      # Apple Glass kayan bildirim balonu sistemi (`srShowToast`)
-    │   ├── audio-fx.js                   # Web Audio API sıfır-dosya dokunsal ses motoru (`srAudio`)
-    │   ├── cursor-glow.js                # Dinamik imleç takipçi cam aydınlatma ve ışıma motoru
-    │   ├── statement-lab.js              # İstemci taraflı çevrimdışı ekstre analizörü ve abonelik dedektörü
-    │   ├── hash-verifier.js              # WebCrypto API SHA-256 kurulum doğrulama motoru
-    │   ├── social-export.js              # HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı
-    │   ├── calculator.js                 # Abonelik tasarruf hesaplama algoritması ($32/araç + $78/deneme) ve profil geçişleri
-    │   ├── hero-window.js                # macOS pencere simülasyonu: trafik ışıkları, canlı iptal, arama, sayaçlar
-    │   ├── tiles-loader.js               # Originkit "Tiles Loader" saf JS motoru (hücre ızgarası, edRand, % sayacı)
-    │   ├── vector-wordmark.js            # Originkit "Vector Wordmark" WebGL 2.0 motoru (2 kanallı atlas, 3 düğümlü kafes)
-    │   ├── scroll-motion.js              # İlerleme çizgisi (`#sr-progress`), alt gezinme adası (`#sr-scrollspy`), reveal animasyonları
-    │   ├── analytics.js                  # Canlı saniye sayacı ve sayfa içi etkileşim sayacı (`srAnalytics`)
-    │   ├── cookie-banner.js              # Minimal Apple Glass çerez kartı, otomatik açılış ve onay kontrolcüsü
-    │   ├── mobile-cta.js                 # Mobilde kaydırmaya bağlı beliren dinamik hızlı aksiyon çubuğu
-    │   ├── main.js                       # Tüm web modüllerini ve Service Worker'ı başlatan ana giriş dosyası
-    │   │
-    │   └── modals/                       # Etkileşimli Modal Kontrolcüleri
-    │       ├── download-modal.js         # İndirme simülasyonu, hız/boyut sayacı, SHA doğrulaması ve dosya indirici
-    │       ├── command-palette.js        # ⌘K klavye kısayolu, gerçek zamanlı filtreleme ve aksiyon tetikleyicisi
-    │       ├── enterprise-modal.js       # Kurumsal form alanları doğrulayıcısı (hata denetimi & spinner)
-    │       ├── reclaim-modal.js          # CLI komut kopyalama panosu (`curl -sSL...`) ve geri kazanım adımları
-    │       ├── shortcuts-modal.js        # Klavye kısayol dinleyicisi (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`)
-    │       ├── legal-gen.js              # Canlı yasal fesih metni derleyici, pano kopyalama ve `.txt` indirme yöneticisi
-    │       └── auth-modal.js             # İkili kayan panel animasyonu (sliding overlay), sosyal giriş ve profil yöneticisi
-    │
-    └── scripts/                          # CI/CD & Derleme Otomasyon Betikleri
-        ├── build.py                      # 23 modüler HTML bileşenini test eden ve doğrulayan Python betiği
-        └── embed_tiles_loader.py         # Originkit Tiles Loader bileşenini code.html içine derleyip enjekte eden betik
+    ├── css/                              # Web Stil Sistemi (Apple Glassmorphism - base.css, components.css, cursors.css, main.css)
+    ├── js/                               # Web İstemci Zekâsı (config.js, supabase.js, i18n.js, theme.js, fx.js, toast.js, audio-fx.js, statement-lab.js, calculator.js, modals/...)
+    └── scripts/                          # CI/CD & Derleme Otomasyon Betikleri (build.py, embed_tiles_loader.py)
 ```
 
 ---
 
-## ⚖️ Karşılaştırma Tablosu: SubRadar vs. Diğer Yöntemler
+## 🤖 Genişletilmiş Otonom Ajan Mimarisi (Autonomous Engineering Team)
 
-| Özellik / Kriter | SubRadar v1.0 (Yerel & Çevrimdışı) | Bulut Tabanlı Uygulamalar | Manuel Takip (Excel / Notlar) |
-| :--- | :--- | :--- | :--- |
-| **Banka Şifresi İsteği** | ❌ **Asla İstenmez** (%100 Güvenli) | ⚠️ **Zorunlu** (Banka erişimi ister) | ❌ İstenmez |
-| **Verilerin Saklandığı Yer** | 🔒 **Sadece Sizin Bilgisayarınız** | ☁️ **Yabancı Bulut Sunucuları** | ☁️ Bulut / Yerel karışık |
-| **Veri Güvenliği** | 🛡️ **AES-256 Şifreli Kasa** | 🔑 Şirket sunucularında açık veri | ❌ Şifresiz dosya |
-| **Otomatik Ekstre Tarama** | ⚡ **İnternetsiz Anında Tarama** | ☁️ Sunucuya yükleyerek tarama | ❌ Tek tek elle yazma |
-| **İptal ve Yasal Dilekçe** | ⚖️ **Tek Tıkla İptal Sayfası + Resmi Dilekçe** | ❌ Sadece bildirim gönderir | ❌ Yok |
-| **İnternetsiz Çalışma** | 🟢 **%100 Çevrimdışı Çalışır** | 🔴 İnternet olmadan açılmaz | 🟡 Kısmi |
-| **Ücretlendirme Modeli** | ♾️ **Tek Seferlik Ödeme (Ömür Boyu)** | 💸 **Her Ay Düzenli Abonelik Ücreti** | 💸 Office abonelik ücreti |
+SubRadar'ın geliştirilmesi, Baş Orkestratör liderliğinde **5 Departman ve 21 Kalıcı Uzman Alt Ajan** tarafından yürütülmektedir:
 
----
+```
+                               ┌─────────────────────────────────┐
+                               │   👑 BAŞ ORKESTRATÖR (MANAGER)  │
+                               └────────────────┬────────────────┘
+         ┌───────────────────┬──────────────────┼───────────────────┬───────────────────┐
+         │                   │                  │                   │                   │
+┌────────▼────────┐ ┌────────▼────────┐ ┌───────▼─────────┐ ┌───────▼─────────┐ ┌───────▼─────────┐
+│  DEPARTMAN A    │ │  DEPARTMAN B    │ │  DEPARTMAN C    │ │  DEPARTMAN D    │ │  DEPARTMAN E    │
+│  Araştırma &    │ │  Tasarım &      │ │  Web Platformu &│ │  Masaüstü &     │ │  DevOps, QA &   │
+│  Mimari Denetim │ │  Görsel Sanatlar│ │  FinOps         │ │  Kripto / Hukuk │ │  Dokümantasyon  │
+├─────────────────┤ ├─────────────────┤ ├─────────────────┤ ├─────────────────┤ ├─────────────────┤
+│• deep-code-res. │ │• ui-ux-designer │ │• web-ui-eng.    │ │• desktop-core   │ │• git-ops-spec.  │
+│• ponytail-deb.  │ │• brand-artist   │ │• hero-sim-eng.  │ │• security-crypto│ │• github-platform│
+│• arch-guardian  │ │• originkit-webgl│ │• modals-eng.    │ │• legal-counsel  │ │• seo-pwa-eng.   │
+│• perf-a11y-audit│ │• audio-haptics  │ │• i18n-finops    │ └─────────────────┘ │• test-runner    │
+└─────────────────┘ └─────────────────┘ │• supabase-auth  │                     │• qa-docs-spec.  │
+                                        └─────────────────┘                     └─────────────────┘
+```
 
-## 🔒 Güvenlik ve Gizlilik Standartları
-
-SubRadar v1.0, hem bireysel kullanıcıların kişisel bütçe mahremiyetini hem de şirketlerin ticari veri güvenliğini korumak için şu ilkelerle çalışır:
-
-1. **Verileriniz Bilgisayarınızdan Çıkmaz:** SubRadar'a eklediğiniz hiçbir abonelik, tutar veya ekstre bilgisi internete gönderilmez.
-2. **Parola Korumalı AES-256 Kasa (`app/src/vault.rs`):** Verileriniz bilgisayarınızda `AES-256-CBC` + `PBKDF2-HMAC-SHA256` (60.000 iterasyon) + `HMAC-SHA256` bütünlük imzası ile şifrelenir. Uygulama açılışında belirlediğiniz ana parola olmadan hiç kimse verilerinizi okuyamaz.
-3. **%100 Saf Rust Native Masaüstü Mimarisi (~2.94 MB):** Uygulama hantal bir tarayıcı sarmalayıcısı (Electron/Chromium) kullanmaz; doğrudan işletim sistemi üzerinde çalışan ultra hafif, bellek güvenli **Saf Rust (`eframe` / `egui`)** yerli masaüstü uygulamasıdır. Arka planda izinsiz veri toplama veya takip (telemetri) yapmaz.
-4. **Dosya Doğrulama (SHA-256):** İndirdiğiniz kurulum dosyasının orijinal ve güvenli olduğunu web sitesindeki doğrulama aracıyla tek tıkla kontrol edebilirsiniz.
-
----
-
-## 💼 Paketler ve Ticari Lisanslama (SubRadar v1.0)
-
-SubRadar, **Ticari Yazılım Lisansı ([`LICENSE`](LICENSE))** kapsamında sunulmaktadır ve abonelik tuzağına karşı **tek seferlik ödeme** prensibini benimser:
-
-| Paket | Kimler İçin Uygun? | Kurulum & Platform | Destek ve Güncellemeler | Fiyat / Lisans |
-| :--- | :--- | :--- | :--- | :--- |
-| **Başlangıç (Demo / Deneme)** | Uygulama arayüzünü, canlı simülatörü ve temel abonelik takibini deneyimlemek isteyen bireysel kullanıcılar. | Web Simülatörü & Masaüstü Önizleme | Standart Dokümantasyon | **Ücretsiz Deneme** |
-| **SubRadar Pro (v1.0)** | Tüm kişisel ve profesyonel aboneliklerini sınırsız takip etmek, çevrimdışı ekstre taramak ve tek tıkla iptal/dilekçe oluşturmak isteyen kullanıcılar. | macOS, Windows ve Linux Tam Sürüm | **Ömür Boyu Güncelleme** & Öncelikli E-posta Desteği | **$79** *(Tek Seferlik Ödeme — Abonelik Yok)* |
-| **SubRadar Kurumsal (Enterprise)** | Birden fazla çalışanı ve departmanı olan şirketler, ekip içi ortak yazılım denetimi ve merkezi kurulum arayan kurumlar. | Çoklu Bilgisayar Kurulumu (MSI / PKG) | **7/24 Kurumsal Destek (SLA)**, Fatura & Özel Kurulum | **Kurumsal Teklif** ([İletişim Formu](https://laynexsw.github.io/SubRadar/)) |
-
-> 📜 **Ticari Lisans Bilgisi:** Bu yazılımın tüm telif ve ticari kullanım hakları [**SubRadar Ticari Yazılım Lisansı (`LICENSE`)**](LICENSE) ile korunmaktadır.
+> ⚡ **Dinamik Ajan Bölünmesi ve Çoğalma (Subagent Splitting) Protokolü:**  
+> Kullanıcının doğrudan onayı ve talimatı doğrultusunda; kodlama, optimizasyon veya derin hata ayıklama görevlerinde uzman geliştirici ajanlar ikili veya üçlü dinamik çalışma hücrelerine (örneğin: `desktop-core-engineer` -> `desktop-ui-worker` + `desktop-state-worker`) bölünerek paralel görev icra etme yetkisine sahiptir. Bu işlem paylaşımsız alt görevleri hızlandırırken mimari bütünlüğü korur.
 
 ---
 
-## 🚀 Kurulum ve Çalıştırma Rehberi
+## 🔒 Güvenlik, Kriptografi ve Sıfır-Bilgi Standartları
 
-### 1. Saf Rust Masaüstü Uygulamasını Çalıştırma ve Test Etme (`app/ v1.0`)
-%100 Saf Rust ile yazılmış masaüstü uygulamasını derlemek, birim testlerini yürütmek ve başlatmak için:
+1. **Parola Korumalı AES-256 Kasa (`app/src/vault.rs`):** Verileriniz bilgisayarınızda `AES-256-CBC` + `PBKDF2-HMAC-SHA256` (60.000 iterasyon) + `HMAC-SHA256` bütünlük imzası ile şifrelenir. Uygulama açılışında belirlediğiniz ana parola olmadan hiçbir veri okunamaz.
+2. **Çift Yönlü Şifreli Yedekleme & Geri Yükleme:** Parola korumalı `.json` yedeği dışa aktarılabilir ve istenen cihaza içe aktarılırken akıllı birleştirme (merge) yapılır.
+3. **%100 Saf Rust Native Masaüstü İkili Dosyası (~3.2 MB):** Hantal Chromium / Electron veya Node.js katmanları barındırmaz. Doğrudan işletim sistemi API'lerine bağlanan ultra hafif, bellek güvenli **Saf Rust (`eframe` / `egui`)** masaüstü yazılımıdır (`app/subradar.exe`).
+4. **Sıfır Telemetri ve Sıfır Ağ İsteği:** Masaüstü istemcisi arka planda hiçbir analitik, izleme veya sunucu çağrısı yapmaz.
+
+---
+
+## 🚀 Kurulum, Derleme ve Test Rehberi
+
+### 1. Saf Rust Masaüstü Uygulaması (`app/ v1.0`)
+
+Masaüstü uygulamasının 15 birim testini çalıştırmak ve yerel binary'yi başlatmak için:
 
 ```powershell
 cd app
 
-# Şifreli kasa (vault), çevrimdışı ekstre tarayıcı (parser) ve yasal dilekçe (legal) birim testlerini çalıştırın
+# 15/15 Saf Rust Birim Testini Çalıştırın (%100 Başarı)
 cargo test
 
-# SubRadar v1.0 Saf Rust Native GUI masaüstü uygulamasını başlatın (~2.94 MB tekil .exe)
+# Masaüstü GUI İstemcisini Başlatın (~3.2 MB Tekil .exe)
 cargo run --release
 ```
 
-### 2. Web Vitrinini ve Canlı Simülatörü Çalıştırma (`web/`)
-Web tanıtım sitesini ve canlı simülatörü yerel bilgisayarınızda görüntülemek için:
+*Test Çıktı Özeti:*
+```text
+running 15 tests
+test legal::tests::test_chargeback_document_contains_visa_mastercard_rules ... ok
+test legal::tests::test_english_notice_contains_gdpr_article_17 ... ok
+test legal::tests::test_thh_application_contains_law_6502_and_articles ... ok
+test legal::tests::test_turkish_notice_contains_law_6502 ... ok
+test models::tests::test_export_subscriptions_to_ics_format ... ok
+test models::tests::test_shared_subscription_cost_calculation ... ok
+test parser::tests::test_global_bank_formats_wise_revolut ... ok
+test parser::tests::test_detect_price_hike_multiple_months ... ok
+test parser::tests::test_parse_csv_and_text_statement ... ok
+test parser::tests::test_turkish_bank_formats_garanti_enpara_papara ... ok
+test parser::tests::test_sample_statement_detection ... ok
+test vault::tests::test_backup_json_export_and_import ... ok
+test vault::tests::test_encrypt_and_decrypt_roundtrip ... ok
+test vault::tests::test_wrong_password_rejected ... ok
+test vault::tests::test_tampered_hmac_rejected ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.56s
+```
+
+### 2. Web Vitrini ve Canlı Simülatör (`web/`)
 
 ```bash
 # Yerel web sunucusunu başlatın (Port: 8765)
 python -m http.server 8765
 
-# 23 modüler web bileşenini doğrulayın
+# 23 modüler bileşenin bütünlüğünü doğrulayın
 python web/scripts/build.py
 ```
 * **Yerel Adres:** `http://localhost:8765/web/code.html` veya `http://localhost:8765/`
@@ -274,5 +281,5 @@ python web/scripts/build.py
 
 <div align="center">
 <br/>
-<sub><b>SubRadar v1.0 © 2026 Laynexsw. Tüm Ticari Hakları Saklıdır.</b><br/>Kullanıcı dostu tasarım, yerel veri güvenliği ve %100 çevrimdışı çalışma prensibiyle geliştirilmiştir.</sub>
+<sub><b>SubRadar v1.0 © 2026 Laynexsw. Tüm Ticari Hakları Saklıdır.</b><br/>Ponytail YAGNI ilkeleri, yerel veri güvenliği ve %100 çevrimdışı çalışma disipliniyle geliştirilmiştir.</sub>
 </div>

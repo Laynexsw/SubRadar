@@ -1,6 +1,6 @@
 # ⚡ SubRadar — AI Agent & Developer Fast-Context Guide (AGENTS.md)
 
-> **Amaç:** Bu dosya, her yeni sohbette veya AI oturumunda depodaki tüm dosyaları baştan tarama ihtiyacını ortadan kaldırmak için hazırlanmış **tam ve kapsamlı kod tabanı referansıdır**. Bu dosyayı okuyan yapay zekâ asistanı, tüm mimariyi, dosya rollerini, DOM kimliklerini ve veri akışlarını anında anlar.
+> **Amaç:** Bu dosya, her yeni sohbette veya AI oturumunda depodaki tüm dosyaları baştan tarama ihtiyacını ortadan kaldırmak için hazırlanmış **tam ve kapsamlı kod tabanı referansıdır**. Bu dosyayı okuyan yapay zekâ asistanı, tüm mimariyi, 4 Geliştirme Dalgasını (Waves 1-4), dosya rollerini, DOM kimliklerini, otonom alt ajan yapılanmasını ve veri akışlarını anında anlar.
 
 ---
 
@@ -10,25 +10,25 @@
 * **Canlı Dağıtım (Production):** [https://laynexsw.github.io/SubRadar/](https://laynexsw.github.io/SubRadar/)
 * **Kaynak Depo:** `Laynexsw/SubRadar`
 * **Lisans Modeli:** Resmi Ticari Yazılım Lisansı (`LICENSE` — Commercial License v1.0)
+* **Test & Binary Durumu:**
+  * **15/15 Saf Rust Birim Testi:** %100 başarı, 0 hata, 0 uyarı (`cargo test`).
+  * **Tekil Yerel Binary:** `app/subradar.exe` (~3.2 MB, Ponytail YAGNI uyumlu, sıfır webview/node bloat).
 * **Temel Prensipler:**
   1. **%100 Yerel ve Çevrimdışı (Zero Knowledge, Offline First):** Hiçbir banka şifresi veya API anahtarı istenmez. Finansal veriler asla bulut sunucularına çıkmaz.
-  2. **Yerel Kriptografik Kasa (Saf Rust):** `AES-256-CBC` + `PBKDF2-HMAC-SHA256` (60.000 iterasyon) + `HMAC-SHA256` bütünlük doğrulaması ile veriler yerel diskte şifreli `.subradar` dosyasında saklanır (`app/src/vault.rs`).
-  3. **Tek Tıkla İptal & Hukuki Fesih:** Kullanıcıyı karmaşık iptal adımlarından kurtarır; doğrudan servis iptal portallarına ulaştırır ve 6502 SK & GDPR Madde 17 resmi fesih dilekçesi metinleri üretir.
-  4. **Apple Glassmorphism UI & Originkit WebGL 2.0:** Koyu taban (`#000000`, `#09090b`), cam efektleri (`backdrop-filter: blur(24px)`), SF Pro tipografisi, Raycast/Linear ergonomisi ve donanım ivmeli görsel zekâ.
+  2. **Yerel Kriptografik Kasa (Saf Rust):** `AES-256-CBC` + `PBKDF2-HMAC-SHA256` (60.000 iterasyon) + `HMAC-SHA256` bütünlük doğrulaması ile veriler yerel diskte şifreli `.subradar` dosyasında saklanır (`app/src/vault.rs`). Çift yönlü AES-256 şifreli JSON yedekleme ve akıllı birleştirme desteği.
+  3. **Tek Tıkla İptal, Hukuki Fesih & Chargeback:** Kullanıcıyı karmaşık iptal adımlarından kurtarır; 37 popüler servis için doğrudan iptal portalları ve Dark Pattern kılavuzları sunar; 6502 SK THH/TÜBİS, Visa/Mastercard Chargeback ve GDPR Madde 17 resmi dilekçeleri üretir.
+  4. **Apple Glassmorphism UI & Originkit WebGL 2.0:** Koyu taban (`#000000`, `#09090b`), cam efektleri (`backdrop-filter: blur(24px)`), SF Pro tipografisi, 3 katmanlı token mimarisi, Raycast/Linear klavye kısayolları ve Bento Grid analitiği.
 
 ---
 
-## 🏗️ 2. Kritik Mimari İkiliği (Modular vs. Standalone)
+## 🌊 2. 4 Geliştirme Dalgası (Completed Waves 1–4)
 
-Bu depoda **iki paralel katman** bulunur. Kod geliştirirken veya düzenlerken bu ayrım mutlaka bilinmelidir:
+SubRadar v1.0 mimarisi 4 stratejik geliştirme dalgası ile tamamlanmıştır:
 
-1. **Modüler Kaynak Katmanı (`web/components/`, `web/css/`, `web/js/`):**
-   * Bakımı ve denetimi kolaylaştırmak için ayrıştırılmış 23 adet HTML bileşeni, modüler CSS dosyaları ve ES6 JavaScript modülleri.
-   * `web/scripts/build.py` bu 23 bileşenin bütünlüğünü doğrular.
-2. **Tekil Üretim Paketi (`web/code.html`):**
-   * GitHub Pages ve yerel sunucuların doğrudan sunduğu, tüm CSS, JS, SVG ve HTML parçalarını tek çatı altında birleştiren monolitik dosya.
-   * Kök dizindeki `index.html` ve `web/index.html`, ziyaretçiyi doğrudan `web/code.html`'e yönlendirir (`meta refresh` + `window.location.replace`).
-   * **Önemli Not:** Web vitrininde yapılacak arayüz güncellemeleri hem ilgili modüler dosyada hem de canlı dağıtım dosyası olan `web/code.html` içinde güncellenmelidir!
+* **Dalga 1: UI & Analitik:** Bento Grid Kategori & Harcama Analitiği, 3 Katmanlı Tasarım Sistemi Token Mimarisi (`theme.rs`), Raycast Klavye Kısayolları (`Ctrl+K`, `Ctrl+N`, `Ctrl+E`, `Ctrl+T`, `Ctrl+D`, `Space`, `Esc`), Linear Undo Toast bildirim bandı.
+* **Dalga 2: Şablon & Bankalar:** 37 Popüler Servis Şablonu (6 kategori - `presets.rs`), Yerel Çoklu Banka Ekstre Formatları (Garanti BBVA, İş Bankası, Enpara, Papara, Wise, Revolut - `parser.rs`), Gizli Fiyat Artışı ve Sinsi Yenileme Algılayıcı (`detect_price_hikes`).
+* **Dalga 3: Yasal Kalkan:** Resmi THH / TÜBİS (6502 SK) Tüketici Hakem Heyeti Başvuru Dilekçesi, Visa/Mastercard Ters İbraz (Chargeback) Harcama İtirazı Formu, Hizmet Bazlı Karanlık Desen (Dark Pattern) İptal Kılavuzları, Yaklaşan Yenileme & Deneme Radar Kalkanı (`legal.rs`, `presets.rs`).
+* **Dalga 4: Ekip, Takvim & Yedek:** Aile & Ekip Ortak Lisans Maliyet Bölüştürücü (kişi başı pay ve tasarruf hesaplama - `models.rs`), Apple/Google/Outlook Takvim RFC 5545 iCalendar (`.ics`) ihracı (`models.rs`), Çift Yönlü AES-256 Şifreli JSON Yedekleme ve Akıllı Veri Birleştirme (`vault.rs`).
 
 ---
 
@@ -64,15 +64,17 @@ SubRadar/
 │   ├── Cargo.toml                        # Saf Rust paket, kriptografi ve eframe/egui Native GUI bağımlılıkları (v1.0.0)
 │   ├── Cargo.lock                        # Deterministik Rust bağımlılık kilit dosyası
 │   ├── README.md                         # Saf Rust masaüstü uygulaması mimari, derleme ve test kılavuzu
-│   └── src/                              # %100 Saf Rust Kaynak Kodları (~2.94 MB Tekil Native .exe)
+│   ├── subradar.exe                      # Tekil yerel masaüstü binary'si (~3.2 MB, sıfır bloat, 15/15 test başarılı)
+│   ├── encrypted_sqlite_aes256.subradar  # Yerel parola korumalı AES-256 şifreli veri kasası dosyası
+│   └── src/                              # %100 Saf Rust Kaynak Kodları (15/15 Birim Testi Geçerli)
 │       ├── main.rs                       # Konsolsuz yerel Windows GUI pencere başlatıcısı (eframe::run_native)
-│       ├── theme.rs                      # Minimalist Apple / Raycast / Linear koyu ve açık tema motoru
-│       ├── models.rs                     # Abonelik, durum, para birimi (TRY/USD/EUR) ve bütçe sağlık puanı veri modelleri
-│       ├── presets.rs                    # 18+ popüler dijital servis şablonu ve doğrudan resmi iptal bağlantıları
-│       ├── vault.rs                      # Saf Rust AES-256-CBC + PBKDF2-HMAC-SHA256 + HMAC-SHA256 yerel şifreli kasa motoru ve birim testleri
-│       ├── parser.rs                     # %100 çevrimdışı banka ekstresi ve harcama metni tarayıcısı ve birim testleri
-│       ├── legal.rs                      # 6502 SK & GDPR Madde 17 resmi iptal dilekçesi üreticisi ve birim testleri
-│       └── ui.rs                         # Tek ekranda net özet, Ctrl+K hızlı arama, tek tıkla iptal ve hızlı ekleme arayüzü
+│       ├── theme.rs                      # 3 Katmanlı Tasarım Sistemi Token Mimarisi (Primitive/Semantic/Component)
+│       ├── models.rs                     # Veri modelleri, Aile/Ekip Maliyet Bölüştürücü, iCalendar (.ics) ihracı
+│       ├── presets.rs                    # 37 Popüler Servis Şablonu (6 Kategori), doğrudan iptal URL'leri ve Dark Pattern rehberleri
+│       ├── parser.rs                     # Çoklu banka ekstre tarayıcısı (Garanti, İş Bankası, Enpara, Papara, Wise, Revolut) & detect_price_hikes
+│       ├── legal.rs                      # Resmi THH / TÜBİS (6502 SK) dilekçesi, Visa/Mastercard Chargeback formu ve GDPR bildirimleri
+│       ├── vault.rs                      # AES-256-CBC + PBKDF2 + HMAC-SHA256 şifreli kasa, çift yönlü JSON yedekleme/geri yükleme
+│       └── ui.rs                         # Bento Grid analitik paneli, Raycast klavye kısayolları, Linear Undo Toast ve arayüz motoru
 │
 ├── 🧩 3. ORIGINKIT & HARİCİ UI BİLEŞENLERİ (DESIGN SYSTEM RIG - components/)
 │   └── originkit/
@@ -100,79 +102,14 @@ SubRadar/
     │   └── three/                        # Donanım ivmeli 3D WebGL motoru (three.min.js, three.module.js)
     │
     ├── components/                       # 23 Parçalı Modüler HTML UI Bileşenleri
-    │   ├── layout/                       # Çerçeve & Genel Düzen Bileşenleri
-    │   │   ├── header.html               # Üst cam çubuk, logo, ⌘K, ses, kısayol, dil, kur ve tema kontrolleri
-    │   │   ├── footer.html               # Alt bilgi, Originkit Vector Wordmark, canlı yerel gecikme ve telif bildirimleri
-    │   │   ├── cookie-banner.html        # Minimal Apple Glass çerez kartı ve canlı kullanıcı telemetri onayı
-    │   │   ├── mobile-sticky-cta.html    # Mobilde altta sabit kalan hızlı indirme ve aksiyon çubuğu
-    │   │   └── tiles-loader.html         # Originkit Tiles Loader editoryal karo yükleme ve yüzde sayacı iskeleti
-    │   │
-    │   ├── sections/                     # Sayfa Bölümleri & İşlevsel Modüller
-    │   │   ├── hero.html                 # Hero vitrin alanı, çift CTA ve interaktif macOS pencere simülasyonu
-    │   │   ├── problem.html              # Abonelik israfı, sektör metrikleri ve zorlaştırılmış iptal süreçleri
-    │   │   ├── statement-lab.html        # Canlı çevrimdışı banka ekstresi ve unutulan abonelik tarayıcısı
-    │   │   ├── calculator.html           # Abonelik tasarruf hesaplayıcı, kaydırıcılar, PNG röntgen ihracı ve X paylaşımı
-    │   │   ├── comparison.html           # Şeffaflık & güven karşılaştırma tablosu (SubRadar vs Bulut Uygulamaları)
-    │   │   ├── features.html             # Çekirdek 4 motor özelliği: Denetim, Otomatik Yakalama, Hızlı İptal, Yerel Kasa
-    │   │   ├── architecture.html         # Yerel AES-256 SQLite şifreleme ve çevrimdışı mimari diyagramı
-    │   │   ├── os-downloads.html         # macOS, Windows ve Linux platform indirme kartları ve v1.0 sürüm bilgileri
-    │   │   ├── hash-verifier.html        # İstemci tarafı WebCrypto SHA-256 kurulum doğrulayıcı
-    │   │   ├── pricing.html              # Bireysel, Pro ($79) ve Kurumsal tek seferlik ömür boyu fiyatlandırma tablosu
-    │   │   └── faq.html                  # Sıkça sorulan sorular (SSS) akordeon bilgi paneli
-    │   │
-    │   ├── modals/                       # Etkileşimli Modallar & Kullanıcı Akışları
-    │   │   ├── download-modal.html       # Mimari seçimi (ARM/x86), indirme ilerleme çubuğu ve rehber modalı
-    │   │   ├── command-palette.html      # ⌘K / Ctrl+K Linear stili hızlı komut paleti arama penceresi
-    │   │   ├── enterprise-modal.html     # Kurumsal çoklu koltuk teklif formu (inline doğrulama & spinner)
-    │   │   ├── reclaim-modal.html        # Finansal geri kazanım adımları ve CLI kurulum panosu (`curl -sSL...`)
-    │   │   ├── shortcuts-modal.html      # Raycast stili Power-User klavye kısayolları modalı (`?`, `T`, `S`, `C`, `L`, `D`)
-    │   │   ├── legal-generator-modal.html# Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı
-    │   │   └── auth-modal.html           # İkili kayan panelli (Double-Slider Sliding Overlay) Apple Glass Monokrom modalı
-    │   │
-    │   └── originkit/                    # Modüler Originkit Tip ve React Uyumluluk Parçaları
-    │       ├── react-shim.d.ts           # Saf JS ortamı için React TypeScript tip deklarasyon köprüsü
-    │       └── tiles-loader.tsx          # Modüler paket içi Originkit Tiles Loader kaynak bileşeni
+    │   ├── layout/                       # Çerçeve & Genel Düzen Bileşenleri (header, footer, cookie-banner, mobile-sticky-cta, tiles-loader)
+    │   ├── sections/                     # Sayfa Bölümleri & İşlevsel Modüller (hero, problem, statement-lab, calculator, comparison, features, architecture, os-downloads, hash-verifier, pricing, faq)
+    │   ├── modals/                       # Etkileşimli Modallar (command-palette, download-modal, enterprise-modal, reclaim-modal, shortcuts-modal, legal-generator-modal, auth-modal)
+    │   └── originkit/                    # Modüler Originkit Tip ve React Uyumluluk Parçaları (react-shim.d.ts, tiles-loader.tsx)
     │
-    ├── css/                              # Web Stil Sistemi (Apple Glassmorphism)
-    │   ├── base.css                      # Renk token'ları, SF Pro/Inter tipografi hiyerarşisi, açık/koyu tema sınıfları
-    │   ├── components.css                # Cam efektleri, range slider, imleç ışığı, ses dalgası ve modal animasyonları
-    │   ├── cursors.css                   # Windows 11 Tailless imleç CSS motoru ve Base64 veri URI kuralları
-    │   └── main.css                      # Tüm CSS modüllerini derleyen ana stil orkestrasyonu
-    │
-    ├── js/                               # Web İstemci Zekâsı & Modüler Betikler
-    │   ├── config.js                     # Sabitler, kurlar (USD, EUR, TRY) ve para birimi yöneticisi
-    │   ├── supabase.js                   # Supabase v2 JS SDK istemcisi, Auth ve Bulut Veritabanı entegrasyon köprüsü
-    │   ├── i18n.js                       # Kapsamlı TR/EN/DE çok dilli sözlüğü ve DOM metin düğümü çeviricisi
-    │   ├── theme.js                      # Koyu / Açık tema geçiş yöneticisi (`html.light`, `html.dark`)
-    │   ├── fx.js                         # Canlı döviz kurları çekici (open.er-api / frankfurter, 12 saat TTL)
-    │   ├── toast.js                      # Apple Glass kayan bildirim balonu sistemi (`srShowToast`)
-    │   ├── audio-fx.js                   # Web Audio API sıfır-dosya matematiksel osilatör dokunsal ses motoru (`srAudio`)
-    │   ├── cursor-glow.js                # Dinamik imleç takipçi cam aydınlatma ve ışıma motoru
-    │   ├── statement-lab.js              # İstemci taraflı çevrimdışı ekstre analizörü ve abonelik dedektörü
-    │   ├── hash-verifier.js              # WebCrypto API SHA-256 kurulum doğrulama motoru
-    │   ├── social-export.js              # HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı
-    │   ├── calculator.js                 # Abonelik tasarruf hesaplama algoritması ($32/araç + $78/deneme) ve profil geçişleri
-    │   ├── hero-window.js                # macOS pencere simülasyonu: trafik ışıkları, canlı iptal, arama, sayaçlar
-    │   ├── tiles-loader.js               # Originkit "Tiles Loader" saf JS motoru (hücre ızgarası, edRand, % sayacı)
-    │   ├── vector-wordmark.js            # Originkit "Vector Wordmark" WebGL 2.0 motoru (2 kanallı atlas, 3 düğümlü kafes)
-    │   ├── scroll-motion.js              # İlerleme çizgisi (`#sr-progress`), alt gezinme adası (`#sr-scrollspy`), reveal animasyonları
-    │   ├── analytics.js                  # Canlı saniye sayacı, etkileşim telemetrisi ve kullanıcı izleme motoru (`srAnalytics`)
-    │   ├── cookie-banner.js              # Minimal Apple Glass çerez kartı, otomatik açılış ve onay kontrolcüsü
-    │   ├── mobile-cta.js                 # Mobilde kaydırmaya bağlı beliren dinamik hızlı aksiyon çubuğu
-    │   ├── main.js                       # Tüm web modüllerini ve Service Worker'ı başlatan ana giriş dosyası
-    │   │
-    │   └── modals/                       # Etkileşimli Modal Kontrolcüleri
-    │       ├── download-modal.js         # İndirme simülasyonu, hız/boyut sayacı, SHA doğrulaması ve dosya indirici
-    │       ├── command-palette.js        # ⌘K klavye kısayolu, gerçek zamanlı filtreleme ve aksiyon tetikleyicisi
-    │       ├── enterprise-modal.js       # Kurumsal form alanları doğrulayıcısı (inline hata denetimi & spinner)
-    │       ├── reclaim-modal.js          # CLI komut kopyalama panosu (`curl -sSL...`) ve geri kazanım adımları
-    │       ├── shortcuts-modal.js        # Power-User klavye kısayol dinleyicisi (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`)
-    │       ├── legal-gen.js              # Canlı yasal fesih metni derleyici, pano kopyalama ve `.txt` indirme yöneticisi
-    │       └── auth-modal.js             # İkili kayan panel animasyonu (sliding overlay), sosyal giriş ve profil yöneticisi
-    │
-    └── scripts/                          # CI/CD & Derleme Otomasyon Betikleri
-        ├── build.py                      # 23 modüler HTML bileşenini test eden ve doğrulayan Python betiği
-        └── embed_tiles_loader.py         # Originkit Tiles Loader bileşenini code.html içine derleyip enjekte eden betik
+    ├── css/                              # Web Stil Sistemi (Apple Glassmorphism - base.css, components.css, cursors.css, main.css)
+    ├── js/                               # Web İstemci Zekâsı (config.js, supabase.js, i18n.js, theme.js, fx.js, toast.js, audio-fx.js, statement-lab.js, calculator.js, modals/...)
+    └── scripts/                          # CI/CD & Derleme Otomasyon Betikleri (build.py, embed_tiles_loader.py)
 ```
 
 ---
@@ -194,125 +131,74 @@ SubRadar/
 
 ## 🎯 5. Anahtar DOM Kimlikleri (IDs) & Tetikleyiciler
 
-Aşağıdaki ID'ler JavaScript tarafından dinlenir ve yönetilir:
-
-* **Tema & Dil & Kur:**
-  * `#theme-toggle`, `#theme-toggle-icon`, `#theme-toggle-label`
-  * `.lang-btn` (`data-lang="EN|DE|TR"`), `.currency-btn` (`data-currency="USD|EUR|TRY"`)
-* **Hero macOS Simülasyonu:**
-  * `#hero-mock-window`: Simüle edilen pencere konteyneri
-  * `#hero-win-close`, `#hero-win-min`, `#hero-win-zoom`: Trafik ışıkları
-  * `#hero-win-restore-bar`, `#hero-win-restore`: Kapatılan pencereyi geri getirme çubuğu
-  * `#hero-sub-search`: Abonelik filtreleme arama kutusu
-  * `#hero-monthly-burn`, `#hero-detected-leaks`, `#hero-annual-waste`: Gösterge sayaçları
-  * `.direct-kill-btn`: İlgili aboneliği anında iptal eden simülasyon butonu
-  * `#hero-demo-reset`: Simülasyonu sıfırlayıp tüm servisleri geri getiren buton
-* **Hesaplayıcı:**
-  * `#calc-subs`: Aktif araç kaydırıcısı (2 - 35)
-  * `#calc-trials`: Deneme süresi kaydırıcısı (0 - 15)
-  * `.calc-preset-btn`: Bireysel (5/1), Freelancer (12/3), Ekip (28/8) profil butonları
-  * `#out-1yr`, `#out-5yr`: 1 ve 5 yıllık hesaplanan kayıp göstergeleri
-* **Modallar:**
-  * `#cmd-palette-backdrop`: ⌘K komut paleti modalı
-  * `#download-modal-backdrop`: İndirme modalı
-  * `#ent-modal-backdrop`: Kurumsal form modalı
-  * `#reclaim-modal-backdrop`: Geri kazanım & CLI modalı
-  * `#auth-modal-backdrop`: İkili kayan panelli (Double-Slider Sliding Overlay) giriş/kayıt modalı, uzay grafiti/obsidyen marka katmanı (`.auth-overlay`), ghost outline butonlar ve profil paneli (`#auth-modal-btn`)
-  * `#sr-toast`: Apple Glass bildirim balonu
-* **Originkit Tiles Loader & Geçişler:**
-  * `#sr-tiles-loader`: Sayfa açılışında ve tema / dil / para birimi geçişlerinde araya giren Originkit edRand karo mürekkepleşme ve perdelenen ekran taşıyıcı alanı (`srTransitionWithLoader`)
-  * `#tiles-loader-btn`: Üst bardaki grid ikonu (Animasyonu anında baştan oynatma tetikleyicisi, kısayol: `R` / `replay-tiles`)
-* **Originkit Vector Wordmark:**
-  * `#sr-vector-wordmark`: Alt bilgi (footer) alanında yer alan, imleç hareketine duyarlı WebGL 2.0 noktasal vektör dönüşüm alanı ve 3-düğümlü telemetri çipleri (`.sr-vector-chip`)
-* **Gezinme & Yüzen Ada (Dock):**
-  * `#sr-scrollspy`: Alt merkezde sabit yüzen minimalist bölüm gezinti adası (Ekstre Lab, İsraf Hesaplayıcı, Karşılaştırma, Özellikler, İşletim Sistemleri, Fiyatlandırma)
-  * `#sr-progress`: Sayfa üstü minimalist kaydırma ilerleme çizgisi
-  * `#site-header`: Kaydırmayla adaya dönüşen (`is-scrolled-island`) dinamik Apple Glass üst çubuğu
+* **Tema & Dil & Kur:** `#theme-toggle`, `#theme-toggle-icon`, `#theme-toggle-label`, `.lang-btn` (`data-lang`), `.currency-btn` (`data-currency`).
+* **Hero macOS Simülasyonu:** `#hero-mock-window`, `#hero-win-close`, `#hero-win-min`, `#hero-win-zoom`, `#hero-win-restore-bar`, `#hero-win-restore`, `#hero-sub-search`, `#hero-monthly-burn`, `#hero-detected-leaks`, `#hero-annual-waste`, `.direct-kill-btn`, `#hero-demo-reset`.
+* **Hesaplayıcı & Aile Bölüştürücü:** `#calc-subs` (2-35), `#calc-trials` (0-15), `.calc-preset-btn`, `#calc-split-toggle`, `#calc-split-members` (2-6), `.calc-split-btn`, `#out-1yr`, `#out-5yr`, `#out-split-per-person`, `#out-split-annual-saved`, `#out-split-badge`, `#calc-export-png-btn`.
+* **Modallar:** `#cmd-palette-backdrop`, `#download-modal-backdrop`, `#ent-modal-backdrop`, `#reclaim-modal-backdrop`, `#auth-modal-backdrop`, `#sr-toast`.
+* **Originkit Bileşenleri:** `#sr-tiles-loader`, `#tiles-loader-btn`, `#sr-vector-wordmark`.
+* **Gezinme:** `#sr-scrollspy`, `#sr-progress`, `#site-header`.
 
 ---
 
-## 💡 6. Geliştirme ve Test Kuralları
+## 🤖 6. Otonom Mühendislik Organizasyonu & Dinamik Alt Ajan Bölünmesi
 
-1. **Yerel Sunucu:**
+SubRadar projesi, Baş Orkestratör liderliğinde **5 Departman ve 21 Kalıcı Uzman Alt Ajan** tarafından yönetilmektedir:
+
+```
+                               ┌─────────────────────────────────┐
+                               │   👑 BAŞ ORKESTRATÖR (MANAGER)  │
+                               └────────────────┬────────────────┘
+         ┌───────────────────┬──────────────────┼───────────────────┬───────────────────┐
+         │                   │                  │                   │                   │
+┌────────▼────────┐ ┌────────▼────────┐ ┌───────▼─────────┐ ┌───────▼─────────┐ ┌───────▼─────────┐
+│  DEPARTMAN A    │ │  DEPARTMAN B    │ │  DEPARTMAN C    │ │  DEPARTMAN D    │ │  DEPARTMAN E    │
+│  Araştırma &    │ │  Tasarım &      │ │  Web Platformu &│ │  Masaüstü &     │ │  DevOps, QA &   │
+│  Mimari Denetim │ │  Görsel Sanatlar│ │  FinOps         │ │  Kripto / Hukuk │ │  Dokümantasyon  │
+├─────────────────┤ ├─────────────────┤ ├─────────────────┤ ├─────────────────┤ ├─────────────────┤
+│• deep-code-res. │ │• ui-ux-designer │ │• web-ui-eng.    │ │• desktop-core   │ │• git-ops-spec.  │
+│• ponytail-deb.  │ │• brand-artist   │ │• hero-sim-eng.  │ │• security-crypto│ │• github-platform│
+│• arch-guardian  │ │• originkit-webgl│ │• modals-eng.    │ │• legal-counsel  │ │• seo-pwa-eng.   │
+│• perf-a11y-audit│ │• audio-haptics  │ │• i18n-finops    │ └─────────────────┘ │• test-runner    │
+└─────────────────┘ └─────────────────┘ │• supabase-auth  │                     │• qa-docs-spec.  │
+                                        └─────────────────┘                     └─────────────────┘
+```
+
+> ⚡ **Dinamik Alt Ajan Bölünmesi (Subagent Splitting & Multiplication) Yetkisi:**  
+> Kullanıcının doğrudan onayı ve talimatıyla; kod geliştirme, derin hata ayıklama ve performans optimizasyonlarında uzman geliştirici alt ajanlar dinamik olarak ikili veya üçlü uzman hücrelere ayrılabilir (`subagent-driven-development`, `dispatching-parallel-agents`). Bu yetki paylaşımsız görevleri hızlandırırken tekil sorumluluk ilkesini korur.
+
+---
+
+## 💡 7. Geliştirme ve Test Kuralları
+
+1. **Rust Birim Testleri:**
+   ```powershell
+   cd app
+   cargo test
+   ```
+   *15/15 birim testi %100 başarıyla sonuçlanır (0 hata, 0 uyarı).*
+2. **Yerel Sunucu:**
    ```bash
    python -m http.server 8765
    ```
    Erişim: `http://localhost:8765/web/code.html` veya `http://localhost:8765/`
-2. **Bileşen Doğrulama:**
+3. **Bileşen Doğrulama:**
    ```bash
    python web/scripts/build.py
    ```
-3. **Değişiklik Senkronizasyonu:**
-   Eğer `web/components/` veya `web/js/` içinde bir geliştirme yapılıyorsa, canlı vitrin olan `web/code.html` dosyasının da senkronize kaldığından emin olunmalıdır.
-4. **Sıfır Dış Bağımlılık & Güvenlik:**
-   Kullanıcı verisi toplayacak hiçbir harici analytics/telemetri kütüphanesi eklenemez. Tasarım Tailwind CDN ve Google Material Symbols dışında tamamen saf CSS/JS üzerine kuruludur.
-5. **KOD YAPISI & DOKÜMANTASYON SENKRONİZASYONU (ZORUNLU KURAL):**
+4. **KOD YAPISI & DOKÜMANTASYON SENKRONİZASYONU (ZORUNLU KURAL):**
    Kod tabanında yapılan her ekleme, silme veya mimari değişiklikte; git commit ve push işlemlerinden önce MUTLAKA `README.md`, `CODEBASE.md` ve `AGENTS.md` dosyalarındaki **Kod Yapısı (Dosya Haritası / Ağacı)**, katman durumları ve açıklamaları anında ve eksiksiz güncellenecektir. Kod ile dokümantasyonun uyuşmaması kabul edilemez.
-6. **BAŞ ORKESTRATÖR VE ALT AJAN (SUBAGENT) YÖNETİM KURALI (ZORUNLU — 5 DEPARTMAN / 21 UZMAN ALT AJAN):**
-   Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Kod geliştirme, dosya düzenleme, araştırma, test ve dokümantasyon işlerini doğrudan yapmak yerine aşağıdaki **5 Departman ve 21 Uzman Alt Ajanlık Otonom Mühendislik Organizasyonunu** oluşturup görevlendirerek (`define_subagent` / `invoke_subagent`) yürütür; sonuçları denetler ve kullanıcıya raporlar:
-
-   #### A. Araştırma, Kod Yıkımı (Debloat) & Mimari Denetim Departmanı
-   1. `deep-code-researcher`: Derin kod analizi, DOM ID ve veri akışı haritalama, bağımlılık ve fizibilite araştırmacısı.
-   2. `ponytail-debloater`: Kod yıkıcı / sadeleştirici (`ponytail`, `ponytail-audit`, `ponytail-review`), ölü kod temizliği, YAGNI ve refactoring uzmanı.
-   3. `architecture-sync-guardian`: 23 modüler web bileşeni (`web/components/`, `css/`, `js/`) ile monolitik `web/code.html` arasındaki 1:1 eşitliği koruyan senkronizasyon muhafızı.
-   4. `performance-a11y-auditor`: 60FPS çalışma zamanı performansı, GPU/WebGL bellek optimizasyonu, ARIA erişilebilirlik ve mobil ergonomi denetçisi.
-
-   #### B. Tasarım, Marka & Görsel Sanatlar Departmanı
-   5. `ui-ux-glass-designer`: Baş Tasarımcı; `impeccable`, `ui-ux-pro-max`, `design-system` ve `ui-styling` yetenekleriyle Apple Glassmorphism, SF Pro tipografi ve tema kontrast mimarı.
-   6. `brand-visual-artist`: Marka kimliği (`brand`, `design`, `banner-design`), özel SVG ikonlar (`favicon.svg`, `og-image.svg`), 1200x630 Canvas sosyal medya kartı ve Windows 11 Tailless imleç (`cursors.css`) tasarımcısı.
-   7. `originkit-webgl-specialist`: Originkit `Tiles Loader` (`tiles-loader.js`), `Vector Wordmark` WebGL 2.0 (`vector-wordmark.js`), Three.js 3D sahneleri ve mikro-animasyon uzmanı.
-   8. `audio-haptics-engineer`: Web Audio API sıfır-dosya matematiksel osilatör ses motoru (`audio-fx.js`) ve dokunsal arayüz geri bildirim mühendisi.
-
-   #### C. Web Platformu & FinOps Mühendislik Departmanı
-   9. `web-ui-engineer`: Modüler `web/components/`, `web/css/`, `web/js/` ve `web/code.html` ön yüz geliştirme uzmanı.
-   10. `hero-simulator-engineer`: Hero macOS pencere simülatörü (`hero-window.js`), trafik ışıkları, canlı iptal simülasyonu ve gerçek zamanlı sayaçlar mühendisi.
-   11. `interactive-modals-engineer`: Raycast/Linear stili `⌘K` Komut Paleti (`command-palette.js`), kısayollar modalı (`shortcuts-modal.js`), indirme/reclaim modalları ve Toast mühendisi.
-   12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), abonelik tasarruf hesaplayıcı (`calculator.js`) ve çevrimdışı ekstre analizörü (`statement-lab.js`) uzmanı.
-   13. `supabase-auth-specialist`: Supabase v2 SDK (`supabase.js`), Double-Slider Apple Glass Auth modalı (`auth-modal.js`) ve kurumsal başvuru (`enterprise-modal.js`) uzmanı.
-
-   #### D. Masaüstü Çekirdeği, Kriptografi & Hukuk Departmanı
-   14. `desktop-core-engineer`: `app/` v1.0 %100 Saf Rust Native GUI (`eframe` / `egui`, ~2.94 MB tekil `.exe`, `main.rs`, `ui.rs`, `theme.rs`, `models.rs`, `presets.rs`) çekirdek mühendisi.
-   15. `security-crypto-auditor`: Saf Rust `AES-256-CBC` + `PBKDF2-HMAC-SHA256` + `HMAC-SHA256` yerel kasa (`app/src/vault.rs`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
-   16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`app/src/legal.rs`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
-
-   #### E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı
-   17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
-   18. `github-platform-manager`: GitHub platform ve vitrin yöneticisi (`gh repo edit`, depo adı, açıklama, homepage URL, topics/etiketler, Releases ve GitHub Pages ayarları).
-   19. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
-   20. `test-automation-runner`: Rust birim testleri (`cargo test` -> `vault.rs`, `parser.rs`, `legal.rs`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
-   21. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
+5. **BAŞ ORKESTRATÖR VE ALT AJAN YÖNETİM KURALI (ZORUNLU):**
+   Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Görevler alt ajanlara dağıtılır, sonuçlar denetlenir ve kullanıcıya raporlanır.
 
 ---
 
-## 🐙 7. Git & GitHub Yapılandırması ve Dağıtım Bilgileri
+## 🐙 8. Git & GitHub Dağıtım Bilgileri
 
-Bu bilgiler her yeni sohbette yapay zekânın doğrudan bilmesi için kaydedilmiştir:
-
-* **GitHub Kullanıcısı / Sahibi:** `Laynexsw`
-* **Depo Adı:** `SubRadar`
+* **GitHub Hesabı:** `Laynexsw` | **Depo:** `SubRadar`
 * **Depo URL:** [https://github.com/Laynexsw/SubRadar](https://github.com/Laynexsw/SubRadar)
-* **Git Remote:** `origin` -> `https://github.com/Laynexsw/SubRadar.git`
-* **Varsayılan / Ana Dal (Branch):** `main`
 * **Canlı Dağıtım (GitHub Pages):** [https://laynexsw.github.io/SubRadar/](https://laynexsw.github.io/SubRadar/)
-  * Dağıtım Dalı: `main` (kök dizin `/` üzerinden sunulur)
-  * Giriş Noktası: `index.html` -> anında `web/code.html`'e yönlendirir (`meta refresh` + JS `replace`)
-  * `.nojekyll`: GitHub Pages'ın Jekyll motorunu devre dışı bırakarak tüm klasörleri eksiksiz sunmasını sağlar.
-* **GitHub CLI (`gh`):**
-  * Yetkili Hesap: `Laynexsw` (Aktif oturum açık, `repo`, `gist`, `read:org` izinleri tanımlı)
-  * Canlı Açıklama (Description): `"⚡ SubRadar v1.0 — Akıllı Masaüstü Abonelik Takibi, Tek Tıkla İptal ve %100 Yerel AES-256 Şifreli Kasa. Unutulan abonelikleri ve deneme sürelerini internetsiz ekstre analizi ve resmi fesih dilekçesiyle sonlandırın. Tek seferlik ticari lisans."`
-  * Canlı Ana Sayfa (Homepage): `https://laynexsw.github.io/SubRadar/`
-  * Canlı Konular (Topics): `apple-design`, `desktop-app`, `rust`, `egui`, `eframe`, `offline-first`, `privacy-first`, `subscription-tracker`, `commercial-software`, `aes-256`, `dark-patterns`, `glassmorphism`, `security`, `zero-knowledge`, `gdpr`, `lifetime-deal`, `lifetime-license`, `originkit`, `webgl`, `vector-wordmark`
-  * Hızlı Meta Veri Güncelleme Komutu:
-    ```powershell
-    gh repo edit Laynexsw/SubRadar -d "⚡ SubRadar v1.0 — Akıllı Masaüstü Abonelik Takibi, Tek Tıkla İptal ve %100 Yerel AES-256 Şifreli Kasa. Unutulan abonelikleri ve deneme sürelerini internetsiz ekstre analizi ve resmi fesih dilekçesiyle sonlandırın. Tek seferlik ticari lisans." -h "https://laynexsw.github.io/SubRadar/"
-    ```
-* **Git İş Akışı & Windows PowerShell Notu:**
-  * Windows PowerShell'de komut birleştirirken `&&` yerine `;` kullanılmalıdır.
-  * Standart Gönderim Rutini:
-    ```powershell
-    git status
-    git add .
-    git commit -m "docs/feat/fix: <açıklayıcı mesaj>"
-    git push origin main
-    ```
-
+* **Giriş Noktası:** `index.html` -> `web/code.html`
+* **Windows PowerShell Komut Kuralı:** Komut zincirlerken `&&` yerine `;` kullanılmalıdır:
+  ```powershell
+  git status ; git add . ; git commit -m "docs: ..." ; git push origin main
+  ```

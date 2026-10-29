@@ -1,12 +1,12 @@
 ---
-description: SubRadar Codebase Architecture, File Map and Development Rules
+description: SubRadar Codebase Architecture, File Map, 4 Waves and Development Rules
 globs: **/*
 alwaysApply: true
 ---
 
 # 🛡️ SubRadar Codebase Knowledge & Fast-Context Rule
 
-Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar inceleme zorunluluğunu ortadan kaldırmak** amacıyla projenin tüm yapısını hafızada tutar.
+Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar inceleme zorunluluğunu ortadan kaldırmak** amacıyla projenin tüm yapısını, 4 Geliştirme Dalgasını (Waves 1-4) ve kurallarını hafızada tutar.
 
 ## 1. MİMARİ VE KATMANLAR
 
@@ -15,14 +15,19 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
   - `LICENSE`: SubRadar Resmi Ticari Yazılım Lisansı (Commercial License v1.0).
   - `PRODUCT.md`: Ürün vizyonu, kitleler, Apple Glass tasarım standartları.
   - `tsconfig.json`: TypeScript / React (Originkit TSX) derleyici yapılandırması.
-  - `README.md`: Mimari tablo, vitrin bağlantıları, ticari paketler ve kurulum rehberi.
-  - `AGENTS.md`: AI ajanları için hızlı proje haritası ve referans kılavuzu.
-  - `CODEBASE.md`: Derinlemesine fonksiyon, DOM ID ve durum modelleri rehberi.
-  - `.agents/`: `rules/codebase-context.md` (kurallar), `agents/` (21 kalıcı uzman alt ajan `*/agent.md`) ve `skills/` (14 yerel skill paketi: `impeccable`, `ui-ux-pro-max`, `design-system`, `ui-styling`, `brand`, `banner-design`, `design`, `slides`, `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`, `ponytail-gain`, `ponytail-help`).
+  - `README.md`: Mimari tablo, 4 Geliştirme Dalgası, vitrin bağlantıları, ticari paketler ve kurulum rehberi.
+  - `AGENTS.md`: AI ajanları için hızlı proje haritası, 4 dalga özeti ve referans kılavuzu.
+  - `CODEBASE.md`: Derinlemesine fonksiyon imzaları, durum modelleri, DOM ID ve mimari hafıza rehberi.
+  - `.agents/`: `rules/codebase-context.md` (kurallar), `agents/` (21 kalıcı uzman alt ajan `*/agent.md`) ve `skills/` (14 yerel skill paketi).
 
 - **Masaüstü Uygulaması (`app/` - v1.0 %100 Saf Rust Native GUI):**
-  - Mimari: `eframe` / `egui` tabanlı ~2.94 MB tekil `.exe` (`src/main.rs`, `src/ui.rs`, `src/theme.rs`, `src/models.rs`, `src/presets.rs`), yerel şifreli kasa (`src/vault.rs` - AES-256-CBC + PBKDF2-HMAC-SHA256 + HMAC-SHA256), çevrimdışı ekstre ayrıştırıcı (`src/parser.rs`) ve 6502 SK / GDPR Madde 17 yasal fesih derleyicisi (`src/legal.rs`).
-  - Dizin: `app/Cargo.toml`, `app/Cargo.lock`, `app/README.md` ve `app/src/`.
+  - **İkili & Test Durumu:** `app/subradar.exe` (~3.2 MB tekil yerel binary, sıfır webview/node bloat), **15/15 Saf Rust Birim Testi (%100 başarı, 0 hata, 0 uyarı)**.
+  - **4 Geliştirme Dalgası (Completed Waves 1–4):**
+    - *Dalga 1:* Bento Grid Kategori & Harcama Analitiği, 3 Katmanlı Tasarım Sistemi Token Mimarisi (`theme.rs`), Raycast Klavye Kısayolları (`Ctrl+K`, `Ctrl+N`, `Ctrl+E`, `Ctrl+T`, `Ctrl+D`, `Space`, `Esc`), Linear Undo Toast bildirim bandı.
+    - *Dalga 2:* 37 Popüler Servis Şablonu (6 kategori - `presets.rs`), Yerel Çoklu Banka Ekstre Formatları (Garanti BBVA, İş Bankası, Enpara, Papara, Wise, Revolut - `parser.rs`), Gizli Fiyat Artışı ve Sinsi Yenileme Algılayıcı (`detect_price_hikes`).
+    - *Dalga 3:* Resmi THH / TÜBİS (6502 SK) Tüketici Hakem Heyeti Başvuru Dilekçesi, Visa/Mastercard Ters İbraz (Chargeback) Harcama İtirazı Formu, Hizmet Bazlı Karanlık Desen (Dark Pattern) İptal Kılavuzları, Yaklaşan Yenileme & Deneme Radar Kalkanı (`legal.rs`, `presets.rs`).
+    - *Dalga 4:* Aile & Ekip Ortak Lisans Maliyet Bölüştürücü (kişi başı pay ve tasarruf hesaplama - `models.rs`), Apple/Google/Outlook Takvim RFC 5545 iCalendar (`.ics`) ihracı (`models.rs`), Çift Yönlü AES-256 Şifreli JSON Yedekleme ve Akıllı Veri Birleştirme (`vault.rs`).
+  - **Dosyalar:** `app/Cargo.toml`, `app/Cargo.lock`, `app/README.md`, `app/subradar.exe`, `app/encrypted_sqlite_aes256.subradar` ve `app/src/` (`main.rs`, `theme.rs`, `models.rs`, `presets.rs`, `parser.rs`, `legal.rs`, `vault.rs`, `ui.rs`).
 
 - **Web Vitrini (`web/`):**
   - `code.html`: Canlı üretim sürümü (monolitik, tüm modüller birleştirilmiş, GitHub Pages'ta çalışan ana dosya).
@@ -34,40 +39,42 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
   - `js/`: `config.js`, `supabase.js`, `i18n.js`, `theme.js`, `fx.js`, `toast.js`, `audio-fx.js`, `cursor-glow.js`, `statement-lab.js`, `hash-verifier.js`, `social-export.js`, `calculator.js`, `hero-window.js`, `tiles-loader.js`, `vector-wordmark.js`, `scroll-motion.js`, `analytics.js`, `cookie-banner.js`, `mobile-cta.js`, `main.js` ve `modals/` (`download-modal.js`, `command-palette.js`, `enterprise-modal.js`, `reclaim-modal.js`, `shortcuts-modal.js`, `legal-gen.js`, `auth-modal.js`).
   - `scripts/build.py`: 23 bileşenin dosya bütünlüğünü test eden otomasyon betiği.
 
-## 2. GELİŞTİRME PRENSİPLERİ
+## 2. GELİŞTİRME PRENSİPLERİ VE ZORUNLU KURALLAR
 
 1. **Çift Yönlü Senkronizasyon:** `web/components/` veya `web/js/` içinde yapılan düzenlemeler, canlıda çalışan `web/code.html` dosyasına da yansıtılmalıdır.
 2. **Yerellik ve Gizlilik:** Kodlara kullanıcı takip kütüphanesi, telemetri veya harici veri gönderimi eklenemez.
 3. **Erişilebilirlik:** Minimum 44px dokunmatik hedefler, klavye gezintisi (`:focus-visible`, `Esc`, `Enter`, ok tuşları).
 4. **Tasarım:** SF Pro font ailesi, Apple Glass (`backdrop-filter: blur(24px)`), zümrüt yeşili (`#10b981`), neon mor/indigo (`#6366f1`) ve koyu arka planlar (`#000000`, `#09090b`).
-5. **KOD YAPISI & DOKÜMANTASYON SENKRONİZASYONU (ZORUNLU KURAL):** Kod tabanında yapılan her ekleme, silme veya mimari değişiklikte; git commit ve push işlemlerinden önce MUTLAKA `README.md`, `CODEBASE.md` ve `AGENTS.md` dosyalarındaki **Kod Yapısı (Dosya Haritası / Ağacı)**, katman durumları ve açıklamaları anında ve eksiksiz güncellenecektir. Kod ile dokümantasyonun uyuşmaması kabul edilemez.
+5. **KOD YAPISI & DOKÜMANTASYON SENKRONİZASYONU (ZORUNLU KURAL):** Kod tabanında yapılan her ekleme, silme veya mimari değişiklikte; git commit ve push işlemlerinden önce MUTLAKA `README.md`, `CODEBASE.md`, `AGENTS.md` ve `.agents/rules/codebase-context.md` dosyalarındaki **Kod Yapısı (Dosya Haritası / Ağacı)**, katman durumları, 4 dalga özellikleri ve açıklamaları anında ve eksiksiz güncellenecektir. Kod ile dokümantasyonun uyuşmaması kabul edilemez.
 6. **BAŞ ORKESTRATÖR VE ALT AJAN (SUBAGENT) YÖNETİM KURALI (ZORUNLU — 5 DEPARTMAN / 21 UZMAN ALT AJAN):** Ana yapay zekâ asistanı yalnızca **Baş Orkestratör (Yönetici / Manager)** rolündedir. Kod geliştirme, dosya düzenleme, araştırma, test ve dokümantasyon işlerini doğrudan yapmak yerine aşağıdaki **5 Departman ve 21 Uzman Alt Ajanlık Otonom Mühendislik Organizasyonunu** oluşturup görevlendirerek (`define_subagent` / `invoke_subagent`) yürütür; sonuçları denetler ve kullanıcıya raporlar:
    - **A. Araştırma, Kod Yıkımı (Debloat) & Mimari Denetim Departmanı:**
-     1. `deep-code-researcher`: Derin kod analizi, DOM ID ve veri akışı haritalama, bağımlılık ve fizibilite araştırmacısı.
-     2. `ponytail-debloater`: Kod yıkıcı / sadeleştirici (`ponytail`, `ponytail-audit`, `ponytail-review`), ölü kod temizliği, YAGNI ve refactoring uzmanı.
-     3. `architecture-sync-guardian`: 23 modüler web bileşeni (`web/components/`, `css/`, `js/`) ile monolitik `web/code.html` arasındaki 1:1 eşitliği koruyan senkronizasyon muhafızı.
-     4. `performance-a11y-auditor`: 60FPS çalışma zamanı performansı, GPU/WebGL bellek optimizasyonu, ARIA erişilebilirlik ve mobil ergonomi denetçisi.
+     1. `deep-code-researcher`
+     2. `ponytail-debloater`
+     3. `architecture-sync-guardian`
+     4. `performance-a11y-auditor`
    - **B. Tasarım, Marka & Görsel Sanatlar Departmanı:**
-     5. `ui-ux-glass-designer`: Baş Tasarımcı; `impeccable`, `ui-ux-pro-max`, `design-system` ve `ui-styling` yetenekleriyle Apple Glassmorphism, SF Pro tipografi ve tema kontrast mimarı.
-     6. `brand-visual-artist`: Marka kimliği (`brand`, `design`, `banner-design`), özel SVG ikonlar (`favicon.svg`, `og-image.svg`), 1200x630 Canvas sosyal medya kartı ve Windows 11 Tailless imleç (`cursors.css`) tasarımcısı.
-     7. `originkit-webgl-specialist`: Originkit `Tiles Loader` (`tiles-loader.js`), `Vector Wordmark` WebGL 2.0 (`vector-wordmark.js`), Three.js 3D sahneleri ve mikro-animasyon uzmanı.
-     8. `audio-haptics-engineer`: Web Audio API sıfır-dosya matematiksel osilatör ses motoru (`audio-fx.js`) ve dokunsal arayüz geri bildirim mühendisi.
+     5. `ui-ux-glass-designer`
+     6. `brand-visual-artist`
+     7. `originkit-webgl-specialist`
+     8. `audio-haptics-engineer`
    - **C. Web Platformu & FinOps Mühendislik Departmanı:**
-     9. `web-ui-engineer`: Modüler `web/components/`, `web/css/`, `web/js/` ve `web/code.html` ön yüz geliştirme uzmanı.
-     10. `hero-simulator-engineer`: Hero macOS pencere simülatörü (`hero-window.js`), trafik ışıkları, canlı iptal simülasyonu ve gerçek zamanlı sayaçlar mühendisi.
-     11. `interactive-modals-engineer`: Raycast/Linear stili `⌘K` Komut Paleti (`command-palette.js`), kısayollar modalı (`shortcuts-modal.js`), indirme/reclaim modalları ve Toast mühendisi.
-     12. `i18n-finops-specialist`: TR/EN/DE lokalizasyon (`i18n.js`), canlı döviz kurları (`fx.js`, `config.js`), abonelik tasarruf hesaplayıcı (`calculator.js`) ve çevrimdışı ekstre analizörü (`statement-lab.js`) uzmanı.
-     13. `supabase-auth-specialist`: Supabase v2 SDK (`supabase.js`), Double-Slider Apple Glass Auth modalı (`auth-modal.js`) ve kurumsal başvuru (`enterprise-modal.js`) uzmanı.
+     9. `web-ui-engineer`
+     10. `hero-simulator-engineer`
+     11. `interactive-modals-engineer`
+     12. `i18n-finops-specialist`
+     13. `supabase-auth-specialist`
    - **D. Masaüstü Çekirdeği, Kriptografi & Hukuk Departmanı:**
-     14. `desktop-core-engineer`: `app/` v1.0 %100 Saf Rust Native GUI (`eframe` / `egui`, ~2.94 MB tekil `.exe`, `main.rs`, `ui.rs`, `theme.rs`, `models.rs`, `presets.rs`) çekirdek mühendisi.
-     15. `security-crypto-auditor`: Saf Rust `AES-256-CBC` + `PBKDF2-HMAC-SHA256` + `HMAC-SHA256` yerel kasa (`app/src/vault.rs`), WebCrypto SHA-256 doğrulayıcı (`hash-verifier.js`) ve sıfır-telemetri güvenlik denetçisi.
-     16. `legal-compliance-counsel`: 6502 SK & GDPR Madde 17 resmi fesih ihtarname derleyicisi (`app/src/legal.rs`, `legal-gen.js`), `privacy.html`, `terms.html` ve Ticari Yazılım Lisansı (`LICENSE` v1.0) hukuk uzmanı.
+     14. `desktop-core-engineer`
+     15. `security-crypto-auditor`
+     16. `legal-compliance-counsel`
    - **E. DevOps, Git/GitHub, Kalite Kontrol & Dokümantasyon Departmanı:**
-     17. `git-ops-specialist`: Yerel Git versiyon kontrol operasyonları (`git status`, `diff`, `branch`, kurumsal `commit`, `tag` ve `push`) uzmanı.
-     18. `github-platform-manager`: GitHub platform ve vitrin yöneticisi (`gh repo edit`, depo adı, açıklama, homepage URL, topics/etiketler, Releases ve GitHub Pages ayarları).
-     19. `seo-pwa-release-engineer`: PWA Service Worker (`sw.js`, `manifest.json`), SEO (`sitemap.xml`, `robots.txt`, `404.html`, `thanks.html`) ve sürüm hazırlık mühendisi.
-     20. `test-automation-runner`: Rust birim testleri (`cargo test` -> `vault.rs`, `parser.rs`, `legal.rs`), bileşen doğrulama (`build.py`) ve uçtan uca test otomasyon koşucusu.
-     21. `qa-docs-specialist`: Kalite kontrol ve zorunlu dokümantasyon (`README.md`, `CODEBASE.md`, `AGENTS.md`, `.agents/rules/`) senkronizasyon uzmanı.
+     17. `git-ops-specialist`
+     18. `github-platform-manager`
+     19. `seo-pwa-release-engineer`
+     20. `test-automation-runner`
+     21. `qa-docs-specialist`
+7. **DİNAMİK ALT AJAN BÖLÜNMESİ VE ÇOĞALMA (SUBAGENT SPLITTING) YETKİSİ:**
+   Kullanıcının doğrudan onayı ve talimatıyla; kod geliştirme, derin hata ayıklama ve mimari refactoring işlerinde ana geliştirici alt ajanlar ikili veya üçlü uzman hücrelere dinamik olarak bölünebilir (`subagent-driven-development`, `dispatching-parallel-agents`). Bu yetki paylaşımsız görevleri hızlandırırken tekil sorumluluk ilkesini korur.
 
 ## 3. GİT & GİTHUB YAPILANDIRMASI
 
@@ -76,6 +83,4 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
 - **Ana Dal:** `main`
 - **Canlı Yayın (Pages):** `https://laynexsw.github.io/SubRadar/` (`main` kök `/` -> `index.html` -> `web/code.html`)
 - **GitHub CLI:** `gh` yetkili kullanıcı `Laynexsw`.
-  - Meta güncelleme: `gh repo edit Laynexsw/SubRadar -d "<açıklama>" -h "https://laynexsw.github.io/SubRadar/" --add-topic "<etiketler>"`
 - **PowerShell Notu:** Komut zincirlerken `&&` yerine `;` kullanın (`git add . ; git commit -m "..." ; git push origin main`).
-
