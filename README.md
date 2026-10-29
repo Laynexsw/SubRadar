@@ -48,7 +48,7 @@ SubRadar v1.0, masaüstü (Native Rust) ve modern web platformunda 4 kapsamlı g
 ```
 
 ### 🔹 Dalga 1: Bento Grid Analitiği, 3 Katmanlı Tasarım Sistemi & Raycast Kısayolları
-* **Bento Grid Kategori & Harcama Analitiği:** Harcamaları kategori bazlı (Eğlence, Üretkenlik, Bulut, AI, vb.) renk kodlu yüzdelerle ve bütçe sağlık skoruyla görselleştiren modern bento grid düzeni.
+* **Bento Grid Kategori & Harcama Analitiği:** Harcamaları kategori bazlı (Eğlence, Üretkenlik, Bulut, AI, vb.) renk kodlu yüzdelerle ve bütçe sağlık skoruyla görselleştiren modern bento grid düzeni (Hem Masaüstü hem Web vitrini `#waves-grid` üzerinde aktiftir).
 * **3 Katmanlı Tasarım Sistemi Token Mimarisi (`theme.rs`):** İlkel palet (Primitive) -> Semantik rol (Semantic) -> Bileşen bazlı (Component) katmanlı token mimarisi. Apple Glass ve Raycast/Linear derin siyah kontrastı.
 * **Raycast / Linear Klavye Kısayolları:** Tam klavye odaklı ergonomi:
   * `Ctrl+K`: Hızlı Komut Paleti ve servis filtreleme,
@@ -68,19 +68,20 @@ SubRadar v1.0, masaüstü (Native Rust) ve modern web platformunda 4 kapsamlı g
   * *Bulut Depolama & Altyapı:* Google One / Drive, Apple iCloud+, Microsoft 365, Dropbox Plus, AWS, DigitalOcean.
   * *İş & İletişim:* Slack Pro, Zoom Workplace, LinkedIn Premium, Telegram Premium, X (Twitter) Premium.
   * *Oyun & Donanım:* Xbox Game Pass Ultimate, PlayStation Plus, GeForce NOW.
-* **Yerel Çoklu Banka Ekstre Formatları (`parser.rs`):**
+* **Yerel Çoklu Banka Ekstre Formatları & Web Numuneleri (`parser.rs`, `.lab-bank-btn`):**
   * Türkiye Bankaları: Garanti BBVA, İş Bankası, Enpara.com, Papara.
   * Global Neobank & FinTech: Wise (CSV), Revolut (CSV / Text).
-* **Gizli Fiyat Artışı ve Sinsi Yenileme Algılayıcı (`detect_price_hikes`):** Ekstredeki ardışık aylar arasındaki tutar farklarını hesaplayarak enflasyon/fiyat artışlarını yüzde ve tutar olarak raporlayan algoritmik koruma.
+  * Web Ekstre Laboratuvarı'nda tek tıkla canlı test edilebilen hazır banka numuneleri düğmeleri (`.lab-bank-btn`).
+* **Gizli Fiyat Artışı ve Sinsi Yenileme Algılayıcı (`detect_price_hikes`):** Ekstredeki ardışık aylar arasındaki tutar farklarını hesaplayarak enflasyon/fiyat artışlarını yüzde ve tutar olarak raporlayan algoritmik koruma (Web vitrininde `🔥 Sinsi Fiyat Artışı: +%X Zam` rozetiyle görselleştirilir).
 
 ### 🔹 Dalga 3: Yasal Hakem Heyeti (6502 SK), Ters İbraz (Chargeback) & Karanlık Desen İptal Kılavuzları
-* **Resmi THH / TÜBİS (6502 SK) Tüketici Hakem Heyeti Başvuru Dilekçesi (`legal.rs`):** Ayıplı hizmet, izinsiz yenileme veya para iadesi yapılmayan durumlar için e-Devlet TÜBİS sistemine doğrudan yüklenebilir resmi hukuki şikayet metni.
+* **Resmi THH / TÜBİS (6502 SK) Tüketici Hakem Heyeti Başvuru Dilekçesi (`legal.rs`):** Ayıplı hizmet, izinsiz yenileme veya para iadesi yapılmayan durumlar için e-Devlet TÜBİS sistemine doğrudan yüklenebilir resmi hukuki şikayet metni (Ekstre Lab kartlarındaki `.lab-legal-btn` ile canlı tetiklenir).
 * **Visa / Mastercard Ters İbraz (Chargeback) Harcama İtirazı Formu:** Bankaya sunulmak üzere uluslararası kart kurallarına (Reason Code 13.1 / 4853 - İptal Edilen İşlem) uygun harcama itirazı belgesi.
 * **Hizmet Bazlı Karanlık Desen (Dark Pattern) İptal Kılavuzları:** Karmaşık iptal butonlarını, canlı desteğe yönlendiren tuzakları ve anket bariyerlerini aşmak için 37 popüler servise özel adım adım doğrudan fesih rehberi.
 * **Yaklaşan Yenileme & Deneme Radar Kalkanı:** Deneme süresi bitmeden 3 gün ve 1 gün önce renkli uyarı rozetleriyle bütçeyi koruyan erken ikaz motoru.
 
 ### 🔹 Dalga 4: Aile/Ekip Maliyet Bölüştürücü, RFC 5545 iCalendar Takvim İhracı & Çift Yönlü Şifreli Yedekleme
-* **Aile & Ekip Ortak Lisans Maliyet Bölüştürücü (`models.rs`):** Netflix Aile, Spotify Aile, YouTube Family veya ekip araçlarının (Figma, GitHub) toplam maliyetini kişi sayısına bölerek kişi başı net payı ve aylık/yıllık tasarrufu hesaplar.
+* **Aile & Ekip Ortak Lisans Maliyet Bölüştürücü (`models.rs`):** Netflix Aile, Spotify Aile, YouTube Family veya ekip araçlarının (Figma, GitHub) toplam maliyetini kişi sayısına bölerek kişi başı net payı ve aylık/yıllık tasarrufu hesaplar (Web vitrini Bento Grid ve Hesaplayıcı'da tam etkileşimli).
 * **Apple / Google / Outlook Takvim RFC 5545 iCalendar (`.ics`) İhracı:** Yaklaşan tüm fatura ve deneme yenileme tarihlerini tek tıkla Apple Calendar, Google Calendar ve Microsoft Outlook'a standart `.ics` dosyası olarak aktarır.
 * **Çift Yönlü AES-256 Şifreli JSON Yedekleme ve Akıllı Veri Birleştirme (`vault.rs`):** Kullanıcı verilerini güvenli parola ile dışa aktarır ve başka bir cihaza kopyalandığında mevcut verilerle çakışmadan akıllı birleştirme (merge) yapar.
 
@@ -172,12 +173,23 @@ SubRadar/
     │
     ├── components/                       # 23 Parçalı Modüler HTML UI Bileşenleri
     │   ├── layout/                       # Çerçeve & Genel Düzen Bileşenleri (header, footer, cookie-banner, mobile-sticky-cta, tiles-loader)
-    │   ├── sections/                     # Sayfa Bölümleri & İşlevsel Modüller (hero, problem, statement-lab, calculator, comparison, features, architecture, os-downloads, hash-verifier, pricing, faq)
+    │   ├── sections/                     # Sayfa Bölümleri & İşlevsel Modüller
+    │   │   ├── hero.html                 # macOS pencere simülasyonu, canlı iptal ve trafik ışıkları
+    │   │   ├── problem.html              # Abonelik israfı, sektör verileri ve gizli taahhüt tuzakları
+    │   │   ├── statement-lab.html        # Çoklu banka butonları (Garanti, Enpara, Papara, Wise, Revolut), Sinsi Zam rozetleri & çevrimdışı tarayıcı
+    │   │   ├── calculator.html           # İsraf hesaplama, Aile/Ekip Ortak Lisans Bölüştürücü (2-6 kişi) ve PNG Röntgen ihracı
+    │   │   ├── comparison.html           # Şeffaflık & güven karşılaştırma matrisi (SubRadar vs Bulut Uygulamaları)
+    │   │   ├── features.html             # 4 Geliştirme Dalgası Bento Grid ızgarası (#waves-grid) ve Donanım İvmeli Canlı Bellek Radarı
+    │   │   ├── architecture.html         # Yerel AES-256 SQLite kilitli kasa mimarisi ve sıfır-bulut ilkeleri
+    │   │   ├── os-downloads.html         # macOS, Windows ve Linux platform indirme kartları ve v1.0 sürümü
+    │   │   ├── hash-verifier.html        # İstemci tarafı WebCrypto SHA-256 kurulum doğrulama aracı
+    │   │   ├── pricing.html              # Bireysel, Pro ($79) ve Kurumsal tek seferlik ömür boyu paket tablosu
+    │   │   └── faq.html                  # Sıkça sorulan sorular akordeon bilgi paneli
     │   ├── modals/                       # Etkileşimli Modallar (command-palette, download-modal, enterprise-modal, reclaim-modal, shortcuts-modal, legal-generator-modal, auth-modal)
     │   └── originkit/                    # Modüler Originkit Tip ve React Uyumluluk Parçaları (react-shim.d.ts, tiles-loader.tsx)
     │
     ├── css/                              # Web Stil Sistemi (Apple Glassmorphism - base.css, components.css, cursors.css, main.css)
-    ├── js/                               # Web İstemci Zekâsı (config.js, supabase.js, i18n.js, theme.js, fx.js, toast.js, audio-fx.js, statement-lab.js, calculator.js, modals/...)
+    ├── js/                               # Web İstemci Zekâsı (statement-lab.js [BANK_DATASETS & sinsi zam], calculator.js [family split], modals/...)
     └── scripts/                          # CI/CD & Derleme Otomasyon Betikleri (build.py, embed_tiles_loader.py)
 ```
 

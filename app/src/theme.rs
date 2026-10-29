@@ -29,6 +29,7 @@ pub mod primitives {
     pub const AMBER_500: Color32 = Color32::from_rgb(245, 158, 11);   // #f59e0b
     pub const ROSE_500: Color32 = Color32::from_rgb(239, 68, 68);     // #ef4444
     pub const SKY_400: Color32 = Color32::from_rgb(56, 189, 248);    // #38bdf8
+    pub const SKY_500: Color32 = Color32::from_rgb(14, 165, 233);    // #0ea5e9
     pub const PURPLE_400: Color32 = Color32::from_rgb(192, 132, 252); // #c084fc
 
     // Consistent 4/8/12/16/24px Spacing Rhythm
@@ -161,7 +162,7 @@ impl ThemePalette {
             accent_emerald: EMERALD_600,
             accent_amber: AMBER_500,
             accent_rose: ROSE_500,
-            accent_sky: Color32::from_rgb(14, 165, 233),
+            accent_sky: SKY_500,
             cta_bg: ZINC_950,
             cta_hover: ZINC_800,
             cta_fg: WHITE,

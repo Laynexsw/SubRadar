@@ -104,10 +104,35 @@ SubRadar v1.0 mimarisi 4 stratejik geliştirme dalgası ile tamamlanmıştır:
   * [`src/ui.rs`](file:///c:/Users/arday/Desktop/SubRadar/app/src/ui.rs): Bento Grid Kategori & Harcama Analitiği paneli, **Raycast Klavye Kısayolları** (`Ctrl+K`, `Ctrl+N`, `Ctrl+E`, `Ctrl+T`, `Ctrl+D`, `Space`, `Esc`), **Linear Stili "Geri Al" (Undo Toast)** bildirim bandı, **Yaklaşan Yenileme & Deneme Radar Kalkanı** ve modallar.
 
 ### 3.4 Web Modüler Bileşenleri (`web/components/`)
-* **`layout/`**: `header.html`, `footer.html`, `cookie-banner.html`, `mobile-sticky-cta.html`, `tiles-loader.html`.
-* **`sections/`**: `hero.html`, `problem.html`, `statement-lab.html`, `calculator.html`, `comparison.html`, `features.html`, `architecture.html`, `os-downloads.html`, `hash-verifier.html`, `pricing.html`, `faq.html`.
-* **`modals/`**: `command-palette.html`, `download-modal.html`, `enterprise-modal.html`, `reclaim-modal.html`, `shortcuts-modal.html`, `legal-generator-modal.html`, `auth-modal.html`.
-* **`originkit/`**: `react-shim.d.ts`, `tiles-loader.tsx`.
+* **`layout/`**:
+  * `header.html`: Atmospheric glow efekti, marka logosu, masaüstü/mobil menü, ⌘K butonu, Web Audio ses açma/kapama (`#sound-toggle-btn`), Power-User kısayol rehberi (`#shortcuts-help-btn`), tema butonu, dil (EN/DE/TR) ve kur ($/€/₺) butonları, "Bilgisayara İndir" ana aksiyonu.
+  * `footer.html`: Canlı motor gecikme göstergesi (`#footer-engine-ping`), Originkit Vector Wordmark etkileşimli WebGL 2.0 noktasal vektör dönüşüm alanı (`#sr-vector-wordmark`), telif hakları, iletişim bilgileri (`iletisim@subradar.dev`), hızlı bağlantılar ve yerel güvenlik taahhütleri.
+  * `cookie-banner.html`: Minimal Apple Glass çerez ve canlı kullanıcı etkileşimi bildirim kartı (`#sr-privacy-banner`), canlı saniye sayacı rozeti (`#sr-active-seconds-badge`).
+  * `mobile-sticky-cta.html`: Mobilde altta sabit kalan hızlı indirme çubuğu (`#sr-mobile-sticky-cta`).
+  * `tiles-loader.html`: Originkit Tiles Loader editoryal karo yükleme ve yüzde sayacı taşıyıcı iskeleti (`#sr-tiles-loader`).
+* **`sections/`**:
+  * `hero.html`: Ana manşet, işletim sistemi indirme butonları (macOS / Windows), interaktif macOS simülasyon penceresi (`#hero-mock-window`).
+  * `problem.html`: Gizli abonelik kayıpları, 4.2 dakikalık iptal atlama süresi ve sektör istatistikleri.
+  * `statement-lab.html`: Canlı çevrimdışı banka ekstresi ve kaçak tarayıcı laboratuvarı (`FileReader API`, 0 bayt bulut çıkışı). Çoklu banka ekstre butonları (`.lab-bank-btn`: Garanti BBVA, Enpara.com, Papara, Wise Multi-Cur., Revolut Global), sürükle-bırak alanı (`#lab-dropzone`), cihaz içi tarama çubuğu (`#lab-progress-wrap`), sinsi fiyat artışı (sneak price hike) tespit rozetleri ve doğrudan iptal/THH butonları (`#lab-leaks-list`, `.lab-legal-btn`).
+  * `calculator.html`: İsraf hesaplama kaydırıcıları, hızlı kullanıcı profilleri, Aile & Ekip Ortak Lisans Bölüştürücü (Family Splitter) anahtarı (`#calc-split-toggle`) ve kişi sayısı kaydırıcısı (`#calc-split-members`, 2-6 kişi), 1/5 yıllık tasarruf projeksiyonu, PNG "Abonelik Röntgeni" kart ihracı (`#calc-export-png-btn`) ve X paylaşımı.
+  * `comparison.html`: Şeffaflık & güven rakip karşılaştırma matrisi (SubRadar vs Rocket Money / Truebill vs Bobby vs Excel).
+  * `features.html`: 4 Geliştirme Dalgası Bento Grid mimarisi (`#waves-grid`: Dalga 1 Bento Analitik & Raycast Kısayolları, Dalga 2 37+ Şablon & Sinsi Zam Radarı, Dalga 3 6502 SK THH & Chargeback Kalkanı, Dalga 4 Aile/Ekip Maliyet Bölüştürücü & iCalendar .ics İhracı) ve donanım ivmeli Canlı Bellek Radarı (`#radar-scanner-section`, `#radar-screen`, `.radar-blip`).
+  * `architecture.html`: Yerel AES-256 SQLite kilitli kasa mimarisi ve sıfır-bulut ilkeleri.
+  * `os-downloads.html`: macOS (Apple Silicon / Intel), Windows (x64 / ARM64) ve Linux kartları + v1.0 sürümü.
+  * `hash-verifier.html`: İstemci tarafı donanım ivmeli SHA-256 kurulum doğrulama aracı (`WebCrypto API`).
+  * `pricing.html`: Free ($0), Pro ($79 tek seferlik ömür boyu lisans) ve Enterprise (özel kurumsal lisans) modelleri; aboneliksiz tek seferlik ödeme mimarisi.
+  * `faq.html`: Sıkça sorulan sorular akordeonu.
+* **`modals/`**:
+  * `command-palette.html`: ⌘K / Ctrl+K arama paleti, klavye ok tuşları ile gezinim.
+  * `download-modal.html`: Mimari seçimi (Apple Silicon vs Intel, Windows x64 vs ARM64), simüle edilen hız ve ilerleme çubuğu, SHA256 göstergesi.
+  * `enterprise-modal.html`: Kurumsal teklif formu (Ad, Şirket E-postası, Şirket Adı, inline hata doğrulaması ve loading spinner).
+  * `reclaim-modal.html`: CLI indirme komutu kopyalama (`curl -sSL subradar.dev/cli | sh`) ve 3 adımlı kurtarma rehberi.
+  * `shortcuts-modal.html`: Raycast/Linear stili Power-User klavye kısayolları modalı (`?`, `T`, `S`, `C`, `L`, `D`, `ESC`).
+  * `legal-generator-modal.html`: Canlı 6502 SK & GDPR Madde 17 resmi cayma ve fesih ihtarnamesi sihirbazı (canlı önizleme, pano kopyalama ve `.txt` dosya indirme).
+  * `auth-modal.html`: İkili kayan panelli (Double-Slider Sliding Overlay) Apple Glass Monokrom modalı: Saf siyah-beyaz ve uzay grafiti/obsidyen marka katmanı (`.auth-overlay`), buzlu geometrik cam şekiller, parlak beyaz ve ghost outline hap butonlar ("GİRİŞ YAP" / "KAYIT OL"), dairesel monokrom sosyal butonlar (Google, GitHub, Apple), tek tıkla VIP demo, monokrom şifre güvenlik göstergesi ve aktif profil yönetim paneli.
+* **`originkit/`**:
+  * `react-shim.d.ts`: Saf JS ortamı için React TypeScript tip deklarasyon köprüsü.
+  * `tiles-loader.tsx`: Modüler paket içi Originkit Tiles Loader kaynak bileşeni.
 
 ### 3.5 Web Stilleri (`web/css/`)
 * `base.css`: SF Pro font ailesi, `html.light` ve `html.dark` değişkenleri, skip-link, scroll-behavior, metin seçimi renkleri.
@@ -123,7 +148,7 @@ SubRadar v1.0 mimarisi 4 stratejik geliştirme dalgası ile tamamlanmıştır:
 * `toast.js`: Apple Glass kayan bildirim balonu sistemi (`srShowToast`).
 * `audio-fx.js`: Web Audio API sıfır-dosya dokunsal ses motoru (`srAudio`).
 * `cursor-glow.js`: Dinamik imleç takipçi cam aydınlatma ve ışıma motoru.
-* `statement-lab.js`: İstemci taraflı çevrimdışı ekstre analizörü ve abonelik dedektörü.
+* `statement-lab.js`: İstemci taraflı çevrimdışı ekstre ve kaçak abonelik analizörü (`FileReader API`, 0 bayt ağ çıkışı). Banka numuneleri veri tabanı (`BANK_DATASETS`: Garanti BBVA, Enpara, Papara, Wise CSV, Revolut), çoklu para birimi normalizasyonu, aylar arası sinsi fiyat artışı algılayıcı (`hike` rozetleri: `+X% Zam`), dinamik sonuç kartı enjektörü (`#lab-leaks-list`) ve 6502 SK THH / Chargeback dilekçe modalı bağlayıcı (`.lab-legal-btn` -> `srOpenLegalModal`).
 * `hash-verifier.js`: WebCrypto API SHA-256 kurulum doğrulama motoru.
 * `social-export.js`: HTML5 Canvas 1200x630 "Abonelik Röntgeni" PNG kart ihracı ve X paylaşımı.
 * `calculator.js`: Abonelik tasarruf ve Aile/Ekip Ortak Lisans Bölüştürücü (Family Splitter) algoritması ($32/araç + $78/deneme + 2-6 kişi paylaştırıcı).
@@ -173,7 +198,29 @@ SubRadar v1.0 mimarisi 4 stratejik geliştirme dalgası ile tamamlanmıştır:
 | `#lang-toggle-btn` | `layout/header.html` | TR, EN, DE dil döngü butonu |
 | `#auth-modal-btn` | `layout/header.html` | Üst ada sağında yer alan Giriş Yap / Kayıt Ol butonu |
 | `#hero-mock-window` | `sections/hero.html` | İnteraktif macOS masaüstü simülasyon penceresi |
-| `#statement-dropzone` | `sections/statement-lab.html`| Çevrimdışı ekstre sürükle-bırak alanı |
+| `#ekstre-laboratuvari` | `sections/statement-lab.html`| Canlı çevrimdışı ekstre laboratuvarı ana bölüm kapsayıcısı |
+| `#lab-dropzone` | `sections/statement-lab.html`| Çevrimdışı ekstre sürükle-bırak alanı |
+| `#lab-file-input` | `sections/statement-lab.html`| Gizli dosya yükleme girdisi (`.csv,.txt,.pdf`) |
+| `#lab-sample-btn` | `sections/statement-lab.html`| "Örnek Ekstreyle Canlı Dene" aksiyon butonu |
+| `#lab-reset-btn` | `sections/statement-lab.html`| Ekstre analizini sıfırlama ve temizleme butonu |
+| `#lab-bank-selector-wrap` | `sections/statement-lab.html`| Dalga 2 hazır banka ekstre numuneleri çubuğu kapsayıcısı |
+| `#lab-bank-selector` | `sections/statement-lab.html`| Banka ekstre numuneleri buton grubu |
+| `.lab-bank-btn` | `sections/statement-lab.html`| Çoklu banka ekstre butonları (`data-bank="garanti\|enpara\|papara\|wise\|revolut"`) |
+| `#lab-progress-wrap` | `sections/statement-lab.html`| Cihaz içi tarama simülasyonu ilerleme alanı (`#lab-progress-bar`, `#lab-progress-pct`, `#lab-status-text`) |
+| `#lab-results` | `sections/statement-lab.html`| Analiz sonuçları ve metrik özet kartları paneli |
+| `#lab-stat-count` | `sections/statement-lab.html`| Tespit edilen kaçak ve sinsi fiyat artışı (sneak price hike) adedi rozeti |
+| `#lab-stat-monthly` | `sections/statement-lab.html`| Aylık kurtarılabilir israf tutarı göstergesi |
+| `#lab-stat-yearly` | `sections/statement-lab.html`| Yıllık kurtarılabilir tasarruf projeksiyonu |
+| `#lab-leaks-list` | `sections/statement-lab.html`| Kaçak abonelik kartlarının ve sinsi zam rozetlerinin listelendiği konteyner |
+| `.lab-legal-btn` | `statement-lab.js` | Kart üzerindeki "6502 SK / THH" resmi dilekçe modalı tetikleyicisi |
+| `#ozellikler` | `sections/features.html` | Özellikler ve motor mimarisi ana bölümü |
+| `#radar-scanner-section` | `sections/features.html` | Donanım ivmeli Canlı Bellek & Ekstre Radarı hareketli grafik alanı |
+| `#radar-screen` | `sections/features.html` | Dönen radar ışını, koordinat metinleri ve hedef çemberleri SVG ekranı |
+| `#radar-live-status` | `sections/features.html` | Canlı radar tarama durum rozeti (Yakalanan sızıntı sayısı) |
+| `#radar-burn-val` | `sections/features.html` | Radarda tespit edilen anlık aylık israf tutarı |
+| `.radar-blip` | `sections/features.html` | Radar ekranındaki hedef servis noktaları (Adobe CC, AWS, JetBrains, Figma) |
+| `#waves-grid` | `sections/features.html` | 4 Geliştirme Dalgası Bento Grid ızgarası (Dalga 1-4 kartları) |
+| `#statement-dropzone` | `sections/statement-lab.html`| Çevrimdışı ekstre sürükle-bırak alanı (yedek referans) |
 | `#calc-savings-val` | `sections/calculator.html` | Dinamik tasarruf tutarı göstergesi |
 | `#calc-split-toggle`| `sections/calculator.html` | Aile & Ekip ortak kullanım modu açma/kapama anahtarı |
 | `#calc-split-members`| `sections/calculator.html` | Ortak kişi sayısı kaydırıcısı (2 - 6 kişi) |

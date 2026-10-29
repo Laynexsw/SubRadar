@@ -34,9 +34,9 @@ Bu kural, SubRadar deposunda çalışırken **bütün dosyaları tekrar tekrar i
   - `index.html`: `code.html`'e yönlendirir.
   - `assets/cursors/`: Windows 11 Tailless Cursors 32x32 RGBA imleç varlıkları.
   - `vendor/three/`: Yerel Three.js WebGL 3D motoru (`three.min.js`, `three.module.js`).
-  - `components/`: 23 adet modüler HTML bileşeni (`layout/`, `sections/`, `modals/`, `originkit/`).
+  - `components/`: 23 adet modüler HTML bileşeni (`layout/`, `sections/` [statement-lab: çoklu banka butonları & sinsi zam rozetleri; features: 4 dalga bento grid #waves-grid & canlı radar], `modals/`, `originkit/`).
   - `css/`: `base.css` (renkler, temalar, tipografi), `components.css` (cam efektleri, kartlar, slider, animasyonlar), `cursors.css` (Windows 11 Tailless imleçleri), `main.css` (birleştirici).
-  - `js/`: `config.js`, `supabase.js`, `i18n.js`, `theme.js`, `fx.js`, `toast.js`, `audio-fx.js`, `cursor-glow.js`, `statement-lab.js`, `hash-verifier.js`, `social-export.js`, `calculator.js`, `hero-window.js`, `tiles-loader.js`, `vector-wordmark.js`, `scroll-motion.js`, `analytics.js`, `cookie-banner.js`, `mobile-cta.js`, `main.js` ve `modals/` (`download-modal.js`, `command-palette.js`, `enterprise-modal.js`, `reclaim-modal.js`, `shortcuts-modal.js`, `legal-gen.js`, `auth-modal.js`).
+  - `js/`: `config.js`, `supabase.js`, `i18n.js`, `theme.js`, `fx.js`, `toast.js`, `audio-fx.js`, `cursor-glow.js`, `statement-lab.js` (BANK_DATASETS çoklu banka & sinsi fiyat artışı algılayıcı), `hash-verifier.js`, `social-export.js`, `calculator.js` (Aile/Ekip bölüştürücü), `hero-window.js`, `tiles-loader.js`, `vector-wordmark.js`, `scroll-motion.js`, `analytics.js`, `cookie-banner.js`, `mobile-cta.js`, `main.js` ve `modals/` (`download-modal.js`, `command-palette.js`, `enterprise-modal.js`, `reclaim-modal.js`, `shortcuts-modal.js`, `legal-gen.js`, `auth-modal.js`).
   - `scripts/build.py`: 23 bileşenin dosya bütünlüğünü test eden otomasyon betiği.
 
 ## 2. GELİŞTİRME PRENSİPLERİ VE ZORUNLU KURALLAR

@@ -103,12 +103,23 @@ SubRadar/
     │
     ├── components/                       # 23 Parçalı Modüler HTML UI Bileşenleri
     │   ├── layout/                       # Çerçeve & Genel Düzen Bileşenleri (header, footer, cookie-banner, mobile-sticky-cta, tiles-loader)
-    │   ├── sections/                     # Sayfa Bölümleri & İşlevsel Modüller (hero, problem, statement-lab, calculator, comparison, features, architecture, os-downloads, hash-verifier, pricing, faq)
+    │   ├── sections/                     # Sayfa Bölümleri & İşlevsel Modüller
+    │   │   ├── hero.html                 # macOS pencere simülasyonu, canlı iptal ve trafik ışıkları
+    │   │   ├── problem.html              # Abonelik israfı, sektör verileri ve gizli taahhüt tuzakları
+    │   │   ├── statement-lab.html        # Çoklu banka butonları (Garanti, Enpara, Papara, Wise, Revolut), Sinsi Zam rozetleri & çevrimdışı tarayıcı
+    │   │   ├── calculator.html           # İsraf hesaplama, Aile/Ekip Ortak Lisans Bölüştürücü (2-6 kişi) ve PNG Röntgen ihracı
+    │   │   ├── comparison.html           # Şeffaflık & güven karşılaştırma matrisi (SubRadar vs Bulut Uygulamaları)
+    │   │   ├── features.html             # 4 Geliştirme Dalgası Bento Grid ızgarası (#waves-grid) ve Donanım İvmeli Canlı Bellek Radarı
+    │   │   ├── architecture.html         # Yerel AES-256 SQLite kilitli kasa mimarisi ve sıfır-bulut ilkeleri
+    │   │   ├── os-downloads.html         # macOS, Windows ve Linux platform indirme kartları ve v1.0 sürümü
+    │   │   ├── hash-verifier.html        # İstemci tarafı WebCrypto SHA-256 kurulum doğrulama aracı
+    │   │   ├── pricing.html              # Bireysel, Pro ($79) ve Kurumsal tek seferlik ömür boyu paket tablosu
+    │   │   └── faq.html                  # Sıkça sorulan sorular akordeon bilgi paneli
     │   ├── modals/                       # Etkileşimli Modallar (command-palette, download-modal, enterprise-modal, reclaim-modal, shortcuts-modal, legal-generator-modal, auth-modal)
     │   └── originkit/                    # Modüler Originkit Tip ve React Uyumluluk Parçaları (react-shim.d.ts, tiles-loader.tsx)
     │
     ├── css/                              # Web Stil Sistemi (Apple Glassmorphism - base.css, components.css, cursors.css, main.css)
-    ├── js/                               # Web İstemci Zekâsı (config.js, supabase.js, i18n.js, theme.js, fx.js, toast.js, audio-fx.js, statement-lab.js, calculator.js, modals/...)
+    ├── js/                               # Web İstemci Zekâsı (statement-lab.js [BANK_DATASETS & sinsi zam], calculator.js [family split], modals/...)
     └── scripts/                          # CI/CD & Derleme Otomasyon Betikleri (build.py, embed_tiles_loader.py)
 ```
 
@@ -133,6 +144,8 @@ SubRadar/
 
 * **Tema & Dil & Kur:** `#theme-toggle`, `#theme-toggle-icon`, `#theme-toggle-label`, `.lang-btn` (`data-lang`), `.currency-btn` (`data-currency`).
 * **Hero macOS Simülasyonu:** `#hero-mock-window`, `#hero-win-close`, `#hero-win-min`, `#hero-win-zoom`, `#hero-win-restore-bar`, `#hero-win-restore`, `#hero-sub-search`, `#hero-monthly-burn`, `#hero-detected-leaks`, `#hero-annual-waste`, `.direct-kill-btn`, `#hero-demo-reset`.
+* **Ekstre Laboratuvarı & Sinsi Zam Dedektörü:** `#ekstre-laboratuvari`, `#lab-dropzone`, `#lab-file-input`, `#lab-sample-btn`, `#lab-reset-btn`, `#lab-bank-selector-wrap`, `#lab-bank-selector`, `.lab-bank-btn` (`data-bank="garanti|enpara|papara|wise|revolut"`), `#lab-progress-wrap`, `#lab-progress-bar`, `#lab-progress-pct`, `#lab-status-text`, `#lab-results`, `#lab-stat-count`, `#lab-stat-monthly`, `#lab-stat-yearly`, `#lab-leaks-list`, `.lab-legal-btn` (6502 SK THH & Chargeback dilekçe modal tetikleyicisi).
+* **Özellikler & 4 Dalga Bento Grid:** `#ozellikler`, `#waves-grid` (Dalga 1-4 kartları: Dalga 1 Bento Analitik & Raycast Kısayolları, Dalga 2 37+ Şablon & Sinsi Zam, Dalga 3 6502 SK THH & Chargeback, Dalga 4 Aile/Ekip Payı & Takvim .ics), `#radar-scanner-section`, `#radar-screen`, `#radar-live-status`, `#radar-burn-val`, `.radar-blip`.
 * **Hesaplayıcı & Aile Bölüştürücü:** `#calc-subs` (2-35), `#calc-trials` (0-15), `.calc-preset-btn`, `#calc-split-toggle`, `#calc-split-members` (2-6), `.calc-split-btn`, `#out-1yr`, `#out-5yr`, `#out-split-per-person`, `#out-split-annual-saved`, `#out-split-badge`, `#calc-export-png-btn`.
 * **Modallar:** `#cmd-palette-backdrop`, `#download-modal-backdrop`, `#ent-modal-backdrop`, `#reclaim-modal-backdrop`, `#auth-modal-backdrop`, `#sr-toast`.
 * **Originkit Bileşenleri:** `#sr-tiles-loader`, `#tiles-loader-btn`, `#sr-vector-wordmark`.

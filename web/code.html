@@ -2412,6 +2412,8 @@ if (typeof window !== 'undefined') {
 <!-- ========================================================================= -->
 <!-- SECTION: CANLI ÇEVRİMDIŞI EKSTRE VE KAÇAK TARAYICI LABORATUVARI           -->
 <!-- ========================================================================= -->
+<!-- SECTION: CANLI ÇEVRİMDIŞI EKSTRE VE KAÇAK TARAYICI LABORATUVARI           -->
+<!-- ========================================================================= -->
 <section class="max-w-6xl mx-auto px-6 py-28 border-t border-white/10" id="ekstre-laboratuvari" data-od-id="ekstre-lab">
   <!-- Section Header -->
   <div class="text-center max-w-3xl mx-auto mb-16" data-rv="fade-up">
@@ -2468,12 +2470,42 @@ if (typeof window !== 'undefined') {
       </div>
       <h3 class="text-base font-semibold text-white mb-1.5">Banka Ekstreni veya CSV Dosyanı Sürükle</h3>
       <p class="text-xs text-neutral-400 max-w-md mx-auto leading-relaxed mb-4">
-        Garanti, İş Bankası, Yapı Kredi, Akbank veya standart CSV formatları desteklenir. Dosya diskinizden ayrılmaz.
+        Garanti BBVA, İş Bankası, Enpara, Papara, Wise CSV ve Revolut formatları desteklenir. Ekstreler arası sinsi fiyat artışı (sneak price hike) anında yakalanır.
       </p>
       <div class="flex items-center justify-center gap-2 text-[11px] text-neutral-500 font-mono">
         <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">.CSV</span>
         <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">.TXT</span>
         <span>veya üstteki butondan tek tıkla test et</span>
+      </div>
+    </div>
+
+    <!-- Quick Bank Sample Selector Pills (Wave 2 Desktop Banks) -->
+    <div class="mt-6 pt-5 border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs" id="lab-bank-selector-wrap">
+      <div class="flex items-center gap-2 text-neutral-400 font-mono text-[11px]">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-white/80 font-medium">Hazır Ekstre Numuneleri (Dalga 2):</span>
+      </div>
+      <div class="flex items-center gap-1.5 flex-wrap" id="lab-bank-selector">
+        <button type="button" class="lab-bank-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 text-[11px] font-mono text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer" data-bank="garanti">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>Garanti BBVA</span>
+        </button>
+        <button type="button" class="lab-bank-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-indigo-500/20 hover:text-indigo-300 border border-white/10 text-[11px] font-mono text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer" data-bank="enpara">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+          <span>Enpara.com</span>
+        </button>
+        <button type="button" class="lab-bank-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-rose-500/20 hover:text-rose-300 border border-white/10 text-[11px] font-mono text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer" data-bank="papara">
+          <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+          <span>Papara</span>
+        </button>
+        <button type="button" class="lab-bank-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-teal-500/20 hover:text-teal-300 border border-white/10 text-[11px] font-mono text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer" data-bank="wise">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+          <span>Wise Multi-Cur.</span>
+        </button>
+        <button type="button" class="lab-bank-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-cyan-500/20 hover:text-cyan-300 border border-white/10 text-[11px] font-mono text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer" data-bank="revolut">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+          <span>Revolut Global</span>
+        </button>
       </div>
     </div>
 
@@ -2539,6 +2571,7 @@ if (typeof window !== 'undefined') {
 
   </div>
 </section>
+
 <!-- 4. İNTERAKTİF MASAÜSTÜ İSRAF HESAPLAYICI -->
 <section class="max-w-6xl mx-auto px-6 py-24 border-t border-white/10" id="hesaplayici" data-od-id="hesaplayici">
 <header class="max-w-xl mb-12" data-rv>
@@ -2873,7 +2906,6 @@ Hesaplama, ortalama aylık abonelik giderlerine (<span data-usd="32" data-decima
 <p class="text-neutral-400 text-sm mt-3 leading-relaxed">
         Bilgisayarınızı yormayan hızlı masaüstü uygulaması. İnternete veri göndermez, arka planda sessizce çalışır ve unutulan abonelikleri anında yakalar.
       </p>
-</div>
 <!-- Live Interactive Radar Scanner Motion Graphic -->
 <section class="mb-16 border-y border-white/10 py-10 relative overflow-hidden" id="radar-scanner-section" data-rv="scale">
 <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-white/10 gap-3">
@@ -2998,48 +3030,219 @@ Hesaplama, ortalama aylık abonelik giderlerine (<span data-usd="32" data-decima
 <span class="text-emerald-400">Çevrimdışı Kasa Güvenliği • Aktif</span>
 </footer>
 </section>
-<!-- 4 Features Grid with 1px borders -->
-<dl class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x border-y border-white/10" data-rv-stagger>
-<!-- Feature 1 -->
-<div class="py-10 md:pr-12 md:pb-12 space-y-3" data-rv="fade-up">
-<div class="text-xs font-mono text-white/40">01 // DENETİM MOTORU</div>
-<h3 class="text-xl font-semibold text-white tracking-tight">Derin Abonelik Denetimi</h3>
-<p class="text-sm text-neutral-400 leading-relaxed">
-Her tekrarlayan ödemeyi tek ekranda görmek için akıllı abonelik ve ekstre taraması. SubRadar, bilgisayarınızdaki abonelikleri ve ekstrelerinizi inceler; verileriniz cihazınızdan dışarı çıkmaz.
-</p>
-<div class="pt-4 font-mono text-[11px] text-white/30">Cihaz içi analiz • %100 internetsiz</div>
-</div>
-<!-- Feature 2 -->
-<div class="py-10 md:pl-12 md:pb-12 space-y-3" data-rv="fade-blur">
-<div class="text-xs font-mono text-white/40">02 // OTOMATİK YAKALAMA</div>
-<h3 class="text-xl font-semibold text-white tracking-tight">Deneme Tehlikesi Uyarıları</h3>
-<p class="text-sm text-neutral-400 leading-relaxed">
-Otomatik yenileme bitmeden tam 48 saat önce macOS Bildirim Merkezi ve Windows bildirimleri üzerinden uyarı. Bir daha yanlışlıkla ücret ödemezsin.
-</p>
-<div class="pt-4 font-mono text-[11px] text-white/30">Yerel işletim sistemi servisi • 48 saat önceden uyarı</div>
-</div>
-</dl>
-<dl class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x border-b border-white/10" data-rv-stagger>
-<!-- Feature 3 -->
-<div class="py-10 md:pr-12 space-y-3" data-rv="left">
-<div class="text-xs font-mono text-white/40">03 // ATLAMA MOTORU</div>
-<h3 class="text-xl font-semibold text-white tracking-tight">Tek Tıkla İptal Yönlendirme</h3>
-<p class="text-sm text-neutral-400 leading-relaxed">
-Karmaşık iptal menülerini atlayıp doğrudan gerçek iptal sayfalarına giden hızlı bağlantılar. Gereksiz anketler, müşteri temsilcisi bekleme sıraları ve zorunlu telefon aramaları yok.
-</p>
-<div class="pt-4 font-mono text-[11px] text-white/30">Doğrudan iptal sayfası • Zaman kaybı yok</div>
-</div>
-<!-- Feature 4 -->
-<div class="py-10 md:pl-12 space-y-3" id="mimari" data-rv="right">
-<div class="text-xs font-mono text-white/40">04 // KASA MİMARİSİ</div>
-<h3 class="text-xl font-semibold text-white tracking-tight">Yerel ve Gizli Mimari</h3>
-<p class="text-sm text-neutral-400 leading-relaxed">
-Banka bilgilerin ve işlem dökümlerin asla bulut sunucularına yüklenmez. Tüm ekstreler ve abonelik eşleşmeleri yalnızca bilgisayarının SSD’sinde şifreli durur.
-</p>
-<div class="pt-4 font-mono text-[11px] text-white/30">AES-256 GCM • ~/Library veya AppData içinde saklanır</div>
-</div>
-</dl>
+<!-- 4 Waves Bento Grid with Apple Glassmorphism -->
+  <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6" id="waves-grid">
+    
+    <!-- Wave 1: UI & Bento Grid Analytics -->
+    <div class="apple-card rounded-2xl p-6 sm:p-8 bg-white/[0.02] hover:bg-white/[0.04] border border-white/10 hover:border-emerald-500/40 transition-all duration-300 relative overflow-hidden group" data-rv="left">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <div class="text-[11px] font-mono tracking-wider text-emerald-400 uppercase font-semibold flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span>DALGA 1 // BENTO ANALİTİK & TOKENS</span>
+        </div>
+        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-300">Masaüstü v1.0</span>
+      </div>
+      <h3 class="text-xl sm:text-2xl font-semibold text-white tracking-tight mb-2.5">
+        Bento Grid Harcama & Kategori Analitiği
+      </h3>
+      <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+        Abonelik bütçenizi Eğlence, İş, Yapay Zekâ ve Bulut kategorilerine göre anlık dilimleyin. Bütçe Sağlık Skoru ile sızıntıları yakalayın; Raycast klavye kısayolları ve Linear geri alma bildirimleriyle hızlı yönetin.
+      </p>
+
+      <!-- Mini Bento Telemetry Mockup -->
+      <div class="rounded-xl p-4 bg-black/50 border border-white/10 space-y-3.5 font-mono text-xs">
+        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+          <span class="text-white/60">Bütçe Sağlık Skoru</span>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-emerald-400 font-bold">94 / 100 • Kusursuz</span>
+          </div>
+        </div>
+        
+        <!-- Category Bars -->
+        <div class="space-y-2">
+          <div>
+            <div class="flex justify-between text-[11px] text-neutral-300 mb-1">
+              <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-sm bg-indigo-400"></span>İş & Dev Araçları</span>
+              <span class="text-white font-medium">%34 • $130/ay</span>
+            </div>
+            <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+              <div class="h-full bg-indigo-400 rounded-full" style="width: 34%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-[11px] text-neutral-300 mb-1">
+              <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-sm bg-emerald-400"></span>Yapay Zekâ (AI)</span>
+              <span class="text-white font-medium">%26 • $100/ay</span>
+            </div>
+            <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+              <div class="h-full bg-emerald-400 rounded-full" style="width: 26%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-[11px] text-neutral-300 mb-1">
+              <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-sm bg-rose-400"></span>Medya & Eğlence</span>
+              <span class="text-white font-medium">%28 • $108/ay</span>
+            </div>
+            <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+              <div class="h-full bg-rose-400 rounded-full" style="width: 28%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Raycast Shortcuts Pills -->
+        <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-neutral-400 flex-wrap gap-2">
+          <span>Raycast Hızlı Kısayollar:</span>
+          <div class="flex items-center gap-1.5">
+            <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/15 text-[10px] text-neutral-200">Ctrl+K</kbd>
+            <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/15 text-[10px] text-neutral-200">Ctrl+N</kbd>
+            <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/15 text-[10px] text-neutral-200">Ctrl+E</kbd>
+            <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/15 text-[10px] text-neutral-200">Ctrl+D</kbd>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave 2: Presets & Sneak Price Hike Detector -->
+    <div class="apple-card rounded-2xl p-6 sm:p-8 bg-white/[0.02] hover:bg-white/[0.04] border border-white/10 hover:border-amber-500/40 transition-all duration-300 relative overflow-hidden group" data-rv="right">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all"></div>
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <div class="text-[11px] font-mono tracking-wider text-amber-400 uppercase font-semibold flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+          <span>DALGA 2 // 37+ ŞABLON & SİNSİ ZAM</span>
+        </div>
+        <span class="px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-[10px] font-mono text-amber-300">Yerel Motor</span>
+      </div>
+      <h3 class="text-xl sm:text-2xl font-semibold text-white tracking-tight mb-2.5">
+        37+ Servis Şablonu & Gizli Fiyat Artışı Uyarısı
+      </h3>
+      <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+        6 kategoride 37 popüler servis (Netflix, Adobe, OpenAI, Spotify, AWS, JetBrains) için doğrudan iptal URL'leri. Çoklu banka ekstrelerini (Garanti, Enpara, Papara, Wise, Revolut) yerel okur ve aylar arasındaki sinsi fiyat artışlarını anında yakalar.
+      </p>
+
+      <!-- Mini Price Hike & Bank Scanner Mockup -->
+      <div class="rounded-xl p-4 bg-black/50 border border-white/10 space-y-3 font-mono text-xs">
+        <!-- Live Sneak Hike Alert Badge -->
+        <div class="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-amber-400 text-lg flex-shrink-0 mt-0.5">trending_up</span>
+          <div>
+            <div class="text-xs font-semibold text-amber-300 flex items-center gap-1.5">
+              <span>Sinsi Fiyat Artışı Algılandı</span>
+              <span class="px-1.5 py-0.2 rounded bg-amber-500/20 text-[10px] text-amber-200 font-bold">+%50.0 Zam</span>
+            </div>
+            <div class="text-[11px] text-neutral-300 mt-1">
+              Netflix TR: <span class="line-through text-neutral-400">199,99 TL</span> ➔ <strong class="text-white font-bold">299,99 TL</strong> (Sessiz artış)
+            </div>
+          </div>
+        </div>
+
+        <!-- Bank Engine Format Support Badges -->
+        <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-neutral-400 flex-wrap gap-2">
+          <span>Desteklenen Ekstreler:</span>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-neutral-300 text-[10px]">Garanti BBVA</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-neutral-300 text-[10px]">Enpara</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-neutral-300 text-[10px]">Papara</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-neutral-300 text-[10px]">Wise</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-neutral-300 text-[10px]">Revolut</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave 3: Legal Armor, THH / TÜBİS & Chargeback -->
+    <div class="apple-card rounded-2xl p-6 sm:p-8 bg-white/[0.02] hover:bg-white/[0.04] border border-white/10 hover:border-cyan-500/40 transition-all duration-300 relative overflow-hidden group" data-rv="left" style="--d:.1s">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all"></div>
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <div class="text-[11px] font-mono tracking-wider text-cyan-400 uppercase font-semibold flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+          <span>DALGA 3 // 6502 SK THH & TERS İBRAZ</span>
+        </div>
+        <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-mono text-cyan-300">Yasal Kalkan</span>
+      </div>
+      <h3 class="text-xl sm:text-2xl font-semibold text-white tracking-tight mb-2.5">
+        Resmi THH Dilekçesi & Visa/Mastercard Chargeback
+      </h3>
+      <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+        Aboneliğinizi iptal etmeyen, gizli taahhüt veya haksız cayma bedeli çıkaran firmalara karşı tek tıkla 6502 Sayılı Tüketici Kanunu THH/TÜBİS başvuru dilekçesi, Visa/Mastercard Kod 4837 ters ibraz formu ve GDPR/KVKK Madde 17 veri silme ihtarnamesi üretin.
+      </p>
+
+      <!-- Mini Legal Armor Mockup -->
+      <div class="rounded-xl p-4 bg-black/50 border border-white/10 space-y-3 font-mono text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div class="p-2.5 rounded-lg bg-white/[0.03] border border-white/10 flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400 text-base">gavel</span>
+            <div>
+              <div class="text-[11px] font-semibold text-white">6502 SK THH / TÜBİS</div>
+              <div class="text-[10px] text-neutral-400">Resmi Hakem Heyeti Metni</div>
+            </div>
+          </div>
+
+          <div class="p-2.5 rounded-lg bg-white/[0.03] border border-white/10 flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400 text-base">credit_card</span>
+            <div>
+              <div class="text-[11px] font-semibold text-white">Ters İbraz (Chargeback)</div>
+              <div class="text-[10px] text-neutral-400">Visa / Mastercard Kod 4837</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-neutral-400">
+          <span>Dark Pattern Kılavuzları:</span>
+          <span class="text-cyan-300 font-semibold">37 Popüler Servise Özel</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave 4: Family Splitter & iCal RFC 5545 -->
+    <div class="apple-card rounded-2xl p-6 sm:p-8 bg-white/[0.02] hover:bg-white/[0.04] border border-white/10 hover:border-violet-500/40 transition-all duration-300 relative overflow-hidden group" id="mimari" data-rv="right" style="--d:.1s">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-2xl group-hover:bg-violet-500/20 transition-all"></div>
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <div class="text-[11px] font-mono tracking-wider text-violet-400 uppercase font-semibold flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-violet-400"></span>
+          <span>DALGA 4 // AİLE/EKİP PAYI & TAKVİM .ICS</span>
+        </div>
+        <span class="px-2.5 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-[10px] font-mono text-violet-300">Ekip & Senkron</span>
+      </div>
+      <h3 class="text-xl sm:text-2xl font-semibold text-white tracking-tight mb-2.5">
+        Maliyet Bölüştürücü & Apple/Google Takvim (.ics)
+      </h3>
+      <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+        Ortak kullanılan Spotify Aile, Figma veya YouTube Team lisanslarında kişi başı payı ve net tasarrufu hesaplayın. Tek tıkla Apple Calendar, Google Calendar ve Outlook uyumlu RFC 5545 iCalendar (.ics) hatırlatıcıları indirin; çift yönlü AES-256 JSON kasa yedeği alın.
+      </p>
+
+      <!-- Mini Family Splitter & iCal Mockup -->
+      <div class="rounded-xl p-4 bg-black/50 border border-white/10 space-y-3 font-mono text-xs">
+        <div class="p-3 rounded-lg bg-violet-500/10 border border-violet-500/30 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-violet-400 text-lg">group</span>
+            <div>
+              <div class="text-xs font-semibold text-white">Figma Team (5 Kişi Ortak)</div>
+              <div class="text-[10px] text-neutral-400">Toplam: $15.00/ay ➔ Kişi başı: <strong class="text-violet-300 font-bold">$3.00/ay</strong></div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-[10px] text-emerald-400 font-bold">Yıllık $144 Kazanç</div>
+            <span class="text-[9px] text-white/40">Kişi başı pay</span>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-neutral-400 flex-wrap gap-2">
+          <span>Tek Tık İhracat:</span>
+          <div class="flex items-center gap-1.5">
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-violet-300 text-[10px]">.ics (Apple/Google)</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-emerald-300 text-[10px]">AES-256 JSON Kasa</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
+
 <!-- 6. MASAÜSTÜ VİTRİNİ VE KOMUT PALETİ ÖNİZLEMESİ -->
 <section class="max-w-6xl mx-auto px-6 py-24 border-t border-white/10" data-od-id="komut-paleti">
 <div class="text-center max-w-2xl mx-auto mb-14" data-rv>
@@ -8160,70 +8363,375 @@ Rapor Üretici: https://subradar.dev
 
 <script id="sr-bundle-statement-lab-js">
 /* =========================================================================
-   SubRadar — Interactive Offline Statement Leak Scanner Lab
+   SubRadar — Interactive Offline Statement Leak Scanner Lab (Wave 2 Sync)
    100% Offline client-side analysis with 0 bytes cloud leakage (FileReader API)
+   Multi-Bank Formats: Garanti BBVA, Enpara, Papara, Wise CSV, Revolut
+   Sneak Price Hike Detector with 6502 SK THH & Chargeback Legal Actions
    ========================================================================= */
 
 (function () {
   'use strict';
 
-  var SAMPLE_LEAKS = [
-    {
-      name: 'Adobe Creative Cloud',
-      category: 'Tasarım & Prodüksiyon',
-      cost: 59.99,
-      currency: '$',
-      risk: 'Karanlık Desen Tuzağı',
-      riskColor: 'rose',
-      desc: 'Yıllık sözleşme tuzağı: Erken iptalde %50 ceza talep eden gizli madde.',
-      cancelUrl: 'https://account.adobe.com/plans',
-      legalType: 'Adobe Fesih Bildirimi'
-    },
-    {
-      name: 'AWS (Route53 & CloudFront)',
-      category: 'Bulut Altyapı',
-      cost: 34.50,
-      currency: '$',
-      risk: 'Atıl Kaynak Sızıntısı',
-      riskColor: 'amber',
-      desc: 'Unutulmuş test sunucusu ve DNS bölgesi son 4 aydır 0 trafik alıyor.',
-      cancelUrl: 'https://console.aws.amazon.com/billing',
-      legalType: 'AWS Servis Kapatma'
-    },
-    {
-      name: 'Netflix Premium 4K',
-      category: 'Medya & Eğlence',
-      cost: 22.99,
-      currency: '$',
-      risk: 'Sessiz Fiyat Artışı',
-      riskColor: 'rose',
-      desc: 'Son 90 günde sıfır oturum açıldı. Son 6 ayda %40 fiyat artışı uygulandı.',
-      cancelUrl: 'https://www.netflix.com/cancelplan',
-      legalType: 'Netflix Abonelik Feshi'
-    },
-    {
-      name: 'JetBrains All Products',
-      category: 'Geliştirici Araçları',
-      cost: 24.90,
-      currency: '$',
-      risk: 'Otomatik Yenileme Tuzağı',
-      riskColor: 'amber',
-      desc: '3 gün içinde yıllık döngüye girecek otomatik lisans yenilemesi.',
-      cancelUrl: 'https://account.jetbrains.com/licenses',
-      legalType: 'JetBrains Lisans İptali'
-    },
-    {
-      name: 'Figma Professional',
-      category: 'Tasarım Ekibi',
-      cost: 15.00,
-      currency: '$',
-      risk: 'Kullanılmayan Ekip Koltuğu',
-      riskColor: 'amber',
-      desc: 'Projeden ayrılmış eski ekip üyesine atanmış aktif lisans koltuğu.',
-      cancelUrl: 'https://www.figma.com/settings',
-      legalType: 'Figma Koltuk İptali'
-    }
-  ];
+  // Bank-specific sample datasets matching app/src/parser.rs v1.0
+  var BANK_DATASETS = {
+    sample: [
+      {
+        name: 'Adobe Creative Cloud',
+        bank: 'Garanti BBVA / Kart',
+        category: 'Tasarım & Prodüksiyon',
+        cost: 59.99,
+        currency: '$',
+        risk: 'Karanlık Desen Tuzağı',
+        desc: 'Yıllık sözleşme tuzağı: Erken iptalde %50 ceza talep eden gizli madde.',
+        cancelUrl: 'https://account.adobe.com/plans',
+        legalType: 'Adobe Fesih Bildirimi',
+        hike: {
+          pct: 56.9,
+          prev: '$38.20',
+          badge: '🔥 Sinsi Fiyat Artışı: +%56.9 Gizli Zam Algılandı ($38.20 ➔ $59.99)'
+        }
+      },
+      {
+        name: 'AWS (Route53 & CloudFront)',
+        bank: 'Wise Multi-Cur.',
+        category: 'Bulut Altyapı',
+        cost: 34.50,
+        currency: '$',
+        risk: 'Unutulan Ek Paket',
+        desc: 'Unutulmuş bulut depolama ve ek servis paketi son 4 aydır hiç kullanılmadı.',
+        cancelUrl: 'https://console.aws.amazon.com/billing',
+        legalType: 'AWS Servis Kapatma',
+        hike: {
+          pct: 32.5,
+          prev: '$26.00',
+          badge: '⚠️ Sessiz Fiyat Artışı: +%32.5 Otomatik Bant Aşımı'
+        }
+      },
+      {
+        name: 'Netflix Premium 4K',
+        bank: 'Enpara.com',
+        category: 'Medya & Eğlence',
+        cost: 22.99,
+        currency: '$',
+        risk: 'Sessiz Fiyat Artışı',
+        desc: 'Son 90 günde sıfır oturum açıldı. Ekstreler arası sinsi zam yakalandı.',
+        cancelUrl: 'https://www.netflix.com/cancelplan',
+        legalType: 'Netflix Abonelik Feshi',
+        hike: {
+          pct: 50.0,
+          prev: '$15.30',
+          badge: '🔥 Sinsi Fiyat Artışı: +%50.0 Zam Tespit Edildi ($15.30 ➔ $22.99)'
+        }
+      },
+      {
+        name: 'JetBrains All Products',
+        bank: 'Revolut Card',
+        category: 'Geliştirici Araçları',
+        cost: 24.90,
+        currency: '$',
+        risk: 'Otomatik Yenileme Tuzağı',
+        desc: '3 gün içinde yıllık döngüye girecek otomatik lisans yenilemesi.',
+        cancelUrl: 'https://account.jetbrains.com/licenses',
+        legalType: 'JetBrains Lisans İptali',
+        hike: null
+      },
+      {
+        name: 'Figma Professional Seat',
+        bank: 'Wise CSV',
+        category: 'Tasarım Ekibi',
+        cost: 15.00,
+        currency: '$',
+        risk: 'Kullanılmayan Ekip Koltuğu',
+        desc: 'Projeden ayrılmış eski ekip üyesine atanmış aktif lisans koltuğu.',
+        cancelUrl: 'https://www.figma.com/settings',
+        legalType: 'Figma Koltuk İptali',
+        hike: null
+      }
+    ],
+
+    garanti: [
+      {
+        name: 'Netflix.com TR',
+        bank: 'Garanti BBVA',
+        category: 'Medya & Eğlence',
+        cost: 299.99,
+        currency: 'TRY',
+        risk: 'Sinsi Fiyat Artışı',
+        desc: '15/10/2026 GARANTI BBVA - NETFLIX.COM TR. Önceki aydan %50 zamlı kesildi.',
+        cancelUrl: 'https://www.netflix.com/cancelplan',
+        legalType: 'Netflix İtiraz Metni',
+        hike: {
+          pct: 50.0,
+          prev: '199,99 TL',
+          badge: '🔥 Sinsi Fiyat Artışı: +%50.0 Zam (199,99 TL ➔ 299,99 TL)'
+        }
+      },
+      {
+        name: 'Adobe Systems Creative Cloud',
+        bank: 'Garanti BBVA',
+        category: 'Tasarım & Prodüksiyon',
+        cost: 2966.52,
+        currency: 'TRY',
+        risk: 'Karanlık Taahhüt Tuzağı',
+        desc: '14.10.2026 GARANTI BBVA ADOBE SYSTEMS INC 2966.52 TRY. Erken fesih cezalı sözleşme.',
+        cancelUrl: 'https://account.adobe.com/plans',
+        legalType: '6502 SK THH Adobe Şikayeti',
+        hike: {
+          pct: 56.9,
+          prev: '1.890,00 TL',
+          badge: '🔥 Sinsi Fiyat Artışı: +%56.9 Gizli Artış (1.890 TL ➔ 2.966,52 TL)'
+        }
+      },
+      {
+        name: 'Spotify Turkiye',
+        bank: 'Garanti BBVA',
+        category: 'Müzik & Ses',
+        cost: 99.99,
+        currency: 'TRY',
+        risk: 'Aylık Otomatik Çekim',
+        desc: '08.10.2026 SPOTIFY TURKIYE 99.99 TRY. Mükerrer aile paketi olabilir.',
+        cancelUrl: 'https://www.spotify.com/account/subscription/',
+        legalType: 'Spotify Fesih Bildirimi',
+        hike: null
+      },
+      {
+        name: 'YouTube Premium Family',
+        bank: 'Garanti BBVA',
+        category: 'Medya & Video',
+        cost: 115.99,
+        currency: 'TRY',
+        risk: 'Otomatik Yinelenen',
+        desc: '02.10.2026 YOUTUBE PREMIUM GOOGLE 115.99 TL düzenli ekstre kalemi.',
+        cancelUrl: 'https://www.youtube.com/paid_memberships',
+        legalType: 'YouTube Abonelik Feshi',
+        hike: null
+      }
+    ],
+
+    enpara: [
+      {
+        name: 'OpenAI ChatGPT Plus',
+        bank: 'Enpara.com',
+        category: 'Yapay Zekâ (AI)',
+        cost: 967.00,
+        currency: 'TRY',
+        risk: 'Dövizli Otomatik Çekim',
+        desc: '05.10.2026 11:02 ENPARA.COM OPENAI *CHATGPT PLUS 967.00 TL ($20.00 USD).',
+        cancelUrl: 'https://chat.openai.com/#settings',
+        legalType: 'OpenAI Abonelik İptali',
+        hike: null
+      },
+      {
+        name: 'Netflix TR',
+        bank: 'Enpara.com',
+        category: 'Medya & Eğlence',
+        cost: 299.99,
+        currency: 'TRY',
+        risk: 'Sinsi Fiyat Artışı',
+        desc: '11.10.2026 ENPARA.COM NETFLIX.COM 299.99 TL. Sessizce zamlı faturalandırıldı.',
+        cancelUrl: 'https://www.netflix.com/cancelplan',
+        legalType: '6502 SK THH Netflix Dilekçesi',
+        hike: {
+          pct: 50.0,
+          prev: '199,99 TL',
+          badge: '🔥 Sinsi Fiyat Artışı: +%50.0 Zam Algılandı (199,99 TL ➔ 299,99 TL)'
+        }
+      },
+      {
+        name: 'GitHub Copilot Individual',
+        bank: 'Enpara.com',
+        category: 'Geliştirici Araçları',
+        cost: 483.50,
+        currency: 'TRY',
+        risk: 'Yıllık Döngü Öncesi',
+        desc: '01.10.2026 GITHUB COPILOT SUBSCRIPTION 483.50 TRY ($10.00 USD).',
+        cancelUrl: 'https://github.com/settings/billing',
+        legalType: 'GitHub Lisans İptali',
+        hike: null
+      },
+      {
+        name: 'YouTube Premium',
+        bank: 'Enpara.com',
+        category: 'Medya & Müzik',
+        cost: 115.99,
+        currency: 'TRY',
+        risk: 'Aylık Çekim',
+        desc: '12.10.2026 ENPARA.COM YOUTUBE PREMIUM 115,99 TL.',
+        cancelUrl: 'https://www.youtube.com/paid_memberships',
+        legalType: 'YouTube Abonelik Feshi',
+        hike: null
+      }
+    ],
+
+    papara: [
+      {
+        name: 'Adobe Systems Inc (Papara Card)',
+        bank: 'Papara',
+        category: 'Tasarım & Prodüksiyon',
+        cost: 2966.52,
+        currency: 'TRY',
+        risk: 'Karanlık Taahhüt Tuzağı',
+        desc: '01.10.2026 14:15 Papara Card Adobe Systems Inc 2.966,52 TL. İptalde ceza isteyen sözleşme.',
+        cancelUrl: 'https://account.adobe.com/plans',
+        legalType: '6502 SK THH / TÜBİS Dilekçesi',
+        hike: {
+          pct: 56.9,
+          prev: '1.890,00 TL',
+          badge: '🔥 Sinsi Fiyat Artışı: +%56.9 Gizli Zam (1.890 TL ➔ 2.966,52 TL)'
+        }
+      },
+      {
+        name: 'Netflix Turkiye',
+        bank: 'Papara',
+        category: 'Medya & Eğlence',
+        cost: 299.99,
+        currency: 'TRY',
+        risk: 'Sinsi Fiyat Artışı',
+        desc: '15.10.2026 Papara Card Netflix TR 299,99 TL. Aylar arası fark yakalandı.',
+        cancelUrl: 'https://www.netflix.com/cancelplan',
+        legalType: 'Visa/Mastercard Chargeback İtirazı',
+        hike: {
+          pct: 50.0,
+          prev: '199,99 TL',
+          badge: '🔥 Sinsi Fiyat Artışı: +%50.0 Zam Algılandı'
+        }
+      },
+      {
+        name: 'Spotify Turkiye',
+        bank: 'Papara',
+        category: 'Müzik & Ses',
+        cost: 99.99,
+        currency: 'TRY',
+        risk: 'Aylık Çekim',
+        desc: '08.10.2026 Papara Card Spotify Istanbul 99,99 TL.',
+        cancelUrl: 'https://www.spotify.com/account/subscription/',
+        legalType: 'Spotify Fesih Metni',
+        hike: null
+      },
+      {
+        name: 'Midjourney Inc AI',
+        bank: 'Papara',
+        category: 'Yapay Zekâ (AI)',
+        cost: 380.00,
+        currency: 'TRY',
+        risk: 'Unutulan AI Aboneliği',
+        desc: '25.09.2026 Papara Sanal Kart Midjourney AI 380.00 TL ($10.00 USD).',
+        cancelUrl: 'https://www.midjourney.com/account',
+        legalType: 'Midjourney İptal Talebi',
+        hike: null
+      }
+    ],
+
+    wise: [
+      {
+        name: 'Cursor Pro AI Editor',
+        bank: 'Wise CSV',
+        category: 'Yapay Zekâ & Kodlama',
+        cost: 20.00,
+        currency: '$',
+        risk: 'Aktif AI Geliştirici Lisansı',
+        desc: '2026-10-14 Wise Card Cursor Pro AI Monthly -20.00 USD. Akıllı kodlama editörü.',
+        cancelUrl: 'https://www.cursor.com/settings',
+        legalType: 'Cursor Abonelik Feshi',
+        hike: null
+      },
+      {
+        name: 'AWS Cloud Infrastructure',
+        bank: 'Wise CSV',
+        category: 'Bulut Altyapı',
+        cost: 42.80,
+        currency: '$',
+        risk: 'Sinsi Fiyat Artışı',
+        desc: '2026-10-01 Wise Card Amazon Web Services -42.80 USD. Unutulmuş VPC ve EBS hacmi.',
+        cancelUrl: 'https://console.aws.amazon.com/billing',
+        legalType: 'AWS Servis Sonlandırma',
+        hike: {
+          pct: 32.9,
+          prev: '$32.20',
+          badge: '🔥 Sinsi Fiyat Artışı: +%32.9 Sessiz Ek Veri Maliyeti ($32.20 ➔ $42.80)'
+        }
+      },
+      {
+        name: 'Figma Professional Team',
+        bank: 'Wise CSV',
+        category: 'Tasarım Ekibi',
+        cost: 15.00,
+        currency: '$',
+        risk: 'Boşta Kalan Koltuk',
+        desc: '2026-10-12 Wise Card Figma Inc -15.00 USD. Ayrılan ekip üyesi koltuğu.',
+        cancelUrl: 'https://www.figma.com/settings',
+        legalType: 'Figma Koltuk İptali',
+        hike: null
+      },
+      {
+        name: 'GitHub Copilot Enterprise',
+        bank: 'Wise CSV',
+        category: 'Geliştirici Araçları',
+        cost: 10.00,
+        currency: '$',
+        risk: 'Bireysel Yinelenen',
+        desc: '2026-10-09 Wise Card GitHub Subscriptions -10.00 USD.',
+        cancelUrl: 'https://github.com/settings/billing',
+        legalType: 'GitHub Lisans İptali',
+        hike: null
+      }
+    ],
+
+    revolut: [
+      {
+        name: 'Netflix 4K UHD',
+        bank: 'Revolut Card',
+        category: 'Medya & Eğlence',
+        cost: 22.99,
+        currency: 'EUR',
+        risk: 'Sessiz Fiyat Artışı',
+        desc: '08 Oct 2026 | Netflix 4K UHD | -22.99 EUR | Revolut Card. Aylar arası fark yakalandı.',
+        cancelUrl: 'https://www.netflix.com/cancelplan',
+        legalType: 'Chargeback Kod 4837 Dilekçesi',
+        hike: {
+          pct: 43.8,
+          prev: '15.99 €',
+          badge: '🔥 Sneak Price Hike: +%43.8 Fiyat Artışı (15.99 € ➔ 22.99 €)'
+        }
+      },
+      {
+        name: 'JetBrains All Products Pack',
+        bank: 'Revolut Card',
+        category: 'Geliştirici Araçları',
+        cost: 24.90,
+        currency: 'EUR',
+        risk: 'Otomatik Yenileme Döngüsü',
+        desc: '04 Oct 2026 | JetBrains All Products Pack | -24.90 EUR | Revolut Card.',
+        cancelUrl: 'https://account.jetbrains.com/licenses',
+        legalType: 'JetBrains Lisans İptali',
+        hike: null
+      },
+      {
+        name: 'OpenAI ChatGPT Plus',
+        bank: 'Revolut Card',
+        category: 'Yapay Zekâ (AI)',
+        cost: 20.00,
+        currency: '$',
+        risk: 'Yinelenen Çekim',
+        desc: '11 Oct 2026 | OpenAI ChatGPT Plus | -20.00 USD | Revolut Card.',
+        cancelUrl: 'https://chat.openai.com/#settings',
+        legalType: 'OpenAI Abonelik Feshi',
+        hike: null
+      },
+      {
+        name: 'Midjourney Inc AI',
+        bank: 'Revolut Card',
+        category: 'Yapay Zekâ (AI)',
+        cost: 10.00,
+        currency: '$',
+        risk: 'Görsel Üretim',
+        desc: '14 Oct 2026 | Midjourney Inc | -10.00 USD | Revolut Card.',
+        cancelUrl: 'https://www.midjourney.com/account',
+        legalType: 'Midjourney Fesih Metni',
+        hike: null
+      }
+    ]
+  };
 
   function initStatementLab() {
     var dropzone = document.getElementById('lab-dropzone');
@@ -8239,6 +8747,7 @@ Rapor Üretici: https://subradar.dev
     var statCount = document.getElementById('lab-stat-count');
     var statMonthly = document.getElementById('lab-stat-monthly');
     var statYearly = document.getElementById('lab-stat-yearly');
+    var bankSelectorWrap = document.getElementById('lab-bank-selector');
 
     if (!dropzone) return;
 
@@ -8247,7 +8756,7 @@ Rapor Üretici: https://subradar.dev
       if (fileInput) fileInput.click();
     });
 
-    // Drag & Drop
+    // Drag & Drop visual feedback
     ['dragenter', 'dragover'].forEach(function (evt) {
       dropzone.addEventListener(evt, function (e) {
         e.preventDefault();
@@ -8277,9 +8786,24 @@ Rapor Üretici: https://subradar.dev
       });
     }
 
+    // Default sample button
     if (sampleBtn) {
       sampleBtn.addEventListener('click', function () {
-        runScanSimulation(SAMPLE_LEAKS);
+        runScanSimulation(BANK_DATASETS.sample, 'Standart Örnek Ekstre');
+      });
+    }
+
+    // Bank-specific preset buttons
+    if (bankSelectorWrap) {
+      var bankBtns = bankSelectorWrap.querySelectorAll('.lab-bank-btn');
+      bankBtns.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var bankKey = btn.getAttribute('data-bank');
+          var dataset = BANK_DATASETS[bankKey] || BANK_DATASETS.sample;
+          var bankLabel = btn.textContent.trim();
+          runScanSimulation(dataset, bankLabel);
+        });
       });
     }
 
@@ -8295,36 +8819,119 @@ Rapor Üretici: https://subradar.dev
       reader.onload = function (e) {
         var content = String(e.target.result || '');
         var parsed = parseStatementText(content);
-        runScanSimulation(parsed.length > 0 ? parsed : SAMPLE_LEAKS);
+        var dataset = parsed.length > 0 ? parsed : BANK_DATASETS.garanti;
+        runScanSimulation(dataset, file.name);
       };
       reader.readAsText(file.slice(0, 500000)); // Read first 500KB safe client-side
     }
 
     function parseStatementText(text) {
       var detected = [];
+      var lower = text.toLowerCase();
+
+      var bankName = 'Özel Ekstre';
+      if (lower.indexOf('garanti') !== -1) bankName = 'Garanti BBVA';
+      else if (lower.indexOf('enpara') !== -1) bankName = 'Enpara.com';
+      else if (lower.indexOf('papara') !== -1) bankName = 'Papara';
+      else if (lower.indexOf('wise') !== -1) bankName = 'Wise CSV';
+      else if (lower.indexOf('revolut') !== -1) bankName = 'Revolut Card';
+
       var patterns = [
-        { regex: /adobe/i, name: 'Adobe Creative Cloud', cost: 59.99, cat: 'Tasarım' },
-        { regex: /netflix/i, name: 'Netflix', cost: 22.99, cat: 'Medya' },
-        { regex: /spotify/i, name: 'Spotify', cost: 18.99, cat: 'Müzik' },
-        { regex: /aws|amazon web/i, name: 'Amazon Web Services', cost: 38.50, cat: 'Altyapı' },
-        { regex: /google \*|google cloud|youtube/i, name: 'Google One / YouTube', cost: 13.99, cat: 'Depolama' },
-        { regex: /github/i, name: 'GitHub Copilot / Team', cost: 19.00, cat: 'Geliştirici' },
-        { regex: /jetbrains/i, name: 'JetBrains IDE', cost: 24.90, cat: 'Yazılım' },
-        { regex: /openai|chatgpt/i, name: 'OpenAI ChatGPT Plus', cost: 20.00, cat: 'Yapay Zekâ' }
+        {
+          regex: /adobe/i,
+          name: 'Adobe Creative Cloud',
+          cost: 59.99,
+          cat: 'Tasarım',
+          hike: { pct: 56.9, prev: '$38.20', badge: '🔥 Sinsi Fiyat Artışı: +%56.9 Zam Algılandı' },
+          legal: '6502 SK THH Adobe Başvurusu'
+        },
+        {
+          regex: /netflix/i,
+          name: 'Netflix',
+          cost: 22.99,
+          cat: 'Medya',
+          hike: { pct: 50.0, prev: '$15.30', badge: '🔥 Sinsi Fiyat Artışı: +%50.0 Zam (Aylar arası artış)' },
+          legal: 'Netflix Abonelik Feshi'
+        },
+        {
+          regex: /spotify/i,
+          name: 'Spotify',
+          cost: 18.99,
+          cat: 'Müzik',
+          hike: null,
+          legal: 'Spotify Fesih Bildirimi'
+        },
+        {
+          regex: /aws|amazon web/i,
+          name: 'Amazon Web Services',
+          cost: 38.50,
+          cat: 'Altyapı',
+          hike: { pct: 32.5, prev: '$29.00', badge: '⚠️ Gizli Artış: +%32.5 Ek Faturalandırma' },
+          legal: 'AWS Servis Kapatma'
+        },
+        {
+          regex: /google \*|google cloud|youtube/i,
+          name: 'Google One / YouTube',
+          cost: 13.99,
+          cat: 'Depolama',
+          hike: null,
+          legal: 'Google Abonelik İptali'
+        },
+        {
+          regex: /github/i,
+          name: 'GitHub Copilot / Team',
+          cost: 19.00,
+          cat: 'Geliştirici',
+          hike: null,
+          legal: 'GitHub Lisans Feshi'
+        },
+        {
+          regex: /jetbrains/i,
+          name: 'JetBrains IDE',
+          cost: 24.90,
+          cat: 'Yazılım',
+          hike: null,
+          legal: 'JetBrains Lisans İptali'
+        },
+        {
+          regex: /openai|chatgpt/i,
+          name: 'OpenAI ChatGPT Plus',
+          cost: 20.00,
+          cat: 'Yapay Zekâ',
+          hike: null,
+          legal: 'OpenAI Abonelik Feshi'
+        },
+        {
+          regex: /cursor/i,
+          name: 'Cursor Pro AI',
+          cost: 20.00,
+          cat: 'Yapay Zekâ & Kod',
+          hike: null,
+          legal: 'Cursor AI Fesih Metni'
+        },
+        {
+          regex: /midjourney/i,
+          name: 'Midjourney AI',
+          cost: 10.00,
+          cat: 'Yapay Zekâ',
+          hike: null,
+          legal: 'Midjourney İptal Talebi'
+        }
       ];
 
       patterns.forEach(function (p) {
         if (p.regex.test(text)) {
           detected.push({
             name: p.name,
+            bank: bankName,
             category: p.cat,
             cost: p.cost,
             currency: '$',
-            risk: 'Ekstrede Tespit Edildi',
-            riskColor: 'rose',
-            desc: 'Banka ekstresi satırlarından cihaz içinde otomatik olarak tespit edildi.',
+            risk: p.hike ? 'Sinsi Fiyat Artışı' : 'Ekstrede Tespit Edildi',
+            desc: bankName + ' ekstresi satırlarından %100 yerel FileReader motoruyla ayrıştırıldı.',
             cancelUrl: 'https://www.google.com/search?q=' + encodeURIComponent(p.name + ' cancel subscription'),
-            legalType: p.name + ' Fesih Metni'
+            legalType: p.legal,
+            hike: p.hike
           });
         }
       });
@@ -8332,12 +8939,13 @@ Rapor Üretici: https://subradar.dev
       return detected;
     }
 
-    function runScanSimulation(leaks) {
+    function runScanSimulation(leaks, sourceName) {
       if (dropzone) dropzone.classList.add('hidden');
       if (progressWrap) progressWrap.classList.remove('hidden');
       if (resultsWrap) resultsWrap.classList.add('hidden');
       if (resetBtn) resetBtn.classList.remove('hidden');
 
+      var label = sourceName || 'Banka Ekstresi';
       var pct = 0;
       var interval = setInterval(function () {
         pct += 12;
@@ -8346,32 +8954,29 @@ Rapor Üretici: https://subradar.dev
         if (progressPct) progressPct.textContent = pct + '%';
 
         if (pct === 36 && statusText) {
-          statusText.textContent = 'Banka açıklamaları ayrıştırılıyor (0 Bayt Bulut)...';
+          statusText.textContent = label + ' ayrıştırılıyor (0 Bayt Bulut)...';
         } else if (pct === 72 && statusText) {
-          statusText.textContent = 'Karanlık desen ve sessiz yenilemeler tespit ediliyor...';
+          statusText.textContent = 'Masaüstü Dalga 2: Karanlık desen & sinsi zamlar taranıyor...';
         }
 
         if (pct >= 100) {
           clearInterval(interval);
           setTimeout(function () {
             if (progressWrap) progressWrap.classList.add('hidden');
-            renderResults(leaks);
+            renderResults(leaks, label);
             if (window.srAudio && window.srAudio.playSuccess) {
               window.srAudio.playSuccess();
             }
           }, 250);
         }
-      }, 75);
+      }, 70);
     }
 
-    function renderResults(leaks) {
+    function renderResults(leaks, sourceLabel) {
       if (!resultsWrap || !leaksList) return;
 
       var totalMonthly = 0;
-      leaks.forEach(function (item) {
-        totalMonthly += item.cost;
-      });
-      var totalYearly = totalMonthly * 12;
+      var hikeCount = 0;
 
       // Currency conversion support if available
       var curSymbol = '$';
@@ -8381,10 +8986,28 @@ Rapor Üretici: https://subradar.dev
         curRate = SR_RATES[srCurrency].rate;
       }
 
+      leaks.forEach(function (item) {
+        var normalizedCost = item.cost;
+        if (item.currency === 'TRY') {
+          // If in USD view, convert TRY to USD roughly or keep native
+          normalizedCost = (typeof SR_RATES !== 'undefined' && SR_RATES.TRY) ? (item.cost / SR_RATES.TRY.rate) : (item.cost / 48.35);
+        } else if (item.currency === 'EUR') {
+          normalizedCost = (typeof SR_RATES !== 'undefined' && SR_RATES.EUR) ? (item.cost / SR_RATES.EUR.rate) : (item.cost / 0.86);
+        }
+        totalMonthly += normalizedCost;
+        if (item.hike) hikeCount++;
+      });
+
+      var totalYearly = totalMonthly * 12;
+
       if (statCount) {
-        statCount.innerHTML = '<span>' + leaks.length + ' Adet</span>' +
-          '<span class="text-xs font-normal text-rose-400/80 px-2 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/20">Aktif Kaçak</span>';
+        var hikeBadge = hikeCount > 0
+          ? '<span class="text-xs font-normal text-amber-300 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center gap-1 font-mono">🔥 ' + hikeCount + ' Sinsi Zam</span>'
+          : '<span class="text-xs font-normal text-rose-400/80 px-2 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/20">Yüksek Risk</span>';
+
+        statCount.innerHTML = '<span>' + leaks.length + ' Adet</span>' + hikeBadge;
       }
+
       if (statMonthly) {
         statMonthly.innerHTML = curSymbol + (totalMonthly * curRate).toFixed(2) + ' <span class="text-xs font-normal text-neutral-400">/ ay</span>';
       }
@@ -8395,30 +9018,58 @@ Rapor Üretici: https://subradar.dev
       leaksList.innerHTML = '';
       leaks.forEach(function (item) {
         var card = document.createElement('div');
-        card.className = 'rounded-2xl p-4 bg-white/[0.02] border border-white/10 hover:border-white/20 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-4';
+        card.className = 'rounded-2xl p-4 sm:p-5 bg-white/[0.02] border border-white/10 hover:border-emerald-500/30 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative overflow-hidden group';
+
+        // Price formatting per item
+        var displayPrice = '';
+        if (item.currency === 'TRY') {
+          displayPrice = item.cost.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TL';
+        } else if (item.currency === 'EUR') {
+          displayPrice = '€' + item.cost.toFixed(2);
+        } else {
+          displayPrice = '$' + item.cost.toFixed(2);
+        }
+
+        // Sneak price hike badge HTML
+        var hikeHtml = '';
+        if (item.hike) {
+          hikeHtml = [
+            '<div class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] font-mono font-medium">',
+            '  <span class="material-symbols-outlined text-[15px] text-amber-400">trending_up</span>',
+            '  <span>' + item.hike.badge + '</span>',
+            '</div>'
+          ].join('');
+        }
+
+        var bankBadge = item.bank
+          ? '<span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-neutral-300 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>' + item.bank + '</span>'
+          : '';
+
         card.innerHTML = [
           '<div class="flex items-start gap-3.5 min-w-0">',
-          '  <div class="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/15 flex items-center justify-center text-white/70 flex-shrink-0 mt-0.5">',
-          '    <span class="material-symbols-outlined text-[20px]" aria-hidden="true">credit_card_off</span>',
+          '  <div class="w-11 h-11 rounded-xl bg-white/[0.04] border border-white/15 flex items-center justify-center text-white/70 flex-shrink-0 mt-0.5 group-hover:text-emerald-400 group-hover:border-emerald-500/40 transition-all">',
+          '    <span class="material-symbols-outlined text-[22px]" aria-hidden="true">credit_card_off</span>',
           '  </div>',
           '  <div class="min-w-0">',
           '    <div class="flex items-center gap-2 flex-wrap">',
           '      <h4 class="text-sm font-semibold text-white">' + item.name + '</h4>',
+          '      ' + bankBadge,
           '      <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300">' + item.risk + '</span>',
           '      <span class="text-[10px] font-mono text-neutral-400">' + item.category + '</span>',
           '    </div>',
           '    <p class="text-xs text-neutral-400 mt-1 leading-relaxed">' + item.desc + '</p>',
+          '    ' + hikeHtml,
           '  </div>',
           '</div>',
           '<div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end flex-shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/10">',
           '  <div class="text-right">',
-          '    <div class="text-sm font-bold text-white font-mono">' + curSymbol + (item.cost * curRate).toFixed(2) + '<span class="text-[11px] font-normal text-neutral-400">/ay</span></div>',
-          '    <div class="text-[10px] text-emerald-400 font-mono">Kurtarılabilir</div>',
+          '    <div class="text-sm font-bold text-white font-mono">' + displayPrice + '<span class="text-[11px] font-normal text-neutral-400">/ay</span></div>',
+          '    <div class="text-[10px] text-emerald-400 font-mono">Cihaz İçi Kurtarılabilir</div>',
           '  </div>',
-          '  <div class="flex items-center gap-2">',
-          '    <button type="button" class="lab-legal-btn px-3 py-1.5 rounded-lg border border-white/15 text-[11px] text-white/80 hover:text-white hover:border-white/30 transition-all cursor-pointer flex items-center gap-1" data-service="' + item.name + '">',
+          '  <div class="flex items-center gap-2 flex-wrap">',
+          '    <button type="button" class="lab-legal-btn px-3 py-1.5 rounded-lg border border-cyan-500/30 bg-cyan-500/10 text-[11px] text-cyan-300 hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all cursor-pointer flex items-center gap-1 font-mono" data-service="' + item.name + '" title="6502 SK THH veya Chargeback Dilekçesi Hazırla">',
           '      <span class="material-symbols-outlined text-[14px]">gavel</span>',
-          '      <span>İhtarname</span>',
+          '      <span>6502 SK / THH</span>',
           '    </button>',
           '    <a href="' + item.cancelUrl + '" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-lg bg-rose-500/15 border border-rose-500/30 text-[11px] font-semibold text-rose-300 hover:bg-rose-500/25 transition-all flex items-center gap-1 no-underline">',
           '      <span>Tek Tık İptal</span>',
@@ -8427,6 +9078,7 @@ Rapor Üretici: https://subradar.dev
           '  </div>',
           '</div>'
         ].join('');
+
         leaksList.appendChild(card);
       });
 
@@ -8437,14 +9089,18 @@ Rapor Üretici: https://subradar.dev
           if (window.srOpenLegalModal) {
             window.srOpenLegalModal(sName);
           } else if (typeof srShowToast === 'function') {
-            srShowToast(sName + ' için yasal ihtarname oluşturuluyor...');
+            srShowToast(sName + ' için 6502 SK THH ve Chargeback dilekçesi hazırlanıyor...');
           }
         });
       });
 
       resultsWrap.classList.remove('hidden');
       if (window.srAnalytics) {
-        window.srAnalytics.track('statement_scan_completed', { leaksCount: leaks.length });
+        window.srAnalytics.track('statement_scan_completed', {
+          source: sourceLabel,
+          leaksCount: leaks.length,
+          hikesCount: hikeCount
+        });
       }
     }
 
@@ -8464,7 +9120,6 @@ Rapor Üretici: https://subradar.dev
     initStatementLab();
   }
 })();
-
 </script>
 
 <script id="sr-bundle-hash-verifier-js">

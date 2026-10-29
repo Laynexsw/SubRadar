@@ -57,12 +57,42 @@
       </div>
       <h3 class="text-base font-semibold text-white mb-1.5">Banka Ekstreni veya CSV Dosyanı Sürükle</h3>
       <p class="text-xs text-neutral-400 max-w-md mx-auto leading-relaxed mb-4">
-        Garanti, İş Bankası, Yapı Kredi, Akbank veya standart CSV formatları desteklenir. Dosya diskinizden ayrılmaz.
+        Garanti BBVA, İş Bankası, Enpara, Papara, Wise CSV ve Revolut formatları desteklenir. Ekstreler arası sinsi fiyat artışı (sneak price hike) anında yakalanır.
       </p>
       <div class="flex items-center justify-center gap-2 text-[11px] text-neutral-500 font-mono">
         <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">.CSV</span>
         <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">.TXT</span>
         <span>veya üstteki butondan tek tıkla test et</span>
+      </div>
+    </div>
+
+    <!-- Quick Bank Sample Selector Pills (Wave 2 Desktop Banks) -->
+    <div class="mt-6 pt-5 border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs" id="lab-bank-selector-wrap">
+      <div class="flex items-center gap-2 text-neutral-400 font-mono text-[11px]">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-white/80 font-medium">Hazır Ekstre Numuneleri (Dalga 2):</span>
+      </div>
+      <div class="flex items-center gap-1.5 flex-wrap" id="lab-bank-selector">
+        <button type="button" class="lab-bank-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 text-[11px] font-mono text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer" data-bank="garanti">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>Garanti BBVA</span>
+        </button>
+        <button type="button" class="lab-bank-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-indigo-500/20 hover:text-indigo-300 border border-white/10 text-[11px] font-mono text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer" data-bank="enpara">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+          <span>Enpara.com</span>
+        </button>
+        <button type="button" class="lab-bank-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-rose-500/20 hover:text-rose-300 border border-white/10 text-[11px] font-mono text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer" data-bank="papara">
+          <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+          <span>Papara</span>
+        </button>
+        <button type="button" class="lab-bank-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-teal-500/20 hover:text-teal-300 border border-white/10 text-[11px] font-mono text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer" data-bank="wise">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+          <span>Wise Multi-Cur.</span>
+        </button>
+        <button type="button" class="lab-bank-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-cyan-500/20 hover:text-cyan-300 border border-white/10 text-[11px] font-mono text-neutral-300 transition-all flex items-center gap-1.5 cursor-pointer" data-bank="revolut">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+          <span>Revolut Global</span>
+        </button>
       </div>
     </div>
 
